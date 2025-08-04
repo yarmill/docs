@@ -1,152 +1,57 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.4",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
+    "title": "Yarmill Ingest API",
+    "description": "\n\n### General Information\nThis API allows clients to upload and manage data on the Yarmill platform. The API is protected by custom token authentication and requires a valid AppToken to access. \n#### Base URL \n\n```https://ingest.ms.yarmill.com```\n\n### Authentication:\n\nAll requests to the API must include an AppToken in the Authorization header. The AppToken can be obtained from Yarmill support.\n\n#### Usage example: \n\n```Authorization: AppToken application_token_for_yarmill_access```\n\n### Content Type\n\nAll request and response bodies are in JSON format. Ensure that the Content-Type header is set to application/json.\n\n### Error Handling\n\nThe API uses standard HTTP status codes to indicate the success or failure of an API request. Common status codes include:\n\n- `200 OK`: The request was successful.\n- `400 Bad Request`: The request was invalid.\n- `401 Unauthorized`: The request requires user authentication.\n- `403 Forbidden`: The server understood the request but refuses to authorize it.\n- `500 Internal Server Error`: The server encountered an unexpected condition that prevented it from fulfilling the request.\n\n",
+    "contact": {
+      "name": "Ned",
+      "email": "ned@yarmill.com"
     },
-    "version": "1.0.0"
+    "version": "v1"
   },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/api/data/upload": {
       "post": {
-        "description": "Creates a new plant in the store",
+        "tags": [
+          "Data"
+        ],
+        "summary": "Uploads data to the server.",
+        "description": "This endpoint is protected by custom token authentication and requires a valid token to access.\r\nThe request body must contain a valid `DataRequestModel` object.\r\n            \r\n### Request Example\r\nPUT https://ingest.ms.yarmill.com/api/data/upload\r\nHeaders:\r\nExample: `Authorization: AppToken application_token_for_yarmill_access`\r\n            \r\nPayload:\r\n```json\r\n{\r\n  \"originId\": \"12345\",\r\n  \"originType\": \"user\",\r\n  \"operationType\": \"C\",\r\n  \"data\": {\r\n    \"originId\": \"123334\",\r\n    \"username\": \"johndoe\",\r\n    \"email\": \"johndoe@example.com\",\r\n    \"age\": 30\r\n  },\r\n  \"metadata\": {\r\n    \"source\": \"web\",\r\n    \"version\": \"1\"\r\n  },\r\n  \"tags\": [\"new_user\", \"premium\"]\r\n}\r\n```\r\n            \r\n### Field Descriptions\r\n- **originId** (optional): Unique identifier. That is, an identifier that is unique within the source that triggered the operation. If not provided, the system will not be able to map changes to already uploaded identical objects. Type: string. Example: \"2be7d766-8848-46c9-ba31-22f5fab4641b\"\r\n- **originType** (required): The type of data being uploaded to Yarmill. The data type is usually the name of the entity on the source. It is mainly used for data categorization. The same type should have the same data structure. Type: string. Example: \"athleteMeasurement\"\r\n- **operationType** (optional): The type of operation performed. In combination with a filled originId, the system can detect whether it is a Create or Update. It can contain values: \"C\" (Create), \"U\" (Update), \"D\" (Delete). Type: string. Example: \"C\"\r\n- **data** (required): Contains structured data in JSON format. This part can contain any JSON object or array of objects. Type: Any valid JSON object or array of JSON objects. Example: { \"userId\": \"3422\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\", \"age\": 30 }\r\n- **metadata** (optional): Key-value object containing metadata that can be used to better understand the data. Metadata provides additional information, such as the source or version of the data. Type: Object (key-value). Example: { \"source\": \"web\", \"version\": \"1\" }\r\n- **tags** (optional): Array of tags related to the data. Used for categorization or filtering of data. Type: Array of strings. Example: [\"new_user\", \"premium\"]",
         "requestBody": {
-          "description": "Plant to add to the store",
+          "description": "The data request model containing the data to be uploaded.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/DataRequestModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequestModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequestModel"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
+    "/api/ping": {
+      "post": {
+        "tags": [
+          "Ping"
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+            "description": "OK"
           }
         }
       }
@@ -154,63 +59,42 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "DataRequestModel": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "originId": {
+            "type": "string",
+            "nullable": true
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+          "originType": {
+            "type": "string",
+            "description": "This is the type of the data that is being sent, e.g. user, result, full export, etc.",
+            "nullable": true
           },
-          {
-            "required": [
-              "id"
-            ],
+          "operationType": {
+            "type": "string",
+            "description": "C - Create, U - Update, D - Delete",
+            "nullable": true
+          },
+          "metadata": {
             "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
           },
-          "message": {
-            "type": "string"
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "data": {
+            "nullable": true
           }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+        },
+        "additionalProperties": false
       }
     }
   }
