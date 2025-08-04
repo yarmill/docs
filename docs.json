@@ -48,6 +48,10 @@
         ]
       },
       {
+        "tab": "API",
+        "openapi": "https://ingest.ms.yarmill.com/swagger/v1/swagger.json"
+      },
+      {
         "tab": "API reference",
         "groups": [
           {
