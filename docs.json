@@ -1,11 +1,12 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Yarmill",
+  "description": "Yarmill Docs & Guidelines",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#513FF8",
+    "light": "#513FF8",
+    "dark": "#9E93FB"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -78,6 +79,16 @@
           "anchor": "Documentation",
           "href": "https://mintlify.com/docs",
           "icon": "book-open-cover"
+        },
+        {
+          "anchor": "Changelog",
+          "href": "https://mintlify.com/community",
+          "icon": "hand-peace"
+        },
+        {
+          "anchor": "API Reference",
+          "href": "https://mintlify.com/community",
+          "icon": "code"
         },
         {
           "anchor": "Community",
