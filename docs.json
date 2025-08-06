@@ -20,7 +20,7 @@
             "groups": [
               {
                 "group": "Getting Started",
-                "pages": ["documentation/welcome", "documentation/basics"]
+                "pages": ["en/documentation/welcome", "en/documentation/basics"]
               }
             ]
           },
@@ -34,15 +34,15 @@
             "groups": [
               {
                 "group": "API documentation",
-                "pages": ["api-reference/introduction"]
+                "pages": ["en/api-reference/introduction"]
               },
               {
                 "group": "Endpoint examples",
                 "pages": [
-                  "api-reference/endpoint/create",
-                  "api-reference/endpoint/delete",
-                  "api-reference/endpoint/get",
-                  "api-reference/endpoint/webhook"
+                  "en/api-reference/endpoint/create",
+                  "en/api-reference/endpoint/delete",
+                  "en/api-reference/endpoint/get",
+                  "en/api-reference/endpoint/webhook"
                 ]
               }
             ]
