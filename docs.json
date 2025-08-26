@@ -8,6 +8,9 @@
     "light": "#513FF8",
     "dark": "#9E93FB"
   },
+  "codeBlock": {
+  "mode": "auto"
+  },
   "favicon": "/favicon.svg",
   "navigation": {
     "languages": [
@@ -21,6 +24,16 @@
               {
                 "group": "Getting Started",
                 "pages": ["en/documentation/welcome", "en/documentation/basics"]
+              },
+              {
+                "group": "Sport-Specific Guides",
+                "pages": [
+                  {
+                    "group": "Biathlon",
+                    "icon": "person-rifle",
+                    "pages": ["en/documentation/sport-specific/biathlon/shooting"]
+                  }
+                ]
               }
             ]
           },
@@ -82,7 +95,7 @@
   },
   "footer": {
     "socials": {
-       "website": "https://yarmill.com",
+      "website": "https://yarmill.com",
       "linkedin": "https://www.linkedin.com/company/yarmill",
       "instagram": "https://www.instagram.com/yarmillapp/"
     }
