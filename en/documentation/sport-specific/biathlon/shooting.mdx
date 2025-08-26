@@ -1,0 +1,113 @@
+---
+title: "Logging shooting"
+description: "How to write shooting entries in the training log."
+sidebarTitle: "Logging shooting"
+---
+
+Use the `Shooting` field in Yarmill to record details from training or competition shooting — including intensity, miss count, timing, and miss positions.
+
+
+<Note>
+Yarmill automatically parses shooting entries into structured data for analysis. Make sure to follow the format and syntax below to ensure your entries are recognized correctly.
+</Note>
+
+## Shooting Entry Syntax
+
+```text
+{Intensity} 
+{Position} 
+{Missed shots} [1st shot time/Stage time] [Miss positions]
+```
+
+### Parameters
+
+<ParamField path="Intensity" required>
+  Indicates the intensity level during which the shooting was performed.
+  Always comes first in the entry and applies to all following lines until a new intensity is defined.
+
+  Accepted values:
+  - `i0` or `z0` for static shooting
+  - intensity name (usually `i1-i5`)
+  - `competition` or `race` for race shooting
+</ParamField>
+
+<ParamField path="Position" required>
+  Defines the shooting position.
+  Must follow the intensity and applies to all following entries until a new position is specified.
+  
+  Accepted values:
+  - `P` for prone
+  - `S` for standing
+</ParamField>
+
+<ParamField path="Missed shots" required>
+  Represents the number of missed shots in a stage.
+  You can enter multiple numbers in sequence (e.g. `0321`) to log several stages at once using batch entry.
+  
+  Accepted values:
+  - integer `0-5`
+  - `X+Y` for relay shooting, where `X` is the number of missed shots and `Y` is the number of spare rounds used
+
+  Examples: `3`, `0+2`
+</ParamField>
+
+<ParamField path="First shot time & Stage time">
+  Optional timing data for each shooting stage.
+  Represents the time of the first shot and the total time spent on the stage.
+  
+  Accepted values:
+  - times in seconds, separated by `/` (first shot time / stage time)
+  - `-` for a missing or unknown value
+  
+  Examples: 
+  - `14/29` – first shot at 14s, total stage time 29s
+  - `-/25` – first shot time unknown, stage time 25s
+  - `13/-` – first shot at 13s, stage time unknown
+</ParamField>
+
+<ParamField path="Miss positions and order">  
+  Optional field that describes where missed shots went, using clock notation.
+  You can also log the full shot sequence by entering all five shots and using `x` to mark hits.
+
+  Accepted values:
+  - clock numbers `1-12` to indicate miss positions
+  - `'`, `` ` ``, or `,` as separators between values
+  - `x` to indicate a hit when logging all five shots in order
+  
+  Examples:
+  - `3' 11' 12'` – three misses at 3, 11 a 12 o'clock
+  - `2 10` – two misses at 2 and 10 o'clock 
+  - `4x5xx` – miss at 4, hit, miss at 5, hit, hit (first and third shot missed)
+</ParamField>
+
+
+## Examples
+
+```text title="Batch entry (no details)"
+i1 P 0320     // 4 prone stages with 0, 3, 2, 0 misses
+i1 S 0210     // 4 standing stages
+```
+
+```text
+i1
+P 1120
+S 0010
+```
+
+```text Detailed entry with miss positions
+i2
+P 3 14/29 1 3 11     // 3 misses, logged by clock position
+S 2 -/26 7' 10'
+```
+
+```text
+competition
+P 2 -/29 4x5xx       // ordered representation of shots: hit/miss pattern
+S 1 14/28 xxxx11     // last two shots missed
+```
+
+
+## Pro Tips
+
+- **Be concise** – Use batch mode when you don’t need detailed info (like times or miss positions).
+- **Double–check your entries** – Go to `Analytics / Shooting Analysis` and check the table at the bottom to make sure your entries were parsed correctly.
