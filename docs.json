@@ -8,9 +8,6 @@
     "light": "#513FF8",
     "dark": "#9E93FB"
   },
-  "codeBlock": {
-  "mode": "auto"
-  },
   "favicon": "/favicon.svg",
   "navigation": {
     "languages": [

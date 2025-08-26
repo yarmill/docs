@@ -81,31 +81,38 @@ Yarmill automatically parses shooting entries into structured data for analysis.
 </ParamField>
 
 
-## Examples
+## Examples 
 
-```text title="Batch entry (no details)"
-i1 P 0320     // 4 prone stages with 0, 3, 2, 0 misses
-i1 S 0210     // 4 standing stages
+```json title="Batch entry (no details) – v1"
+i0       // static shooting
+P 0320   // 4 static prone stages – 0, 3, 2, 0 misses
+S 0210   // 4 static standing stages – 0, 2, 1, 0 misses
 ```
 
-```text
-i1
-P 1120
-S 0010
+```json title="Batch entry (no details) – v2"
+i1 P 0320   // prone shooting in i1 – 0, 3, 2, 0 misses
+i2 S 0210   // standing shooting in i2 – 0, 2, 1, 0 misses
 ```
 
-```text Detailed entry with miss positions
-i2
-P 3 14/29 1 3 11     // 3 misses, logged by clock position
-S 2 -/26 7' 10'
+```json title="Detailed entry with miss positions"
+i2              // shooting in i2 intensity
+P 3 1' 3' 11'   // prone, 3 misses at 1, 3, and 11 o'clock
+S 2 7' 10'      // standing, 2 misses at 7 and 10 o'clock
 ```
 
-```text
-competition
-P 2 -/29 4x5xx       // ordered representation of shots: hit/miss pattern
-S 1 14/28 xxxx11     // last two shots missed
+```json title="Detailed entry with times & miss positions"
+i3              // shooting in i3 intensity
+P 1 14/29 6     // prone, 1 miss, first shot at 14s, total stage time 29s, miss at 6 o'clock
+P 2 -/26 12 6   // prone, 2 misses, total stage time 26s, misses at 12 and 6 o'clock
 ```
 
+```json title="Detailed entry with order of missed shots"
+competition       // race shooting
+P 0 13/25         // prone, clean – first shot at 13s, total stage time 25s
+P 1 12/26 x9xxx   // prone, 1 miss – second shot missed at 9 o'clock
+S 0               // standing, clean
+S 2 14/28 3xxx11  // standing, 2 misses – first shot missed at 3 o'clock, last at 11 o'clock
+```
 
 ## Pro Tips
 
