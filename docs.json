@@ -43,16 +43,14 @@
             "icon": "code",
             "groups": [
               {
-                "group": "API documentation",
+                "group": "API Documentation",
                 "pages": ["en/api-reference/introduction"]
               },
               {
-                "group": "Endpoint examples",
+                "group": "Endpoints",
+                "openapi": "en/api-reference/openapi.json",
                 "pages": [
-                  "en/api-reference/endpoint/create",
-                  "en/api-reference/endpoint/delete",
-                  "en/api-reference/endpoint/get",
-                  "en/api-reference/endpoint/webhook"
+                  "POST /api/data/upload"
                 ]
               }
             ]

@@ -1,33 +1,35 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'Yarmill provides an JSON-based HTTP API to allow you to programatically ingest and manage data.'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+This documentation will provide you everything you need in order to get started, including code examples and information on authentication and error handling.
 
-## Welcome
-
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+## Base URL
+The base URL for the API is `https://ingest.ms.yarmill.com`.
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All requests to the API must include an AppToken in the `Authorization` header. The AppToken can be obtained from Yarmill support.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+<Warning>
+  Your Yarmill AppToken should never be used client side or exposed to your end users.
+</Warning>
+
+```shellscript
+Authorization: AppToken application_token_for_yarmill_access
 ```
+
+## Content Type
+
+All request and response bodies are in JSON format. Ensure that the `Content-Type` header is set to `application/json`.
+
+## Error Handling
+
+The API uses standard HTTP status codes to indicate the success or failure of an API request. Common status codes include:
+
+- `200 OK`: The request was successful.
+- `400 Bad Request`: The request was invalid.
+- `401 Unauthorized`: The request requires user authentication.
+- `403 Forbidden`: The server understood the request but refuses to authorize it.
+- `500 Internal Server Error`: The server encountered an unexpected condition that prevented it from fulfilling the request.

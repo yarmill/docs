@@ -1,16 +1,17 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.4",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
+    "title": "Yarmill Ingest API",
+    "description": "Yarmill provides an JSON-based HTTP API to allow you to programatically ingest and manage data.",
+    "contact": {
+      "name": "Yarmill Support",
+      "email": "support@yarmill.com"
     },
-    "version": "1.0.0"
+    "version": "v1"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://ingest.ms.yarmill.com"
     }
   ],
   "security": [
@@ -19,198 +20,97 @@
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/api/data/upload": {
       "post": {
-        "description": "Creates a new plant in the store",
+        "summary": "Upload Data",
+        "description": "",
         "requestBody": {
-          "description": "Plant to add to the store",
+          "description": "The data request model containing the data to be uploaded.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/DataRequestModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequestModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequestModel"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
+    "/api/ping": {
       "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
+        "summary": "Ping",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+            "description": "OK"
           }
         }
       }
     }
   },
   "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "DataRequestModel": {
+        "type": "object",
+        "properties": {
+          "originId": {
+            "type": "string",
+            "description": "Unique identifier. That is, an identifier that is unique within the source that triggered the operation. If not provided, the system will not be able to map changes to already uploaded identical objects. Example: `2be7d766-8848-46c9-ba31-22f5fab4641b`",
+            "nullable": true
+          },
+          "originType": {
+            "type": "string",
+            "description": "The type of data being uploaded to Yarmill. The data type is usually the name of the entity on the source. It is mainly used for data categorization. The same type should have the same data structure. Example: user, result, full export, etc.",
+            "nullable": true
+          },
+          "operationType": {
+            "type": "string",
+            "description": "The type of operation performed. In combination with the `originId`, the system can detect whether it is a Create or Update. It can contain values: \"C\" (Create), \"U\" (Update), \"D\" (Delete).",
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Key-value object containing metadata that can be used to better understand the data. Metadata provides additional information, such as the source or version of the data. Example: ```{ \"source\": \"web\", \"version\": \"1\" }```",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "description": "Array of tags related to the data. Used for categorization or filtering of data. Example: ```[\"new_user\", \"premium\"]```",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "data": {
+            "description":"Contains structured data in JSON format. This part can contain any JSON object or array of objects. Example: ```{ \"userId\": \"3422\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\", \"age\": 30 }```",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       }
     }
   }
