@@ -23,6 +23,10 @@
                 "pages": ["en/documentation/welcome", "en/documentation/basics"]
               },
               {
+                "group": "Medical Journal",
+                "pages": ["en/documentation/injuriesAndIllnesses"]
+              },
+              {
                 "group": "Sport-Specific Guides",
                 "pages": [
                   {
@@ -68,6 +72,10 @@
       {
         "label": "Support",
         "href": "mailto:support@yarmill.com"
+      },
+      {
+        "label": "Legal Terms",
+        "href": "https://yarmill.com/en/legal-terms"
       }
     ],
     "primary": {
