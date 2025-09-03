@@ -24,7 +24,10 @@
               },
               {
                 "group": "Medical Journal",
-                "pages": ["en/documentation/injuriesAndIllnesses"]
+                "pages": [
+                  "en/documentation/medical/medicalIntro",
+                  "en/documentation/medical/healthProblems"
+                ]
               },
               {
                 "group": "Sport-Specific Guides",
@@ -33,6 +36,11 @@
                     "group": "Biathlon",
                     "icon": "person-rifle",
                     "pages": ["en/documentation/sport-specific/biathlon/shooting"]
+                  },
+                  {
+                    "group": "Soccer",
+                    "icon": "futbol",
+                    "pages": ["en/documentation/sport-specific/soccer/GPS"]
                   }
                 ]
               }
