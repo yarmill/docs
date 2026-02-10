@@ -6,7 +6,7 @@
 - Propojení se dělá ve webové aplikaci: **Nastavení → (dole) Aplikace a zařízení / Integrace → Propojit**.
 - Data ze zařízení se po synchronizaci objeví ve **Skutečnosti** daného dne (podle integrace).
 - **Pozor:** data z hodinek **nenahrazují** vyplňování **levé (textové)** ani **pravé (datové)** strany deníku.
-- Nahranou aktivitu lze v Yarmillovi editovat i smazat. 
+- Nahranou aktivitu nelze v Yarmillovi editovat ani smazat. Smazat ji musíš v aplikaci poskytovatele (Garmin Connect, Polar Flow, WHOOP atd.).
 
 ### Sportovec
 #### Jak zařízení připojit
