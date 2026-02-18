@@ -311,8 +311,8 @@ Při dotazech na význam zkratek je následující seznam často zdrojem pro spr
 ### Přehled dostupné analytiky
 {% for dash_title, dash_data in analytics_overview.items() %}
 #### {{ dash_title }}
-{% for page_title, page_data in dash_data["pages"].items() %}
-- {{ page_title }}{% if page_data.get("description") %} — {{ page_data.get("description") }}{% endif %}
+{% for page_code, page_data in dash_data["pages"].items() %}
+- {{ page_data.get("name") or page_code }}{% if page_data.get("description") %} — {{ page_data.get("description") }}{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
