@@ -1,12 +1,33 @@
 # General guidelines
 
+{% set service_name_map = {
+  "oauth-acbaluo": "AC Baluo",
+  "apple-health": "Apple Health",
+  "dexcom": "Dexcom",
+  "garmin": "Garmin",
+  "oura": "Oura",
+  "polar": "Polar",
+  "polar-team": "Polar Team Pro",
+  "suunto": "Suunto",
+  "whoop": "WHOOP"
+} %}
+{% set external_services_list = external_services | default([], true) %}
+{% set external_service_labels = [] %}
+{% for code in external_services_list %}
+{% if code in service_name_map %}{% set _ = external_service_labels.append(service_name_map[code]) %}{% endif %}
+{% endfor %}
+{% set non_garmin_labels = [] %}
+{% for code in external_services_list %}
+{% if code != "garmin" and code in service_name_map %}{% set _ = non_garmin_labels.append(service_name_map[code]) %}{% endif %}
+{% endfor %}
+
 ## 1) Integrace a synchronizace zařízení
 
 ### Společné principy
 - Propojení se dělá ve webové aplikaci: **Nastavení → (dole) Aplikace a zařízení / Integrace → Propojit**.
 - Data ze zařízení se po synchronizaci objeví ve **Skutečnosti** daného dne (podle integrace).
 - **Pozor:** data z hodinek **nenahrazují** vyplňování **levé (textové)** ani **pravé (datové)** strany deníku.
-- Nahranou aktivitu nelze v Yarmillovi editovat ani smazat. Smazat ji musíš v aplikaci poskytovatele (Garmin Connect, Polar Flow, WHOOP atd.).
+- Nahranou aktivitu nelze v Yarmillovi editovat ani smazat. Smazat ji musíš v aplikaci poskytovatele ({% if external_service_labels %}{{ external_service_labels | join(", ") }} atd.{% else %}Garmin Connect, Polar Flow, WHOOP atd.{% endif %}).
 
 ### Sportovec
 #### Jak zařízení připojit
@@ -18,25 +39,31 @@
 #### Co když nevidím aktivitu / data?
 - Zkontroluj, že:
   - propojení je aktivní (v Nastavení),
-  - telefon/zařízení se opravdu synchronizovalo (např. Garmin Connect / Polar Flow / WHOOP…),
+  - telefon/zařízení se opravdu synchronizovalo ({% if external_service_labels %}např. {{ external_service_labels | join(" / ") }}…{% else %}např. Garmin Connect / Polar Flow / WHOOP…{% endif %}),
   - díváš se ve **Skutečnosti** na správný den.
 - Pokud chceš dotáhnout data **zpětně** (historicky), řeší se to podle integrace (viz níže).
 
+{% if "garmin" in external_services_list %}
 #### Garmin (důležité body)
 - Umíme dotáhnout i **historická data**, ale typicky je potřeba:
   - mít v propojení povolená **Historická data**,
   - a dát nám vědět na **hello@yarmill.com**, že o dotažení stojíš.
 - Integrujeme trénink/závod i **zdravotní data** (Garmin Health). Pokud s hodinkami spíš, uvidíš i data o spánku – je nutné povolit propojení pro příslušný typ dat.
 - Propojení můžeš později zrušit i v Garmin Connect.
+{% endif %}
 
-#### Polar / WHOOP / Oura / Suunto / Apple Health
+{% if non_garmin_labels %}
+#### {{ non_garmin_labels | join(" / ") }}
 - Postup je stejný: **Nastavení → Propojit → potvrdit u poskytovatele**.
 - Pokud se data přestala posílat nebo se nezobrazují, ověř nejdřív stav propojení v Nastavení a synchronizaci v aplikaci poskytovatele.
+{% endif %}
 
 ### Trenér
 - Trenér obvykle **vidí importovaná data** sportovce ve Skutečnosti (podle nastavení instance).
 - Pokud sportovec hlásí, že se data nezobrazují: kontrola propojení + synchronizace + správný den ve Skutečnosti.
+{% if "garmin" in external_services_list %}
 - U Garminu: historická data → často vyžaduje **support** (hello@yarmill.com).
+{% endif %}
 
 ### Admin
 - Admin řeší hlavně:
@@ -364,7 +391,7 @@ Zdravotní a wellness záznamy a citlivé informace (např. nemoc, omezení). P�
 
 {% if modules.get("watches") %}
 ## {{ modules["watches"] }}
-Integrace hodinek a služeb (Garmin, Polar, WHOOP, Oura, Suunto, Apple Health atd.). Importovaná data se propisují do **Skutečnosti**, ale nenahrazují vyplnění levé/pravé strany.
+Integrace hodinek a služeb ({% if external_service_labels %}{{ external_service_labels | join(", ") }} atd.{% else %}Garmin, Polar, WHOOP, Oura, Suunto, Apple Health atd.{% endif %}). Importovaná data se propisují do **Skutečnosti**, ale nenahrazují vyplnění levé/pravé strany.
 {% endif %}
 
 {% if modules.get("sport-theory") %}

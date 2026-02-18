@@ -1,12 +1,33 @@
 # General guidelines
 
+{% set service_name_map = {
+  "oauth-acbaluo": "ACBaluo",
+  "apple-health": "Apple Health",
+  "dexcom": "Dexcom",
+  "garmin": "Garmin",
+  "oura": "Oura",
+  "polar": "Polar",
+  "polar-team": "Polar Team Pro",
+  "suunto": "Suunto",
+  "whoop": "WHOOP"
+} %}
+{% set external_services_list = external_services | default([], true) %}
+{% set external_service_labels = [] %}
+{% for code in external_services_list %}
+{% if code in service_name_map %}{% set _ = external_service_labels.append(service_name_map[code]) %}{% endif %}
+{% endfor %}
+{% set non_garmin_labels = [] %}
+{% for code in external_services_list %}
+{% if code != "garmin" and code in service_name_map %}{% set _ = non_garmin_labels.append(service_name_map[code]) %}{% endif %}
+{% endfor %}
+
 ## 1) Integrations & device syncing
 
 ### Shared principles
 - Connecting devices is done in the web app: **Settings → (scroll down) Applications & devices / Integrations → Connect**.
 - Imported data appears in **Reality** on the relevant day (depending on the integration).
 - **Important:** data from watches **does not replace** filling in the **left (text) side** or **right (data) side** of the diary.
-- It is not possible to edit or delete imported activities in Yarmill. You need to delete them in the provider’s app (Garmin Connect, Polar Flow, WHOOP, etc.).
+- It is not possible to edit or delete imported activities in Yarmill. You need to delete them in the provider’s app ({% if external_service_labels %}{{ external_service_labels | join(", ") }}, etc.{% else %}Garmin Connect, Polar Flow, WHOOP, etc.{% endif %}).
 
 ### For Athletes
 #### How to connect a device
@@ -18,24 +39,30 @@
 #### I can’t see my activity/data — what now?
 - Check:
   - the connection is still active in **Settings**,
-  - your phone/device has synced in the provider’s app (Garmin Connect / Polar Flow / WHOOP…),
+  - your phone/device has synced in the provider’s app ({% if external_service_labels %}{{ external_service_labels | join(" / ") }}…{% else %}Garmin Connect / Polar Flow / WHOOP…{% endif %}),
   - you’re looking at the correct day in **Reality**.
 
+{% if "garmin" in external_services_list %}
 #### Garmin — key notes
 - We can also integrate Garmin data **retroactively** from before you connected, but typically you need to:
   - enable **Historical data** in the connection,
   - and write to us at **hello@yarmill.com** to request the historical pull.
 - We integrate training/race data as well as **Garmin Health**. If you sleep with your watch, you’ll see sleep data too — you need to allow the connection for both data types.
 - You can disconnect later in Garmin Connect if needed.
+{% endif %}
 
-#### Polar / WHOOP / Oura / Suunto / Apple Health
+{% if non_garmin_labels %}
+#### {{ non_garmin_labels | join(" / ") }}
 - The workflow is the same: **Settings → Connect → confirm with the provider**.
 - If data stopped syncing: verify the connection in **Settings** and sync in the provider’s app first.
+{% endif %}
 
 ### For Coaches
 - Coaches typically **see imported athlete data** in **Reality** (depending on permissions and instance setup).
 - If an athlete reports missing data: check connection status, provider sync, and that you’re looking at the correct day in **Reality**.
+{% if "garmin" in external_services_list %}
 - Garmin historical data often requires support (hello@yarmill.com).
+{% endif %}
 
 ### For Administrators
 - Admins mainly handle:
@@ -366,7 +393,7 @@ Health, wellness, and sensitive records (e.g., illness, limitations). Access is 
 
 {% if modules.get("watches") %}
 ## {{ modules["watches"] }}
-Integrations for watches and services (Garmin, Polar, WHOOP, Oura, Suunto, Apple Health, etc.). Imported data appears in **Reality**, but does not replace logging the left/right sides.
+Integrations for watches and services ({% if external_service_labels %}{{ external_service_labels | join(", ") }}, etc.{% else %}Garmin, Polar, WHOOP, Oura, Suunto, Apple Health, etc.{% endif %}). Imported data appears in **Reality**, but does not replace logging the left/right sides.
 {% endif %}
 
 {% if modules.get("sport-theory") %}
