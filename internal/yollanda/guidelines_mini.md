@@ -12,13 +12,18 @@
   "whoop": "WHOOP"
 } %}
 {% set external_services_list = external_services | default([], true) %}
-{% set external_service_labels = [] %}
+{% set activity_service_labels = [] %}
+{% set non_garmin_activity_labels = [] %}
+{% set watches_module_labels = [] %}
 {% for code in external_services_list %}
-{% if code in service_name_map %}{% set _ = external_service_labels.append(service_name_map[code]) %}{% endif %}
-{% endfor %}
-{% set non_garmin_labels = [] %}
-{% for code in external_services_list %}
-{% if code != "garmin" and code in service_name_map %}{% set _ = non_garmin_labels.append(service_name_map[code]) %}{% endif %}
+{% if code in ["garmin", "apple-health", "polar", "suunto", "polar-team", "whoop"] %}
+{% set label = service_name_map[code] %}
+{% set _ = activity_service_labels.append(label) %}
+{% if code != "garmin" %}{% set _ = non_garmin_activity_labels.append(label) %}{% endif %}
+{% if label not in watches_module_labels %}{% set _ = watches_module_labels.append(label) %}{% endif %}
+{% endif %}
+{% if code == "oura" and service_name_map[code] not in watches_module_labels %}{% set _ = watches_module_labels.append(service_name_map[code]) %}{% endif %}
+{% if code in ["oauth-acbaluo", "dexcom"] and service_name_map[code] not in watches_module_labels %}{% set _ = watches_module_labels.append(service_name_map[code]) %}{% endif %}
 {% endfor %}
 
 ## 1) Integrace a synchronizace zařízení
@@ -27,7 +32,7 @@
 - Propojení se dělá ve webové aplikaci: **Nastavení → (dole) Aplikace a zařízení / Integrace → Propojit**.
 - Data ze zařízení se po synchronizaci objeví ve **Skutečnosti** daného dne (podle integrace).
 - **Pozor:** data z hodinek **nenahrazují** vyplňování **levé (textové)** ani **pravé (datové)** strany deníku.
-- Nahranou aktivitu nelze v Yarmillovi editovat ani smazat. Smazat ji musíš v aplikaci poskytovatele ({% if external_service_labels %}{{ external_service_labels | join(", ") }} atd.{% else %}Garmin Connect, Polar Flow, WHOOP atd.{% endif %}).
+- Nahranou aktivitu nelze v Yarmillovi editovat ani smazat. Smazat ji musíš v aplikaci poskytovatele ({% if activity_service_labels %}{{ activity_service_labels | join(", ") }} atd.{% else %}Garmin Connect, Polar Flow, WHOOP atd.{% endif %}).
 
 ### Sportovec
 #### Jak zařízení připojit
@@ -39,7 +44,7 @@
 #### Co když nevidím aktivitu / data?
 - Zkontroluj, že:
   - propojení je aktivní (v Nastavení),
-  - telefon/zařízení se opravdu synchronizovalo ({% if external_service_labels %}např. {{ external_service_labels | join(" / ") }}…{% else %}např. Garmin Connect / Polar Flow / WHOOP…{% endif %}),
+  - telefon/zařízení se opravdu synchronizovalo ({% if activity_service_labels %}např. {{ activity_service_labels | join(" / ") }}…{% else %}např. Garmin Connect / Polar Flow / WHOOP…{% endif %}),
   - díváš se ve **Skutečnosti** na správný den.
 - Pokud chceš dotáhnout data **zpětně** (historicky), řeší se to podle integrace (viz níže).
 
@@ -52,9 +57,9 @@
 - Propojení můžeš později zrušit i v Garmin Connect.
 {% endif %}
 
-{% if non_garmin_labels %}
-#### {{ non_garmin_labels | join(" / ") }}
-- Postup je stejný: **Nastavení → Propojit → potvrdit u poskytovatele**.
+{% if non_garmin_activity_labels %}
+#### {{ non_garmin_activity_labels | join(" / ") }}
+- Pro tyto poskytovatele je postup stejný: **Nastavení → Propojit → potvrdit u poskytovatele**.
 - Pokud se data přestala posílat nebo se nezobrazují, ověř nejdřív stav propojení v Nastavení a synchronizaci v aplikaci poskytovatele.
 {% endif %}
 
@@ -391,7 +396,7 @@ Zdravotní a wellness záznamy a citlivé informace (např. nemoc, omezení). P�
 
 {% if modules.get("watches") %}
 ## {{ modules["watches"] }}
-Integrace hodinek a služeb ({% if external_service_labels %}{{ external_service_labels | join(", ") }} atd.{% else %}Garmin, Polar, WHOOP, Oura, Suunto, Apple Health atd.{% endif %}). Importovaná data se propisují do **Skutečnosti**, ale nenahrazují vyplnění levé/pravé strany.
+Integrace hodinek a služeb ({% if watches_module_labels %}{{ watches_module_labels | join(", ") }} atd.{% else %}Garmin, Polar, WHOOP, Oura, Suunto, Apple Health atd.{% endif %}). Importovaná data se propisují do **Skutečnosti** (případně **Analytiky** pokud nad danými daty existuje) ale nenahrazují vyplnění levé/pravé strany.
 {% endif %}
 
 {% if modules.get("sport-theory") %}

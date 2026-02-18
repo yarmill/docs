@@ -1,7 +1,7 @@
 # General guidelines
 
 {% set service_name_map = {
-  "oauth-acbaluo": "ACBaluo",
+  "oauth-acbaluo": "AC Baluo",
   "apple-health": "Apple Health",
   "dexcom": "Dexcom",
   "garmin": "Garmin",
@@ -12,13 +12,18 @@
   "whoop": "WHOOP"
 } %}
 {% set external_services_list = external_services | default([], true) %}
-{% set external_service_labels = [] %}
+{% set activity_service_labels = [] %}
+{% set non_garmin_activity_labels = [] %}
+{% set watches_module_labels = [] %}
 {% for code in external_services_list %}
-{% if code in service_name_map %}{% set _ = external_service_labels.append(service_name_map[code]) %}{% endif %}
-{% endfor %}
-{% set non_garmin_labels = [] %}
-{% for code in external_services_list %}
-{% if code != "garmin" and code in service_name_map %}{% set _ = non_garmin_labels.append(service_name_map[code]) %}{% endif %}
+{% if code in ["garmin", "apple-health", "polar", "suunto", "polar-team", "whoop"] %}
+{% set label = service_name_map[code] %}
+{% set _ = activity_service_labels.append(label) %}
+{% if code != "garmin" %}{% set _ = non_garmin_activity_labels.append(label) %}{% endif %}
+{% if label not in watches_module_labels %}{% set _ = watches_module_labels.append(label) %}{% endif %}
+{% endif %}
+{% if code == "oura" and service_name_map[code] not in watches_module_labels %}{% set _ = watches_module_labels.append(service_name_map[code]) %}{% endif %}
+{% if code in ["oauth-acbaluo", "dexcom"] and service_name_map[code] not in watches_module_labels %}{% set _ = watches_module_labels.append(service_name_map[code]) %}{% endif %}
 {% endfor %}
 
 ## 1) Integrations & device syncing
@@ -27,7 +32,7 @@
 - Connecting devices is done in the web app: **Settings → (scroll down) Applications & devices / Integrations → Connect**.
 - Imported data appears in **Reality** on the relevant day (depending on the integration).
 - **Important:** data from watches **does not replace** filling in the **left (text) side** or **right (data) side** of the diary.
-- It is not possible to edit or delete imported activities in Yarmill. You need to delete them in the provider’s app ({% if external_service_labels %}{{ external_service_labels | join(", ") }}, etc.{% else %}Garmin Connect, Polar Flow, WHOOP, etc.{% endif %}).
+- It is not possible to edit or delete imported activities in Yarmill. You need to delete them in the provider’s app ({% if activity_service_labels %}{{ activity_service_labels | join(", ") }}, etc.{% else %}Garmin Connect, Polar Flow, WHOOP, etc.{% endif %}).
 
 ### For Athletes
 #### How to connect a device
@@ -39,7 +44,7 @@
 #### I can’t see my activity/data — what now?
 - Check:
   - the connection is still active in **Settings**,
-  - your phone/device has synced in the provider’s app ({% if external_service_labels %}{{ external_service_labels | join(" / ") }}…{% else %}Garmin Connect / Polar Flow / WHOOP…{% endif %}),
+  - your phone/device has synced in the provider’s app ({% if activity_service_labels %}{{ activity_service_labels | join(" / ") }}…{% else %}Garmin Connect / Polar Flow / WHOOP…{% endif %}),
   - you’re looking at the correct day in **Reality**.
 
 {% if "garmin" in external_services_list %}
@@ -51,9 +56,9 @@
 - You can disconnect later in Garmin Connect if needed.
 {% endif %}
 
-{% if non_garmin_labels %}
-#### {{ non_garmin_labels | join(" / ") }}
-- The workflow is the same: **Settings → Connect → confirm with the provider**.
+{% if non_garmin_activity_labels %}
+#### {{ non_garmin_activity_labels | join(" / ") }}
+- For these providers, the workflow is the same: **Settings → Connect → confirm with the provider**.
 - If data stopped syncing: verify the connection in **Settings** and sync in the provider’s app first.
 {% endif %}
 
@@ -393,7 +398,7 @@ Health, wellness, and sensitive records (e.g., illness, limitations). Access is 
 
 {% if modules.get("watches") %}
 ## {{ modules["watches"] }}
-Integrations for watches and services ({% if external_service_labels %}{{ external_service_labels | join(", ") }}, etc.{% else %}Garmin, Polar, WHOOP, Oura, Suunto, Apple Health, etc.{% endif %}). Imported data appears in **Reality**, but does not replace logging the left/right sides.
+Integrations for watches and services ({% if watches_module_labels %}{{ watches_module_labels | join(", ") }}, etc.{% else %}Garmin, Polar, WHOOP, Oura, Suunto, Apple Health, etc.{% endif %}). Imported data appears in **Reality**, but does not replace logging the left/right sides.
 {% endif %}
 
 {% if modules.get("sport-theory") %}
