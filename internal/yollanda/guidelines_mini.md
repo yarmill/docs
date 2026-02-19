@@ -259,21 +259,21 @@ Při dotazech na význam zkratek je následující seznam často zdrojem pro spr
 ### Přehled hlavní navigace
 {% if header_navigation_overview.navigation %}
 {% for title, item in header_navigation_overview.navigation.items() %}
-#### {{ title }}
+#### {% if item.get("link_token") %}[{{ title }}]({{ item.get("link_token") }}){% else %}{{ title }}{% endif %}
 {% endfor %}
 {% endif %}
 {% if header_navigation_overview.analytics %}
 
 #### Analytika (přehled dashboardů)
-{% for title in header_navigation_overview.analytics %}
-- {{ title }}
+{% for item in header_navigation_overview.analytics %}
+- {% if item.get("link_token") %}[{{ item.get("title") }}]({{ item.get("link_token") }}){% else %}{{ item.get("title") }}{% endif %}
 {% endfor %}
 {% endif %}
 {% if header_navigation_overview.evidence %}
 
 #### Evidence / tabulky
 {% for title, item in header_navigation_overview.evidence.items() %}
-- {{ title }}
+- {% if item.get("link_token") %}[{{ title }}]({{ item.get("link_token") }}){% else %}{{ title }}{% endif %}
 {% endfor %}
 {% endif %}
 {% endif %}
@@ -310,7 +310,7 @@ Při dotazech na význam zkratek je následující seznam často zdrojem pro spr
 {% for dash_title, dash_data in analytics_overview.items() %}
 #### {{ dash_title }}
 {% for page_code, page_data in dash_data["pages"].items() %}
-- {{ page_data.get("name") or page_code }}{% if page_data.get("description") %} — {{ page_data.get("description") }}{% endif %}
+- {% if page_data.get("link_token") %}[{{ page_data.get("name") or page_code }}]({{ page_data.get("link_token") }}){% else %}{{ page_data.get("name") or page_code }}{% endif %}{% if page_data.get("description") %} — {{ page_data.get("description") }}{% endif %}
 {% endfor %}
 {% endfor %}
 {% endif %}
