@@ -118,39 +118,94 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 ## 2) Přístup, přihlášení a URL týmu
 
 ### Společné principy
-- Přihlášení vyžaduje být součástí **týmu**, který Yarmill používá.
-- Pro mobilní aplikaci sportovce je často potřeba zadat **URL týmu** (identifikátor instance): **{{ team_url }}**.
+- Yarmill funguje na principu samostatných instancí pro každý tým.
+- Instance znamená samostatná verze, samostatný workspace, který je nakonfigurovaný na míru daného sportu a podle požadavků a metodiky konkrétního týmu.
+- Každá instance Yarmilla má svou vlastní URL (například csb.yarmill.com, sigma.yarmill.com apod.).
+- Tým se tady rozumí sportovní svaz, federace, rezortní sportovní organizace nebo klub (typicky v případě fotbalu a kolektivních sportů).
+- Trenéři, sportovci, fyzioterapeuti a další uživatelé se vždy přihlašují do své instance Yarmilla, nebo instance jejich týmu (svazu, klubu).
+- URL týmu znamená právě specifickou URL adresu, na které je instance Yarmilla daného týmu.
+- Uživatelé potřebují znát URL svého týmu, aby se mohli do svého Yarmilla přihlásit.
+- Každý uživatel dané instance musí být pozvaný administrátorem. Yarmill funguje jako uzavřená aplikace – administrátoři týmu určují, koho do aplikace pozvou. Není možné se sám od sebe registrovat.
+- Yarmill nefunguje v tomto jako veřejně dostupné aplikace, které stačí stáhnout, nainstalovat, zaregistrovat se a používat. Ani jako veřejné webové aplikace, kam si může každý vytvořit účet a používat je. To není možné vzhledem k velice specifickému nastavení pro každý tým.
+
 {% if available_languages %}
-- Dostupné jazyky: {{ available_languages | join(", ") }}. Lze přepnout v profilu (avatar vpravo nahoře) nebo v mobilní aplikaci v nastavení.
+### Lokalizace (jazykové mutace)
+- Dostupné jazyky: {{ available_languages | join(", ") }}.
+- Jazyky lze přepínat přes uživatelské menu (kliknutím na avatara). 
+- Mobilní aplikace přebírá automaticky jazyk telefonu, pokud je tento v seznamu dostupných jazyků.
 {% endif %}
 
-### Sportovec
-#### Jak se dostanu do Yarmillu poprvé
-- Pokud ti přišla pozvánka e-mailem, klikni na **Přidat se** a dokonči registraci (datum narození, heslo, avatar).
+### URL týmu
+- URL týmu je webová adresa, na které běží instance Yarmilla pro daný tým.
+- Každý uživatel dostane informaci o URL svého týmu v emailu s potvrzením registrace.
+- URL týmu se skládá typicky z názvu nebo zkratky daného klubu/svazu následované doménou Yarmilla (yarmill.com), tedy obecně https://nazev-tymu.yarmill.com.
+
+### Registrace
+- Yarmill funguje jako uzavřená aplikace. Každý uživatel musí být pozvaný. Není možné se sám od sebe registrovat bez pozvánky.
+- Pozvánku do Yarmilla (dané instance Yarmilla) pro trenéry, sportovce i další uživatele posílá administrátor instance.
+- Registrace probíha skrz pozvánku, kterou uživatel dostane emailem.
+- V pozvánce kliká na tlačítko pro registraci (přidání se k danému týmu) a tím se dostává do webového registračního formuláře.
+- V rámci registrace každý uživatel schvaluje licenční podmínky (tzv. EULA), vyplňuje základní informace, nastavuje si avatara a heslo pro přístup do Yarmilla.
+- Po dokončení registrace přijde uživateli potvrzovací email, kde je uvedená také URL týmu.
+- Pozvánka k registraci má omezenou platnost. Pokud ji uživatel prošvihne, nebude mu registrace povolena a musí napsat adminovi, aby mu pozvánku obnovil.
+
+### Přihlášení
+- Přihlášení funguuje pouze pro registrované uživatele (tedy ty, kteří byli pozvaní a dokončili registrační proces).
+- Pro přihlašování do Yarmilla je nutné znát URL týmu, do kterého se chce uživatel přihlásit.
+- Jako přihlašovací údaje se používá email (ten, na který uživatel obdržel pozvánku a potvrzení registrace) a heslo, které si uživatel nastavil během registrace.
+
+#### Postup pro přihlášení do webové aplikace Yarmill
+1. Ve webovém prohlížeči zadej celou URL týmu (do adresního řádku). Druhou možností je otevřít web Yarmilla na https://yarmill.com, kliknout na Přihlásit se a následně doplnit předvyplněnou URL týmu (předvyplněná je závěrečná část ".yarmill.com").
+2. Otevře se přihlašovací obrazovka dané instance (daného týmu).
+3. Vyplň email a heslo (přihlašovací údaje, které znáš z registrace) a potvrď.
+- Z aplikace není nutné se odhlašovat. Do odhlášení zůstane Yarmill na daném počítači přihlášený a není tak nutné při zavření a znovuotevření zadávat přihlašovací údaje znovu.
+
+#### Postup pro přihlášení do mobilní aplikace Yarmill
+- Mobilní aplikace funguje pouze pro sportovce. Trenéři, admini a další uživatelé používají pouze webovou verzi Yarmilla.
+1. Otevři mobilní aplikaci na iOS nebo Android zařízení.
+2. V prvním kroku zadej URL týmu. (Počáteční "https://" část, ani koncová ".yarmill.com" část, která už je fixně předvyplněna, se nezadává. Sportovec doplňuje pouze tu část se zkratkou/názvem týmu.)
+3. Ukáže se přihlašovací obrazovka s názvem tvého týmu (podle zadané URL týmu).
+4. Vyplň email a heslo (přihlašovací údaje, které znáš z registrace) a potvrď.
+
+### Používání Yarmilla z mobilu
+- Nativní mobilní aplikace pro iOS a Android zařízení je určena pouze pro sportovce. Trenéři ani admini se do ní nepřihlásí.
+- Mobilní aplikace je omezena funkcionalitou na pouze základní nahlížení do tréninkového plánu a efektivní zapsání tréninku a poznámek pro dnešní den. Nelze dopisovat tréninky zpětně.
+- Pro plnou funkcionalitu Yarmill platformy na mobilu, a jako doporučená varianta používání Yarmilla z mobilu pro trenéry a adminy, je uložení webové verze na plochu mobilu:
+  - Otevři si Yarmilla z mobilního webového prohlížeče (ideálně Chrome nebo Safari).
+  - Klikni na sdílení a vyber volbu Přidat na plochu.
+  - Videa, jak to udělat, jsou tady: 
+    - Android: https://www.youtube.com/watch?v=TtfqcqjDnOc
+    - iOS: https://www.youtube.com/watch?v=OP6GCmI1Qj4
+  - Na ploše mobilu se objeví ikona Yarmilla mezi dalšími aplikacemi.
+  - Yarmill je na toto použití přizpůsobený a nahrazuje to nativní mobilní aplikaci.
+
+### Troubleshooting / Řešení problémů
 
 #### Zapomenuté heslo
-- Na přihlašovací obrazovce klikni **Zapomenuté heslo** a zadej e-mail → přijde odkaz na nové heslo.
+- Heslo lze kdykoli jednoduše vyresetovat (nastavit nové).
+1. Jdi na přihlašovací obrazovku Yarmilla (viz Přihlášení).
+2. Pod políčkama pro přihlašovací údaje je volba {Zapomenuté heslo}.
+3. Zadej svůj email, který používáš pro přihlášení do Yarmilla, a potvrď.
+4. Na daný email ti přijdou pokyny pro nastavení nového hesla.
 
-#### Neznám e-mail / neznám URL týmu
-- Pokud nevíš e-mail: požádej trenéra/admina, aby ti ho sdělil.
-- Pokud neznáš URL týmu: najdeš ho v potvrzovacím mailu; typicky je to zkratka svazu/klubu. Když ne, napiš na **hello@yarmill.com**.
+#### Neznám e-mail
+- Přihlašovací email je ten, na který ti přišla pozvánka k registraci do Yarmilla.
+- Pokud email nevíš, musíš požádat admina nebo tvého trenéra, aby se podívali do Yarmilla a sdělili ti ho.
 
-#### Mobilní aplikace (sportovec)
-- Aplikace je **pouze pro sportovce**.
-- Umožní:
-  - vidět denní plán,
-  - vyplnit data pro **dnešní den**.
-- **Zpětný zápis v mobilu zatím nejde.**
+#### Nevím URL týmu
+- URL týmu najdeš v emailu s potvrzením registrace do Yarmilla.
+- Typicky se skládá z názvu nebo zkratky daného klubu/svazu následované doménou Yarmilla (yarmill.com), tedy obecně https://nazev-tymu.yarmill.com.
+- Pokud URL týmu nenajdeš, napiš nám na <support@yarmill.com> a popiš, do jakého svazu nebo klubu patříš (jaký sport děláš).
 
-### Trenér
-- Pokud sportovec nezná e-mail/URL: trenér (dle práv) často umí dohledat údaje v seznamu uživatelů / ve skupině, jinak eskalovat na admina.
+#### Jiný problém / Nevím si rady
+- Napiš nám na <support@yarmill.com>. Snažíme se odpovědět typicky během pár minut.
 
-### Admin
-- Admin:
-  - posílá pozvánky,
-  - spravuje uživatele,
-  - může měnit přihlašovací e-mail uživatele,
-  - řeší nefunkční přístupy (případně přes support).
+### Administrace přístupů
+- Admin je jediná role, která může spravovat uživatele. To znamená především:
+  - zvát nové uživatele,
+  - obnovovat pozvánky,
+  - měnit přihlašovací emaily.
+- Admin, ani nikdo, jiný nemůže měnit a resetovat hesla. To může udělat pouze každý uživatel sám pro sebe.
 
 ---
 
