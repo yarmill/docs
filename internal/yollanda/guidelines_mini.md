@@ -27,55 +27,91 @@
 ## 1) Integrace a synchronizace zařízení
 
 ### Společné principy
-- Propojení se dělá ve webové aplikaci: **Nastavení → (dole) Aplikace a zařízení / Integrace → Propojit**.
-- Data ze zařízení se po synchronizaci objeví ve **Skutečnosti** daného dne (podle integrace).
-- **Pozor:** data z hodinek **nenahrazují** vyplňování **levé (textové)** ani **pravé (datové)** strany deníku.
-- Nahranou aktivitu nelze v Yarmillovi editovat ani smazat. Smazat ji musíš v aplikaci poskytovatele ({% if activity_service_labels %}{{ activity_service_labels | join(", ") }}.{% else %}Garmin Connect, Polar Flow, WHOOP atd.{% endif %}).
+- Používaná synonyma: hodinky, sporttestery, zařízení.
+- Synonyma pro záznamy: záznam, aktivita, data, log.
+- Propojení je možné z webové aplikace a z iOS aplikace. Není možné z Android aplikace.
+- Propojení může udělat jen sportovec. Trenér ani administrátor ne.
+- Po propojení se data ze zařízení synchronizují do Yarmilla automaticky ve chvíli, kdy se zařízení synchronizuje s aplikací daného výrobce. Tzn. že jakmile vidím například aktivitu z Garmin hodinek v Garmin Connect aplikaci, tak se automaticky posílá i do Yarmilla.
+- V Yarmillovi se záznamy ukazují v modulu {Skutečnost} u daného dne a případně v relevantních analytických výstupech (například data spánku se zároveň propíšou do reportů v {Analýze ukazatelů regenerace}).
+- Nahranou (synchronizovanou) aktivitu nelze aktuálně v Yarmillovi editovat ani smazat.
+- Po propojení zařízení, ze kterých chodí informace o aktivitách, je potřeba zkontrolovat, že má sportovec nastavené tepové zóny ({Nastavení} -> {Zóny tepové frekvence}). Toto nastavení je důležité pro správné zobrazovaní detailu aktivit, počítaní a analýzy času stráveného v jednolivých zónách.
 
 ### Sportovec
 #### Jak zařízení připojit
+##### Postup pro propojení ve webové aplikaci
 1. Otevři webovou aplikaci Yarmill.
-2. V horním panelu klikni **Nastavení**.
-3. Sjeď dolů na integrace a u vybraného zařízení klikni **Propojit**.
-4. Přihlásíš se do účtu dané služby a potvrdíš propojení.
+2. V horním panelu klikni na {Nastavení}.
+3. Scrolluj dolů na sekci {Aplikace a zařízení}.
+4. U vybraného zařízení klikni na tlačítko {Propojit}.
+5. Otevře se okno s příhlášením do tvého účtu dané služby/aplikace.
+6. Přihlásíš se a potvrdíš propojení s Yarmillem (potvrzuje se předávání dat z dané služby do Yarmilla). U některých služeb je potřeba zaškrtnout i rozsah dat, která se budou do Yarmilla synchronizovat. 
+7. Po úspěšném propojení svítí v Yarmillovi u dané integrace tlačítko {Odpojit}.
 
-#### Co když nevidím aktivitu / data?
-- Zkontroluj, že:
-  - propojení je aktivní (v Nastavení),
-  - telefon/zařízení se opravdu synchronizovalo ({% if activity_service_labels %}např. {{ watches_module_labels | join(" / ") }}…{% else %}např. Garmin Connect / Polar Flow / WHOOP…{% endif %}),
-  - díváš se ve **Skutečnosti** na správný den.
-- Pokud chceš dotáhnout data **zpětně** (historicky), řeší se to podle integrace (viz níže).
+##### Postup pro propojení v iOS aplikaci
+1. Otevři mobilní iOS aplikaci Yarmill.
+2. V pravém horním rohu klikni na svého avatara.
+3. Vyber možnost {Propojená zařízení a aplikace}.
+4. Vyber zařízení/aplikaci, kterou chceš propojit.
+5. Klikni na přepínač (toggle switch) pro zapnutí propojení.
+6. Otevře se okno s příhlášením do tvého účtu dané služby/aplikace.
+7. Přihlásíš se a potvrdíš propojení s Yarmillem (potvrzeuje se předávání dat z dané služby do Yarmilla). U některých služeb je potřeba zaškrtnout i rozsah dat, která se budou do Yarmilla synchronizovat. 
+8. Úspěšně propojená zařízení a aplikace mají přepínač zapnutý a na obrazovce s přehledem všech zařízení jsou doplněna šedým nápisem {Connected}.
+
+##### Postup pro odpojení
+Stejný jako pro propojení. 
+Ve webové aplikaci je u propojených integrací tlačítko {Odpojit}, kterým propojení zrušíš.
+V iOS aplikaci je přepínač (toggle switch tlačítko), jeho vypnutí zruší propojení.
+Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
+
+{% if "polar" in external_services_list %}
+#### Polar specifika
+- Polar umí ke každé aktivitě posílat také informaci o nastavených tepových zónách.
+- Zapnutí/vypnutí přebírání tepových zón přímo z Polaru se zobrazí ve webové aplikaci pod sekcí {Aplikace a zařízení} při propojené integraci s Polarem.
+- Při zapnutém přepínači se pro každou aktivitu použijou tepové zóny, které k dané aktivitě pošle Polar (neboli ty, které má uživatel nastavené ve svých hodinkách nebo Polar Flow aplikaci). Zóny nastavené přímo v Yarmillovi se v takovém případě ignorují.
+{% endif %}
+
+{% if "apple-health" in external_services_list %}
+#### Apple Health specifika
+- Apple Health (Apple Watch) nelze propojit z webové aplikace, ale pouze přímo z iOS aplikace.
+- Po propojení se v iOS aplikaci na detailu Apple Health propojení zobrazí seznam historických aktivit spolu se statusem - zda byla daná aktivita synchronizovaná do Yarmilla a případně tlačítko {Sync} pro její manuální synchronizaci (manuální synchronizace je potřeba pouze pro historické aktivity před zapnutím propojení).
+{% endif %}
 
 {% if "garmin" in external_services_list %}
-#### Garmin (důležité body)
-- Umíme dotáhnout i **historická data**, ale typicky je potřeba:
-  - mít v propojení povolená **Historická data**,
-  - a dát nám vědět na **hello@yarmill.com**, že o dotažení stojíš.
-- Integrujeme trénink/závod i **zdravotní data** (Garmin Health). Pokud s hodinkami spíš, uvidíš i data o spánku – je nutné povolit propojení pro příslušný typ dat.
-- Propojení můžeš později zrušit i v Garmin Connect.
+#### Garmin specifika
+- Při propojování Garminu je možné specifikovat (zapnout/vypnout), jaké z následujícíh dat se budou posílat do Yarmilla:
+  - Data o aktivitách
+  - Data o spánku (health data) - body battery apod.
+  - Historická data
+- Pro nejlepším možné fungování je vhodné povolit všechny tři typy dat. Bez historických dat nebude možné dotáhnout zpětně ty aktivity a data spánku, které vznikly před propojením.
 {% endif %}
 
-{% if non_garmin_labels %}
-#### {{ non_garmin_labels | join(" / ") }}
-- Pro tyto poskytovatele je postup stejný: **Nastavení → Propojit → potvrdit u poskytovatele**.
-- Pokud se data přestala posílat nebo se nezobrazují, ověř nejdřív stav propojení v Nastavení a synchronizaci v aplikaci poskytovatele.
-{% endif %}
+#### Dotažení historických dat
+- Data se standardně synchronizují od momentu propojení do chvíle, než uživatel propojení zruší (odpojí).
+- Dotažení historických dat je možné pro Garmin, Oura Ring a WHOOP. Řešíme ho individuálně. Napiš nám na <support@yarmill.com>.
 
-### Trenér
-- Trenér obvykle **vidí importovaná data** sportovce ve Skutečnosti (podle nastavení instance).
-- Pokud sportovec hlásí, že se data nezobrazují: kontrola propojení + synchronizace + správný den ve Skutečnosti.
-{% if "garmin" in external_services_list %}
-- U Garminu: historická data → často vyžaduje **support** (hello@yarmill.com).
-{% endif %}
+### Trenér a Admin
+- Vidí synchronizovaná data svých sportovců v jejich tréninkovém deníku ({Skutečnosti}) (podle nastavení instance). To platí pro data o aktivitách i o spánku.
+- Vidí data také v příslušných analýzách, které je využívají, pokud k nim má přístup (např. {Trendová analýza} nebo {Analýza ukazatelů regenerace}).
 
-### Admin
-- Admin řeší hlavně:
-  - kdo má povolené integrace,
-  - zda je potřeba něco “zapnout” na úrovni instance,
-  - eskalaci problémů na **hello@yarmill.com**.
+### Troubleshooting / Problémy
 
----
+#### Nevidím aktivitu / Nesynchronizují se data
+- Zkontroluj, že se díváš do {Skutečnost} a na správný datum.
+- Zkontruj, zda je propojení zapnuté v {Nastavení}.
+- Zkontroluj, zda je daný záznam synchronizovaný ze zařízení (hodinek, prstýnku, ...) do příslušné zdrojové aplikace (např.: v Garmin Connect pro Garmin zařízení, Polar Flow pro Polar zařízení atd.). Záznamy se musí vždy nejprve synchronizovat ze zařízení do do příslušné aplikace výrobce zařízení a až následně se automaticky synchronizují do Yarmilla.
 
+#### Nevidím historická data
+- Standardně se synchronizují pouze data, která vznikla od momentu propojení.
+- Synchronizaci (dotažení) starších záznamů popisuje sekce #dotažení-historických-dat.
+
+#### Jak smažu synchronizovanou aktivitu
+- Nahranou (synchronizovanou) aktivitu nelze aktuálně v Yarmillovi ani editovat ani smazat.
+
+#### Moje zařízení není v seznamu
+- To nás zajímá. Napiš nám o něm na <support@yarmill.com>, abychom ho mohli přidat. Seznam integrací neustále rozšiřujeme.
+
+#### Jiný problém nebo se mi nedaří vyřešit
+- Napiš nám na <support@yarmill.com>. Hodně pomůže, když problém co nejvíc popíšeš (o jaké aktivity se jedná, ze kdy jsou, screenshot z aplikace, kde jsou vidět apod.). Ozveme se zpět typicky během pár minut.
 
 ---
 
