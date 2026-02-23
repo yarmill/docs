@@ -205,42 +205,34 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
   - zvát nové uživatele,
   - obnovovat pozvánky,
   - měnit přihlašovací emaily.
-- Admin, ani nikdo, jiný nemůže měnit a resetovat hesla. To může udělat pouze každý uživatel sám pro sebe.
+- Admin, ani nikdo jiný, nemůže měnit a resetovat hesla. To může udělat pouze každý uživatel sám pro sebe.
 
 ---
 
 ## 3) Plán ↔ Skutečnost (kopírování, import, publikace)
 
 ### Společné principy
-- **Plán** připravuje trenér (nebo admin), sportovec ho typicky neupravuje.
-- **Skutečnost** je evidence toho, co se reálně stalo (levá + pravá strana).
+- Tréninkový plán (někdy označovaný jako tréninkový program) je v gesci trenérů (případně adminů). Sportovec plán měnit nemůže.
+- To, jak trénink reálně proběhl (co sportovec odtrénoval a jak) se eviduje v modulu {Skutečnost} – ten se často označuje jako tréninový deník nebo tréninková evidence.
+- Struktura plánu i tréninkové skutečnosti je téměř identická a v týdenním zobrazení se dělí na:
+  - slovní popis obsahu (náplně) tréninku - občas označované jako tzv. levá strana - a
+  - číselné zaznamenání - tzv. pravá strana, která obsahuje sadu obecných (OTU) a specifických (STU) tréninkových ukazatelů, které trénink kvantifikují časem, počtem, kilometrama apod.
+  - tréninková skutečnost může navíc obsahovat položky pro pocitové hodnocení sportovce apod.
+- Struktura textové části (levá strana) strany i sada ukazatelů (pravá strana) jsou nastavené specificky pro danou instanci Yarmilla.
 - Kopírování může mít různé významy:
-  - sportovec: **Kopírovat plán do skutečnosti** (když splnil přesně)
-  - trenér/admin: **Kopírovat plán** (publikace/rozeslání plánu sportovcům)
+  - Trenér a admin můžou kopírovat plán od skupiny k jednotlivým sportovcům (rozeslání/publikace plánu), ale také k jiným skupinám, do jiného týdne apod.
+  - Sportovec kopírováním plánu typicky myslí import plánu do skutečnosti - tato možnost musí být administrátorem povolená a závisí to na konkrétní instanci. V konfiguraci dané instance je také počet dní, po které lze tuto funkčnost zpětně použít (například 3 dny znamená, že sportovec může možnost zkopírování plánu do skutečnosti použít pouze pro dnešek a tři dny zpětně. Starší dny už nebude moci importovat z plánu.
+  
 {% if copy_plan_to_reality %}
-- **Kopírovat plán do skutečnosti** můžeš použít, když jsi trénink splnil přesně podle plánu.{% if copy_plan_days_valid %} Lze to provést až {{ copy_plan_days_valid }} dní od plánovaného dne.{% endif %}
+- Sportovec může pro usnadnění/urychlení zápisu deníku použít volbu {Import plánu}, která zkopíruje data pro daný den z pláno do deníku (skutečnosti). Typické použití je, když sportovec trénink splnil podle plánu nebo jen s mírnou změnou oproti plánu. Jakmile plán naimportuje, může si importovaný zápis upravit tak, aby odpovídal tomu, jak trénink skutečně proběhl.{% if copy_plan_days_valid %} Lze to provést ode dneška pro {{ copy_plan_days_valid }} dní zpětně.{% endif %}
 {% endif %}
 
-### Sportovec
-#### Když jsem splnil trénink přesně podle plánu
-- Ve Skutečnosti použij **Kopírovat plán do skutečnosti** (tlačítko bývá v levé části, často pod **třemi tečkami**).
-- Pak doplň případně poznámku/přílohu a vyplň číselné hodnoty v pravé (datové) části.
-
-### Trenér
-#### Aby sportovci viděli změny v plánu
-- **Pozor:** dokud změny v plánu **nezkopíruješ sportovcům**, sportovci je neuvidí.
-- Postup: **Plán → (pravý horní roh) Kopírovat plán → vybrat sportovce/skupiny → potvrdit**.
-
-#### Režimy úprav plánu (zjednodušeně)
-- Týdenní úpravy (dny) – text + data
-- Motivační struktura (mezocyklus/týden/den)
-- Top-down (sezónní plánování)
-- Roční plán (datová část celé sezóny)
-
-### Admin
-- Admin má editor přístup napříč instancí a řeší:
-  - nastavení, kdo může plánovat/evidovat,
-  - případné workflow kolem “Docházky” (pokud je aktivní).
+### Troubleshooting
+#### Proč sportovec nevidí plán?
+- Sportovec vidí pouze svůj plán, nevidí na plán nikoho jiného ani na tzv. plán skupiny.
+- Plán pro sportovce může vzniknout tak, že ho trenér napíše přímo k danému sportovci nebo mu ho nakopíruje (ze skupiny či od jiného sportovce).
+- Pokud sportovec nevidí žádný plán, může to být tím, že mu ho trenér zapomněl napsat nebo ho zapomněl zkopírovat od skupiny.
+- Pokud trenér udělal nějakou změnu na plánu celé skupiny, musí tuto změnu zase rozkopírovat k daným sportovcům, aby ji viděli ve svém plánu.
 
 ---
 
