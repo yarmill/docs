@@ -239,9 +239,15 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 ## 4) Zápis do deníku a tabulek (kam co napsat)
 
 ### Společné principy
-- **levá (textová)** strana = slovní/strukturovaný zápis parametrů, které sleduje tým
-- **pravá (datová)** strana = číselné hodnoty, jednotky, metriky
-- Konkrétní metodika (co přesně kam patří) se liší podle týmu.
+- Struktura plánu i tréninkové skutečnosti je téměř identická a v týdenním zobrazení se dělí na:
+  - tzv. levou stranu = slovní popis obsahu (náplně) tréninku,
+  - tzv. pravou stranu = číselné zaznamenání tréninku do tabulky tréninkových ukazatelů (nejčastěji se pro jednotlivé položky vyplňuje čas v dané aktivitě / intenzitě, metry, kilometry, tuny, počty opakování atd.).
+- Konkrétní struktura levé strany (textová políčka) i pravé strany (sada ukazatelů) je dana nastavením instance Yarmilla a je specificky konfigurovaná pro daný svaz / tým podle jeho požadavků a specifik daného sportu.
+- Levá strana obsahuje typicky políčka jako "motiv dne", "dopoledne", "odpoledne", "poznámky" apod. pro textový popis obsahu tréninkových jednotek, slovní hodnocení, pocitové hodnocení, poznámky trenéra / sportovce / fyzioterapeuta atd. V levé straně se také zobrazují záznamy aktivit a spánku z hodinek / sporttesterů a dalších propojených zařízení. Jsou zde také přílohy k danému dni (přiložené soubory).
+- Pravá strana je typicky složená z obecných tréninkových ukazatelů (OTU) a specifických tréninkových ukazatelů (STU). Řádky jsou ukazatele, sloupce jsou jednotlivé dny v týdnu.
+- Správný způsob zápisu konkrétního tréninku do textové i číselné části (levé a pravé strany) si určuje daný tým (svaz, klub). Otázky na způsob zápisu je tedy nejlepší směřovat na trenéry a administrátory.
+- Každé pole v levé i pravé straně má pomocný tooltip, který se zobrazí po najetí myší na název daného políčka. Tooltip zobrazuje další upřesňující informace, které mají pomoci vysvětlit, k čemu se dané políčko hodí, v jakých jednotkách se vyplňuje apod.
+
 {% if backfill_scope_list and backfill_days is not none %}
 {% set labels = [] %}
 {% for role in backfill_scope_list %}
@@ -249,40 +255,44 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 {% if role == "coach" %}{% set _ = labels.append("trenéři") %}{% endif %}
 {% if role == "admin" %}{% set _ = labels.append("admini") %}{% endif %}
 {% endfor %}
-- Zpětný zápis do deníku mohou {% if labels|length == 1 %}{{ labels[0] }}{% elif labels|length == 2 %}{{ labels[0] }} a {{ labels[1] }}{% else %}{{ labels[:-1]|join(", ") }} a {{ labels[-1] }}{% endif %}{% if backfill_days == -1 %} a je možný bez časového omezení.{% else %} a je možný až {{ backfill_days }} dní zpětně.{% endif %}
+- Vyplňovat deník zpětně pro předešlé dny mohou {% if labels|length == 1 %}{{ labels[0] }}{% elif labels|length == 2 %}{{ labels[0] }} a {{ labels[1] }}{% else %}{{ labels[:-1]|join(", ") }} a {{ labels[-1] }}{% endif %}{% if backfill_days == -1 %} a to bez časového omezení.{% else %}, ale pouze {{ backfill_days }} dní zpětně.{% endif %}
 {% endif %}
 
 ### Popisy aktivit - kam a jak zapisovat aktivity a poznámky do Yarmilla
-
-Níže jsou dostupná pole v Yarmillu (pravá i levá strana). Slouží k evidenci jednotlivých tréninků, kam je zapisovat a jak je rozdělit do správných polí. Některá pole nejsou uživatelsky editovatelná, počítají se automaticky.
-Levá strana je určena pro poznámky a popisy aktivit, pravá strana pro čísla jako čas, vzdálenost, opakování apod. Některá číselná pole se ale mohou objevit i na levé straně. Rozhodující je seznam níže.
-Uživatelé mají zapisovat aktivity do odpovídajících polí. Pokud přesné pole neexistuje, použijte nejbližší podobné nebo \"jiné\", pokud je dostupné (viz seznam níže).
-Při dotazech na význam zkratek je následující seznam často zdrojem pro správnou odpověď.
+- Níže jsou dostupná pole v Yarmillovi (levá i pravá strana). Slouží k plánování/evidenci jednotlivých tréninků, kam je zapisovat a jak je rozdělit do správných polí. Některá pole nejsou uživatelsky editovatelná, počítají se automaticky.
+- Levá strana je určena primárně pro textový popis aktivit, poznámky, pocitové hodnocení, pravá strana pro číselný popis aktivit - čas, vzdálenost, opakování apod. Některá číselná pole se ale mohou objevit i na levé straně. Rozhodující a určující je seznam níže.
+- Uživatelé mají zapisovat aktivity do odpovídajících polí. Pokud nemůžeš najít odpovídající pole, opatrně doporuč potenciálně nejlepší možné ze seznamu (seznam často obsahuje i položku "Jiné", která se v tomto případě může hodit). Nejbezpečnější variantou v takovém případě je ale dotaz na trenéra nebo admina, aby byla zachována jednotká metodika evidence dat.
+- Při dotazech na význam zkratek je následující seznam velmi často zdrojem pravdy pro správnou odpověď. Pokud v něm zkratka není, buď opatrná s hádáním významu, respektuj kontext daného sportu a radši se vyjadřuj tak, že správnost odpovědi je lepší ověřit.
 
 {{ activity_descriptions }}
 
 ### Sportovec
-#### Zápis ve webu
-1. Jdi do **Skutečnost**.
+#### Zápis ve webové aplikaci
+1. Jdi na {Skutečnost}.
 2. Vyber správný týden/den.
-3. Přes **tři tečky** můžeš přidat poznámku nebo přílohu.
-4. Doplň levou i pravou stranu podle požadavků týmu.
+3. Vyplň levou i pravou stranu pro daný den. Některá políčka v levé straně (včetně přidávání souborů, příloh) jsou schovaná pod tlačítkem tří teček.
 
 #### Zápis v mobilní aplikaci
-- V mobilu lze vyplnit jen **dnešní den**.
-- Tlačítko **Přidat** otevře parametry levé strany, **Aktivity** otevřou pravou stranu.
+- V mobilu lze vyplnit pouze tréninková skutečnost pro dnešní den. Předešlé dny jdou doplňovat pouze z webové aplikace.
+- Levá strana se v mobilní aplikaci vyplňuje přidáváním jednotlivých políček skrz tlačítko "+ {Přidat}".
+- Tabulka pravé strany je v aplikaci pod volbou {Dnes} / záložka {Aktivity}. Oproti webové aplikaci je zde pouze sloupec pro dnešní den a k tomu navíc sloupec pro dnešní den s hodnotama z plánu.
 
 #### Volno / nemoc / zdravotní omezení
-- Pokud má tým ukazatele v pravé části (např. nemoc, volno, omezení), používej je – správně se to projeví i v přehledech (např. docházka/reporty).
+- Pokud má tým v seznamu ukazatelů v pravé straně ukazatele pro nemoc, zdravotní omezení, volno apod., pak je použij. Je to důležité pro správnou funkčnost dalších částí Yarmilla a pro správná data v přehledech a statistikách.
 
 ### Trenér
-- Evidence může být:
-  - sportovec zapisuje sám,
-  - trenér zapisuje (za skupinu/jednotlivce) podle práv.
-- Pokud sportovec tápe “kam to napsat”, odkaž ho na týmovou metodiku nebo konkrétní příklad.
+- Tréninkovou skutečnost si zapisuje ideálně sám sportovec.
+- Trenér (s přístupem zápisu) může do skutečnosti (deníku) zapisovat také. Může tedy vést deník úplně za některé sportovce nebo této možnosti využívat pro doplnění jen některých detailů k tréninku či zapsání zpětné vazby k zápisu, který udělal sportovec.
 
 ### Admin
-- Admin může rozhodovat, jaké parametry se sledují (podle konfigurace instance) a kdo má práva zapisovat.
+- Admin může rozhodovat, jaké parametry se sledují (podle konfigurace instance) a kdo má práva zapisovat, kdo pouze číst.
+
+### Troubleshooting
+#### Kam mám zapsat ...? Do jakého políčka patří ...?
+- Správný zápis vychází primárně z metodiky daného týmu. (TODO ADAM: IF metodika existuje, tak ji odkaz)
+- Při rozhodování, do jakých polí zapsat danou aktivitu/trénink, je dobré zkontrolovat tooltipy (bubliny s nápovědou) k jednotlivým položkám - tam jsou často uvedeny příklady aktivit, které do dané položky patří, případně upřesňující vysvětlení.
+- Pro sportovce může být nápovědou, kam zapsat nějakou aktivitu (do jakých ukazatelů jí rozepsat v pravé straně nebo levé straně) způsob, jakým daný trénink popsal trenér do plánu (pokud trenér plán poctivě vyplnil).
+- Nejbezpečnější variantou je dotaz na trenéra nebo admina, aby byla zachována jednotká metodika evidence dat.
 
 ## 5) Zkratky, metriky a významy (HRV, RPE, TRIM, zóny…)
 
