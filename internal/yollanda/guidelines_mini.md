@@ -310,16 +310,23 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 ## 6) Export, tisk a sdílení
 
-### Sportovec
-- Exporty typu “všechna data / deník” – podle toho, co je ve vaší instanci zapnuté.
-- Sdílení souborů: přilož je k tréninku, ve webu je najdeš v **Soubory**.
+### Společné principy
+- Kompletní export dat deníku nebo plánu je možný pouze na žádost, kterou musí potvrdit administrátor instance. Napiš nám na support@yarmill.com.
+- Všechny analytické výstupy (reporty) lze stáhnout jak PDF soubor. Slouží k tomu tlačítko v pravém horním rohu reportu.
+- Tréninkový plán lze exportovat do PDF pro vybraný týden. Levá a pravá strana se exportují zvlášť. Slouží k tomu tlačíkto v pravém horním rohu. Při exportu levé strany je možné nastavit výsledný vzhled skrz několik možností - jaké parametry do exportu půjdou, jak budou poskládané (horizontálně vedle sebe nebo vertikálně pod sebou), zda se zobrazí popisky parametetrů nebo ne, velikost písma.
+- V deníku i plánu lze ke každému dni přiložit soubory. Jejich přehled pro daného sportovce je ve webové aplikaci v sekci {Soubory}. K souborům daného sportovce má přístup on sám a všichni jeho trenéři.
+- Jiné požadavky na exporty lze řešit napsáním na support@yarmill.com.
 
-### Trenér / Admin
-- **Hodnocení RTC** lze stáhnout v **XLS nebo PDF** (pokud je modul aktivní).
-- Analytické reporty lze stáhnout v PDF.
-- Jiné výstupy (speciální reporty, hromadné exporty) lze řešit pouze přes **hello@yarmill.com**.
 {% if season_evaluation_enabled %}
-- Hodnocení sezóny lze stáhnout v XLS/PDF (dle práv).
+- Hodnocení sezóny - zobrazená data (měsíční/mezocyklová data ročního plánu, plánu i skutečnosti) lze stáhnout jako excel (xlsx) nebo PDF (pokud k tomu má uživatel práva).
+{% endif %}
+
+{% if TODO ADAM modul CILE je zapnuty %}
+- Sezónní cíle vybraného uživatele lze exportovat do PDF. Slouží k tomu tlačítko v horní liště nad seznamem cílů.
+{% endif %}
+
+{% if TODO ADAM modul DOCHAZKA je zapnuty %}
+- Docházka lze exportovat do excelu (jako xslx soubor) kliknutím na tlačítko v pravém horním rohu. Exportuje se celý měsíc v granularitě dní.
 {% endif %}
 
 ---
