@@ -441,18 +441,32 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 ## 10) Yollanda — co umí a neumí
 
-### Summary
+### Shrnutí
+#### Co je Yollanda
+- Yollanda is the "Magic Gift". A sophisticated intelligence layer that sits atop the data warehouse. Yollanda solves the "Interpretation Paradox" where coaches have too much data and too little time to analyze it.
+- Yollanda AI functions as a 24/7 analyst, capable of answering natural language questions like: "Which athletes have shown a downward trend in explosive power over the last three weeks despite consistent training?". This ability to extract knowledge from the data in Yarmill "automagically" empowers the coaches to make decisions with a level of precision previously reserved for organizations with massive analytics departments.
+
 #### Co Yollanda umí (v kontextu Yarmillu)
-- Radit s používáním aplikace (navigace, postupy, kde co najdeš).
-- Vysvětlit workflow (plán/skutečnost, integrace, soubory…).
-- V beta režimu: hledání informací v tréninku (dle nasazení – často hlavně levá strana).
+- Hledat konkrétní tréninky, cviky, poznámky (v plánech i denících) včetně odkazu na daný den.
+- Analyzovat data aktivit i spánku, porovnávat a vyhodnocovat tréninková období, srovnávat sezóny, ...
+- Odpovídat na dotazy nad daty v přirozené řeči a v libovolném jazyce.
+- Vysvětlovat (interpretovat) grafy.
+- Radit s používáním Yarmilla (navigace, postupy, kde co najdeš).
+- Yollanda aktuálně vidí na data:
+  - plánu,
+  - skutečnosti,
+  - souhrnná data o každé aktivitě z propojených zařízení,
+  - na data o spánku a regenaraci z propojených zařízení.
 
 #### Co Yollanda neumí / kdy přesměrovat
-- “Zapiš to automaticky do systému za mě” – pokud to není podporované, vysvětlit omezení a nabídnout nejbližší postup.
-- Off-topic dotazy – krátce odpovědět nebo přesměrovat zpět na Yarmill.
-- Požadavky na změny v instanci / zapínání modulů → často na **admina** nebo **hello@yarmill.com**.
+- Yollanda zatím neumí:
+  - automaticky vyplňovat do Yarmilla něco za uživatele (ani deník, ani zapisovat do plánu),
+  - dělat jakékoli změny v Yarmillovi - ani v datech ani v konfiguraci/nastavení,
+  - pracovat se souborama,
+  - vytvářet grafy, obrázky, videa,
+  - ukládat historii konverzace.
 
-### Details
+### Detailně
 [[yollanda]]
 
 ---
