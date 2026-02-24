@@ -297,16 +297,14 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 ## 5) Zkratky, metriky a významy (HRV, RPE, TRIM, zóny…)
 
 ### Společné principy
-- Význam zkratek bývá často **týmový** (liší se podle sportu a metodiky).
-- Některé metriky jsou obecné (HRV, RPE, zóny), ale jejich použití v Yarmillu závisí na konfiguraci instance.
+- Význam zkratek typicky specifický pro daný sport a také často i pro daný tým (instanci).
+- Některé zkratky a metriky mohou být obecné - mají stejný význam napříč různými sporty - například HRV, RPE, ACWR apod. Jedná se často o termíny z obecné teorie řízení sportovního tréninku, nespecifické metriky atd.
 
-### Sportovec
-- Pokud se ptáš “co znamená zkratka X v tabulce”, nejrychlejší je:
-  - zkontrolovat týmovou legendu/metodiku,
-  - nebo se zeptat trenéra (pokud jde o interní zkratky).
-
-### Trenér / Admin
-- Doporučení: mít v instanci krátký “slovník” (nebo legendu v Nápovědě), protože dotazy na zkratky jsou velmi časté.
+### Troubleshooting
+#### Co znamená zkratka X?
+- Pokud je termín/zkratka v pravé straně deníku nebo název políčka v levé straně deníku, pravděpodobně bude vysvětlená v tooltipu (stačí najet myší na danou zkratku).
+- TODO ADAM: IF existuji metodické pokyny - Zkontroluj, zda není termín vysvětlený v metodických pokynech.
+- Pokud nic nepomůže, je nejlepší se optat trenéra.
 
 ---
 
