@@ -415,21 +415,17 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 ---
 
-## 9) Analytika, grafy a “proč to nevidím”
+## 9) Analytika, grafy
 
 ### Společné principy
-- Analytika je **individuální** pro každou instanci (svaz/tým).
-- Ne všechny metriky/moduly jsou dostupné všem rolím.
+- Analytika je velice individuální a specificky implementovaná pro každou instanci (svaz/tým) na základě požadavků a potřeb trenérů, medical týmu, metodika, analytiků, managementu atd.
+- Přístup k jednotlivým analýzám a jejich konkrétní obsah se může pro jednotlivé uživatele lišit kvůli nastavení oprávnění.
+- Přes specifické nastavení má většina instancí Yarmilla základní sadu analýz:
+  - Týdenní přehled skupiny - operativní přehled pro trenéra, kde vidí přehled vyplňovaní deníku pro vybranou skupinu a týden.
+  - Analýza dat tréninku - trendová analýza základních ukazatelů v čase (pro vybraného sportovce a vybranou sezónu).
+  - Zatížení a připravenost - analýza tréninkového zatížení (ACWR) a ukazatelů regenerace (čas spánku, HRV, klidová tepová frekvence).
+- Standardně platí, že sportovec vidí analytické výstupy pro sebe, zatimco trenér/admin vidí analýzy pro všechny své sportovce. Výjimkou mohou být reporty, ve kterých sportovci vidí i na jiné sportovce kvůli srovnání(jedná se typicky o reporty nad veřejnými daty výsledků nebo reporty nad sumarizovanými daty).
 
-### Sportovec
-- Standardně vidíš své přehledy v **Analytika → Analýza dat tréninku** (pokud je aktivní).
-
-### Trenér / Admin
-- Trenér/admin může přepínat sportovce (dle práv).
-- Pokud “chybí grafy / analytika”, typicky jde o:
-  - modul není aktivní pro instanci,
-  - uživatel nemá práva,
-  - nebo chybí vstupní data (nezapsaná levá/pravá strana, nebo integrace nedodává to, co čekáte).
 {% if analytics_overview %}
 
 ### Přehled dostupné analytiky
