@@ -376,9 +376,14 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 ## 8) Navigace v aplikaci a UI (kde co najdu)
 
-### Společné principy
-- Horní panel = hlavní moduly (Skutečnost / Plán / Analytika / Docházka / Ostatní / Nastavení… podle instance).
-- Profil menu (avatar vpravo nahoře) může obsahovat: odhlášení, změna hesla, tipy a triky, nápověda.
+### Společné principy pro webovou aplikaci
+- Horní panel = horní menu, hlavní rozcestník, hlavní moduly (Skutečnost, Plán, Analytika, ...).
+- Moduly v horním menu jsou podle specifického nastavení instance.
+- Při nedostatku místa se volby horního menu schovávají pod položku Ostatní.
+- Uživatelské menu (avatar vpravo nahoře) slouží ke změně jazyka, odhlášení, změně hesla, přepnutí do jiného týmu (jiné instance Yarmilla), případně obsahuje odkazy na nápovědu a tipy a triky.
+- Trenér a admin má na levé straně obrazovky výběr skupin a sportovců.
+- Pracujeme na novém vzhledu celé platformy => aktuálně se může UI aplikace měnit v závislosti na vybraném modulu (některé nové moduly Yarmilla jsou už v novém designu - například Cíle, Zdravotní modul), zatímco jiné budeme redesignovat postupně v následujících týdnech.
+
 {% if header_navigation_overview %}
 
 ### Přehled hlavní navigace
@@ -396,21 +401,17 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 {% endif %}
 {% if header_navigation_overview.evidence %}
 
-#### Evidence / tabulky
+#### Tabulky pro výsledky testů, závodů apod. TODO
 {% for title, item in header_navigation_overview.evidence.items() %}
 - {% if item.get("link_token") %}[{{ title }}]({{ item.get("link_token") }}){% else %}{{ title }}{% endif %}
 {% endfor %}
 {% endif %}
 {% endif %}
 
-### Sportovec
-- V mobilu: po otevření vidíš **dnešní plán**, dole můžeš přepnout na **Plán** pro další dny.
-- Pokud nevidíš některou sekci, může to být:
-  - vypnuté pro tvoji instanci,
-  - nebo nemáš odpovídající roli/práva.
-
-### Trenér / Admin
-- Když sportovec hlásí “nemám to v horní liště”: ověřte, zda je modul zapnutý pro instanci a zda má uživatel práva.
+### Troubleshooting
+#### Nevidím něco v horní liště
+- Zkontroluj, že se modul/funkcionalita neschovává pod volbou Ostatní, kam se řadí moduly při nedostatku místa v horní listě.
+- Pokud není požadovaný modul ani tam, je pravděpodobné, že na něj nemáš práva nebo není vůbec pro tvou instanci zapnutý (nakonfigurovaný) - optej se admina.
 
 ---
 
@@ -459,6 +460,11 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 [[yollanda]]
 
 ---
+
+## 11) Help a kontakt na admina
+- Kontakt na admina tvého týmu/instance je TODO DOTAHNOUT JMENO A EMAIL Z KONFIGURACE.
+- Pokud si nevíš s něčím rady, něco ti v Yarmillovi chybí, máš nápad na zlepšení nebo jakoukoli zpětnou vazbu, napiš nám na <support@yarmill.com>. Snažíme se odpovídat co nejrychleji.
+
 
 # Přehled modulů
 
