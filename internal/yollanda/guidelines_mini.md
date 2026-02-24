@@ -333,17 +333,44 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 ## 7) Role, oprávnění a soukromí
 
-### Role (rychlé shrnutí)
-- **Sportovec:** vidí svůj plán, zapisuje svůj trénink, přidává poznámky/přílohy, vidí svou analýzu.
-- **Trenér:** vidí své skupiny, plánuje, publikuje plány, eviduje, docházka, analytika (dle práv), kartotéka.
-- **Admin:** plná editace instance, uživatelé, skupiny, oprávnění.
+### Role (shrnutí)
+- **Sportovec:** je zodpovědný za svá data - zapisuje si tréninky, pocity, vlastní hodnocení, výsledky, vyplňuje své údaje v kartotéce atd. Vidí svůj plán. Vidí na své analýzy.
+- **Trenér:** má přiřazené sportovce, o které se stará (v rámci skupin) - plánuje jim tréninky, připravuje termínovku, eviduje docházku. Má přistup k analýzám a datům všech svých sportovců.
+- **Admin:** má stejná opravnění jako trenér, navíc k tomu spravuje uživatele, skupiny i oprávnění.
+
+### Oprávnění
+- Trenér a admin mají v rámci svého zařazení ve skupinách nastavené oprávnění na zápis nebo čtení.
+- Oprávnění **zápis** obecně znamená, že trenér/admin může u dané skupiny a všech jejích sportovců zapisovat a měnit data napříč moduly Yarmilla (zapisovat plán, výsledky testů, závodů, evidovat zranění atd.).
+- Oprávnění **čtení** obecně znamená, že trenér/admin vidí na data skupiny a jejích sportovců, ale nemůže je nikde napříč Yarmillem měnit a upravovat. Často se toto oprávnění používá, aby daný trenér měl náhled na vybrané skupiny a sportovce, ale nemohl jim nic zapisovat.
+- Základní oprávnění zápisu a čtení může měnit admin.
+- Yarmill má vedle tohoto základního nastavení ještě komplexní systém nastavení oprávnění, který umožňuje specifickovat oprávnění na úrovni rolí, skupin i jednotlivých uživatelů pro jednotlivé moduly systému i jednotlivé funkcionality v rámci modulů. Toto nastavení není možné měnit přímo z rozhraní Yarmilla, je součastí implementace instance a změny se řeší požadavkem admina na Yarmill tým.
+
+### Princip skupin
+- Skupiny slouží v Yarmillovi k logickému seskupení sportovců a trenérů/adminů.
+- Důležité je, že skrz skupiny se určuje, kdo na koho vidí:
+  - Trenér/admin vidí v Yarmillovi pouze na ty sportovce, kteří jsou zařazeni do stejné skupiny.
+  - Opačně na data daného sportovce vidí každý trenér/admin, který s ním je alespoň v jedné skupině.
+- Skupiny často odpovídají reálným tréninkovým skupinám, u individuálních sportů můžou kopírovat strukturu členění svazu do vrcholových středisek (např.: SpS, SCM, VSCM, reprezentační družstva) u týmových sportů typicky odpovídají jednotlivým týmum (např.: U15, U16, U17, A tým).
 
 ### Sportovec
-- U citlivých dat (zdravotní info, menstruace): viditelnost záleží na nastavení instance a rolích. Pokud chceš ověřit “kdo to uvidí”, obrať se na trenéra/admina.
+- Přístup k datům sportovce mají jeho trenéři (neboli ti, kdo jsou s ním zařazeni v nějaké skupině).
+- Sportovec nevidí v Yarmillovi informaci o tom, v jakých skupinách je zařazený, ani kdo všechno je s nim ve skupinách.
+- Pokud chce sportovec vědět, kdo má přístup k jeho datům, musí o tuto informaci požádat administrátora. Ten zná přiřazení trenérů a také specifika nastavení oprávnění dané instance Yarmilla.
+- Pokud má sportovec jakékoli pochybnosti, může se obrátit také na support@yarmill.com.
 
-### Trenér / Admin
-- **Udělení pravomocí:** Nastavení → Skupiny → vybrat skupinu → u uživatele nastavit právo (čtení / zápis).
-- **Správa uživatelů:** Admin v Nastavení → Uživatelé (pozvání, deaktivace, změna e-mailu, náhled práv).
+### Trenér
+- Role se používá pro trenéry, ale i další členy realizačního týmu (fyzioterapeuty, doktory, maséry, analytiky, ...).
+
+### Admin
+- Stejné pravomoci jako trénér, navíc ale spravuje uživatele, skupiny a oprávnění.
+- Správa uživatelů ({Nastavení} / {Uživatelé}) znamená: přidat nové uživatele, obnovit pozvánku, změnit email, deaktivovat nebo znovu aktivovat uživatele, změnit jméno, příjmení a datum narození.
+- Správa skupin ({Nastavení} / {Skupiny}) znamená: vytvářet, mazat a přejmenovávat skupiny, zařazovat a vyřazovat uživatele do/ze skupin.
+- Správa oprávnění znamená: měnit trenérům oprávnění k vybrané skupině. Nastavení se dělá u daného trenéra/admina v rámci nastavení skupin.
+
+### Troubleshooting
+#### Trenér/Admin: Proč nevidím nějakou skupinu?
+- Častým důvodem je, že trenér/admin není přiřazen do dané skupiny.
+- Velice často se to děje administrátorům, protože zapomenou, že i sami sebe musí zařadit do skupin, do kterých chtějí mít přístup.
 
 ---
 
