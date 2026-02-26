@@ -480,74 +480,96 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 {% if modules.get("plan") %}
 ## {{ modules["plan"] }}
-Tvorba a úprava tréninkových plánů pro jednotlivce nebo skupiny (levá **textová** část + pravá **datová** část). Trenér/admin musí použít **Kopírovat plán**, aby se změny zobrazily sportovcům.
+Modul pro přípravu tréninkových plánů.
+Umožňuje top-down plánování od souhrnných objemů, hlavních motivů mezocyklů, mikrocyklů a jednotlivých dní až po detailní popis každé tréninkové jednotky.
 {% endif %}
 
 {% if modules.get("reality") %}
 ## {{ modules["reality"] }}
-Záznam tréninku (co se reálně stalo): levý **textový** zápis + pravé **datové** hodnoty, včetně poznámek a příloh. Obsahuje **Import plánu** (Plán → Skutečnost), když trénink odpovídá plánu.
+Modul pro vedení tréninkového deníku.
+Zaznamenávání všech podstatných a nezbytných informací o tréninku, především o jeho obsahu a zatížení včetně pocitového subjektivního hodnocení (často se používá RPE).
+Součástí deníku můžou být také jakékoli další informace doplňující kontext daného dne - zhodnocení dne, poznámky k jídelníčku (co jsem jedl), poznámky od fyzioterapeuta apod.
 {% endif %}
 
 {% if modules.get("evidence") %}
 ## {{ modules["evidence"] }}
-Profilové a osobní údaje využívané týmem (např. identifikátory, informace o sportovci, ID pro testování). Jaká pole jsou k dispozici a kdo je může upravovat, závisí na nastavení instance a oprávněních.
+Kartotéka - modul pro vedení informací o sportovcích, jakási digitální karta sportovce.
+Slouží k systematické evidenci klíčových informací o sportovcích. Každý tým/instance má kartotéku nastavenou specificky podle svých požadavků. Často obsahuje osobní údaje, kontaktní informace, detaily k vybavení (velikosti, značky, ...), tělesné míry, informace o klubu a osobním trenérovi, čísla a platnosti osobních dokladů. V kartotéce je možné ukládat i soubory (například skeny dokladů, antidopingový certifikát atd.).
 {% endif %}
 
 {% if modules.get("planner") %}
 ## {{ modules["planner"] }}
-Sdílený sezónní kalendář událostí (závody, soustředění, schůzky, testy). Trenéři/admini mohou spravovat účastníky; hlavní admin instance může události zamykat.
+Termínovka neboli kalendář akcí - modul pro plánování akcí na sezónu.
+Kalendářové plánování závodů, zápasů, soustředění, testování, dovolených a dalších akcí. Trenéři a admini mohou ke káždé akci specifikovat také to, koho se týká (účastníky).
+Události z termínovky se propisují do plánovacího modulu do motivů jednotlivých dní, aby měli trenéři při plánování plný kontext.
 {% endif %}
 
 {% if modules.get("attendance") %}
 ## {{ modules["attendance"] }}
-Docházka pro plánované tréninkové dny. Sleduje přítomnost/omluvu a umožňuje **kopírovat plán do Skutečnosti** podle docházky (pokud je modul zapnutý a tým ho používá).
+Modul pro evidenci docházky, tedy účasti sportovců na trénincích.
+Trenéři v modulu evidují účast jednotlivých sportovců na trénincích. Podle nastavení instance se účast může evidovat pro celý den nebo pro konkrétní tréninkové jednotky.
+Trenér zaznamenává zda měl sportovec volno, byl přítomen na tréninku, byl omluven z tréninku nebo má neomluvenou neúčast.
+Běžně se modul používá spíš pro mladší věkové kategorie. 
+
+Vyplněnou docházku může trenér použít také k hromadnému vyplnění tréninkového deníku. Udělá to tak, že pro vybraný týden klikne v docházce na tlačítko {Kopírovat plán} v pravém horním rohu. Po potvrzení akce se pro každého sportovce zkontroluje, které dny má potvrzenou účast, a pro tyto dny se jeho plán zkopíruje do jeho deníku. Pokud má sportovec pro daný den nepřítomnost (omluvenou i neomluvenou) nebo volno, pak se do deníku nic nekopíruje. Podmínkou je, že plán je u každého sportovce (nestačí, aby byl plán jen na celé skupině).
 {% endif %}
 
 {% if modules.get("analytics") %}
 ## {{ modules["analytics"] }}
-Grafy a souhrny z vyplněných tréninků a integrovaných dat. Viditelnost a dostupné metriky se liší podle role a nastavení týmu.
+Analytický modul - grafy, vizualizace, analýzy, přehledy a statistiky nad daty.
+V sekci {Analytika} se schovávají vešekeré grafické výstupy nad daty ukládanými v Yarmillovi. Vetšina reportů a analýz je specifická pro danou instanci Yarmilla, jsou vytvářené v kooperaci s trenéry/metodiky/analytiky týmu a odpovídají jejich specifických potřebám, požadavkům a konkrétním úlohám, které řeší.
+Mezi běžné analytické výstupy patří například trendové analýzy tréninkových ukazatelů, reporty tréninkového zatížení (ACWR), reporty ukazatelů regenerace, operativní dahsboard vyplňování deníku, denní připravenost týmu nebo analýzy motorických, kondičních i specifických testů. Časté jsou také rozbory závodních/herních dat, pohled na vývoj sportovce v čase včetně a srovnání s ostatními.
 {% endif %}
 
 {% if modules.get("season-evaluation") %}
 ## {{ modules["season-evaluation"] }}
-Vyhodnocení sezóny/ročního cyklu (plán vs. skutečnost napříč sportovci/skupinami), často včetně porovnání trendu a exportů (XLS/PDF), pokud je zapnuto.
+Souhrnný přehled tréninkových ukazatelů po měsících/mezocyklech (podle nastavení instance), který se často používá pro číselné vyhodnocení sezóny.
+Má dva pohledy. První pohled - {Sezóna} - je tabulka vysčítaných tréninkových ukazatelů po měsících/mezocyklech pro vybranou sezónu, ve které si můžu porovnat všechny tři verze dat daného sportovce - roční plán, plán a odtrénovanou skutečnost - vedle sebe. Tuto tabulku si uživatel může stáhnout jako excel (xlsx) nebo pdf - typicky jako podklad k výročnímu hodnocení, na oponentury apod.
+Druhý pohled - {Trend} - jsou sezónní součty dat skutečnosti (zase přes všechny tréninkové ukazatele) pro všechny dostupné sezóny. Tento pohled nejde exportovat.
 {% endif %}
 
 {% if modules.get("files") %}
 ## {{ modules["files"] }}
-Všechny tréninkové přílohy na jednom místě (z Plánu i Skutečnosti). Stahování, přejmenování, mazání a možnost skočit přímo na den, ke kterému soubor patří.
+Přehled všech vložených souborů.
+Modul obsahuje seznam všech souborů, které byly uložené v {Plánu} nebo {Skutečnosti}. Soubory jde filtrovat (podle názvu, typu, ...), přejmenovávat, stahovat, mazat. Kilknutím na datum u daného souboru se uživatel dostane přímo na den, kte ktéremu soubor patří.
+Přímo z přehledu jde soubory do Yarmilla také přidávat. Oproti přidávání souborů přímo z daného dne v {Plánu} nebo {Skutečnosti} to má dvě výhody:
+  - možnost přiřadit soubor(y) k vícero sportovcům naráz a
+  - možnost přidat k souboru štítky (tzv. tagy), které lze využít pro následné filtrování. 
 {% endif %}
 
 {% if modules.get("tabulars") %}
 ## {{ modules["tabulars"] }}
-Vlastní tabulky pro výsledky a testy (závody, laboratorní testy, průběžné kontroly). Strukturu určuje tým; záznamy lze později využít v reportech/analytice.
+Modul sdružující specificky nakonfigurované tabulky/formuláře.
+Jedná se o tabulky používané pro strukturovaný sběr dat typicky patřících do kategorie "kontrola trénovanosti" - nejčastěji se tabulky používají pro evidenci výsledků závodů/soutěží, motorických, kondičních, silových a specifických testů, SCM testů, kinezio vyšetření apod.
+Některé tabulky můžou být plněné automaticky například skrz integraci s výsledkovým systémem, častěji se jedná o informace, které je nutné zapisovat manuálně.
+Každá tabulka má strukturu nastavenou podle potřeb daného sportu a týmu. Parametry (sloupce) tabulky mohou být různého typu - číslo, čas, text, výběr z předdefinovaných hodnot, soubor,...
+Zadávání do tabulky probíhá skrz vstupní formulář (tlačítko v pravém horním rohu u tabulky). Oproti typickému řešení v excelech je zde zaručena jednotná struktura a formát dat napříč organizací. Díky tomu lze pak s výsledky dobře pracovat v dalších částech Yarmilla, především v analytických výstupech.
 {% endif %}
 
 {% if modules.get("goals") %}
 ## {{ modules["goals"] }}
-Sezónní cíle a klíčové výsledky (KR): nastavování cílů, sledování stavu a progresu, komentáře/feedback a přepínání mezi sezónami.
+Modul pro stanovení a sledování sezónních cílů.
+Funkcionalita pro plánování a sledování primárně dlouhodobých (sezónních) cílů - sportovců i trenérů - jakožto důležitého nástroje pro systematický a řízený rozvoj.
+Nejčastěji se plánují výkonnostní (výsledkové) cíle pro nadcházející sezónu (jako součást výročního hodnocení / oponentur). Je ale možné plánovat cíle i mnoha dalších kategorií - kondiční, osobnostní rozvoj, technické dovednosti, zdraví a podmínky.
+Ke každému cíli je možné (vhodné) definovat tzv. klíčové výsledky - postupné kroky, které vedou ke splnění cíle - jak dosáhnu cíle. Klíčové výsledky mají být specifické, jasné a hlavně měřitelné. Eviduje se název klíčového výsledku, počáteční hodnota (na čem začínám), aktuální hodnota (pravidelně aktualizovaný progres, aktuální hodnota v daný moment), cílová hodnota (jaké hodnoty chci dosáhnout) a případně termín (deadline, do kterého mám klíčový výsledek splnit).
+Po zadání jednoho z koncových stavů daného cíle (splněno / nesplněno) je možné k cíli zapsat závěrečné hodnocení. To může uvést sám sportovec/trenér, o jehož cíl se jedná, a každý supervizor daného cíle. Supervizoři jsou osoby, se kterými vlastník cíle spolupracuje na jeho splnění - nejčastěji trenéři a další členové realizačního týmu.
 {% endif %}
 
 {% if modules.get("medical") %}
 ## {{ modules["medical"] }}
-Zdravotní a wellness záznamy a citlivé informace (např. nemoc, omezení). Přístup je řízen oprávněními a může být omezen jen na vybrané role.
+Modul centralizuje informace o zdravotním stavu sportovce.
+Umožňuje zaznamenávat detaily a průběh každého zranění a nemoci - datum vzniku i očekávaného návratu do tréninku, stav léčby, omezení do tréninku (žádné, částečné, plné), okolnosti zranění jako například místo, aktivita, mechanizmus nebo závažnost, standardizovanou diagnózu (využívá se Orchard Sports Injury and Illness Classification System - OSIICS), zodpovědnou ošetřující osobu, poznámky nebo libovolné přílohy - klinické zprávy (vč. doporučujících dopisů/žádanek), diagnostické snímky (rentgen, CT, MRI), laboratorní výsledky, léčebné a rehabilitační plány. 
+Při zobrazení celé skupiny se trenérovi zobrazí přehled (dashboard) všech sportovců ve skupině s jejich aktuálním stavem (zelená = plný trénink, oranžová = omezený trénink, červená = bez tréninku), výpisem aktuálně probíhajícíh zdravotních problémů a předpokládaným datumem návratu do plného tréninku.
+Zdravotní stav sportovce se z medical modulu propisuje také do reportu denní připravenosti (pokud je tento na instanci nakonfigurovaný).
+Díky centralizované evidenci zdravotních záznamů je kompletní zdravotní historie na jednom místě a celý realizační tým má jasný přehled pro bezpečné řízení návratu do plné zátěže i podklady pro dlouhodobou prevenci.
+Přístup ke zdravotním datům se řídí nastavením oprávnění. Zpravidla mají k záznamům sportovce přístup jeho trenéři a zdravotní personál, ale konkrétní konfigurace je vždy specifická pro danou instanci/tým.
 {% endif %}
-
-{% if modules.get("watches") %}
-## {{ modules["watches"] }}
-Integrace hodinek a služeb ({% if watches_module_labels %}{{ watches_module_labels | join(", ") }}.{% else %}Garmin, Polar, WHOOP, Oura, Suunto, Apple Health atd.{% endif %}). Importovaná data se propisují do **Skutečnosti** (případně **Analytiky** pokud nad danými daty existuje) ale nenahrazují vyplnění levé/pravé strany.
-{% endif %}
-
-{% if modules.get("sport-theory") %}
-## {{ modules["sport-theory"] }}
-Znalostní část k tréninkové metodice (zóny, terminologie, fyziologie) používaná v rámci týmu. Obsah může být specifický pro danou instanci.
-{% endif %}
-
-{% if specific_guidelines %}
 
 ---
 
+{% if specific_guidelines %}
 # Specifické metodiky
-
+Dodatečné specifické pokyny, metodiky, guidelines. 
+Obsahují obvykle velmi specifické a konkrétní požadavky / návody / metodiky pro vyplňování Yarmilla na dané instanci. Může se jednat o specifikaci stylu zápisu tréninků, definici používáných zkratek, ukázky správných a nesprávných zápisů, gramatiku evidence specifických aktivit (například jak správně zapisovat biatlonovou střelbu).
 {{ specific_guidelines }}
 {% endif %}
