@@ -308,7 +308,8 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 ### Troubleshooting
 #### Kam mám zapsat ...? Do jakého políčka patří ...?
-- Správný zápis vychází primárně z metodiky daného týmu. (TODO ADAM: IF metodika existuje, tak ji odkaz)
+- Správný zápis vychází primárně z metodiky daného týmu. {% if instance_methodics %} {% for methodic in instance_methodics %} {% if methodic.label == "header.navigation.instructions" %} Tato metodika je dostupná na {{methodic.url}}. {% endif %} {% endfor %} {% endif %}
+
 - Při rozhodování, do jakých polí zapsat danou aktivitu/trénink, je dobré zkontrolovat tooltipy (bubliny s nápovědou) k jednotlivým položkám - tam jsou často uvedeny příklady aktivit, které do dané položky patří, případně upřesňující vysvětlení.
 - Pro sportovce může být nápovědou, kam zapsat nějakou aktivitu (do jakých ukazatelů jí rozepsat v pravé straně nebo levé straně) způsob, jakým daný trénink popsal trenér do plánu (pokud trenér plán poctivě vyplnil).
 - Nejbezpečnější variantou je dotaz na trenéra nebo admina, aby byla zachována jednotká metodika evidence dat.
@@ -322,7 +323,7 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 ### Troubleshooting
 #### Co znamená zkratka X?
 - Pokud je termín/zkratka v pravé straně deníku nebo název políčka v levé straně deníku, pravděpodobně bude vysvětlená v tooltipu (stačí najet myší na danou zkratku).
-- TODO ADAM: IF existuji metodické pokyny - Zkontroluj, zda není termín vysvětlený v metodických pokynech.
+{% if specific_guidelines %} - Zkontroluj, zda není termín vysvětlený v metodických pokynech. {% endif %}
 - Pokud nic nepomůže, je nejlepší se optat trenéra.
 
 ---
@@ -340,13 +341,13 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - Hodnocení sezóny - zobrazená data (měsíční/mezocyklová data ročního plánu, plánu i skutečnosti) lze stáhnout jako excel (xlsx) nebo PDF (pokud k tomu má uživatel práva).
 {% endif %}
 
-if TODO ADAM modul CILE je zapnuty
+{% if modules.get("goals") %}
 - Sezónní cíle vybraného uživatele lze exportovat do PDF. Slouží k tomu tlačítko v horní liště nad seznamem cílů.
-% endif %
+{% endif %}
 
-if TODO ADAM modul DOCHAZKA je zapnuty
+{% if modules.get("attendance") %}
 - Docházka lze exportovat do excelu (jako xslx soubor) kliknutím na tlačítko v pravém horním rohu. Exportuje se celý měsíc v granularitě dní.
-endif
+{% endif %}
 
 ---
 
@@ -587,9 +588,22 @@ Přístup ke zdravotním datům se řídí nastavením oprávnění. Zpravidla m
 
 ---
 
-{% if specific_guidelines %}
-# Specifické metodiky
+{% if specific_guidelines or instance_methodics %}
+# Specific guidelines and methodics
 Dodatečné specifické pokyny, metodiky, guidelines. 
 Obsahují obvykle velmi specifické a konkrétní požadavky / návody / metodiky pro vyplňování Yarmilla na dané instanci. Může se jednat o specifikaci stylu zápisu tréninků, definici používáných zkratek, ukázky správných a nesprávných zápisů, gramatiku evidence specifických aktivit (například jak správně zapisovat biatlonovou střelbu).
+{% if specific_guidelines %}
+## Specific guidelines
 {{ specific_guidelines }}
 {% endif %}
+{% if instance_methodics %}
+{% for methodic in instance_methodics %}
+## {{ methodic.labelTranslated }}
+{% if methodic.label == "header.navigation.instructions" %}
+Více informací, jak v rámci svémho týmu s deníkem správně pracovat a jakým způsobem zapisovat tréninky, poznámky, atd. můžeš najít pod následujícím odkazem:
+{% endif %}
+URL: {{ methodic.url }}
+{% endfor %}
+{% endif %}
+{% endif %}
+
