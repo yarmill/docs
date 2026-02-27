@@ -604,6 +604,7 @@ Obsahují obvykle velmi specifické a konkrétní požadavky / návody / metodik
 ## {{ methodic.labelTranslated }}
 {% if methodic.label == "header.navigation.instructions" %}
 Více informací, jak v rámci svémho týmu s deníkem správně pracovat a jakým způsobem zapisovat tréninky, poznámky, atd. můžeš najít pod následujícím odkazem:
+{% endif %}
 {% if methodic.label == "header.navigation.tipsAndTricks" %}
 Více tipů a triků, jak Yarmilla používat efektivně a naplno, najdeš pod následujícím odkazem:
 {% endif %}
@@ -611,6 +612,5 @@ URL: {{ methodic.url }}
 
 ---
 {% endfor %}
-{% endif %}
 {% endif %}
 
