@@ -24,24 +24,6 @@
 {% if label not in watches_module_labels %}{% set _ = watches_module_labels.append(label) %}{% endif %}
 {% endfor %}
 
-            "header.navigation.reality": "reality",
-            "header.navigation.settings": "settings",
-            "header.navigation.filesOverview": "files",
-            "settings.profile.heartRateZones": "HRzones",
-            "settings.profile.services": "appsAndDevices",
-            "mobileApp.settings.connectedDevicesApps": "connectedAppsAndDevices",
-            "reporting.recoveryAthlete.title": "recoveryAnalysis",
-            "reporting.trainingAnalyzeTrend.title": "trendAnalysis",
-            "settings.profile.services.disconnect": "disconnect",
-            "settings.profile.services.connect": "connect",
-	    "settings.profile.services.connected": "connected",0
-            "mobileApp.devices.sync": "sync",
-            "mobileApp.tabBar.add": "add",
-            "mobileApp.tabBar.today": "today",
-            "mobileApp.today.activities": "activities",
-            "settings.sidebar.users": "users",
-            "setting.sidebar.groups": "groups",
-
 ## 1) Integrace a synchronizace zařízení
 
 ### Společné principy
@@ -493,7 +475,7 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 ---
 
 ## 11) Help a kontakt na admina
-- Kontakt na admina tvého týmu/instance je TODO DOTAHNOUT JMENO A EMAIL Z KONFIGURACE.
+- Kontakt na admina tvého týmu/instance je {{admin_name}} ({{admin_email}}).
 - Pokud si nevíš s něčím rady, něco ti v Yarmillovi chybí, máš nápad na zlepšení nebo jakoukoli zpětnou vazbu, napiš nám na <support@yarmill.com>. Snažíme se odpovídat co nejrychleji.
 
 
@@ -560,7 +542,7 @@ Přímo z přehledu jde soubory do Yarmilla také přidávat. Oproti přidáván
 
 {% if modules.get("tabulars") %}
 ## {{ modules["tabulars"] }}
-Modul sdružující specificky nakonfigurované tabulky/formuláře.
+Specificky nakonfigurované tabulky/formuláře.
 Jedná se o tabulky používané pro strukturovaný sběr dat typicky patřících do kategorie "kontrola trénovanosti" - nejčastěji se tabulky používají pro evidenci výsledků závodů/soutěží, motorických, kondičních, silových a specifických testů, SCM testů, kinezio vyšetření apod.
 Některé tabulky můžou být plněné automaticky například skrz integraci s výsledkovým systémem, častěji se jedná o informace, které je nutné zapisovat manuálně.
 Každá tabulka má strukturu nastavenou podle potřeb daného sportu a týmu. Parametry (sloupce) tabulky mohou být různého typu - číslo, čas, text, výběr z předdefinovaných hodnot, soubor,...
