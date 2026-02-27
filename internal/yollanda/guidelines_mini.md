@@ -338,13 +338,13 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - Hodnocení sezóny - zobrazená data (měsíční/mezocyklová data ročního plánu, plánu i skutečnosti) lze stáhnout jako excel (xlsx) nebo PDF (pokud k tomu má uživatel práva).
 {% endif %}
 
-{% if TODO ADAM modul CILE je zapnuty %}
+if TODO ADAM modul CILE je zapnuty
 - Sezónní cíle vybraného uživatele lze exportovat do PDF. Slouží k tomu tlačítko v horní liště nad seznamem cílů.
-{% endif %}
+% endif %
 
-{% if TODO ADAM modul DOCHAZKA je zapnuty %}
+if TODO ADAM modul DOCHAZKA je zapnuty
 - Docházka lze exportovat do excelu (jako xslx soubor) kliknutím na tlačítko v pravém horním rohu. Exportuje se celý měsíc v granularitě dní.
-{% endif %}
+endif
 
 ---
 
