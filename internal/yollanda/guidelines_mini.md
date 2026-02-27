@@ -24,6 +24,23 @@
 {% if label not in watches_module_labels %}{% set _ = watches_module_labels.append(label) %}{% endif %}
 {% endfor %}
 
+            "header.navigation.reality": "reality",
+            "header.navigation.settings": "settings",
+            "header.navigation.filesOverview": "files",
+            "settings.profile.heartRateZones": "HRzones",
+            "settings.profile.services": "appsAndDevices",
+            "mobileApp.settings.connectedDevicesApps": "connectedAppsAndDevices",
+            "reporting.recoveryAthlete.title": "recoveryAnalysis",
+            "reporting.trainingAnalyzeTrend.title": "trendsAnalysis",
+            "settings.profile.services.disconnect": "disconnect",
+            "settings.profile.services.connect": "connect",
+            "mobileApp.devices.sync": "sync",
+            "mobileApp.tabBar.add": "add",
+            "mobileApp.tabBar.today": "today",
+            "mobileApp.today.activities": "activities",
+            "settings.sidebar.users": "users",
+            "setting.sidebar.groups": "groups",
+
 ## 1) Integrace a synchronizace zařízení
 
 ### Společné principy
@@ -32,9 +49,9 @@
 - Propojení je možné z webové aplikace a z iOS aplikace. Není možné z Android aplikace.
 - Propojení může udělat jen sportovec. Trenér ani administrátor ne.
 - Po propojení se data ze zařízení synchronizují do Yarmilla automaticky ve chvíli, kdy se zařízení synchronizuje s aplikací daného výrobce. Tzn. že jakmile vidím například aktivitu z Garmin hodinek v Garmin Connect aplikaci, tak se automaticky posílá i do Yarmilla.
-- V Yarmillovi se záznamy ukazují v modulu {Skutečnost} u daného dne a případně v relevantních analytických výstupech (například data spánku se zároveň propíšou do reportů v {Analýze ukazatelů regenerace}).
+- V Yarmillovi se záznamy ukazují v modulu {{translations.reality}} u daného dne a případně v relevantních analytických výstupech (například data spánku se zároveň propíšou do reportů v {{translations.recoveryAnalysis}}, pokud je dostupný - viz přehled analytických výstupů níže).
 - Nahranou (synchronizovanou) aktivitu nelze aktuálně v Yarmillovi editovat ani smazat.
-- Po propojení zařízení, ze kterých chodí informace o aktivitách, je potřeba zkontrolovat, že má sportovec nastavené tepové zóny ({Nastavení} -> {Zóny tepové frekvence}). Toto nastavení je důležité pro správné zobrazovaní detailu aktivit, počítaní a analýzy času stráveného v jednolivých zónách.
+- Po propojení zařízení, ze kterých chodí informace o aktivitách, je potřeba zkontrolovat, že má sportovec nastavené tepové zóny ({{translations.settings}} -> {{translations.HRZones}}). Toto nastavení je důležité pro správné zobrazovaní detailu aktivit, počítaní a analýzy času stráveného v jednolivých zónách.
 
 ### Sportovec
 #### Jak zařízení připojit
