@@ -599,6 +599,7 @@ Obsahují obvykle velmi specifické a konkrétní požadavky / návody / metodik
 
 ---
 {% endif %}
+
 {% if instance_methodics %}
 {% for methodic in instance_methodics %}
 ## {{ methodic.labelTranslated }}
@@ -613,4 +614,4 @@ URL: {{ methodic.url }}
 ---
 {% endfor %}
 {% endif %}
-
+{% endif %}
