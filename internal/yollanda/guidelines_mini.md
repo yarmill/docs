@@ -587,6 +587,7 @@ Přístup ke zdravotním datům se řídí nastavením oprávnění. Zpravidla m
 {% endif %}
 
 ---
+---
 
 {% if specific_guidelines or instance_methodics %}
 # Specific guidelines and methodics
@@ -595,14 +596,20 @@ Obsahují obvykle velmi specifické a konkrétní požadavky / návody / metodik
 {% if specific_guidelines %}
 ## Specific guidelines
 {{ specific_guidelines }}
+
+---
 {% endif %}
 {% if instance_methodics %}
 {% for methodic in instance_methodics %}
 ## {{ methodic.labelTranslated }}
 {% if methodic.label == "header.navigation.instructions" %}
 Více informací, jak v rámci svémho týmu s deníkem správně pracovat a jakým způsobem zapisovat tréninky, poznámky, atd. můžeš najít pod následujícím odkazem:
+{% if methodic.label == "header.navigation.tipsAndTricks" %}
+Více tipů a triků, jak Yarmilla používat efektivně a naplno, najdeš pod následujícím odkazem:
 {% endif %}
 URL: {{ methodic.url }}
+
+---
 {% endfor %}
 {% endif %}
 {% endif %}
