@@ -31,9 +31,10 @@
             "settings.profile.services": "appsAndDevices",
             "mobileApp.settings.connectedDevicesApps": "connectedAppsAndDevices",
             "reporting.recoveryAthlete.title": "recoveryAnalysis",
-            "reporting.trainingAnalyzeTrend.title": "trendsAnalysis",
+            "reporting.trainingAnalyzeTrend.title": "trendAnalysis",
             "settings.profile.services.disconnect": "disconnect",
             "settings.profile.services.connect": "connect",
+	    "settings.profile.services.connected": "connected",0
             "mobileApp.devices.sync": "sync",
             "mobileApp.tabBar.add": "add",
             "mobileApp.tabBar.today": "today",
@@ -51,46 +52,46 @@
 - Po propojení se data ze zařízení synchronizují do Yarmilla automaticky ve chvíli, kdy se zařízení synchronizuje s aplikací daného výrobce. Tzn. že jakmile vidím například aktivitu z Garmin hodinek v Garmin Connect aplikaci, tak se automaticky posílá i do Yarmilla.
 - V Yarmillovi se záznamy ukazují v modulu {{translations.reality}} u daného dne a případně v relevantních analytických výstupech (například data spánku se zároveň propíšou do reportů v {{translations.recoveryAnalysis}}, pokud je dostupný - viz přehled analytických výstupů níže).
 - Nahranou (synchronizovanou) aktivitu nelze aktuálně v Yarmillovi editovat ani smazat.
-- Po propojení zařízení, ze kterých chodí informace o aktivitách, je potřeba zkontrolovat, že má sportovec nastavené tepové zóny ({{translations.settings}} -> {{translations.HRZones}}). Toto nastavení je důležité pro správné zobrazovaní detailu aktivit, počítaní a analýzy času stráveného v jednolivých zónách.
+- Po propojení zařízení, ze kterých chodí informace o aktivitách, je potřeba zkontrolovat, že má sportovec nastavené tepové zóny ({{translations.settings}} -> {{translations.HRzones}}). Toto nastavení je důležité pro správné zobrazovaní detailu aktivit, počítaní a analýzy času stráveného v jednolivých zónách.
 
 ### Sportovec
 #### Jak zařízení připojit
 ##### Postup pro propojení ve webové aplikaci
 1. Otevři webovou aplikaci Yarmill.
-2. V horním panelu klikni na {Nastavení}.
-3. Scrolluj dolů na sekci {Aplikace a zařízení}.
-4. U vybraného zařízení klikni na tlačítko {Propojit}.
-5. Otevře se okno s příhlášením do tvého účtu dané služby/aplikace.
-6. Přihlásíš se a potvrdíš propojení s Yarmillem (potvrzuje se předávání dat z dané služby do Yarmilla). U některých služeb je potřeba zaškrtnout i rozsah dat, která se budou do Yarmilla synchronizovat. 
-7. Po úspěšném propojení svítí v Yarmillovi u dané integrace tlačítko {Odpojit}.
+2. V horním panelu klikni na {{translations.settings}}.
+3. Scrolluj dolů na sekci {{translations.appsAndDevices}}.
+5. U vybraného zařízení klikni na tlačítko {{translations.connect}}.
+6. Otevře se okno s příhlášením do tvého účtu dané služby/aplikace.
+7. Přihlásíš se a potvrdíš propojení s Yarmillem (potvrzuje se předávání dat z dané služby do Yarmilla). U některých služeb je potřeba zaškrtnout i rozsah dat, která se budou do Yarmilla synchronizovat. 
+8. Po úspěšném propojení svítí v Yarmillovi u dané integrace tlačítko {{translations.disconnect}}.
 
 ##### Postup pro propojení v iOS aplikaci
 1. Otevři mobilní iOS aplikaci Yarmill.
 2. V pravém horním rohu klikni na svého avatara.
-3. Vyber možnost {Propojená zařízení a aplikace}.
+3. Vyber možnost {{translations.connectedAppsAndDevices}}.
 4. Vyber zařízení/aplikaci, kterou chceš propojit.
 5. Klikni na přepínač (toggle switch) pro zapnutí propojení.
 6. Otevře se okno s příhlášením do tvého účtu dané služby/aplikace.
-7. Přihlásíš se a potvrdíš propojení s Yarmillem (potvrzeuje se předávání dat z dané služby do Yarmilla). U některých služeb je potřeba zaškrtnout i rozsah dat, která se budou do Yarmilla synchronizovat. 
-8. Úspěšně propojená zařízení a aplikace mají přepínač zapnutý a na obrazovce s přehledem všech zařízení jsou doplněna šedým nápisem {Connected}.
+7. Přihlásíš se a potvrdíš propojení s Yarmillem (potvrzuje se předávání dat z dané služby do Yarmilla). U některých služeb je potřeba zaškrtnout i rozsah dat, která se budou do Yarmilla synchronizovat. 
+8. Úspěšně propojená zařízení a aplikace mají přepínač zapnutý a na obrazovce s přehledem všech zařízení jsou doplněna šedým nápisem {{translations.connected}}.
 
 ##### Postup pro odpojení
 Stejný jako pro propojení. 
-Ve webové aplikaci je u propojených integrací tlačítko {Odpojit}, kterým propojení zrušíš.
+Ve webové aplikaci je u propojených integrací tlačítko {{translations.disconnect}}, kterým propojení zrušíš.
 V iOS aplikaci je přepínač (toggle switch tlačítko), jeho vypnutí zruší propojení.
 Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 {% if "polar" in external_services_list %}
 #### Polar specifika
 - Polar umí ke každé aktivitě posílat také informaci o nastavených tepových zónách.
-- Zapnutí/vypnutí přebírání tepových zón přímo z Polaru se zobrazí ve webové aplikaci pod sekcí {Aplikace a zařízení} při propojené integraci s Polarem.
+- Zapnutí/vypnutí přebírání tepových zón přímo z Polaru se zobrazí ve webové aplikaci pod sekcí {{translations.appsAndDevices}} při propojené integraci s Polarem.
 - Při zapnutém přepínači se pro každou aktivitu použijou tepové zóny, které k dané aktivitě pošle Polar (neboli ty, které má uživatel nastavené ve svých hodinkách nebo Polar Flow aplikaci). Zóny nastavené přímo v Yarmillovi se v takovém případě ignorují.
 {% endif %}
 
 {% if "apple-health" in external_services_list %}
 #### Apple Health specifika
 - Apple Health (Apple Watch) nelze propojit z webové aplikace, ale pouze přímo z iOS aplikace.
-- Po propojení se v iOS aplikaci na detailu Apple Health propojení zobrazí seznam historických aktivit spolu se statusem - zda byla daná aktivita synchronizovaná do Yarmilla a případně tlačítko {Sync} pro její manuální synchronizaci (manuální synchronizace je potřeba pouze pro historické aktivity před zapnutím propojení).
+- Po propojení se v iOS aplikaci na detailu Apple Health propojení zobrazí seznam historických aktivit spolu se statusem - zda byla daná aktivita synchronizovaná do Yarmilla a případně tlačítko {{translations.sync}} pro její manuální synchronizaci (manuální synchronizace je potřeba pouze pro historické aktivity před zapnutím propojení).
 {% endif %}
 
 {% if "garmin" in external_services_list %}
@@ -107,14 +108,14 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - Dotažení historických dat je možné pro Garmin, Oura Ring a WHOOP. Řešíme ho individuálně. Napiš nám na <support@yarmill.com>.
 
 ### Trenér a Admin
-- Vidí synchronizovaná data svých sportovců v jejich tréninkovém deníku ({Skutečnosti}) (podle nastavení instance). To platí pro data o aktivitách i o spánku.
-- Vidí data také v příslušných analýzách, které je využívají, pokud k nim má přístup (např. {Trendová analýza} nebo {Analýza ukazatelů regenerace}).
+- Vidí synchronizovaná data svých sportovců v jejich tréninkovém deníku ({{translations.reality}}) (podle nastavení instance). To platí pro data o aktivitách i o spánku.
+- Vidí data také v příslušných analýzách, které je využívají, pokud k nim má přístup (např. {{translations.trendAnalysis}} nebo {{translations.recoveryAnalysis}}, pokud jsou dostupné - viz přehled analytických výstupů níže).
 
 ### Troubleshooting / Problémy
 
 #### Nevidím aktivitu / Nesynchronizují se data
-- Zkontroluj, že se díváš do {Skutečnost} a na správný datum.
-- Zkontruj, zda je propojení zapnuté v {Nastavení}.
+- Zkontroluj, že se díváš do {{translations.reality}} a na správný datum.
+- Zkontruj, zda je propojení zapnuté v {{translations.settings}}.
 - Zkontroluj, zda je daný záznam synchronizovaný ze zařízení (hodinek, prstýnku, ...) do příslušné zdrojové aplikace (např.: v Garmin Connect pro Garmin zařízení, Polar Flow pro Polar zařízení atd.). Záznamy se musí vždy nejprve synchronizovat ze zařízení do do příslušné aplikace výrobce zařízení a až následně se automaticky synchronizují do Yarmilla.
 
 #### Nevidím historická data
@@ -201,9 +202,9 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 #### Zapomenuté heslo
 - Heslo lze kdykoli jednoduše vyresetovat (nastavit nové).
 1. Jdi na přihlašovací obrazovku Yarmilla (viz Přihlášení).
-2. Pod políčkama pro přihlašovací údaje je volba {Zapomenuté heslo}.
-3. Zadej svůj email, který používáš pro přihlášení do Yarmilla, a potvrď.
-4. Na daný email ti přijdou pokyny pro nastavení nového hesla.
+2. Pod políčkama pro přihlašovací údaje je volba {{translations.forgottenPassword}}.
+4. Zadej svůj email, který používáš pro přihlášení do Yarmilla, a potvrď.
+5. Na daný email ti přijdou pokyny pro nastavení nového hesla.
 
 #### Neznám e-mail
 - Přihlašovací email je ten, na který ti přišla pozvánka k registraci do Yarmilla.
@@ -230,7 +231,7 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 ### Společné principy
 - Tréninkový plán (někdy označovaný jako tréninkový program) je v gesci trenérů (případně adminů). Sportovec plán měnit nemůže.
-- To, jak trénink reálně proběhl (co sportovec odtrénoval a jak) se eviduje v modulu {Skutečnost} – ten se často označuje jako tréninový deník nebo tréninková evidence.
+- To, jak trénink reálně proběhl (co sportovec odtrénoval a jak) se eviduje v modulu {{translations.reality}} – ten se často označuje jako tréninový deník nebo tréninková evidence.
 - Struktura plánu i tréninkové skutečnosti je téměř identická a v týdenním zobrazení se dělí na:
   - slovní popis obsahu (náplně) tréninku - občas označované jako tzv. levá strana - a
   - číselné zaznamenání - tzv. pravá strana, která obsahuje sadu obecných (OTU) a specifických (STU) tréninkových ukazatelů, které trénink kvantifikují časem, počtem, kilometrama apod.
@@ -241,7 +242,7 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
   - Sportovec kopírováním plánu typicky myslí import plánu do skutečnosti - tato možnost musí být administrátorem povolená a závisí to na konkrétní instanci. V konfiguraci dané instance je také počet dní, po které lze tuto funkčnost zpětně použít (například 3 dny znamená, že sportovec může možnost zkopírování plánu do skutečnosti použít pouze pro dnešek a tři dny zpětně. Starší dny už nebude moci importovat z plánu.
   
 {% if copy_plan_to_reality %}
-- Sportovec může pro usnadnění/urychlení zápisu deníku použít volbu {Import plánu}, která zkopíruje data pro daný den z pláno do deníku (skutečnosti). Typické použití je, když sportovec trénink splnil podle plánu nebo jen s mírnou změnou oproti plánu. Jakmile plán naimportuje, může si importovaný zápis upravit tak, aby odpovídal tomu, jak trénink skutečně proběhl.{% if copy_plan_days_valid %} Lze to provést ode dneška pro {{ copy_plan_days_valid }} dní zpětně.{% endif %}
+- Sportovec může pro usnadnění/urychlení zápisu deníku použít volbu {{translations.importPlan}}, která zkopíruje data pro daný den z pláno do deníku (skutečnosti). Typické použití je, když sportovec trénink splnil podle plánu nebo jen s mírnou změnou oproti plánu. Jakmile plán naimportuje, může si importovaný zápis upravit tak, aby odpovídal tomu, jak trénink skutečně proběhl.{% if copy_plan_days_valid %} Lze to provést ode dneška pro {{ copy_plan_days_valid }} dní zpětně.{% endif %}
 {% endif %}
 
 ### Troubleshooting
@@ -285,14 +286,14 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 ### Sportovec
 #### Zápis ve webové aplikaci
-1. Jdi na {Skutečnost}.
+1. Jdi na {{translations.reality}}.
 2. Vyber správný týden/den.
 3. Vyplň levou i pravou stranu pro daný den. Některá políčka v levé straně (včetně přidávání souborů, příloh) jsou schovaná pod tlačítkem tří teček.
 
 #### Zápis v mobilní aplikaci
 - V mobilu lze vyplnit pouze tréninková skutečnost pro dnešní den. Předešlé dny jdou doplňovat pouze z webové aplikace.
 - Levá strana se v mobilní aplikaci vyplňuje přidáváním jednotlivých políček skrz tlačítko "+ {Přidat}".
-- Tabulka pravé strany je v aplikaci pod volbou {Dnes} / záložka {Aktivity}. Oproti webové aplikaci je zde pouze sloupec pro dnešní den a k tomu navíc sloupec pro dnešní den s hodnotama z plánu.
+- Tabulka pravé strany je v aplikaci pod volbou {{translations.today}} / záložka {{translations.activities}}. Oproti webové aplikaci je zde pouze sloupec pro dnešní den a k tomu navíc sloupec pro dnešní den s hodnotama z plánu.
 
 #### Volno / nemoc / zdravotní omezení
 - Pokud má tým v seznamu ukazatelů v pravé straně ukazatele pro nemoc, zdravotní omezení, volno apod., pak je použij. Je to důležité pro správnou funkčnost dalších částí Yarmilla a pro správná data v přehledech a statistikách.
@@ -331,7 +332,7 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - Kompletní export dat deníku nebo plánu je možný pouze na žádost, kterou musí potvrdit administrátor instance. Napiš nám na support@yarmill.com.
 - Všechny analytické výstupy (reporty) lze stáhnout jak PDF soubor. Slouží k tomu tlačítko v pravém horním rohu reportu.
 - Tréninkový plán lze exportovat do PDF pro vybraný týden. Levá a pravá strana se exportují zvlášť. Slouží k tomu tlačíkto v pravém horním rohu. Při exportu levé strany je možné nastavit výsledný vzhled skrz několik možností - jaké parametry do exportu půjdou, jak budou poskládané (horizontálně vedle sebe nebo vertikálně pod sebou), zda se zobrazí popisky parametetrů nebo ne, velikost písma.
-- V deníku i plánu lze ke každému dni přiložit soubory. Jejich přehled pro daného sportovce je ve webové aplikaci v sekci {Soubory}. K souborům daného sportovce má přístup on sám a všichni jeho trenéři.
+- V deníku i plánu lze ke každému dni přiložit soubory. Jejich přehled pro daného sportovce je ve webové aplikaci v sekci {{translations.files}}. K souborům daného sportovce má přístup on sám a všichni jeho trenéři.
 - Jiné požadavky na exporty lze řešit napsáním na support@yarmill.com.
 
 {% if season_evaluation_enabled %}
@@ -380,8 +381,8 @@ endif
 
 ### Admin
 - Stejné pravomoci jako trénér, navíc ale spravuje uživatele, skupiny a oprávnění.
-- Správa uživatelů ({Nastavení} / {Uživatelé}) znamená: přidat nové uživatele, obnovit pozvánku, změnit email, deaktivovat nebo znovu aktivovat uživatele, změnit jméno, příjmení a datum narození.
-- Správa skupin ({Nastavení} / {Skupiny}) znamená: vytvářet, mazat a přejmenovávat skupiny, zařazovat a vyřazovat uživatele do/ze skupin.
+- Správa uživatelů ({{translations.settings}} / {{translations.users}}) znamená: přidat nové uživatele, obnovit pozvánku, změnit email, deaktivovat nebo znovu aktivovat uživatele, změnit jméno, příjmení a datum narození.
+- Správa skupin ({{translations.settings}} / {{translations.users}}) znamená: vytvářet, mazat a přejmenovávat skupiny, zařazovat a vyřazovat uživatele do/ze skupin.
 - Správa oprávnění znamená: měnit trenérům oprávnění k vybrané skupině. Nastavení se dělá u daného trenéra/admina v rámci nastavení skupin.
 
 ### Troubleshooting
@@ -480,6 +481,7 @@ endif
   - automaticky vyplňovat do Yarmilla něco za uživatele (ani deník, ani zapisovat do plánu),
   - dělat jakékoli změny v Yarmillovi - ani v datech ani v konfiguraci/nastavení,
   - pracovat se souborama,
+  - vytvářet soubory, exportovat data, tisknout, ...
   - vytvářet grafy, obrázky, videa,
   - ukládat historii konverzace.
 
@@ -534,7 +536,7 @@ Vyplněnou docházku může trenér použít také k hromadnému vyplnění tré
 {% if modules.get("analytics") %}
 ## {{ modules["analytics"] }}
 Analytický modul - grafy, vizualizace, analýzy, přehledy a statistiky nad daty.
-V sekci {Analytika} se schovávají vešekeré grafické výstupy nad daty ukládanými v Yarmillovi. Vetšina reportů a analýz je specifická pro danou instanci Yarmilla, jsou vytvářené v kooperaci s trenéry/metodiky/analytiky týmu a odpovídají jejich specifických potřebám, požadavkům a konkrétním úlohám, které řeší.
+V sekci {{ modules["analytics"] }} se schovávají vešekeré grafické výstupy nad daty ukládanými v Yarmillovi. Vetšina reportů a analýz je specifická pro danou instanci Yarmilla, jsou vytvářené v kooperaci s trenéry/metodiky/analytiky týmu a odpovídají jejich specifických potřebám, požadavkům a konkrétním úlohám, které řeší.
 Mezi běžné analytické výstupy patří například trendové analýzy tréninkových ukazatelů, reporty tréninkového zatížení (ACWR), reporty ukazatelů regenerace, operativní dahsboard vyplňování deníku, denní připravenost týmu nebo analýzy motorických, kondičních i specifických testů. Časté jsou také rozbory závodních/herních dat, pohled na vývoj sportovce v čase včetně a srovnání s ostatními.
 {% endif %}
 
