@@ -594,8 +594,8 @@ Přístup ke zdravotním datům se řídí nastavením oprávnění. Zpravidla m
 Dodatečné specifické pokyny, metodiky, guidelines. 
 Obsahují obvykle velmi specifické a konkrétní požadavky / návody / metodiky pro vyplňování Yarmilla na dané instanci. Může se jednat o specifikaci stylu zápisu tréninků, definici používáných zkratek, ukázky správných a nesprávných zápisů, gramatiku evidence specifických aktivit (například jak správně zapisovat biatlonovou střelbu).
 {% if specific_guidelines %}
-## Specific guidelines ({{ specific_guidelines.url }})
-{{ specific_guidelines.content }}
+## Specific guidelines
+{{ specific_guidelines }}
 
 ---
 {% endif %}
