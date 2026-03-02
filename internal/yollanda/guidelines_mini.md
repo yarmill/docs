@@ -403,7 +403,8 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 {% endif %}
 {% if header_navigation_overview.evidence %}
 
-#### Tabulky pro výsledky testů, závodů apod. TODO
+#### Tabulky pro evidenci výsledků a testů
+V navigaci se běžně nachází pod záložkou Ostatní.
 {% for title, item in header_navigation_overview.evidence.items() %}
 - {% if item.get("link_token") %}[{{ title }}]({{ item.get("link_token") }}){% else %}{{ title }}{% endif %}
 {% endfor %}
@@ -468,9 +469,6 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
   - vytvářet soubory, exportovat data, tisknout, ...
   - vytvářet grafy, obrázky, videa,
   - ukládat historii konverzace.
-
-### Detailně
-[[yollanda]]
 
 ---
 
@@ -542,7 +540,7 @@ Přímo z přehledu jde soubory do Yarmilla také přidávat. Oproti přidáván
 
 {% if modules.get("tabulars") %}
 ## {{ modules["tabulars"] }}
-Specificky nakonfigurované tabulky/formuláře.
+Specificky nakonfigurované tabulky/formuláře. Nejedná se tedy o standardní modul a Yollanda chápe každou tabulku jako samostatný datový zdroj, ne jako součást nějakého obecného modulu.
 Jedná se o tabulky používané pro strukturovaný sběr dat typicky patřících do kategorie "kontrola trénovanosti" - nejčastěji se tabulky používají pro evidenci výsledků závodů/soutěží, motorických, kondičních, silových a specifických testů, SCM testů, kinezio vyšetření apod.
 Některé tabulky můžou být plněné automaticky například skrz integraci s výsledkovým systémem, častěji se jedná o informace, které je nutné zapisovat manuálně.
 Každá tabulka má strukturu nastavenou podle potřeb daného sportu a týmu. Parametry (sloupce) tabulky mohou být různého typu - číslo, čas, text, výběr z předdefinovaných hodnot, soubor,...
