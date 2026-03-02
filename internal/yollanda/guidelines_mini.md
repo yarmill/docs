@@ -525,15 +525,15 @@ Mezi běžné analytické výstupy patří například trendové analýzy tréni
 {% if modules.get("season-evaluation") %}
 ## {{ modules["season-evaluation"] }}
 Souhrnný přehled tréninkových ukazatelů po měsících/mezocyklech (podle nastavení instance), který se často používá pro číselné vyhodnocení sezóny.
-Má dva pohledy. První pohled - {Sezóna} - je tabulka vysčítaných tréninkových ukazatelů po měsících/mezocyklech pro vybranou sezónu, ve které si můžu porovnat všechny tři verze dat daného sportovce - roční plán, plán a odtrénovanou skutečnost - vedle sebe. Tuto tabulku si uživatel může stáhnout jako excel (xlsx) nebo pdf - typicky jako podklad k výročnímu hodnocení, na oponentury apod.
-Druhý pohled - {Trend} - jsou sezónní součty dat skutečnosti (zase přes všechny tréninkové ukazatele) pro všechny dostupné sezóny. Tento pohled nejde exportovat.
+Má dva pohledy. První pohled - {{translations.season}} - je tabulka vysčítaných tréninkových ukazatelů po měsících/mezocyklech pro vybranou sezónu, ve které si můžu porovnat všechny tři verze dat daného sportovce - roční plán, plán a odtrénovanou skutečnost - vedle sebe. Tuto tabulku si uživatel může stáhnout jako excel (xlsx) nebo pdf - typicky jako podklad k výročnímu hodnocení, na oponentury apod.
+Druhý pohled - {{translations.trend}} - jsou sezónní součty dat skutečnosti (zase přes všechny tréninkové ukazatele) pro všechny dostupné sezóny. Tento pohled nejde exportovat.
 {% endif %}
 
 {% if modules.get("files") %}
 ## {{ modules["files"] }}
 Přehled všech vložených souborů.
 Modul obsahuje seznam všech souborů, které byly uložené v {Plánu} nebo {Skutečnosti}. Soubory jde filtrovat (podle názvu, typu, ...), přejmenovávat, stahovat, mazat. Kilknutím na datum u daného souboru se uživatel dostane přímo na den, kte ktéremu soubor patří.
-Přímo z přehledu jde soubory do Yarmilla také přidávat. Oproti přidávání souborů přímo z daného dne v {Plánu} nebo {Skutečnosti} to má dvě výhody:
+Přímo z přehledu jde soubory do Yarmilla také přidávat. Oproti přidávání souborů přímo z daného dne v {{translations.plan}} nebo {{translations.reality}} to má dvě výhody:
   - možnost přiřadit soubor(y) k vícero sportovcům naráz a
   - možnost přidat k souboru štítky (tzv. tagy), které lze využít pro následné filtrování. 
 {% endif %}
