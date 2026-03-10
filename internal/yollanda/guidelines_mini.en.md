@@ -584,8 +584,7 @@ They usually contain very specific and concrete requirements / instructions / me
 {% for methodic in instance_methodics %}
 ## {{ methodic.labelTranslated }}
 {% if methodic.label == "header.navigation.instructions" %}
-More information on how to work correctly with the diary within your team and how to record training sessions,
-notes, etc. can be found at the following link:
+{{ methodic.content }}
 {% elif methodic.label == "header.navigation.tipsAndTricks" %}
 More tips and tricks on how to use Yarmill effectively and to its full potential can be found at the following link:
 {% endif %}
