@@ -139,6 +139,7 @@ From the moment of disconnection, new data will no longer be synchronized to Yar
 - The team URL is the web address where the Yarmill instance for the given team runs.
 - Each user receives information about their team URL in the registration confirmation email.
 - The team URL typically consists of the name or abbreviation of the given club/association followed by the Yarmill domain (yarmill.com), generally https://team-name.yarmill.com.
+- URL of your team is: {{instance_url}}
 
 ### Registration
 - Yarmill works as a closed application. Every user must be invited. It is not possible to register on your own without an invitation.
