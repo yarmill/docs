@@ -139,6 +139,7 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - URL týmu je webová adresa, na které běží instance Yarmilla pro daný tým.
 - Každý uživatel dostane informaci o URL svého týmu v emailu s potvrzením registrace.
 - URL týmu se skládá typicky z názvu nebo zkratky daného klubu/svazu následované doménou Yarmilla (yarmill.com), tedy obecně https://nazev-tymu.yarmill.com.
+- URL tvého týmu je: {{instance_url}}
 
 ### Registrace
 - Yarmill funguje jako uzavřená aplikace. Každý uživatel musí být pozvaný. Není možné se sám od sebe registrovat bez pozvánky.
