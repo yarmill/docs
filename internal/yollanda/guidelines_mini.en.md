@@ -452,6 +452,7 @@ It is usually found in the navigation under the More tab.
 
 #### What Yollanda can do (in the context of Yarmill)
 - Search for specific training sessions, exercises, notes (in both plans and diaries), including a link to the given day.
+- Search and recall prior chats between the current asker and Yollanda (conversation history), including filtering by start date.
 - Analyze activity and sleep data, compare and evaluate training periods, compare seasons, ...
 - Answer questions about data in natural language and in any language.
 - Explain (interpret) charts.
@@ -469,7 +470,8 @@ It is usually found in the navigation under the More tab.
   - work with files,
   - create files, export data, print, ...
   - create charts, images, videos,
-  - store conversation history.
+  - access conversation history of other users,
+  - edit or delete conversation history.
 
 ---
 

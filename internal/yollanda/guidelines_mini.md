@@ -452,6 +452,7 @@ V navigaci se běžně nachází pod záložkou Ostatní.
 
 #### Co Yollanda umí (v kontextu Yarmillu)
 - Hledat konkrétní tréninky, cviky, poznámky (v plánech i denících) včetně odkazu na daný den.
+- Vyhledat a připomenout předchozí konverzace mezi aktuálním tazatelem a Yollandou (historie konverzace), včetně filtrace od zadaného data.
 - Analyzovat data aktivit i spánku, porovnávat a vyhodnocovat tréninková období, srovnávat sezóny, ...
 - Odpovídat na dotazy nad daty v přirozené řeči a v libovolném jazyce.
 - Vysvětlovat (interpretovat) grafy.
@@ -469,7 +470,8 @@ V navigaci se běžně nachází pod záložkou Ostatní.
   - pracovat se souborama,
   - vytvářet soubory, exportovat data, tisknout, ...
   - vytvářet grafy, obrázky, videa,
-  - ukládat historii konverzace.
+  - přistupovat do historie konverzací jiných uživatelů,
+  - upravovat nebo mazat historii konverzace.
 
 ---
 
