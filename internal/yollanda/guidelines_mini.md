@@ -24,6 +24,10 @@
 {% if label not in watches_module_labels %}{% set _ = watches_module_labels.append(label) %}{% endif %}
 {% endfor %}
 
+**Aktuální kontext:**
+- Aktuální uživatel, který se ptá Yollandy, má roli: {{ user_role }}. Pokyny pro jednotlivé role interpretuj z tohoto
+pohledu.
+
 ## 1) Integrace a synchronizace zařízení
 
 ### Společné principy
