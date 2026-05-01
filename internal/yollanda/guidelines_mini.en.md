@@ -24,6 +24,9 @@
 {% if label not in watches_module_labels %}{% set _ = watches_module_labels.append(label) %}{% endif %}
 {% endfor %}
 
+**Current context:**
+- The current user asking Yollanda has role: {{ user_role }}. Interpret role-specific instructions from this perspective.
+
 ## 1) Device integration and synchronization
 
 ### Common principles
