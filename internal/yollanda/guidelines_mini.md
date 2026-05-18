@@ -1,27 +1,16 @@
 # General guidelines
 
-{% set service_name_map = {
-  "oauth-acbaluo": "AC Baluo",
-  "apple-health": "Apple Health",
-  "dexcom": "Dexcom",
-  "garmin": "Garmin",
-  "oura": "Oura",
-  "polar": "Polar",
-  "polar-team": "Polar Team Pro",
-  "suunto": "Suunto",
-  "whoop": "WHOOP"
-} %}
 {% set external_services_list = external_services | default([], true) %}
+{% set external_services_codes = external_services_list | map(attribute="code") | list %}
 {% set activity_service_labels = [] %}
 {% set non_garmin_labels = [] %}
 {% set watches_module_labels = [] %}
-{% for code in external_services_list %}
-{% set label = service_name_map[code] %}
-{% if code in ["garmin", "apple-health", "polar", "suunto", "polar-team", "whoop"] %}
-{% set _ = activity_service_labels.append(label) %}
+{% for s in external_services_list %}
+{% if s.code in ["garmin", "apple-health", "polar", "suunto", "polar-team", "whoop"] %}
+{% set _ = activity_service_labels.append(s.label) %}
 {% endif %}
-{% if code != "garmin" %}{% set _ = non_garmin_labels.append(label) %}{% endif %}
-{% if label not in watches_module_labels %}{% set _ = watches_module_labels.append(label) %}{% endif %}
+{% if s.code != "garmin" %}{% set _ = non_garmin_labels.append(s.label) %}{% endif %}
+{% if s.label not in watches_module_labels %}{% set _ = watches_module_labels.append(s.label) %}{% endif %}
 {% endfor %}
 
 **Aktuální kontext:**
@@ -67,20 +56,20 @@ Ve webové aplikaci je u propojených integrací tlačítko {{translations.disco
 V iOS aplikaci je přepínač (toggle switch tlačítko), jeho vypnutí zruší propojení.
 Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
-{% if "polar" in external_services_list %}
+{% if "polar" in external_services_codes %}
 #### Polar specifika
 - Polar umí ke každé aktivitě posílat také informaci o nastavených tepových zónách.
 - Zapnutí/vypnutí přebírání tepových zón přímo z Polaru se zobrazí ve webové aplikaci pod sekcí {{translations.appsAndDevices}} při propojené integraci s Polarem.
 - Při zapnutém přepínači se pro každou aktivitu použijou tepové zóny, které k dané aktivitě pošle Polar (neboli ty, které má uživatel nastavené ve svých hodinkách nebo Polar Flow aplikaci). Zóny nastavené přímo v Yarmillovi se v takovém případě ignorují.
 {% endif %}
 
-{% if "apple-health" in external_services_list %}
+{% if "apple-health" in external_services_codes %}
 #### Apple Health specifika
 - Apple Health (Apple Watch) nelze propojit z webové aplikace, ale pouze přímo z iOS aplikace.
 - Po propojení se v iOS aplikaci na detailu Apple Health propojení zobrazí seznam historických aktivit spolu se statusem - zda byla daná aktivita synchronizovaná do Yarmilla a případně tlačítko {{translations.sync}} pro její manuální synchronizaci (manuální synchronizace je potřeba pouze pro historické aktivity před zapnutím propojení).
 {% endif %}
 
-{% if "garmin" in external_services_list %}
+{% if "garmin" in external_services_codes %}
 #### Garmin specifika
 - Při propojování Garminu je možné specifikovat (zapnout/vypnout), jaké z následujícíh dat se budou posílat do Yarmilla:
   - Data o aktivitách
