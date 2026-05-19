@@ -1,27 +1,16 @@
 # General guidelines
 
-{% set service_name_map = {
-  "oauth-acbaluo": "AC Baluo",
-  "apple-health": "Apple Health",
-  "dexcom": "Dexcom",
-  "garmin": "Garmin",
-  "oura": "Oura",
-  "polar": "Polar",
-  "polar-team": "Polar Team Pro",
-  "suunto": "Suunto",
-  "whoop": "WHOOP"
-} %}
 {% set external_services_list = external_services | default([], true) %}
+{% set external_services_codes = external_services_list | map(attribute="code") | list %}
 {% set activity_service_labels = [] %}
 {% set non_garmin_labels = [] %}
 {% set watches_module_labels = [] %}
-{% for code in external_services_list %}
-{% set label = service_name_map[code] %}
-{% if code in ["garmin", "apple-health", "polar", "suunto", "polar-team", "whoop"] %}
-{% set _ = activity_service_labels.append(label) %}
+{% for s in external_services_list %}
+{% if s.code in ["garmin", "apple-health", "polar", "suunto", "polar-team", "whoop"] %}
+{% set _ = activity_service_labels.append(s.label) %}
 {% endif %}
-{% if code != "garmin" %}{% set _ = non_garmin_labels.append(label) %}{% endif %}
-{% if label not in watches_module_labels %}{% set _ = watches_module_labels.append(label) %}{% endif %}
+{% if s.code != "garmin" %}{% set _ = non_garmin_labels.append(s.label) %}{% endif %}
+{% if s.label not in watches_module_labels %}{% set _ = watches_module_labels.append(s.label) %}{% endif %}
 {% endfor %}
 
 **Current context:**
@@ -66,20 +55,20 @@ In the web application, connected integrations have a {{translations.disconnect}
 In the iOS application, there is a toggle switch button, and turning it off cancels the connection.
 From the moment of disconnection, new data will no longer be synchronized to Yarmill.
 
-{% if "polar" in external_services_list %}
+{% if "polar" in external_services_codes %}
 #### Polar specifics
 - Polar can also send information about configured heart rate zones for each activity.
 - Enabling/disabling the use of heart rate zones directly from Polar is shown in the web application under the {{translations.appsAndDevices}} section when Polar integration is connected.
 - When the switch is turned on, the heart rate zones that Polar sends for the given activity are used for each activity (that is, the zones the user has set in their watch or the Polar Flow application). Zones set directly in Yarmill are ignored in that case.
 {% endif %}
 
-{% if "apple-health" in external_services_list %}
+{% if "apple-health" in external_services_codes %}
 #### Apple Health specifics
 - Apple Health (Apple Watch) cannot be connected from the web application, only directly from the iOS application.
 - After connection, the iOS application shows, in the Apple Health connection detail, a list of historical activities together with their status - whether the given activity was synchronized to Yarmill, and possibly a {{translations.sync}} button for its manual synchronization (manual synchronization is needed only for historical activities from before the connection was enabled).
 {% endif %}
 
-{% if "garmin" in external_services_list %}
+{% if "garmin" in external_services_codes %}
 #### Garmin specifics
 - When connecting Garmin, it is possible to specify (turn on/off) which of the following data will be sent to Yarmill:
   - Activity data
@@ -396,6 +385,11 @@ From the moment of disconnection, new data will no longer be synchronized to Yar
 {% if header_navigation_overview.navigation %}
 {% for title, item in header_navigation_overview.navigation.items() %}
 #### {% if item.get("link_token") %}[{{ title }}]({{ item.get("link_token") }}){% else %}{{ title }}{% endif %}
+{% if item.get("sub_items") %}
+{% for sub_title, sub_item in item.get("sub_items").items() %}
+- {% if sub_item.get("link_token") %}[{{ sub_title }}]({{ sub_item.get("link_token") }}){% else %}{{ sub_title }}{% endif %}
+{% endfor %}
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if header_navigation_overview.analytics %}
