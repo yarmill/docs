@@ -386,6 +386,11 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 {% if header_navigation_overview.navigation %}
 {% for title, item in header_navigation_overview.navigation.items() %}
 #### {% if item.get("link_token") %}[{{ title }}]({{ item.get("link_token") }}){% else %}{{ title }}{% endif %}
+{% if item.get("sub_items") %}
+{% for sub_title, sub_item in item.get("sub_items").items() %}
+- {% if sub_item.get("link_token") %}[{{ sub_title }}]({{ sub_item.get("link_token") }}){% else %}{{ sub_title }}{% endif %}
+{% endfor %}
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if header_navigation_overview.analytics %}
