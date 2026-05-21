@@ -2,16 +2,10 @@
 
 {% set external_services_list = external_services | default([], true) %}
 {% set external_services_codes = external_services_list | map(attribute="code") | list %}
-{% set activity_service_labels = [] %}
-{% set non_garmin_labels = [] %}
-{% set watches_module_labels = [] %}
-{% for s in external_services_list %}
-{% if s.code in ["garmin", "apple-health", "polar", "suunto", "polar-team", "whoop"] %}
-{% set _ = activity_service_labels.append(s.label) %}
-{% endif %}
-{% if s.code != "garmin" %}{% set _ = non_garmin_labels.append(s.label) %}{% endif %}
-{% if s.label not in watches_module_labels %}{% set _ = watches_module_labels.append(s.label) %}{% endif %}
-{% endfor %}
+{% set athlete_services = external_services_list | selectattr("roles", "contains", "athlete") | list %}
+{% set coach_services   = external_services_list | selectattr("roles", "contains", "coach")   | list %}
+{% set admin_services   = external_services_list | selectattr("roles", "contains", "admin")   | list %}
+{% set has_team_services = (coach_services | length > 0) or (admin_services | length > 0) %}
 
 **Aktuální kontext:**
 - Aktuální uživatel, který se ptá Yollandy, má roli: {{ user_role }}. Pokyny pro jednotlivé role interpretuj z tohoto
@@ -23,7 +17,15 @@ pohledu.
 - Používaná synonyma: hodinky, sporttestery, zařízení.
 - Synonyma pro záznamy: záznam, aktivita, data, log.
 - Propojení je možné z webové aplikace a z iOS aplikace. Není možné z Android aplikace.
-- Propojení může udělat jen sportovec. Trenér ani administrátor ne.
+{% if has_team_services %}- Kdo může propojit jakou službu, určuje seznam dostupných integrací níže. U většiny zařízení a aplikací propojení dělá sportovec; u týmových integrací je propojení v gesci trenéra nebo administrátora.
+{% else %}- Propojení může udělat jen sportovec. Trenér ani administrátor ne.
+{% endif %}
+#### Dostupné integrace na této instanci
+{% if athlete_services %}- **Sportovec může propojit**: {{ athlete_services | map(attribute="label") | join(", ") }}.
+{% endif %}{% if coach_services %}- **Trenér může propojit**: {{ coach_services | map(attribute="label") | join(", ") }}.
+{% endif %}{% if admin_services %}- **Administrátor může propojit**: {{ admin_services | map(attribute="label") | join(", ") }}.
+{% endif %}
+
 - Po propojení se data ze zařízení synchronizují do Yarmilla automaticky ve chvíli, kdy se zařízení synchronizuje s aplikací daného výrobce. Tzn. že jakmile vidím například aktivitu z Garmin hodinek v Garmin Connect aplikaci, tak se automaticky posílá i do Yarmilla.
 - V Yarmillovi se záznamy ukazují v modulu {{translations.reality}} u daného dne a případně v relevantních analytických výstupech (například data spánku se zároveň propíšou do reportů v {{translations.recoveryAnalysis}}, pokud je dostupný - viz přehled analytických výstupů níže).
 - Nahranou (synchronizovanou) aktivitu nelze aktuálně v Yarmillovi editovat ani smazat.

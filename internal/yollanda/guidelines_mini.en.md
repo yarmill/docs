@@ -2,16 +2,10 @@
 
 {% set external_services_list = external_services | default([], true) %}
 {% set external_services_codes = external_services_list | map(attribute="code") | list %}
-{% set activity_service_labels = [] %}
-{% set non_garmin_labels = [] %}
-{% set watches_module_labels = [] %}
-{% for s in external_services_list %}
-{% if s.code in ["garmin", "apple-health", "polar", "suunto", "polar-team", "whoop"] %}
-{% set _ = activity_service_labels.append(s.label) %}
-{% endif %}
-{% if s.code != "garmin" %}{% set _ = non_garmin_labels.append(s.label) %}{% endif %}
-{% if s.label not in watches_module_labels %}{% set _ = watches_module_labels.append(s.label) %}{% endif %}
-{% endfor %}
+{% set athlete_services = external_services_list | selectattr("roles", "contains", "athlete") | list %}
+{% set coach_services   = external_services_list | selectattr("roles", "contains", "coach")   | list %}
+{% set admin_services   = external_services_list | selectattr("roles", "contains", "admin")   | list %}
+{% set has_team_services = (coach_services | length > 0) or (admin_services | length > 0) %}
 
 **Current context:**
 - The current user asking Yollanda has role: {{ user_role }}. Interpret role-specific instructions from this perspective.
@@ -22,7 +16,15 @@
 - Synonyms used: watches, sports testers, devices.
 - Synonyms for records: record, activity, data, log.
 - Connection is possible from the web application and the iOS application. It is not possible from the Android application.
-- Only the athlete can connect the device. Neither the coach nor the administrator can do it.
+{% if has_team_services %}- Who can connect which service is determined by the list of available integrations below. For most devices and applications the athlete makes the connection; for team-level integrations it is the coach or the administrator who does it.
+{% else %}- Only the athlete can connect the device. Neither the coach nor the administrator can do it.
+{% endif %}
+#### Available integrations on this instance
+{% if athlete_services %}- **Athletes can connect**: {{ athlete_services | map(attribute="label") | join(", ") }}.
+{% endif %}{% if coach_services %}- **Coaches can connect**: {{ coach_services | map(attribute="label") | join(", ") }}.
+{% endif %}{% if admin_services %}- **Administrators can connect**: {{ admin_services | map(attribute="label") | join(", ") }}.
+{% endif %}
+
 - After connection, data from the device is synchronized to Yarmill automatically at the moment the device is synchronized with the manufacturer's application. This means that as soon as I can see, for example, an activity from Garmin watches in the Garmin Connect application, it is also automatically sent to Yarmill.
 - In Yarmill, records are shown in the {{translations.reality}} module on the given day and possibly in relevant analytical outputs (for example, sleep data is also reflected in reports in {{translations.recoveryAnalysis}}, if available - see the overview of analytical outputs below).
 - An uploaded (synchronized) activity currently cannot be edited or deleted in Yarmill.
