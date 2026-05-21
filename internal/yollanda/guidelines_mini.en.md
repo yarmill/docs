@@ -2,9 +2,14 @@
 
 {% set external_services_list = external_services | default([], true) %}
 {% set external_services_codes = external_services_list | map(attribute="code") | list %}
-{% set athlete_services = external_services_list | selectattr("roles", "contains", "athlete") | list %}
-{% set coach_services   = external_services_list | selectattr("roles", "contains", "coach")   | list %}
-{% set admin_services   = external_services_list | selectattr("roles", "contains", "admin")   | list %}
+{% set athlete_services = [] %}
+{% set coach_services = [] %}
+{% set admin_services = [] %}
+{% for s in external_services_list %}
+{% if "athlete" in s.roles %}{% set _ = athlete_services.append(s) %}{% endif %}
+{% if "coach"   in s.roles %}{% set _ = coach_services.append(s) %}{% endif %}
+{% if "admin"   in s.roles %}{% set _ = admin_services.append(s) %}{% endif %}
+{% endfor %}
 {% set has_team_services = (coach_services | length > 0) or (admin_services | length > 0) %}
 
 **Current context:**
