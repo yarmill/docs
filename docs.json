@@ -15,40 +15,67 @@
         "language": "en",
         "anchors": [
           {
-            "anchor": "Documentation",
+            "anchor": "Guides",
             "icon": "book-open-cover",
             "groups": [
               {
-                "group": "Getting Started",
-                "pages": ["en/documentation/welcome", "en/documentation/basics"]
-              },
-              {
-                "group": "Medical Journal",
+                "group": "Get started",
                 "pages": [
-                  "en/documentation/medical/medicalIntro",
-                  "en/documentation/medical/healthProblems"
+                  "en/index",
+                  "en/get-started/concepts",
+                  "en/get-started/for-coaches",
+                  "en/get-started/for-athletes",
+                  "en/get-started/for-admins"
                 ]
               },
               {
-                "group": "Sport-Specific Guides",
+                "group": "Plan",
+                "pages": [
+                  "en/plan/plan",
+                  "en/plan/season-calendar",
+                  "en/plan/goals"
+                ]
+              },
+              {
+                "group": "Reality",
+                "pages": [
+                  "en/reality/training-log",
+                  "en/reality/attendance",
+                  "en/reality/wellness-questionnaire"
+                ]
+              },
+              {
+                "group": "Results",
+                "pages": ["en/results/results"]
+              },
+              {
+                "group": "Analytics",
+                "pages": ["en/analytics/analytics"]
+              },
+              {
+                "group": "Medical",
+                "pages": ["en/medical/medical-module"]
+              },
+              {
+                "group": "Platform",
+                "pages": [
+                  "en/platform/athlete-profile",
+                  "en/platform/integrations",
+                  "en/platform/files",
+                  "en/platform/yollanda"
+                ]
+              },
+              {
+                "group": "Sport-specific",
                 "pages": [
                   {
                     "group": "Biathlon",
                     "icon": "person-rifle",
-                    "pages": ["en/documentation/sport-specific/biathlon/shooting"]
-                  },
-                  {
-                    "group": "Soccer",
-                    "icon": "futbol",
-                    "pages": ["en/documentation/sport-specific/soccer/GPS"]
+                    "pages": ["en/sport-specific/biathlon/shooting"]
                   }
                 ]
               }
             ]
-          },
-          {
-            "anchor": "Changelog",
-            "icon": "hand-peace"
           },
           {
             "anchor": "API Reference",
@@ -62,8 +89,19 @@
                 "group": "Endpoints",
                 "openapi": "en/api-reference/openapi.json",
                 "pages": [
-                  "POST /api/data/upload"
+                  "POST /api/data/upload",
+                  "POST /api/ping"
                 ]
+              }
+            ]
+          },
+          {
+            "anchor": "Changelog",
+            "icon": "hand-peace",
+            "groups": [
+              {
+                "group": "Changelog",
+                "pages": ["en/changelog/changelog"]
               }
             ]
           }

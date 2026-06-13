@@ -1,0 +1,102 @@
+---
+title: "Concepts"
+description: "The mental model behind Yarmill — instances, groups, plan vs. reality, and how the modules fit together."
+---
+
+This page gives you the mental model behind Yarmill so the rest of the guides make
+sense. Read it once; everything else builds on these ideas.
+
+**For:** everyone · **Where:** Web app and mobile
+
+## Your instance
+
+Your team has its own configured Yarmill environment — an **instance** — at its own
+**team URL** (`your-team.yarmill.com`). You sign in with your email and password; the
+mobile app also asks for the team URL, which you'll find in your confirmation email.
+
+<Info>Yarmill is configured for each team: which modules are on, which fields you track,
+and even some names differ between instances. These guides describe the mechanics, which
+work the same everywhere, and use example fields where your instance may show its
+own.</Info>
+
+## Plan and Reality
+
+Yarmill is organized around two questions: **what you planned**, and **what actually
+happened**. Coaches build the **Plan**; athletes (and coaches) record **Reality** — the
+training diary. Keeping them separate is what lets Yarmill show the gap between
+intention and execution, and turn it into [Analytics](/en/analytics/analytics).
+
+There are actually **three versions** of training data:
+
+1. **Annual plan** — the season-start intention, entered by month or mesocycle.
+2. **Plan** — the operational plan, built week to week and adjusted as life intervenes.
+3. **Reality** — what the athlete actually did.
+
+The [Season review](/en/analytics/analytics#season-review) shows all three side by side.
+
+## Left side, right side
+
+A day's entry — in Plan and in Reality — has two halves:
+
+- The **left (text) side**: free-form description in your own words — the workout, the
+  methodology, notes. Split into **training phases** (for example *morning* and
+  *afternoon*; your instance configures these).
+- The **right (data) side**: the numbers — minutes, kilometers, sessions, intensity
+  zones. Some rows are calculated automatically and shown locked.
+
+Reality can carry extra fields the coach doesn't plan but the athlete should record —
+RPE, notes, attachments — tucked under the day's **⋯** menu.
+
+## Copy plan and Import plan
+
+Two actions move data between the worlds:
+
+- **Copy plan** (coach): planning on the **whole group is your private sandbox** —
+  athletes see nothing until you publish with **Copy plan**. Editing a single athlete's
+  plan is visible to them immediately.
+- **Import plan** (athlete): copies the planned day into Reality with one click, ready
+  to edit into what really happened. Some teams disable it so athletes write in their
+  own words.
+
+## Auto-save
+
+There is no Save button. Changes save as you type, and significant changes (states,
+dates, values) are recorded in each module's **Activity** log with who did what, when.
+
+## Groups, roles, and what you can see
+
+A **group** is the coach's organizing unit of athletes (athletes don't see groups).
+There are three account types:
+
+- **Athlete** — sees and edits only their own data; views the plan but can't edit it.
+- **Coach** — works with assigned groups: plans, publishes, reviews, and manages
+  athletes' records. Staff like physiotherapists typically use coach-type accounts, and
+  self-coached athletes get one so they can write their own plan.
+- **Administrator** — manages people, groups, and permissions in **Settings**.
+
+If a module or athlete isn't visible to you, it's usually permissions or configuration —
+ask your administrator.
+
+## Devices and HR zones
+
+Athletes connect sports watches and other devices in **Settings → Applications &
+devices**; recorded activities and sleep data then appear automatically under the
+day in Reality. Watch data complements the diary — it doesn't replace writing the
+left and right sides. Heart-rate zones are set **in Yarmill**, per activity and with
+validity periods, so your time-in-zone stays consistent even when you change watch
+brands. See [Devices & integrations](/en/platform/integrations).
+
+## Where you work
+
+- **Web app** — the full feature set; where coaches and administrators live.
+- **Mobile apps (iOS/Android)** — athlete-focused: today's plan, logging, watch data.
+- **PWA** — "add to home screen" from the web app; the recommended phone experience
+  for coaches, and works for athletes too.
+
+Module pages note **Where** a task is done, so you always know which to reach for.
+
+## Yollanda
+
+**Yollanda** is Yarmill's built-in AI — open her from the icon in the header to ask
+about your data or how Yarmill works, in your own language. She also explains charts in
+Analytics. See [Yollanda](/en/platform/yollanda).

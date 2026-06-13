@@ -1,0 +1,66 @@
+---
+title: "Medical module"
+description: "Injuries and illnesses in one place — status, expected return, diagnosis, and history."
+icon: "briefcase-medical"
+---
+
+The Medical module keeps the team's health picture in one place: who's injured or ill,
+how it limits their training, and when they're expected back — with the full history
+that makes injury patterns visible.
+
+**For:** coaches and medical staff (per permissions) · **Where:** Web app
+
+<Info>Medical data is sensitive. Who can see and edit it is permission-controlled and
+configured per team.</Info>
+
+## The team overview
+
+**Injuries & Illnesses** opens with the group: each athlete's overall **status**, their
+**open health problems**, and the **expected return to full training** — with overdue
+returns flagged. It's the "who's available" answer at a glance.
+
+## A health record
+
+Select an athlete to see their records, split into **Open** and **Closed**. Each record
+holds:
+
+<ParamField path="Title & type">
+  What it is, marked as an injury or an illness.
+</ParamField>
+
+<ParamField path="Properties">
+  The record's state (**Open**/closed), its **training limitation** (for example
+  **No training**), and the **responsible staff**.
+</ParamField>
+
+<ParamField path="Key dates">
+  When it started, and the **expected return** date that feeds the team overview.
+</ParamField>
+
+<ParamField path="Note">
+  Free-text context — circumstances, treatment, anything worth remembering.
+</ParamField>
+
+<ParamField path="Diagnosis">
+  Coded against the **OSIICS** standard, so reporting stays consistent.
+</ParamField>
+
+<ParamField path="Files">
+  Reports, imaging, and other documents attached to the record.
+</ParamField>
+
+<ParamField path="Activity">
+  The automatic log of every change — who, what, when — plus timestamped comments.
+</ParamField>
+
+## Record a new problem
+
+Select **+** (or **New quick entry** — shortcut `N`) and capture it in seconds: name it,
+mark injury or illness, set the training limitation and expected return. Detail can
+come later; the overview is useful immediately.
+
+## Why keep it here
+
+The training-limitation status flows into **Team daily readiness** in Analytics, so the
+morning overview already knows who's out. And because records accumulate, recurring
+problems become visible — the basis for prevention, not just availability.
