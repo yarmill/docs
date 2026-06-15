@@ -1,13 +1,18 @@
-import { createI18nMiddleware } from 'fumadocs-core/i18n/middleware';
-import { i18n } from '@/lib/i18n';
+import { NextResponse, type NextRequest } from 'next/server';
 
-export default createI18nMiddleware(i18n);
+/**
+ * Minimal redirect (no i18n library): send the bare root `/` to `/en`. All doc
+ * URLs already live under `/en/...`; static assets, `/raw`, and `/_next` are
+ * excluded by the matcher so they are untouched.
+ */
+export default function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/en', request.url));
+  }
+  return NextResponse.next();
+}
 
 export const config = {
-  // Run on all paths EXCEPT: API routes, the /raw source route (it carries its
-  // own locale segment), Next internals, and any request for a file with an
-  // extension (a dot) — i.e. all static assets under /public (/brand, /fonts,
-  // /images, icon.png, favicon.ico, …). Doc routes never contain a dot, so this
-  // is a safe catch-all that needs no per-folder upkeep.
-  matcher: ['/((?!api|raw|_next|.*\\.).*)'],
+  matcher: ['/'],
 };

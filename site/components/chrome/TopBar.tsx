@@ -1,59 +1,26 @@
 'use client';
 
-import { usePathname } from 'fumadocs-core/framework';
-import type * as PageTree from 'fumadocs-core/page-tree';
-import { useTreeContext } from 'fumadocs-ui/contexts/tree';
-import { useSidebar } from 'fumadocs-ui/layouts/docs/slots/sidebar';
 import { Menu } from 'lucide-react';
 import { CopyPage } from './CopyPage';
 import { ThemeToggle } from './ThemeToggle';
 import { Wordmark } from './Wordmark';
-import { groupTree } from './tree';
+import { useSidebar } from './SidebarContext';
 
 const APP_URL = 'https://yarmill.com/en/sign-in';
 
-/** Resolve "Group / Page title" for the active path from the grouped tree. */
-function useBreadcrumb(tree: PageTree.Node[], pathname: string) {
-  const groups = groupTree(tree);
-  for (const group of groups) {
-    const found = findItem(group.items, pathname);
-    if (found) return { group: group.label, page: found };
-  }
-  return { group: '', page: '' };
-}
-
-function findItem(nodes: PageTree.Node[], pathname: string): string | null {
-  for (const node of nodes) {
-    if (node.type === 'page' && node.url === pathname) {
-      return typeof node.name === 'string' ? node.name : String(node.name ?? '');
-    }
-    if (node.type === 'folder') {
-      if (node.index?.url === pathname) {
-        return typeof node.name === 'string' ? node.name : String(node.name ?? '');
-      }
-      const nested = findItem(node.children, pathname);
-      if (nested) return nested;
-    }
-  }
-  return null;
-}
-
 /**
  * Top bar (64px): translucent, backdrop-blurred, hairline bottom border. Sits
- * right of the sidebar on desktop and shows breadcrumbs on the left; on mobile
- * it switches to a wordmark + hamburger that opens the sidebar drawer.
+ * right of the sidebar on desktop with breadcrumbs (`Group / Page`); on mobile
+ * it shows a wordmark + hamburger that opens the sidebar drawer.
  *
- * Right cluster (desktop): theme toggle · Copy-page split button · Open Yarmill.
+ * Breadcrumb parts are resolved server-side (from lib/nav) and passed in, so
+ * the bar needs no nav context.
  */
-export function TopBar() {
-  const pathname = usePathname();
-  const { root } = useTreeContext();
+export function TopBar({ group, page }: { group?: string; page?: string }) {
   const { open, setOpen } = useSidebar();
-  const { group, page } = useBreadcrumb(root.children, pathname);
 
   return (
     <header className="ym-topbar">
-      {/* Mobile: hamburger + wordmark */}
       <button
         type="button"
         className="ym-icon-btn ym-topbar-burger"
@@ -66,7 +33,6 @@ export function TopBar() {
       </button>
       <Wordmark className="ym-topbar-wordmark" />
 
-      {/* Desktop: breadcrumbs */}
       <nav className="ym-breadcrumb" aria-label="Breadcrumb">
         {group ? (
           <>
@@ -82,12 +48,7 @@ export function TopBar() {
       <div className="ym-topbar-actions">
         <ThemeToggle />
         <CopyPage />
-        <a
-          className="ym-cta"
-          href={APP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a className="ym-cta" href={APP_URL} target="_blank" rel="noopener noreferrer">
           Open Yarmill
         </a>
       </div>

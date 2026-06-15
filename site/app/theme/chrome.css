@@ -7,47 +7,49 @@
    faster exits, transform/opacity only, reduced-motion fallbacks).
    ============================================================ */
 
-/* ---------- Layout grid ----------------------------------- */
-/* Areas mirror Fumadocs' page primitives: `main` (article) and
-   `toc` are emitted by DocsPage; we add `header` + `sidebar`. */
+/* ---------- Layout (Linear: fixed sidebar + offset main) ---
+   DOM: .ym-shell > [ .ym-sidebar (fixed 280) , .ym-main (offset 280) ].
+   .ym-main holds the sticky top bar and a centred 1024px content wrapper;
+   the wrapper holds a row of article (flex, fills) + TOC (fixed 250). The
+   article width therefore DERIVES from the grid (≈650 at the cap, wider when
+   the TOC is hidden) — it is never hard-capped. */
 .ym-shell {
-  display: grid;
   min-height: 100dvh;
-  grid-template-columns:
-    var(--ym-sidebar-col, var(--ym-sidebar-w))
-    minmax(0, 1fr)
-    var(--ym-toc-col, var(--ym-toc-w));
-  grid-template-rows: var(--ym-topbar-h) 1fr;
-  grid-template-areas:
-    'sidebar header header'
-    'sidebar main   toc';
-  --ym-sidebar-col: var(--ym-sidebar-w);
-  --ym-toc-col: var(--ym-toc-w);
   background: var(--ym-bg);
 }
 
-/* Desktop sidebar collapse → animate the column to 0. */
-.ym-shell[data-sidebar-collapsed='true'] {
-  --ym-sidebar-col: 0px;
+/* The flexible main column, offset to clear the fixed sidebar. */
+.ym-main {
+  margin-left: var(--ym-sidebar-w);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left var(--ym-dur) var(--ym-ease-out);
 }
-@media (min-width: 769px) {
-  .ym-shell {
-    transition: grid-template-columns var(--ym-dur) var(--ym-ease-out);
-  }
+.ym-shell[data-sidebar-collapsed='true'] .ym-main { margin-left: 0; }
+
+/* Centred content wrapper (Linear: 1024 cap, 24px gutters). */
+.ym-content {
+  width: 100%;
+  max-width: var(--ym-content-max);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+/* Article + TOC sit in a row with a generous gap; article fills, TOC fixed. */
+.ym-content-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
 }
 
-/* The DocsPage article is the measured reading column (Linear ≈ 650px),
-   centred in the main grid cell. */
+/* The reading column fills the remaining width (derived, not capped). */
 .ym-shell #nd-page {
-  max-width: var(--ym-prose-max);
-  margin-inline: auto;
-  padding-inline: clamp(20px, 4vw, 40px);
-  padding-block: 48px 96px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-block: 32px 64px;
 }
-/* Full-width pages (mode: wide) opt out of the prose cap. */
-.ym-shell #nd-page[data-full='true'] {
-  max-width: var(--ym-content-max);
-}
+/* Full-width pages (mode: wide) drop the TOC and widen the wrapper. */
+.ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-max); }
 
 /* ---------- Reading typography (Linear scale in Inter) -----
    Scoped to #nd-page so the id specificity (1,0,1 for `#id el`) beats
@@ -87,12 +89,13 @@
 }
 /* Lead/description paragraph under H1 (a direct #nd-page child, outside
    .prose) stays muted and a touch larger than body. */
-.ym-shell #nd-page > p.text-fd-muted-foreground {
+.ym-shell #nd-page > p.ym-lead {
   font-size: 18px;
   line-height: 28px;
   font-weight: 400;
   letter-spacing: -0.012em;
   color: var(--ym-muted);
+  margin-top: 8px;
 }
 /* Inline prose links: underlined, inherit text colour, hover → accent. */
 .ym-shell #nd-page .prose a:not(.not-prose):not([class*='ym-']) {
@@ -154,12 +157,12 @@
   }
 }
 
-/* ---------- Sidebar --------------------------------------- */
+/* ---------- Sidebar (fixed, full height) ------------------ */
 .ym-sidebar {
-  grid-area: sidebar;
-  position: sticky;
-  top: 0;
-  align-self: start;
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 40;
   height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -168,7 +171,7 @@
   border-right: 1px solid var(--ym-line);
   overflow: hidden;
 }
-/* When collapsed on desktop, slide the rail out of its 0-width column. */
+/* When collapsed on desktop, slide the rail out. */
 .ym-shell[data-sidebar-collapsed='true'] .ym-sidebar {
   transform: translateX(-100%);
   transition: transform var(--ym-dur) var(--ym-ease-out);
@@ -288,7 +291,7 @@
   min-height: 32px;
   padding: 0 8px;
   border-radius: var(--ym-radius);
-  color: var(--ym-ink);
+  color: var(--ym-muted);
   font-size: 14px;
   font-weight: 510;
   text-align: left;
@@ -303,9 +306,10 @@
     color: var(--ym-ink);
   }
 }
+/* Active = colour only (Linear is restrained): accent text/icon, no fill. */
 .ym-nav-link[data-active='true'] {
-  background: var(--ym-accent-subtle);
-  color: var(--ym-accent-subtle-fg);
+  background: transparent;
+  color: var(--ym-accent);
 }
 .ym-nav-icon {
   display: inline-flex;
@@ -313,7 +317,7 @@
   color: var(--ym-faint);
 }
 .ym-nav-icon svg { width: 16px; height: 16px; }
-.ym-nav-link[data-active='true'] .ym-nav-icon { color: var(--ym-accent-subtle-fg); }
+.ym-nav-link[data-active='true'] .ym-nav-icon { color: var(--ym-accent); }
 .ym-nav-label {
   flex: 1;
   overflow: hidden;
@@ -362,9 +366,8 @@
 }
 .ym-footer-icon { width: 16px; height: 16px; flex: none; }
 
-/* ---------- Top bar --------------------------------------- */
+/* ---------- Top bar (sticky inside main) ------------------ */
 .ym-topbar {
-  grid-area: header;
   position: sticky;
   top: 0;
   z-index: 30;
@@ -523,88 +526,101 @@
   .ym-cta:hover { background: var(--ym-accent-hover); }
 }
 
-/* ---------- TOC restyle (Linear "On this page") ----------- */
-/* Fumadocs' default TOC hides itself below 1280px (`max-xl:hidden`) and sets
-   its width only at `xl`. We want it from >1024px and sized to our column, so
-   force display + width here. The active item gets a Linear left border in
-   place of the default sliding "thumb" SVG, which we hide. */
+/* ---------- TOC — "On this page" (Linear sliding indicator) -
+   Mechanism: ONE continuous 2px vertical track runs the full height of the
+   list (`.ym-toc-list::before`), colour --ym-line. A SINGLE 2px --ym-accent
+   bar (`.ym-toc-indicator`) is absolutely positioned inside the list and
+   SLIDES (transform translateY + height) to the active item's box. No
+   per-item borders anywhere. */
 .ym-shell #nd-toc {
-  grid-area: toc;
-  display: flex !important;
-  flex-direction: column;
+  flex: 0 0 var(--ym-toc-w);
   width: var(--ym-toc-w);
-  --fd-toc-width: var(--ym-toc-w);
-  /* Sticky pinned rail — overrides Fumadocs' `top-(--fd-docs-row-1)` (which
-     resolves to auto in our grid). `align-self: start` lets the grid item be
-     shorter than its row so sticky has somewhere to stick. */
+  display: flex;
+  flex-direction: column;
   position: sticky;
   top: 96px;
   align-self: start;
   max-height: calc(100vh - 96px - 24px);
-  height: auto;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-block: 0 16px;
-  padding-inline: 16px 24px;
+  padding-block: 32px 16px;
 }
 .ym-shell #nd-toc h3 {
   color: var(--ym-muted);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0;
-  margin-bottom: 4px;
+  margin: 0 0 12px;
 }
-/* Per-item left border; replaces the thumb indicator. Fumadocs sets the
-   per-depth indent via inline `padding-inline-start` (20px h2 / 32px h3),
-   which we keep for nesting; we just add the rail + type. */
+/* The list: relatively-positioned host for the track + sliding indicator. */
+.ym-toc-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-left: 16px;
+}
+/* Continuous 2px track, full height of the list. */
+.ym-toc-list::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background: var(--ym-line);
+  border-radius: 2px;
+}
+/* The single sliding accent bar (positioned/animated from JS). */
+.ym-toc-indicator {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 2px;
+  height: 0;
+  border-radius: 2px;
+  background: var(--ym-accent);
+  transform: translateY(0);
+  opacity: 0;
+  transition:
+    transform var(--ym-dur) var(--ym-ease-out),
+    height var(--ym-dur) var(--ym-ease-out),
+    opacity var(--ym-dur-fast) ease;
+  pointer-events: none;
+}
+.ym-toc-indicator[data-visible='true'] { opacity: 1; }
+/* TOC links — no borders; muted → ink active; nested h3 indented. */
 .ym-shell #nd-toc a {
   display: block;
-  border-left: 2px solid var(--ym-line-subtle);
   margin-bottom: 8px;
   font-size: 13px;
   line-height: 19.5px;
   color: var(--ym-muted);
-  transition: color var(--ym-dur-fast) ease,
-    border-color var(--ym-dur-fast) ease;
+  transition: color var(--ym-dur-fast) ease;
 }
-.ym-shell #nd-toc a[data-active='true'] {
-  border-left-color: var(--ym-accent);
-  color: var(--ym-ink);
+.ym-shell #nd-toc a[data-depth='3'] { padding-inline-start: 12px; }
+.ym-shell #nd-toc a[data-active='true'] { color: var(--ym-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .ym-shell #nd-toc a:hover { color: var(--ym-ink); }
 }
-/* Hide the default sliding thumb SVG (we use per-item borders instead). */
-.ym-shell #nd-toc svg[aria-hidden] {
-  display: none;
-}
-/* Suppress the built-in mobile TOC popover bar everywhere — we expose the TOC
-   only as the right rail (>1024px) and intentionally omit it below that, per
-   the Linear spec. This also avoids a double-TOC between 1024–1280px where the
-   popover would otherwise still show. */
-.ym-shell [data-toc-popover] {
-  display: none !important;
+
+/* Reduced motion — the indicator snaps, no transform/height tween. */
+@media (prefers-reduced-motion: reduce) {
+  .ym-toc-indicator {
+    transition: opacity var(--ym-dur-fast) linear !important;
+  }
 }
 
 /* ---------- Mobile drawer + responsive -------------------- */
 .ym-drawer-overlay { display: none; }
 
-/* ≤1024px — hide the right TOC, widen content. */
+/* ≤1024px — hide the right TOC; the article fills the wrapper. */
 @media (max-width: 1024px) {
-  .ym-shell {
-    grid-template-columns: var(--ym-sidebar-col, var(--ym-sidebar-w)) minmax(0, 1fr);
-    grid-template-areas:
-      'sidebar header'
-      'sidebar main';
-  }
   .ym-shell #nd-toc { display: none !important; }
 }
 
 /* ≤768px — sidebar becomes a slide-in drawer behind a hamburger. */
 @media (max-width: 768px) {
-  .ym-shell {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      'header'
-      'main';
-  }
+  .ym-main { margin-left: 0; }
+  .ym-shell[data-sidebar-collapsed='true'] .ym-main { margin-left: 0; }
 
   .ym-topbar { padding-inline: 12px; gap: 8px; }
   .ym-topbar-burger { display: inline-flex; }
@@ -666,3 +682,234 @@
 
 /* No horizontal scroll at narrow widths. */
 .ym-shell { overflow-x: clip; }
+
+/* ---------- Prev/next (bottom of article) ----------------- */
+.ym-prevnext {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 80px;
+}
+.ym-prevnext-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius);
+  color: var(--ym-ink);
+  text-decoration: none;
+  transition:
+    border-color var(--ym-dur-fast) ease,
+    transform var(--ym-dur-fast) var(--ym-ease-out),
+    box-shadow var(--ym-dur-fast) ease;
+}
+.ym-prevnext-next { justify-content: flex-end; text-align: right; }
+@media (hover: hover) and (pointer: fine) {
+  .ym-prevnext-link:hover {
+    border-color: var(--ym-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--ym-shadow-card);
+  }
+}
+.ym-prevnext-icon { width: 16px; height: 16px; flex: none; color: var(--ym-muted); }
+.ym-prevnext-cap { display: block; font-size: 12px; color: var(--ym-muted); margin-bottom: 2px; }
+.ym-prevnext-title { display: block; font-size: 14px; font-weight: 510; color: var(--ym-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ym-prevnext-link { transition: border-color var(--ym-dur-fast) ease !important; }
+  .ym-prevnext-link:hover { transform: none; }
+}
+
+/* ---------- ⌘K search palette ----------------------------- */
+.ym-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 15vh 16px 16px;
+  background: rgba(15, 14, 30, 0.5);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  animation: ym-search-overlay-in var(--ym-dur) var(--ym-ease-out);
+}
+.ym-search-modal {
+  width: min(640px, 100%);
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: var(--ym-bg);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-lg);
+  box-shadow: var(--ym-shadow-popover);
+  overflow: hidden;
+  transform-origin: center top;
+  animation: ym-search-modal-in var(--ym-dur) var(--ym-ease-out);
+}
+
+/* Input row */
+.ym-search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  height: 56px;
+  flex: none;
+  border-bottom: 1px solid var(--ym-line);
+}
+.ym-search-input-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--ym-muted);
+  flex: none;
+}
+.ym-search-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: -0.011em;
+  color: var(--ym-ink);
+}
+.ym-search-input::placeholder { color: var(--ym-muted); }
+.ym-search-esc {
+  flex: none;
+  font-size: 11px;
+  font-weight: 510;
+  line-height: 1;
+  color: var(--ym-muted);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+  padding: 4px 7px;
+}
+
+/* Results list */
+.ym-search-results {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ym-search-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--ym-radius);
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+.ym-search-result-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+.ym-search-crumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ym-muted);
+  min-width: 0;
+}
+.ym-search-crumb-sep { color: var(--ym-muted); opacity: 0.6; }
+.ym-search-title {
+  font-size: 14px;
+  font-weight: 510;
+  color: var(--ym-ink);
+  letter-spacing: -0.006em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ym-search-snippet {
+  font-size: 12.5px;
+  line-height: 18px;
+  color: var(--ym-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ym-search-mark {
+  background: transparent;
+  color: var(--ym-accent);
+  font-weight: 510;
+}
+.ym-search-enter {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--ym-muted);
+  opacity: 0;
+  transition: opacity var(--ym-dur-fast) ease;
+}
+
+/* Active / hover row — color + subtle neutral fill (no layout shift) */
+.ym-search-result[data-active='true'] {
+  background: var(--ym-bg-hover);
+}
+.ym-search-result[data-active='true'] .ym-search-title { color: var(--ym-accent); }
+.ym-search-result[data-active='true'] .ym-search-enter { opacity: 1; }
+
+/* Empty + hint states */
+.ym-search-empty {
+  padding: 28px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ym-muted);
+}
+.ym-search-hint {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 10px 16px;
+  border-top: 1px solid var(--ym-line);
+  font-size: 12px;
+  color: var(--ym-muted);
+}
+.ym-search-hint span { display: inline-flex; align-items: center; gap: 5px; }
+.ym-search-hint kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 11px;
+  font-family: inherit;
+  color: var(--ym-muted);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+}
+
+@keyframes ym-search-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ym-search-modal-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-search-overlay,
+  .ym-search-modal {
+    animation: ym-search-overlay-in var(--ym-dur-fast) ease;
+  }
+  .ym-search-modal { transform: none; }
+}

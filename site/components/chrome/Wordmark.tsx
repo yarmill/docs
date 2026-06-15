@@ -1,4 +1,4 @@
-import Link from 'fumadocs-core/link';
+import Link from 'next/link';
 
 /**
  * Yarmill wordmark, links to the docs home (`/en`). Both theme variants are

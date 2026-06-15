@@ -1,5 +1,6 @@
-import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
+import Link from 'next/link';
+import type { AnchorHTMLAttributes } from 'react';
 
 import './components/mdx/mdx.css';
 
@@ -16,31 +17,53 @@ import { Accordion, AccordionGroup } from '@/components/mdx/Accordion';
 import { PageMeta } from '@/components/mdx/PageMeta';
 import { TutorialMeta } from '@/components/mdx/TutorialMeta';
 
-// Provide every custom MDX component GLOBALLY so content compiles without
-// per-file imports.
-export function getMDXComponents(components?: MDXComponents): MDXComponents {
+/**
+ * Base `<a>` override: root-relative and hash links route through next/link
+ * (client navigation); external links open in a new tab. Styling is handled by
+ * the `#nd-page` prose rules in chrome.css.
+ */
+function MdxLink({ href = '', ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) {
+  const internal = href.startsWith('/') || href.startsWith('#');
+  if (internal) return <Link href={href} {...props} />;
+  return <a href={href} target="_blank" rel="noreferrer noopener" {...props} />;
+}
+
+const baseComponents: MDXComponents = {
+  a: MdxLink,
+};
+
+const customComponents = {
+  Card,
+  CardGroup,
+  Columns,
+  Steps,
+  Step,
+  Info,
+  Tip,
+  Warning,
+  Note,
+  Check,
+  Update,
+  Frame,
+  ParamField,
+  Tabs,
+  Tab,
+  Accordion,
+  AccordionGroup,
+  PageMeta,
+  TutorialMeta,
+} as const;
+
+/**
+ * The global MDX component map (no Fumadocs). Provided to `compileMDX` so MDX
+ * content compiles without per-file imports. `overrides` lets the page route
+ * inject anything page-specific.
+ */
+export function getMDXComponents(overrides?: MDXComponents): MDXComponents {
   return {
-    ...defaultMdxComponents,
-    Card,
-    CardGroup,
-    Columns,
-    Steps,
-    Step,
-    Info,
-    Tip,
-    Warning,
-    Note,
-    Check,
-    Update,
-    Frame,
-    ParamField,
-    Tabs,
-    Tab,
-    Accordion,
-    AccordionGroup,
-    PageMeta,
-    TutorialMeta,
-    ...components,
+    ...baseComponents,
+    ...customComponents,
+    ...overrides,
   };
 }
 

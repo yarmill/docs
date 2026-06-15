@@ -5,7 +5,7 @@ import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 /**
- * Light/dark toggle wired to next-themes (Fumadocs' provider). Respects the
+ * Light/dark toggle wired to next-themes (our ThemeProvider). Respects the
  * system default until the user picks; flipping between the two resolved themes
  * on click. We gate rendering of the icon on mount to avoid a hydration
  * mismatch (server can't know the resolved theme), but reserve the box so there

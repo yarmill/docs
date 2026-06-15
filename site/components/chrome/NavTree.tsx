@@ -1,47 +1,39 @@
 'use client';
 
-import Link from 'fumadocs-core/link';
-import { usePathname } from 'fumadocs-core/framework';
-import type * as PageTree from 'fumadocs-core/page-tree';
-import { useSidebar } from 'fumadocs-ui/layouts/docs/slots/sidebar';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { groupContainsPath, groupTree, type NavGroup } from './tree';
+import type { NavGroup, NavTree as NavTreeData } from '@/lib/nav';
+import { Icon } from '@/lib/icons';
+import { useSidebar } from './SidebarContext';
 
 /**
- * Linear-style navigation: collapsible groups (from meta.json `---Label---`
- * separators) over page links with their resolved lucide icons. The group
- * holding the active page starts expanded; collapse state is local and
- * keyboard-operable. Active links carry the brand-subtle tint; the active link
- * scrolls into view on mount.
+ * Linear-style navigation: collapsible groups from the NavTree (built in
+ * lib/nav.ts from .scaffold-ref/docs.json). The group holding the active page
+ * starts expanded; collapse state is local and keyboard-operable. Active links
+ * carry the brand accent; the active link scrolls into view on mount.
  */
-export function NavTree({ tree }: { tree: PageTree.Node[] }) {
+export function NavTree({ tree }: { tree: NavTreeData }) {
   const pathname = usePathname();
-  const groups = groupTree(tree);
-
   return (
     <nav className="ym-nav" aria-label="Documentation">
-      {groups.map((group) =>
-        group.label ? (
-          <NavGroupBlock key={group.id} group={group} pathname={pathname} />
-        ) : (
-          <ul key={group.id} className="ym-nav-list ym-nav-list--top">
-            {group.items.map((item, i) => (
-              <NavNode key={i} node={item} pathname={pathname} />
-            ))}
-          </ul>
-        ),
-      )}
+      {tree.groups.map((group) => (
+        <NavGroupBlock key={group.label} group={group} pathname={pathname} />
+      ))}
     </nav>
   );
 }
 
-function NavGroupBlock({ group, pathname }: { group: NavGroup; pathname: string }) {
-  const containsActive = groupContainsPath(group.items, pathname);
-  const [open, setOpen] = useState(containsActive);
-  const contentId = `${group.id}-content`;
+function groupContains(group: NavGroup, pathname: string): boolean {
+  return group.pages.some((p) => p.url === pathname);
+}
 
-  // Re-expand the group if navigation moves the active page into it.
+function NavGroupBlock({ group, pathname }: { group: NavGroup; pathname: string }) {
+  const containsActive = groupContains(group, pathname);
+  const [open, setOpen] = useState(containsActive);
+  const contentId = `grp-${group.label.replace(/\s+/g, '-')}`;
+
   useEffect(() => {
     if (containsActive) setOpen(true);
   }, [containsActive]);
@@ -59,27 +51,25 @@ function NavGroupBlock({ group, pathname }: { group: NavGroup; pathname: string 
         <ChevronDown className="ym-nav-group-chevron" aria-hidden />
       </button>
       <ul id={contentId} className="ym-nav-list" hidden={!open}>
-        {group.items.map((item, i) => (
-          <NavNode key={i} node={item} pathname={pathname} />
+        {group.pages.map((page) => (
+          <NavLink key={page.url} page={page} pathname={pathname} />
         ))}
       </ul>
     </div>
   );
 }
 
-function NavNode({ node, pathname }: { node: PageTree.Node; pathname: string }) {
-  if (node.type === 'page') return <NavLink node={node} pathname={pathname} />;
-  if (node.type === 'folder') return <NavFolder node={node} pathname={pathname} />;
-  return null;
-}
-
-function NavLink({ node, pathname }: { node: PageTree.Item; pathname: string }) {
-  const { setOpen, closeOnRedirect } = useSidebar();
-  const active = node.url === pathname;
+function NavLink({
+  page,
+  pathname,
+}: {
+  page: { title: string; url: string; icon?: string };
+  pathname: string;
+}) {
+  const { setOpen } = useSidebar();
+  const active = page.url === pathname;
   const ref = useRef<HTMLAnchorElement>(null);
 
-  // Bring the active link into view when the sidebar first renders (e.g. deep
-  // link, page reload) without animating the scroll under reduced motion.
   useEffect(() => {
     if (active) ref.current?.scrollIntoView({ block: 'nearest' });
   }, [active]);
@@ -88,54 +78,19 @@ function NavLink({ node, pathname }: { node: PageTree.Item; pathname: string }) 
     <li>
       <Link
         ref={ref}
-        href={node.url}
+        href={page.url}
         className="ym-nav-link"
         data-active={active}
         aria-current={active ? 'page' : undefined}
-        // Close the mobile drawer on navigation (no-op on desktop where the
-        // sidebar is static); keep focus behaviour predictable.
-        onClick={() => {
-          closeOnRedirect.current = true;
-          setOpen(false);
-        }}
+        onClick={() => setOpen(false)}
       >
-        {node.icon ? <span className="ym-nav-icon" aria-hidden>{node.icon}</span> : null}
-        <span className="ym-nav-label">{node.name}</span>
+        {page.icon ? (
+          <span className="ym-nav-icon" aria-hidden>
+            <Icon name={page.icon} />
+          </span>
+        ) : null}
+        <span className="ym-nav-label">{page.title}</span>
       </Link>
-    </li>
-  );
-}
-
-function NavFolder({ node, pathname }: { node: PageTree.Folder; pathname: string }) {
-  const containsActive =
-    node.index?.url === pathname ||
-    node.children.some((c) => c.type === 'page' && c.url === pathname);
-  const [open, setOpen] = useState(node.defaultOpen ?? containsActive);
-  const contentId = `fld-${node.$id}-content`;
-
-  useEffect(() => {
-    if (containsActive) setOpen(true);
-  }, [containsActive]);
-
-  return (
-    <li className="ym-nav-folder" data-open={open}>
-      <button
-        type="button"
-        className="ym-nav-link ym-nav-folder-trigger"
-        aria-expanded={open}
-        aria-controls={contentId}
-        onClick={() => setOpen((v) => !v)}
-      >
-        {node.icon ? <span className="ym-nav-icon" aria-hidden>{node.icon}</span> : null}
-        <span className="ym-nav-label">{node.name}</span>
-        <ChevronDown className="ym-nav-folder-chevron" aria-hidden />
-      </button>
-      <ul id={contentId} className="ym-nav-list ym-nav-list--nested" hidden={!open}>
-        {node.index ? <NavLink node={node.index} pathname={pathname} /> : null}
-        {node.children.map((c, i) => (
-          <NavNode key={i} node={c} pathname={pathname} />
-        ))}
-      </ul>
     </li>
   );
 }

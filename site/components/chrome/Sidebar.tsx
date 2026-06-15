@@ -1,29 +1,22 @@
 'use client';
 
-import Link from 'fumadocs-core/link';
-import { useSearchContext } from 'fumadocs-ui/contexts/search';
-import { useTreeContext } from 'fumadocs-ui/contexts/tree';
-import { useSidebar } from 'fumadocs-ui/layouts/docs/slots/sidebar';
-import { History, LifeBuoy, Search } from 'lucide-react';
+import Link from 'next/link';
+import { History, LifeBuoy } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import type { NavTree as NavTreeData } from '@/lib/nav';
 import { NavTree } from './NavTree';
+import { useSidebar } from './SidebarContext';
+import { SearchTrigger } from './Search';
 
 /**
- * Linear-style left sidebar (280px, full height). On desktop it is a static
- * column; on mobile (≤768px) it becomes a slide-in drawer driven by the
- * Fumadocs `useSidebar` `open` state, with a dimmed overlay, body-scroll-lock,
- * focus trap and ESC-to-close. We render our own chrome but keep Fumadocs'
- * sidebar state so the mobile hamburger (in the top bar) and link-close-on-
- * navigate continue to work.
+ * Left sidebar (280px, full height). Desktop: static column. Mobile (≤768px):
+ * slide-in drawer driven by SidebarContext `open`, with a dimmed overlay,
+ * body-scroll-lock, focus trap and ESC-to-close.
  */
-export function Sidebar() {
-  const { root } = useTreeContext();
-  const tree = root.children;
-  const { open, setOpen, collapsed } = useSidebar();
-  const { setOpenSearch } = useSearchContext();
+export function Sidebar({ tree }: { tree: NavTreeData }) {
+  const { open, setOpen } = useSidebar();
   const asideRef = useRef<HTMLElement>(null);
 
-  // Drawer behaviours — only active while open on mobile.
   useEffect(() => {
     if (!open) return;
     const aside = asideRef.current;
@@ -32,7 +25,6 @@ export function Sidebar() {
     const previouslyFocused = document.activeElement as HTMLElement | null;
     document.body.style.overflow = 'hidden';
 
-    // Move focus into the drawer.
     const focusables = () =>
       Array.from(
         aside.querySelectorAll<HTMLElement>(
@@ -71,7 +63,6 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Dimmed overlay — mobile only, fades with the drawer. */}
       <div
         className="ym-drawer-overlay"
         data-open={open}
@@ -84,12 +75,8 @@ export function Sidebar() {
         id="ym-sidebar"
         className="ym-sidebar"
         data-open={open}
-        data-collapsed={collapsed}
-        // Hide from AT + tab order when off-canvas on mobile is handled via CSS
-        // (the overlay sits above the page); the drawer itself stays operable.
         aria-label="Sidebar"
       >
-        {/* Header: symbol logo + "Docs" on the left, search circle on the right. */}
         <div className="ym-sidebar-top">
           <Link href="/en" className="ym-sidebar-brand" aria-label="Yarmill docs — home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -108,27 +95,18 @@ export function Sidebar() {
             />
             <span className="ym-sidebar-docs">Docs</span>
           </Link>
-          <button
-            type="button"
-            className="ym-icon-btn ym-sidebar-search-btn"
-            aria-label="Search documentation"
-            onClick={() => setOpenSearch(true)}
-          >
-            <Search aria-hidden />
-          </button>
+          <SearchTrigger className="ym-icon-btn ym-sidebar-search-btn" />
         </div>
 
         <div className="ym-sidebar-scroll">
           <NavTree tree={tree} />
         </div>
 
-        {/* Pinned footer (Linear's Docs/Support row equivalent) */}
         <div className="ym-sidebar-footer">
           <Link href="/en/changelog/changelog" className="ym-footer-link">
             <History className="ym-footer-icon" aria-hidden />
             <span>Changelog</span>
           </Link>
-          {/* TODO target: confirm the right support destination */}
           <a href="mailto:support@yarmill.com" className="ym-footer-link">
             <LifeBuoy className="ym-footer-icon" aria-hidden />
             <span>Contact support</span>

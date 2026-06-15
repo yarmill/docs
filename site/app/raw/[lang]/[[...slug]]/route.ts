@@ -1,26 +1,21 @@
-import { source } from '@/lib/source';
-import { i18n } from '@/lib/i18n';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { getAllPages, getPage } from '@/lib/content';
 
 /**
  * Raw source route — serves a page's underlying Markdown/MDX so the "Copy page"
- * and "View as Markdown" controls have real source to work with (not scraped
- * DOM text). Statically generated for every page × locale, so it works on
- * static hosting and on Netlify's Node runtime alike.
+ * and "View as Markdown" controls have real source to work with. Statically
+ * generated for every page, using our own content layer (no Fumadocs).
  *
  *   /raw/en/plan/goals  ->  content/docs/plan/goals.mdx
  *   /raw/en             ->  content/docs/index.mdx
  *
- * Served as text/plain so it renders inline in a browser tab rather than
- * triggering a download.
+ * Served as text/plain so it renders inline in a browser tab.
  */
 const CONTENT_ROOT = path.join(process.cwd(), 'content/docs');
 
 export function generateStaticParams() {
-  return i18n.languages.flatMap((lang) =>
-    source.getPages(lang).map((page) => ({ lang, slug: page.slugs })),
-  );
+  return getAllPages().map((p) => ({ lang: p.lang, slug: p.slugs }));
 }
 
 async function readSource(slugs: string[]): Promise<string | null> {
@@ -30,7 +25,6 @@ async function readSource(slugs: string[]): Promise<string | null> {
     : ['index.mdx', 'index.md'];
   for (const rel of candidates) {
     const abs = path.join(CONTENT_ROOT, rel);
-    // Guard against path traversal via crafted slugs.
     if (!abs.startsWith(CONTENT_ROOT)) continue;
     try {
       return await fs.readFile(abs, 'utf8');
@@ -45,10 +39,9 @@ export async function GET(
   _req: Request,
   { params }: { params: Promise<{ lang: string; slug?: string[] }> },
 ) {
-  const { lang, slug = [] } = await params;
+  const { slug = [] } = await params;
 
-  // Only serve paths that map to a real page in the tree.
-  if (!source.getPage(slug, lang)) {
+  if (!getPage(slug)) {
     return new Response('Not found', { status: 404 });
   }
 

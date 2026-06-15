@@ -1,43 +1,56 @@
 'use client';
 
-import { createContext, useContext, type ReactNode } from 'react';
-import {
-  Accordion as FdAccordion,
-  Accordions as FdAccordions,
-} from 'fumadocs-ui/components/accordion';
-
-/** True when rendered inside an <AccordionGroup>. */
-const InGroup = createContext(false);
+import { createContext, useContext, useId, type ReactNode } from 'react';
+import * as RadixAccordion from '@radix-ui/react-accordion';
+import { ChevronRight } from 'lucide-react';
 
 /**
- * Single disclosure row. Wraps Fumadocs' Accordion (Radix-backed: smooth
- * height+opacity animation, keyboard toggle, hairline separators). A bare
- * `<Accordion>` used outside a group self-wraps in a group so it never
- * crashes the Radix root requirement.
+ * Disclosure rows, reimplemented on @radix-ui/react-accordion (no fumadocs-ui).
+ * Keeps the same author-facing API:
+ *   <Accordion title="…">…</Accordion>            single row (self-wraps)
+ *   <AccordionGroup><Accordion …/>…</AccordionGroup>
+ *
+ * Radix gives keyboard toggle, roving focus and the data-state hooks the CSS
+ * animation uses. Styling stays on `--ym-*` tokens (see mdx.css §7).
  */
-export function Accordion({
-  title,
-  children,
-}: {
-  title?: ReactNode;
-  children?: ReactNode;
-}) {
+
+const InGroup = createContext(false);
+
+function AccordionItem({ title, children }: { title?: ReactNode; children?: ReactNode }) {
+  const value = useId();
+  return (
+    <RadixAccordion.Item className="ym-accordion-item" value={value}>
+      <RadixAccordion.Header className="ym-accordion-header">
+        <RadixAccordion.Trigger className="ym-accordion-trigger">
+          <ChevronRight className="ym-accordion-chevron" aria-hidden />
+          <span className="ym-accordion-title">{title}</span>
+        </RadixAccordion.Trigger>
+      </RadixAccordion.Header>
+      <RadixAccordion.Content className="ym-accordion-content">
+        <div className="ym-accordion-body">{children}</div>
+      </RadixAccordion.Content>
+    </RadixAccordion.Item>
+  );
+}
+
+export function Accordion({ title, children }: { title?: ReactNode; children?: ReactNode }) {
   const inGroup = useContext(InGroup);
-  const item = <FdAccordion title={title ?? ''}>{children}</FdAccordion>;
+  const item = <AccordionItem title={title}>{children}</AccordionItem>;
+  // A bare <Accordion> outside a group still needs a Radix root.
   if (inGroup) return item;
   return (
-    <FdAccordions type="single" className="ym-accordion-group">
+    <RadixAccordion.Root type="single" collapsible className="ym-accordion-group">
       {item}
-    </FdAccordions>
+    </RadixAccordion.Root>
   );
 }
 
 export function AccordionGroup({ children }: { children?: ReactNode }) {
   return (
     <InGroup.Provider value={true}>
-      <FdAccordions type="single" className="ym-accordion-group">
+      <RadixAccordion.Root type="single" collapsible className="ym-accordion-group">
         {children}
-      </FdAccordions>
+      </RadixAccordion.Root>
     </InGroup.Provider>
   );
 }
