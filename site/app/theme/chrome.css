@@ -87,15 +87,20 @@
   color: var(--ym-ink);
   margin-top: 32px;
 }
-/* Lead/description paragraph under H1 (a direct #nd-page child, outside
-   .prose) stays muted and a touch larger than body. */
+/* Lead/description paragraph under H1 — normal body text (same size/colour as
+   the prose body; not an oversized subtitle). */
 .ym-shell #nd-page > p.ym-lead {
-  font-size: 18px;
-  line-height: 28px;
+  font-size: var(--ym-body-size);
+  line-height: var(--ym-body-lh);
   font-weight: 400;
-  letter-spacing: -0.012em;
-  color: var(--ym-muted);
-  margin-top: 8px;
+  letter-spacing: var(--ym-body-ls);
+  color: var(--ym-prose-text);
+  margin-top: 12px;
+}
+/* Anchor jumps (TOC clicks) land below the sticky 64px top bar, not under it —
+   so clicking any heading, including the last, scrolls it into clear view. */
+.ym-shell #nd-page :is(h1, h2, h3, h4) {
+  scroll-margin-top: 88px;
 }
 /* Inline prose links: underlined, inherit text colour, hover → accent. */
 .ym-shell #nd-page .prose a:not(.not-prose):not([class*='ym-']) {
@@ -185,18 +190,28 @@
   height: var(--ym-topbar-h);
   padding-inline: 16px;
   flex: none;
+  /* Hairline that lines up with the top bar's bottom border so the divider
+     runs continuously across the sidebar header and the main top bar. */
+  border-bottom: 1px solid var(--ym-line);
 }
-/* Symbol logo + "Docs" wordmark. */
+/* Symbol logo · vertical divider · "Docs" wordmark. */
 .ym-sidebar-brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   min-width: 0;
 }
 .ym-sidebar-symbol {
-  height: 22px;
+  height: 24px;
   width: auto;
   display: block;
+}
+/* Thin vertical divider between the logo mark and "Docs" (Linear). */
+.ym-sidebar-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--ym-line);
+  flex: none;
 }
 .ym-symbol-dark { display: none; }
 .dark .ym-symbol-light { display: none; }

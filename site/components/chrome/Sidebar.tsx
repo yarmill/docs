@@ -93,6 +93,7 @@ export function Sidebar({ tree }: { tree: NavTreeData }) {
               className="ym-sidebar-symbol ym-symbol-dark"
               height={22}
             />
+            <span className="ym-sidebar-divider" aria-hidden />
             <span className="ym-sidebar-docs">Docs</span>
           </Link>
           <SearchTrigger className="ym-icon-btn ym-sidebar-search-btn" />

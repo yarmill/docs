@@ -40,6 +40,16 @@ export function Toc({ items }: { items: TocItem[] }) {
 
     const LINE = 120; // px below viewport top — the "active" reading line.
     const compute = () => {
+      // At/near the bottom of the page the last section is active even if its
+      // heading never reaches the reading line (short final sections can't
+      // scroll far enough) — otherwise the last TOC item can never light up.
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 4;
+      if (atBottom) {
+        setActiveId(headings[headings.length - 1].id);
+        return;
+      }
       let current = headings[0].id;
       for (const h of headings) {
         if (h.getBoundingClientRect().top - LINE <= 1) current = h.id;
