@@ -1,13 +1,12 @@
 'use client';
 
 import Link from 'fumadocs-core/link';
+import { useSearchContext } from 'fumadocs-ui/contexts/search';
 import { useTreeContext } from 'fumadocs-ui/contexts/tree';
 import { useSidebar } from 'fumadocs-ui/layouts/docs/slots/sidebar';
-import { History, LifeBuoy, PanelLeftClose } from 'lucide-react';
+import { History, LifeBuoy, Search } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { NavTree } from './NavTree';
-import { SearchTrigger } from './SearchTrigger';
-import { Wordmark } from './Wordmark';
 
 /**
  * Linear-style left sidebar (280px, full height). On desktop it is a static
@@ -20,7 +19,8 @@ import { Wordmark } from './Wordmark';
 export function Sidebar() {
   const { root } = useTreeContext();
   const tree = root.children;
-  const { open, setOpen, collapsed, setCollapsed } = useSidebar();
+  const { open, setOpen, collapsed } = useSidebar();
+  const { setOpenSearch } = useSearchContext();
   const asideRef = useRef<HTMLElement>(null);
 
   // Drawer behaviours — only active while open on mobile.
@@ -89,21 +89,33 @@ export function Sidebar() {
         // (the overlay sits above the page); the drawer itself stays operable.
         aria-label="Sidebar"
       >
-        {/* Top row: wordmark + desktop collapse toggle */}
+        {/* Header: symbol logo + "Docs" on the left, search circle on the right. */}
         <div className="ym-sidebar-top">
-          <Wordmark className="ym-sidebar-wordmark" />
+          <Link href="/en" className="ym-sidebar-brand" aria-label="Yarmill docs — home">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/yarmill-icon-blue.png"
+              alt="Yarmill"
+              className="ym-sidebar-symbol ym-symbol-light"
+              height={22}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/yarmill-icon-white.png"
+              alt="Yarmill"
+              className="ym-sidebar-symbol ym-symbol-dark"
+              height={22}
+            />
+            <span className="ym-sidebar-docs">Docs</span>
+          </Link>
           <button
             type="button"
-            className="ym-icon-btn ym-sidebar-collapse"
-            aria-label="Collapse sidebar"
-            onClick={() => setCollapsed((v) => !v)}
+            className="ym-icon-btn ym-sidebar-search-btn"
+            aria-label="Search documentation"
+            onClick={() => setOpenSearch(true)}
           >
-            <PanelLeftClose aria-hidden />
+            <Search aria-hidden />
           </button>
-        </div>
-
-        <div className="ym-sidebar-search">
-          <SearchTrigger />
         </div>
 
         <div className="ym-sidebar-scroll">

@@ -45,6 +45,10 @@
   --ym-radius: 8px;
   --ym-radius-lg: 10px;
   --ym-radius-xl: 16px;
+  --ym-radius-pill: 9999px;  /* Linear pills + icon-button circles */
+
+  /* Body copy sits a touch softer than headings (Linear). */
+  --ym-prose-text: #383747;
 
   /* ---- motion (Emil Kowalski rules) ---- */
   --ym-ease-out: cubic-bezier(0, 0, 0.2, 1);
@@ -65,7 +69,7 @@
   --ym-toc-w: 250px;
   --ym-topbar-h: 64px;
   --ym-content-max: 1024px;
-  --ym-prose-max: 720px;
+  --ym-prose-max: 650px;
 
   /* ============================================================
      Fumadocs token remap (LIGHT)
@@ -110,6 +114,8 @@
   --ym-bg-subtle: #1f1e31;    /* Black — cards / code */
   --ym-bg-hover: #2f2e45;     /* Neutral-Darker — hover */
 
+  --ym-prose-text: #c9cad6;   /* softer-than-ink body copy */
+
   --ym-accent: #9e93fb;            /* Brand-56 */
   --ym-accent-hover: #c3bcfd;      /* Brand-35 */
   --ym-accent-on: #151525;
@@ -152,10 +158,10 @@
    block owns base prose + headings only.
    ============================================================ */
 :root {
-  --ym-h1-size: 40px;  --ym-h1-lh: 44px;  --ym-h1-ls: -0.022em; --ym-h1-w: 590;
+  --ym-h1-size: 32px;  --ym-h1-lh: 36px;  --ym-h1-ls: -0.022em; --ym-h1-w: 590;
   --ym-h2-size: 24px;  --ym-h2-lh: 32px;  --ym-h2-ls: -0.012em; --ym-h2-w: 590;
-  --ym-h3-size: 18px;  --ym-h3-lh: 26px;  --ym-h3-ls: -0.006em; --ym-h3-w: 590;
-  --ym-body-size: 16px; --ym-body-lh: 1.65;
+  --ym-h3-size: 16px;  --ym-h3-lh: 24px;  --ym-h3-ls: -0.011em; --ym-h3-w: 590;
+  --ym-body-size: 15px; --ym-body-lh: 24px; --ym-body-ls: -0.011em;
   --ym-small-size: 14px;
 }
 

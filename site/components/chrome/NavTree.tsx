@@ -4,7 +4,7 @@ import Link from 'fumadocs-core/link';
 import { usePathname } from 'fumadocs-core/framework';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { useSidebar } from 'fumadocs-ui/layouts/docs/slots/sidebar';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { groupContainsPath, groupTree, type NavGroup } from './tree';
 
@@ -55,8 +55,8 @@ function NavGroupBlock({ group, pathname }: { group: NavGroup; pathname: string 
         aria-controls={contentId}
         onClick={() => setOpen((v) => !v)}
       >
-        <ChevronRight className="ym-nav-group-chevron" aria-hidden />
-        <span>{group.label}</span>
+        <span className="ym-nav-group-name">{group.label}</span>
+        <ChevronDown className="ym-nav-group-chevron" aria-hidden />
       </button>
       <ul id={contentId} className="ym-nav-list" hidden={!open}>
         {group.items.map((item, i) => (
