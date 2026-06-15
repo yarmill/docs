@@ -4,63 +4,167 @@ description: "Close the loop: readiness, load, recovery, wellness, and the seaso
 icon: "chart-line"
 ---
 
-Analytics is where the diary pays off: the data from Plan, Reality, devices, wellness,
-and Medical comes back as answers — is the load right, is the athlete recovering, did
-the season go to plan.
+Analytics is where the diary pays off: the data from Plan, Reality, connected devices,
+wellness, and Medical comes back as answers — is the load right, is the athlete
+recovering, did the season go to plan.
 
 **For:** coaches (athletes see their own) · **Where:** Web app
 
-<Info>Which analyses you see depends on your team's setup. If an analysis is missing,
-it's usually one of three things: the module isn't enabled, you don't have permission,
-or the input data isn't being collected — ask your administrator.</Info>
+<Info>Analytics is a **set of reports configured per team and sport**. Which reports you
+see depends on your setup, and if one is missing it's usually one of three things: the
+module isn't enabled, you don't have permission, or the input data isn't being collected
+— ask your administrator.</Info>
+
+{/* TODO(yarmill): add screenshot — ANALYTICS dropdown showing the configured report set. */}
+
+## How a report works
+
+Open the **Analytics** menu and pick a report. Each report opens into the same layout:
+
+- a left **report picker** listing the report and its **variants** (some reports ship more
+  than one — for example a base group dashboard and a sport-testers variant), each with a
+  one-line description;
+- a **Filters** block beneath it — a **Group** dropdown on group reports, or **Athlete**,
+  **Season**, and **Trend detail** (for example *Months*) on a per-athlete trend report;
+- a top bar with a **week or period navigator** (for example ◀ 15/06 – 21/06/2026 ▶), and
+  top-right an **email/share** control and an **export/download** dropdown;
+- then the **report body** — KPI cards, charts, grids, and tables.
+
+The exact report list, variants, KPIs, and chart set vary per instance. Two report shapes
+are described below; your team may have more.
 
 ## Team daily readiness
 
-The morning overview: one row per athlete combining **health status** (from the
-Medical module), **device recovery** (for example WHOOP recovery or Garmin Body
-Battery), and **wellness** — with notes from athletes surfaced. Open it before
-training; it tells you who needs a conversation.
+The morning team overview. It combines, for each athlete, the **health status** from the
+[Medical module](/en/medical/medical-module) (the training-limitation flag), **device
+recovery** (for example WHOOP recovery or Garmin Body Battery), and **wellness** from the
+[wellness questionnaire](/en/reality/wellness-questionnaire) — with notes from athletes
+surfaced. Open it before training; it tells you who needs a conversation.
+
+The device columns depend on what each athlete has connected — see
+[Integrations](/en/platform/integrations).
+
+{/* TODO(yarmill): add screenshot — Team daily readiness with rows populated. */}
 
 ## Weekly dashboard
 
-The coach's operational view of who actually filled their diary for a week or
-microcycle, at a glance. Each athlete-day carries a symbol — completed as planned, an
-athlete note to address, an unfilled diary, a day off, or an illness/injury flag — so
-you can see where to follow up. Turn on the **weekly email** to get the dashboard in
-your inbox every Monday morning.
+The coach's operational view of the group's week — who's at risk, who logged, who didn't,
+read at a glance. Pick the **Group** and step through weeks with the navigator. The report
+has three parts:
 
-{/* TODO(yarmill): verify the exact symbol legend and the email toggle location in the current UI. */}
+- **Group status** — a row of stat cards counting the athletes who logged at least one day
+  of illness or injury, the **comments** athletes wrote during the week, and the
+  **skippers** who didn't fill in Reality.
+- **Weekly overview of athletes** — a grid of athletes (rows) against **Mon–Sun**, showing
+  each day's training content with a legend link, plus a parallel **RPE** grid.
+- **Comments table** — the week's notes by **day, athlete, note, and edited** date.
+
+Where it's enabled, turn on the **weekly email** to get the dashboard in your inbox every
+Monday morning.
+
+{/* TODO(yarmill): verify the exact symbol legend behind the legend link, and the email toggle location/label. */}
+{/* TODO(yarmill): add screenshot — Weekly dashboard with the status cards, athletes-by-day grid, and comments table. */}
 
 ## Training load analysis
 
 The load trend for an athlete, with plan and reality side by side — **dashed for plan,
 solid for reality**, plus a short **forecast** from the planned week. The load metric is
-configurable per team (for example **sRPE**, **TRIMP**, or total training time). The
-centerpiece is **ACWR** — the acute:chronic workload ratio, average load over the last
+configured per team (for example **sRPE**, **TRIMP**, or total training time).
+
+The centrepiece is **ACWR** — the acute:chronic workload ratio, average load over the last
 7 days divided by the last 28 — charted against the **0.8–1.3 safe zone**: below it
-undertraining, above it elevated injury risk. Summary cards show the current ACWR, time
-in the safe zone, and the last week's load and recovery totals.
+undertraining, above it elevated injury risk. Summary cards show the current ACWR, time in
+the safe zone, and the last week's load and recovery totals. Illness and injury periods
+from the [Medical module](/en/medical/medical-module) are shaded into the chart background
+so trends are read in health context.
 
-## Recovery indicators analysis
+{/* TODO(yarmill): verify how this analysis is reached in your instance (inside Load and readiness vs a separate report), the exact summary-card set, and behaviour with fewer than 28 days of data. */}
+{/* TODO(yarmill): add screenshot — load trend (dashed plan, solid reality, forecast) and the ACWR safe-zone chart. */}
 
-Recovery metrics from connected devices over the selected period — for example
-**resting heart rate** with its 7-day rolling average against the period average,
-with illness and injury periods highlighted. Needs a device the athlete sleeps with.
+## Recovery indicators
+
+Recovery metrics from connected devices over the selected period — for example **resting
+heart rate**, **HRV**, **sleep duration**, **skin-temperature deviation**, or a device
+readiness score — each typically shown with a **7-day rolling average** against the period
+average, with illness and injury periods shaded in. This analysis needs a device the
+athlete sleeps with; without one it's empty. See
+[Integrations](/en/platform/integrations) for connecting devices.
+
+{/* TODO(yarmill): verify the exact entry point in your instance and the metric set shown. */}
+{/* TODO(yarmill): add screenshot — recovery metric over time with rolling average and illness shading. */}
 
 ## Wellness
 
-The wellness questionnaire, trended: each metric (sleep, stress, mood, soreness,
-fatigue) for the selected day and across a **four-week trend**, per athlete or for the
-group, with the athletes' notes alongside.
+The [wellness questionnaire](/en/reality/wellness-questionnaire), trended: each metric (for
+example sleep, stress, mood, soreness, fatigue) for the selected day and across a **four-week
+trend**, per athlete or for the group, with the athletes' notes alongside. The exact items
+depend on how your team configured the questionnaire.
+
+{/* TODO(yarmill): verify the exact entry point in your instance. */}
+
+## Training data analysis
+
+Per-athlete training-volume trends — plan vs reality, by activity and intensity — pulling in
+data from [Reality](/en/reality/training-log) and connected devices. Set the **Athlete**,
+**Season**, and **Trend detail** (for example *Months*). The report opens with:
+
+- a **KPI cards** row — for example training days, sessions, days of illness and health
+  restrictions, exercise hours, and total distance;
+- **monthly trend charts** — training days and restriction days, exercise hours (evidence vs
+  plan), and an exercise-hours decomposition by activity;
+- a **sport-tester data** section — *time by activities* and *time by heart-rate zones* from
+  Apple, Garmin, Polar, and Suunto devices;
+- a **WHOOP data** section — *time by activities* and *time by HR zones*.
+
+Device sections are empty for athletes without that device connected. The exact KPIs and
+charts vary per instance and sport.
+
+{/* TODO(yarmill): verify the "- sporttesters" dashboard variant differences and the HR-zone-time calculation note. */}
+{/* TODO(yarmill): add screenshot — KPI cards row plus the monthly trend charts and a device section. */}
 
 ## Season review
 
 The annual cycle evaluation: **annual plan, plan, and reality** side by side, month by
-month, with season totals — switchable to a multi-season **Trend** view, and
-exportable. This is where "did we train what we intended?" gets a factual answer.
+month, with season totals — switchable to a multi-season **Trend** view, and exportable to
+XLS or PDF. This is where "did we train what we intended?" gets a factual answer for the
+season debrief. It draws on the plan from [Plan](/en/plan/plan) against logged
+[Reality](/en/reality/training-log), and connects to season
+[results](/en/results/results).
+
+{/* TODO(yarmill): verify the Report ATP body live — whether volume, intensities, goals, results, and the coach's written evaluation are inline or separate from the month-by-month table. */}
+{/* TODO(yarmill): add screenshot — annual plan / plan / reality by month with totals. */}
 
 ## Yollanda on charts
 
 Charts and summary cards carry a small Yollanda icon — select it for a plain-language
-description and interpretation of what the chart shows. Insights are computed
-overnight, so a newly enabled chart explains itself from the next day.
+description and interpretation of what the chart shows. Insights are computed overnight, so
+a newly enabled chart explains itself from the next day. For natural-language questions over
+the same data, see [Yollanda](/en/platform/yollanda).
+
+## What athletes see
+
+Athletes get a **reduced, self-scoped subset** of the reports — their own data only, with no
+group dashboards and no athlete switcher. In the demo instance the athlete menu shows
+**three** reports (load and readiness, training data analysis, and the season review); the
+group **Weekly dashboard** is absent. The athlete's training data analysis is the same report
+with the **Filters scoped to themselves** (Athlete = self, Season, Trend detail) and the same
+KPI cards and monthly trend charts, including device data. Coaches keep the full group reports
+and team variants. Which reports and charts appear still depends on team setup.
+
+## How it connects
+
+Analytics is the output layer — it reads from every collection module and produces no source
+data of its own:
+
+- The **training limitation** from the [Medical module](/en/medical/medical-module) drives
+  Team daily readiness, and illness/injury periods are shaded into the load and recovery
+  charts.
+- Planned load from [Plan](/en/plan/plan) is the **dashed** line and the forecast; logged
+  [Reality](/en/reality/training-log) and sport-watch data are the **solid** reality line,
+  the time-in-zones, and the recovery metrics.
+- The [wellness questionnaire](/en/reality/wellness-questionnaire) feeds the Wellness trend
+  and the readiness wellness column.
+- [Integrations](/en/platform/integrations) connect the devices behind recovery and
+  sport-tester/WHOOP data.
+- [Yollanda](/en/platform/yollanda) explains the charts and answers questions over the same
+  data.

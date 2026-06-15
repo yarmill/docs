@@ -4,34 +4,52 @@ description: "Yarmill's built-in AI — ask about your data or how Yarmill works
 icon: "wand-magic-sparkles"
 ---
 
-Yollanda is Yarmill's AI layer. Unlike a generic chatbot, she has the training data in
-front of her — so "compare April and May," "when did the left shoulder last come up,"
-or "how do I publish a plan" all get answers grounded in your Yarmill.
+Yollanda is Yarmill's conversational AI assistant. Unlike a generic chatbot, she has your
+training data in front of her — so an answer is drawn from your Yarmill, scoped to what you
+can already see, rather than from the open internet.
 
-**For:** everyone (you see only data you have access to) · **Where:** Web app
+**For:** coaches and athletes · **Where:** Web app
+
+<Info>Yollanda is in **beta**. As the chat itself puts it, "even Yollanda sometimes gropes in
+the fog" — verify important information before acting on it.</Info>
 
 ## Ask Yollanda
 
-Select the **Yollanda icon** in the header to open the chat, and ask in your own
-language — she answers in the language you ask. Two kinds of questions work well:
+Select the **blush Yollanda icon** in the header to open the chat. It opens full-screen with a
+**"Just ask Yollanda"** input at the bottom; the empty state introduces her ("I am one big
+ear.") alongside the reminder to verify what she tells you. Ask questions about your training
+data in natural language, in whatever language you prefer — she answers in the language you
+ask. Two kinds of questions work well:
 
-- **About the data**: summaries, comparisons, finding things in the diary
+- **About the data**: summaries, comparisons, and finding things in the diary
   ("summary of last season," "bench-press kilos from the last gym session").
-- **About Yarmill**: where to click and how workflows work.
+- **About Yarmill**: where to click and how workflows work ("how do I publish a plan").
 
-Athletes can ask only about their own data; coaches about any athlete they can access.
+Yollanda only ever sees the data you already have access to — she never widens your
+permissions. Athletes can ask about their own data; coaches about any athlete they can access.
 
-<Info>Yollanda is in **beta** — as the chat itself puts it, "even Yollanda sometimes
-gropes in the fog." Verify important information before acting on it.</Info>
+{/* TODO(yarmill): verify answer format, capabilities, and whether answers cite the underlying records — not tested live (spec §6.2, §14). */}
+
+{/* TODO(yarmill): add screenshot of the chat overlay (empty state + input) once the answer surface is captured live. */}
 
 ## Insights on charts
 
-In Analytics, charts and summary cards carry a small Yollanda icon. Select it for a
-plain-language description of the chart and an interpretation of what it means.
-Insights are computed overnight, so they appear the day after a chart is enabled.
+In [Analytics](/en/analytics/analytics), charts and summary cards carry a small Yollanda icon.
+Select it for a plain-language description of the chart and an interpretation of what it means.
+Insights are computed overnight, so they appear the day after a chart is enabled, and not every
+chart carries one.
 
 ## What she can't do
 
-Yollanda answers; she doesn't change your instance, log entries for you, or pass
-messages to the Yarmill team. For configuration changes or feedback, talk to your
-administrator or write to `hello@yarmill.com`.
+Yollanda answers; she doesn't change your instance, log entries for you, or pass messages to
+the Yarmill team. For configuration changes or feedback, talk to your administrator or write to
+`hello@yarmill.com`.
+
+## How it connects
+
+- Data answers are grounded in your [Training Log](/en/reality/training-log) and
+  [Plan](/en/plan/plan) — the diary and plan made queryable in your own words.
+- Chart **Insights** read your [Analytics](/en/analytics/analytics) charts and turn them into
+  plain language.
+- The **Document check** in [Goals](/en/plan/goals) is another Yollanda surface — it scores a
+  goal against your team's methodology.

@@ -1,12 +1,15 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "willow",
+  "theme": "almond",
   "name": "Yarmill",
   "description": "Yarmill Docs & Guidelines",
   "colors": {
     "primary": "#513FF8",
     "light": "#513FF8",
     "dark": "#9E93FB"
+  },
+  "fonts": {
+    "family": "Inter"
   },
   "favicon": "/favicon.svg",
   "navigation": {
