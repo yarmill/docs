@@ -1,0 +1,172 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "almond",
+  "name": "Yarmill",
+  "description": "Yarmill Docs & Guidelines",
+  "colors": {
+    "primary": "#513FF8",
+    "light": "#513FF8",
+    "dark": "#9E93FB"
+  },
+  "fonts": {
+    "family": "Inter"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "languages": [
+      {
+        "language": "en",
+        "anchors": [
+          {
+            "anchor": "Guides",
+            "icon": "book-open-cover",
+            "groups": [
+              {
+                "group": "Get started",
+                "pages": [
+                  "en/index",
+                  "en/get-started/concepts",
+                  "en/get-started/for-coaches",
+                  "en/get-started/for-athletes",
+                  "en/get-started/for-admins"
+                ]
+              },
+              {
+                "group": "Plan",
+                "pages": [
+                  "en/plan/plan",
+                  "en/plan/season-calendar",
+                  "en/plan/goals"
+                ]
+              },
+              {
+                "group": "Reality",
+                "pages": [
+                  "en/reality/training-log",
+                  "en/reality/attendance",
+                  "en/reality/wellness-questionnaire"
+                ]
+              },
+              {
+                "group": "Results",
+                "pages": ["en/results/results"]
+              },
+              {
+                "group": "Analytics",
+                "pages": ["en/analytics/analytics"]
+              },
+              {
+                "group": "Medical",
+                "pages": ["en/medical/medical-module"]
+              },
+              {
+                "group": "Platform",
+                "pages": [
+                  "en/platform/athlete-profile",
+                  "en/platform/integrations",
+                  "en/platform/files",
+                  "en/platform/yollanda"
+                ]
+              },
+              {
+                "group": "Sport-specific",
+                "pages": [
+                  {
+                    "group": "Biathlon",
+                    "icon": "person-rifle",
+                    "pages": ["en/sport-specific/biathlon/shooting"]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Tutorials",
+            "icon": "graduation-cap",
+            "groups": [
+              {
+                "group": "Tutorials",
+                "pages": [
+                  "en/tutorials/index",
+                  "en/tutorials/plan-first-week",
+                  "en/tutorials/set-season-goals",
+                  "en/tutorials/log-a-session",
+                  "en/tutorials/read-readiness",
+                  "en/tutorials/connect-a-watch"
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "API Reference",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "API Documentation",
+                "pages": ["en/api-reference/introduction"]
+              },
+              {
+                "group": "Endpoints",
+                "openapi": "en/api-reference/openapi.json",
+                "pages": [
+                  "POST /api/data/upload",
+                  "POST /api/ping"
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Changelog",
+            "icon": "hand-peace",
+            "groups": [
+              {
+                "group": "Changelog",
+                "pages": ["en/changelog/changelog"]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@yarmill.com"
+      },
+      {
+        "label": "Legal Terms",
+        "href": "https://yarmill.com/en/legal-terms"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Go to Yarmill",
+      "href": "https://yarmill.com/en/sign-in"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "website": "https://yarmill.com",
+      "linkedin": "https://www.linkedin.com/company/yarmill",
+      "instagram": "https://www.instagram.com/yarmillapp/"
+    }
+  }
+}

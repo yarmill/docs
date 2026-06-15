@@ -1,0 +1,105 @@
+---
+title: "Training Log"
+description: "The daily diary of what actually happened — in your own words and your own numbers."
+icon: "book-open"
+---
+
+Record what actually happened — the same day, while it's fresh.
+
+
+<PageMeta audience="Athletes & coaches" where="Web & mobile" />
+
+{/* TODO(yarmill): hero visual — Week view with a filled day card (text side, data grid, Total column, RPE AM/PM) */}
+
+<Info>Yarmill is configured per team, so the phases, data rows, extra fields, and ⋯-menu items you see may differ from this guide.</Info>
+
+Reality is your training diary. It mirrors the [Plan](/en/plan/plan)'s structure — text on the left, numbers on the right — plus the personal details only the athlete can supply, like effort, mood, and how a session felt. It's the raw material the rest of Yarmill reads, so logging it honestly and on time is what makes your [Analytics](/en/analytics/analytics) answer back.
+
+## A day in the diary
+
+Open **Reality** and use the chevrons and date-range pill to move between weeks. Two tabs — **Week** (the working diary) and **Goals** — sit at the top. Each day is a card split into a text side and a data side.
+
+<ParamField path="Text side (left)">
+  A rich-text box for each configured training **phase** — for example a *daily goal*,
+  *morning*, and *afternoon* — where you describe the session in your own words. Supports
+  bullets, highlights, emojis, and links. Phase labels are configured per team.
+</ParamField>
+
+<ParamField path="Data side (right)">
+  One row per configured metric (minutes, km, reps, load, zones, shots…), laid out across
+  the week as **Mon–Sun** plus a **Total** column. Numbers are entered manually; calculated
+  rows — such as weekly sums and the Total column — render greyed and locked. The row set
+  mirrors your Plan and is configured per team.
+</ParamField>
+
+<ParamField path="RPE (effort, 0–10)">
+  Rate of perceived exertion on the day card, with **separate AM and PM inputs**. RPE is one
+  of the extra fields the coach doesn't plan but you record yourself; whether it appears is
+  configured per team.
+</ParamField>
+
+The left/right structure, the **Mon–Sun + Total** grid, and auto-save work the same everywhere. Everything auto-saves as you type — there's no Save button, and a green "data saved" indicator confirms each entry.
+
+<Tip>Log the same day you train. Entries written a week later are guesses, and guesses degrade your analytics — that's why the logging window is limited. On the **web** you can backfill within a configured window (often around a week); the **mobile app logs the current day only**, so write it on the day.</Tip>
+
+## The day's ⋯ menu
+
+The **⋯** menu on each day holds the extras and attachments your team configures. A typical set includes:
+
+<ParamField path="Notes">Free-text notes on the day.</ParamField>
+<ParamField path="Feeling scale">How the session or day felt.</ParamField>
+<ParamField path="Heart rate">A heart-rate value for the day.</ParamField>
+<ParamField path="Mental condition">A mood/readiness value. On some teams it also appears inline on the day card.</ParamField>
+<ParamField path="Attachment">Add a photo, video, or file. Attachments are also collected in [Files](/en/platform/files).</ParamField>
+<ParamField path="Sport-specific log">For example a *training shooting* log for biathlon, which feeds the shooting analyses.</ParamField>
+<ParamField path="Import plan">Copy the planned day into Reality (see below).</ParamField>
+<ParamField path="Wellness questionnaire">A daily self-report that feeds the team's readiness picture. See [Wellness questionnaire](/en/reality/wellness-questionnaire).</ParamField>
+
+The exact contents vary per instance, so treat this as an example rather than a fixed list.
+
+## Import plan
+
+**Import plan** copies the planned day — text and numbers — into Reality with one click, ready for you to edit into what really happened. It's the quick way to log a complex session without re-keying it.
+
+Import plan is configured per team: it can be switched off, and it has a days-back limit. Some federations turn it off deliberately, preferring athletes describe training in their own words.
+
+## Watch data
+
+If you've [connected a device](/en/platform/integrations), recorded activities — and sleep and recovery, if you wear it at night — appear automatically under the day. Beneath the RPE AM/PM controls, a **sleep & recovery** block shows what the device measured. You see this block on your own day card; coaches see it when reading your week.
+
+The metrics are read directly from the device, and the exact set depends on the connected brand. Typical fields:
+
+<ParamField path="Sleep">Total sleep time, with bedtime, wake time, and sleep sub-metrics.</ParamField>
+<ParamField path="Resting HR">Your resting heart rate for the night.</ParamField>
+<ParamField path="HRV">Heart-rate variability.</ParamField>
+<ParamField path="Recovery metric (brand-specific)">An **Oura** device surfaces a **Readiness score**; a **WHOOP** device surfaces a **Recovery %**.</ParamField>
+<ParamField path="Device">A label showing which wearable the data came from.</ParamField>
+
+<Note>Connected-device data is **read-only inside Yarmill** — to change or delete it, use the provider's app. Watch data complements the diary; it doesn't replace filling in the text and data sides, and the manual numbers are still what your coach analyses.</Note>
+
+## What athletes see
+
+You own your own Reality. You see **only your own** diary — no group selector or athlete list — and you fill the text side, the data side, the extra fields, and the ⋯-menu extras yourself. You can't edit the coach's Plan, and you can't change imported device data inside Yarmill.
+
+On **mobile** you log the current day; richer backfill and some extras live on the web. To self-log an extra — wellness, a feeling scale, an attachment — open the day's **⋯** menu, pick the item, and fill it inline; it auto-saves.
+
+## Coaches in Reality
+
+Coaches open a group and select an athlete from the left sidebar list to read that person's diary day by day and compare it against the plan. Reality is per athlete — you pick a person, not the whole group.
+
+With write permission, a coach can comment on a note, attach video, or log entries on the athlete's behalf. Whether a coach can write is permission-gated and configured per team. For squads that don't self-log, a coach can also fill Reality from [Attendance](/en/reality/attendance) — but only for present athletes, and never for athletes who keep their own diary.
+
+## How it connects
+
+Reality is the primary input the rest of Yarmill reads:
+
+- **Import plan** and the shared left/right structure let you compare what happened against the
+  [Plan](/en/plan/plan) directly.
+- [Attendance](/en/reality/attendance) can copy the planned week into Reality for athletes
+  marked present that day.
+- Connected wearables import activities and sleep/recovery into the day. See
+  [device connections](/en/platform/integrations).
+- Every Reality attachment is collected in [Files](/en/platform/files) with tags and a date
+  that jumps back to its place in the log.
+- [Analytics](/en/analytics/analytics) reads Reality for training-load and ACWR trends,
+  recovery and wellness indicators, the coach Weekly Dashboard, and the season review.

@@ -1,0 +1,452 @@
+/* ============================================================
+   Yarmill Docs — MDX content components
+   Linear-docs feel, Yarmill brand. Consumes --ym-* tokens only
+   (defined in app/theme/tokens.css) so dark mode flips for free.
+   Owned by the MDX phase; imported once from mdx-components.tsx.
+   ============================================================ */
+
+/* ---- shared focus ring (Emil: 2px brand, visible only on keyboard) ---- */
+.ym-card-link:focus-visible,
+.ym-tab-trigger:focus-visible,
+.ym-accordion summary:focus-visible {
+  outline: 2px solid var(--ym-accent);
+  outline-offset: 2px;
+  border-radius: var(--ym-radius);
+}
+
+/* ============================================================
+   1. Callouts
+   ============================================================ */
+.ym-callout {
+  display: flex;
+  gap: 12px;
+  margin: 1.25rem 0;
+  padding: 14px 16px;
+  border: 1px solid var(--ym-callout-line, var(--ym-line));
+  border-radius: var(--ym-radius-lg);
+  background: var(--ym-callout-bg, var(--ym-bg-subtle));
+  color: var(--ym-ink);
+  font-size: var(--ym-small-size, 14px);
+  line-height: 1.6;
+}
+.ym-callout-icon {
+  flex: none;
+  display: inline-flex;
+  margin-top: 1px;
+  color: var(--ym-callout-fg, var(--ym-muted));
+}
+.ym-callout-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.ym-callout-body {
+  min-width: 0;
+}
+/* tighten prose inside callouts */
+.ym-callout-body > :first-child { margin-top: 0; }
+.ym-callout-body > :last-child { margin-bottom: 0; }
+.ym-callout-body p { margin: 0.4em 0; }
+
+.ym-callout-info {
+  --ym-callout-bg: var(--ym-info-bg);
+  --ym-callout-line: var(--ym-info-line);
+  --ym-callout-fg: var(--ym-info);
+}
+.ym-callout-tip {
+  --ym-callout-bg: var(--ym-tip-bg);
+  --ym-callout-line: var(--ym-tip-line);
+  --ym-callout-fg: var(--ym-tip);
+}
+.ym-callout-warning {
+  --ym-callout-bg: var(--ym-warn-bg);
+  --ym-callout-line: var(--ym-warn-line);
+  --ym-callout-fg: var(--ym-warn);
+}
+.ym-callout-note {
+  --ym-callout-bg: var(--ym-bg-subtle);
+  --ym-callout-line: var(--ym-line);
+  --ym-callout-fg: var(--ym-muted);
+}
+.ym-callout-check {
+  --ym-callout-bg: var(--ym-check-bg);
+  --ym-callout-line: var(--ym-check-line);
+  --ym-callout-fg: var(--ym-check);
+}
+
+/* ============================================================
+   2. Card + CardGroup
+   ============================================================ */
+.ym-cardgroup {
+  display: grid;
+  grid-template-columns: repeat(var(--ym-cols, 2), minmax(0, 1fr));
+  gap: 16px;
+  margin: 1.5rem 0;
+}
+@media (max-width: 640px) {
+  .ym-cardgroup { grid-template-columns: 1fr; }
+}
+
+.ym-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 20px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-lg);
+  background: var(--ym-bg);
+  box-shadow: var(--ym-shadow-card);
+}
+.ym-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 4px;
+  border-radius: var(--ym-radius);
+  background: var(--ym-accent-subtle);
+  color: var(--ym-accent-subtle-fg);
+}
+.ym-card-icon svg { width: 19px; height: 19px; }
+.ym-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 590;
+  letter-spacing: -0.006em;
+  color: var(--ym-ink);
+}
+.ym-card-arrow {
+  flex: none;
+  display: inline-flex;
+  color: var(--ym-faint);
+  opacity: 0;
+  transform: translateX(-2px);
+  transition: opacity var(--ym-dur) var(--ym-ease-out),
+    transform var(--ym-dur) var(--ym-ease-out),
+    color var(--ym-dur) var(--ym-ease-out);
+}
+.ym-card-arrow svg { width: 15px; height: 15px; }
+.ym-card-body {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ym-muted);
+}
+.ym-card-body > :first-child { margin-top: 0; }
+.ym-card-body > :last-child { margin-bottom: 0; }
+
+/* linked card */
+.ym-card-link {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  border-radius: var(--ym-radius-lg);
+}
+.ym-card-link .ym-card {
+  transition: border-color var(--ym-dur) var(--ym-ease-out),
+    box-shadow var(--ym-dur) var(--ym-ease-out),
+    transform var(--ym-dur) var(--ym-ease-out);
+}
+@media (hover: hover) {
+  .ym-card-link:hover .ym-card {
+    border-color: var(--ym-accent);
+    box-shadow: var(--ym-shadow-popover);
+    transform: translateY(-1px);
+  }
+  .ym-card-link:hover .ym-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--ym-accent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-card-link:hover .ym-card { transform: none; }
+}
+
+/* ============================================================
+   3. Steps + Step
+   ============================================================ */
+.ym-steps {
+  margin: 1.5rem 0;
+  padding-left: 14px;
+  counter-reset: ym-step;
+}
+.ym-step {
+  position: relative;
+  padding-left: 30px;
+  padding-bottom: 24px;
+  border-left: 1px solid var(--ym-line);
+}
+.ym-step:last-child {
+  padding-bottom: 4px;
+  border-left-color: transparent;
+}
+.ym-step::before {
+  counter-increment: ym-step;
+  content: counter(ym-step);
+  position: absolute;
+  left: -13px;
+  top: -2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--ym-accent);
+  color: var(--ym-accent-on);
+  font-size: 12.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 4px var(--ym-bg);
+}
+.ym-step-title {
+  margin-bottom: 4px;
+  padding-top: 1px;
+  font-size: 16px;
+  font-weight: 590;
+  letter-spacing: -0.006em;
+  color: var(--ym-ink);
+}
+.ym-step-body { color: var(--ym-ink); }
+.ym-step-body > :first-child { margin-top: 0; }
+.ym-step-body > :last-child { margin-bottom: 0; }
+
+/* ============================================================
+   4. Frame
+   ============================================================ */
+.ym-frame {
+  margin: 1.75rem 0;
+}
+.ym-frame-media {
+  overflow: hidden;
+  padding: 8px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-lg);
+  background: var(--ym-bg-subtle);
+  box-shadow: var(--ym-shadow-card);
+}
+.ym-frame-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--ym-radius);
+}
+.ym-frame-caption {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ym-muted);
+}
+
+/* ============================================================
+   5. ParamField
+   ============================================================ */
+.ym-paramfield {
+  padding: 14px 0;
+  border-top: 1px solid var(--ym-line);
+}
+.ym-paramfield:last-of-type {
+  border-bottom: 1px solid var(--ym-line);
+}
+.ym-paramfield-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ym-paramfield-name {
+  font-family: var(--ym-font-mono, ui-monospace, "JetBrains Mono", "SF Mono",
+    Menlo, monospace);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ym-ink);
+  background: none;
+  padding: 0;
+}
+.ym-paramfield-type {
+  font-size: 12.5px;
+  color: var(--ym-muted);
+}
+.ym-paramfield-required {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 1px 7px;
+  border-radius: 999px;
+  color: var(--ym-danger);
+  background: var(--ym-danger-bg);
+  border: 1px solid var(--ym-danger-line);
+}
+.ym-paramfield-default {
+  font-size: 12.5px;
+  color: var(--ym-muted);
+}
+.ym-paramfield-default code {
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: var(--ym-radius-sm);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  color: var(--ym-ink);
+}
+.ym-paramfield-body {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ym-muted);
+}
+.ym-paramfield-body > :first-child { margin-top: 0; }
+.ym-paramfield-body > :last-child { margin-bottom: 0; }
+
+/* ============================================================
+   6. Tabs (wraps Fumadocs Tabs)
+   ============================================================ */
+.ym-tabs {
+  margin: 1.5rem 0;
+}
+.ym-tabs [role="tablist"] {
+  gap: 4px;
+  border-bottom: 1px solid var(--ym-line);
+}
+.ym-tab-trigger {
+  position: relative;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ym-muted);
+  background: none;
+  border: none;
+  border-radius: var(--ym-radius-sm) var(--ym-radius-sm) 0 0;
+  cursor: pointer;
+  transition: color var(--ym-dur) var(--ym-ease-out);
+}
+.ym-tab-trigger::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ym-accent);
+  opacity: 0;
+  transition: opacity var(--ym-dur) var(--ym-ease-out);
+}
+@media (hover: hover) {
+  .ym-tab-trigger:hover { color: var(--ym-ink); }
+}
+.ym-tab-trigger[data-state="active"] {
+  color: var(--ym-ink);
+}
+.ym-tab-trigger[data-state="active"]::after { opacity: 1; }
+.ym-tabs [role="tabpanel"] {
+  padding-top: 14px;
+}
+
+/* ============================================================
+   7. Accordion (wraps Fumadocs Accordions)
+   ============================================================ */
+.ym-accordion-group {
+  margin: 1.5rem 0;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-lg);
+  overflow: hidden;
+}
+.ym-accordion-group > * + * {
+  border-top: 1px solid var(--ym-line);
+}
+
+/* ============================================================
+   8. Update (changelog entry)
+   ============================================================ */
+.ym-update {
+  position: relative;
+  padding-left: 28px;
+  padding-bottom: 28px;
+  border-left: 1px solid var(--ym-line);
+}
+.ym-update:last-child {
+  padding-bottom: 0;
+}
+.ym-update::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--ym-accent);
+  box-shadow: 0 0 0 4px var(--ym-bg);
+}
+.ym-update-label {
+  margin-bottom: 10px;
+  font-family: var(--ym-font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ym-muted);
+}
+.ym-update-desc {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: var(--ym-muted);
+}
+.ym-update-body > :first-child { margin-top: 0; }
+.ym-update-body > :last-child { margin-bottom: 0; }
+
+/* ============================================================
+   9. Columns
+   ============================================================ */
+.ym-columns {
+  display: grid;
+  grid-template-columns: repeat(var(--ym-cols, 2), minmax(0, 1fr));
+  gap: 24px;
+  margin: 1.5rem 0;
+}
+@media (max-width: 640px) {
+  .ym-columns { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   10. PageMeta + TutorialMeta
+   ============================================================ */
+.ym-pagemeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0.25rem 0 1.75rem;
+}
+.ym-pagemeta .pm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1.25;
+  white-space: nowrap;
+  border: 1px solid var(--ym-line);
+  background: var(--ym-bg-subtle);
+}
+.ym-pagemeta .pm-icon {
+  display: inline-flex;
+  color: var(--ym-accent);
+}
+.ym-pagemeta .pm-icon svg { width: 14px; height: 14px; }
+.ym-pagemeta .pm-label {
+  color: var(--ym-muted);
+}
+.ym-pagemeta .pm-value {
+  color: var(--ym-ink);
+}
+.ym-pagemeta .pm-module {
+  border-color: var(--ym-accent-ring);
+  background: var(--ym-accent-subtle);
+  color: var(--ym-accent-subtle-fg);
+}

@@ -1,0 +1,603 @@
+/* ============================================================
+   Yarmill Docs — app chrome (Linear-matched shell)
+   Owns ONLY the app shell: layout grid, sidebar, top bar, TOC
+   restyle, mobile drawer. Colour/type come from tokens.css; this
+   file consumes the --ym-* contract and never redefines it.
+   Motion follows the Emil Kowalski rules (ease-out entrances,
+   faster exits, transform/opacity only, reduced-motion fallbacks).
+   ============================================================ */
+
+/* ---------- Layout grid ----------------------------------- */
+/* Areas mirror Fumadocs' page primitives: `main` (article) and
+   `toc` are emitted by DocsPage; we add `header` + `sidebar`. */
+.ym-shell {
+  display: grid;
+  min-height: 100dvh;
+  grid-template-columns:
+    var(--ym-sidebar-col, var(--ym-sidebar-w))
+    minmax(0, 1fr)
+    var(--ym-toc-col, var(--ym-toc-w));
+  grid-template-rows: var(--ym-topbar-h) 1fr;
+  grid-template-areas:
+    'sidebar header header'
+    'sidebar main   toc';
+  --ym-sidebar-col: var(--ym-sidebar-w);
+  --ym-toc-col: var(--ym-toc-w);
+  background: var(--ym-bg);
+}
+
+/* Desktop sidebar collapse → animate the column to 0. */
+.ym-shell[data-sidebar-collapsed='true'] {
+  --ym-sidebar-col: 0px;
+}
+@media (min-width: 769px) {
+  .ym-shell {
+    transition: grid-template-columns var(--ym-dur) var(--ym-ease-out);
+  }
+}
+
+/* The DocsPage article centres itself; just give it room + a
+   measured prose column. (We do NOT touch prose typography.) */
+.ym-shell #nd-page {
+  max-width: var(--ym-content-max);
+  padding-inline: clamp(20px, 4vw, 56px);
+  padding-block: 40px 96px;
+}
+.ym-shell #nd-page > * {
+  max-width: var(--ym-prose-max);
+}
+/* Full-width pages (mode: wide) opt out of the prose cap. */
+.ym-shell #nd-page[data-full='true'] {
+  max-width: var(--ym-content-max);
+}
+.ym-shell #nd-page[data-full='true'] > * {
+  max-width: none;
+}
+
+/* ---------- Shared interactive primitives ----------------- */
+:where(.ym-shell, .ym-topbar, .ym-sidebar) button,
+:where(.ym-shell, .ym-topbar, .ym-sidebar) a {
+  touch-action: manipulation;
+}
+
+/* 2px brand focus-visible ring on everything interactive. */
+.ym-shell :focus-visible,
+.ym-topbar :focus-visible,
+.ym-sidebar :focus-visible,
+.ym-menu :focus-visible {
+  outline: 2px solid var(--ym-accent);
+  outline-offset: 2px;
+  border-radius: var(--ym-radius-sm);
+}
+
+.ym-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ym-radius-sm);
+  color: var(--ym-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease;
+}
+.ym-icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-icon-btn:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+
+/* ---------- Sidebar --------------------------------------- */
+.ym-sidebar {
+  grid-area: sidebar;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  width: var(--ym-sidebar-w);
+  background: var(--ym-bg-sidebar);
+  border-right: 1px solid var(--ym-line);
+  overflow: hidden;
+}
+/* When collapsed on desktop, slide the rail out of its 0-width column. */
+.ym-shell[data-sidebar-collapsed='true'] .ym-sidebar {
+  transform: translateX(-100%);
+  transition: transform var(--ym-dur) var(--ym-ease-out);
+}
+
+.ym-sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--ym-topbar-h);
+  padding-inline: 20px 12px;
+  flex: none;
+}
+.ym-wordmark {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+.ym-wordmark-dark { display: none; }
+.dark .ym-wordmark-light { display: none; }
+.dark .ym-wordmark-dark { display: block; }
+
+.ym-sidebar-search {
+  padding: 4px 12px 12px;
+  flex: none;
+}
+
+/* Linear search trigger */
+.ym-search-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding-inline: 10px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius);
+  background: var(--ym-bg);
+  color: var(--ym-faint);
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color var(--ym-dur-fast) ease,
+    background-color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-search-trigger:hover {
+    border-color: var(--ym-accent-ring);
+    background: var(--ym-bg-subtle);
+  }
+}
+.ym-search-icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.ym-search-label {
+  flex: 1;
+  text-align: left;
+}
+.ym-kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  height: 20px;
+  padding-inline: 6px;
+  border-radius: var(--ym-radius-sm);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  color: var(--ym-muted);
+  font-size: 11px;
+  font-family: var(--ym-font-sans);
+  line-height: 1;
+}
+
+/* Scrollable nav */
+.ym-sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 12px 16px;
+}
+/* Small, contained scrollbar (Emil: only customise inside elements). */
+.ym-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ym-line) transparent;
+}
+.ym-sidebar-scroll::-webkit-scrollbar { width: 8px; }
+.ym-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: var(--ym-line);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.ym-nav { display: flex; flex-direction: column; gap: 4px; }
+.ym-nav-group { display: flex; flex-direction: column; }
+.ym-nav-group-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 8px 6px;
+  margin-top: 8px;
+  color: var(--ym-muted);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+}
+.ym-nav-group-chevron {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  transition: transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-nav-group[data-open='true'] .ym-nav-group-chevron {
+  transform: rotate(90deg);
+}
+
+.ym-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.ym-nav-list--nested {
+  margin-left: 12px;
+  padding-left: 8px;
+  border-left: 1px solid var(--ym-line-subtle);
+}
+
+.ym-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 8px;
+  border-radius: var(--ym-radius-sm);
+  color: var(--ym-ink-2);
+  font-size: 14px;
+  font-weight: 450;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-nav-link:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+.ym-nav-link[data-active='true'] {
+  background: var(--ym-accent-subtle);
+  color: var(--ym-accent-subtle-fg);
+  font-weight: 500;
+}
+.ym-nav-icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--ym-faint);
+}
+.ym-nav-icon svg { width: 16px; height: 16px; }
+.ym-nav-link[data-active='true'] .ym-nav-icon { color: var(--ym-accent-subtle-fg); }
+.ym-nav-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ym-nav-folder-trigger { width: 100%; }
+.ym-nav-folder-chevron {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--ym-faint);
+  transition: transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-nav-folder[data-open='false'] .ym-nav-folder-chevron {
+  transform: rotate(-90deg);
+}
+
+/* Pinned footer */
+.ym-sidebar-footer {
+  flex: none;
+  padding: 10px 12px;
+  border-top: 1px solid var(--ym-line);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.ym-footer-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 32px;
+  padding: 6px 8px;
+  border-radius: var(--ym-radius-sm);
+  color: var(--ym-muted);
+  font-size: 13px;
+  transition: background-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-footer-link:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+.ym-footer-icon { width: 16px; height: 16px; flex: none; }
+
+.ym-sidebar-collapse { flex: none; }
+
+/* ---------- Top bar --------------------------------------- */
+.ym-topbar {
+  grid-area: header;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--ym-topbar-h);
+  padding-inline: 24px;
+  border-bottom: 1px solid var(--ym-line);
+  background: color-mix(in srgb, var(--ym-bg) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ym-topbar-burger,
+.ym-topbar-wordmark { display: none; }
+
+.ym-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  min-width: 0;
+}
+.ym-crumb-muted { color: var(--ym-muted); }
+.ym-crumb-sep { color: var(--ym-faint); }
+.ym-crumb-current {
+  color: var(--ym-ink);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ym-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Copy-page split button */
+.ym-split {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  height: 32px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius);
+  background: var(--ym-bg);
+}
+.ym-split-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 10px;
+  border-radius: var(--ym-radius) 0 0 var(--ym-radius);
+  color: var(--ym-ink);
+  font-size: 13px;
+  font-weight: 450;
+  cursor: pointer;
+  background: transparent;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+.ym-split-icon { width: 15px; height: 15px; }
+.ym-split-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  border-left: 1px solid var(--ym-line);
+  border-radius: 0 var(--ym-radius) var(--ym-radius) 0;
+  color: var(--ym-muted);
+  cursor: pointer;
+  background: transparent;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+.ym-split-chevron svg { width: 14px; height: 14px; }
+@media (hover: hover) and (pointer: fine) {
+  .ym-split-main:hover,
+  .ym-split-chevron:hover { background: var(--ym-bg-hover); }
+}
+
+/* Dropdown menu */
+.ym-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  min-width: 200px;
+  padding: 4px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius);
+  background: var(--ym-bg);
+  box-shadow: var(--ym-shadow-popover);
+  animation: ym-menu-in var(--ym-dur) var(--ym-ease-out);
+  transform-origin: top right;
+}
+@keyframes ym-menu-in {
+  from { opacity: 0; transform: scale(0.97) translateY(-2px); }
+  to { opacity: 1; transform: none; }
+}
+.ym-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--ym-radius-sm);
+  color: var(--ym-ink);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-menu-item:hover { background: var(--ym-bg-hover); }
+}
+.ym-menu-icon { width: 15px; height: 15px; color: var(--ym-muted); flex: none; }
+.ym-menu-sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--ym-line-subtle);
+}
+
+/* Primary CTA */
+.ym-cta {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding-inline: 14px;
+  border-radius: var(--ym-radius);
+  background: var(--ym-accent);
+  color: var(--ym-accent-on);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-cta:hover { background: var(--ym-accent-hover); }
+}
+
+/* ---------- TOC restyle (Linear "On this page") ----------- */
+/* Fumadocs' default TOC hides itself below 1280px (`max-xl:hidden`) and sets
+   its width only at `xl`. We want it from >1024px and sized to our column, so
+   force display + width here. The active item gets a Linear left border in
+   place of the default sliding "thumb" SVG, which we hide. */
+.ym-shell #nd-toc {
+  grid-area: toc;
+  display: flex !important;
+  width: var(--ym-toc-w);
+  --fd-toc-width: var(--ym-toc-w);
+  padding-block: 40px 16px;
+  padding-inline: 16px 24px;
+}
+.ym-shell #nd-toc h3 {
+  color: var(--ym-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+/* Per-item left border; replaces the thumb indicator. */
+.ym-shell #nd-toc a {
+  border-left: 2px solid var(--ym-line-subtle);
+  padding-left: 12px;
+  transition: color var(--ym-dur-fast) ease,
+    border-color var(--ym-dur-fast) ease;
+}
+.ym-shell #nd-toc a[data-active='true'] {
+  border-left-color: var(--ym-accent);
+  color: var(--ym-ink);
+}
+/* Hide the default sliding thumb SVG (we use per-item borders instead). */
+.ym-shell #nd-toc svg[aria-hidden] {
+  display: none;
+}
+/* Suppress the built-in mobile TOC popover bar everywhere — we expose the TOC
+   only as the right rail (>1024px) and intentionally omit it below that, per
+   the Linear spec. This also avoids a double-TOC between 1024–1280px where the
+   popover would otherwise still show. */
+.ym-shell [data-toc-popover] {
+  display: none !important;
+}
+
+/* ---------- Mobile drawer + responsive -------------------- */
+.ym-drawer-overlay { display: none; }
+
+/* ≤1024px — hide the right TOC, widen content. */
+@media (max-width: 1024px) {
+  .ym-shell {
+    grid-template-columns: var(--ym-sidebar-col, var(--ym-sidebar-w)) minmax(0, 1fr);
+    grid-template-areas:
+      'sidebar header'
+      'sidebar main';
+  }
+  .ym-shell #nd-toc { display: none !important; }
+}
+
+/* ≤768px — sidebar becomes a slide-in drawer behind a hamburger. */
+@media (max-width: 768px) {
+  .ym-shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'header'
+      'main';
+  }
+
+  .ym-topbar { padding-inline: 12px; gap: 8px; }
+  .ym-topbar-burger { display: inline-flex; }
+  .ym-topbar-wordmark { display: block; height: 20px; }
+  .ym-breadcrumb { display: none; }
+  /* Keep only the CTA in the action cluster on small screens. */
+  .ym-split { display: none; }
+
+  .ym-drawer-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: rgba(31, 30, 49, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--ym-dur-slow) var(--ym-ease-out);
+  }
+  .ym-drawer-overlay[data-open='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .ym-sidebar {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 50;
+    height: 100dvh;
+    transform: translateX(-100%);
+    transition: transform var(--ym-dur-slow) var(--ym-ease-out);
+    box-shadow: var(--ym-shadow-popover);
+  }
+  .ym-sidebar[data-open='true'] { transform: translateX(0); }
+  /* Don't let the desktop-collapse transform fight the drawer. */
+  .ym-shell[data-sidebar-collapsed='true'] .ym-sidebar { transform: translateX(-100%); }
+  .ym-sidebar[data-open='true'][data-collapsed='true'] { transform: translateX(0); }
+  .ym-sidebar-collapse { display: none; }
+
+  /* ≥40px tap targets on touch. */
+  .ym-nav-link,
+  .ym-footer-link,
+  .ym-nav-group-label { min-height: 40px; }
+  .ym-icon-btn { width: 40px; height: 40px; }
+}
+
+/* Reduced motion — plain fades, no transforms. */
+@media (prefers-reduced-motion: reduce) {
+  .ym-shell,
+  .ym-sidebar,
+  .ym-drawer-overlay,
+  .ym-menu,
+  .ym-nav-group-chevron,
+  .ym-nav-folder-chevron {
+    transition: opacity var(--ym-dur-fast) linear !important;
+    animation: none !important;
+  }
+  .ym-sidebar { transition: none !important; }
+}
+
+/* No horizontal scroll at narrow widths. */
+.ym-shell { overflow-x: clip; }

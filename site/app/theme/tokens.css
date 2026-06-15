@@ -1,0 +1,175 @@
+/* ============================================================
+   Yarmill Docs — design tokens
+   Layout, type scale and interactions mirror Linear's docs;
+   COLOR + FONT are the only intentional departures (Yarmill
+   indigo + violet-cooled neutrals, Inter). Values come straight
+   from the Yarmill design system (yarmill-design skill).
+
+   Two layers:
+   1. Fumadocs `--color-fd-*` are remapped so every built-in
+      primitive (search, sidebar, TOC, menus) inherits the brand.
+   2. `--ym-*` is the stable contract the chrome + MDX components
+      build against. Do not rename these without updating consumers.
+   ============================================================ */
+
+:root {
+  /* ---- Yarmill palette (raw) ---- */
+  --ym-ink: #1f1e31;          /* Neutral-Black — primary text */
+  --ym-ink-2: #2f2e45;        /* Neutral-Darker */
+  --ym-muted: #6f6e8c;        /* Neutral — secondary text */
+  --ym-faint: #a3a2b5;        /* Neutral-64 — tertiary / placeholder */
+  --ym-line: #e2e2e8;         /* Neutral-20 — borders */
+  --ym-line-subtle: #f0f0f0;  /* Background-03 — hairlines */
+
+  --ym-bg: #ffffff;           /* page */
+  --ym-bg-sidebar: #fcfbfb;   /* Background-01 — sidebar / chrome */
+  --ym-bg-subtle: #f8f8f8;    /* Background-02 — cards / code */
+  --ym-bg-hover: #f4f4f6;     /* Neutral-8 — neutral hover */
+
+  --ym-accent: #513ff8;            /* Brand-Yarmill */
+  --ym-accent-hover: #3b02d6;      /* Brand-Dark */
+  --ym-accent-on: #ffffff;         /* text on accent */
+  --ym-accent-subtle: #edebfe;     /* Brand-10 — active nav tint */
+  --ym-accent-subtle-fg: #3b02d6;  /* text on subtle accent */
+  --ym-accent-ring: rgba(81, 63, 248, 0.4);
+
+  /* status (callouts) */
+  --ym-info: #513ff8;     --ym-info-bg: #f5f4ff;     --ym-info-line: #e3e0fe;
+  --ym-tip: #328052;      --ym-tip-bg: #eff5f2;      --ym-tip-line: #d2ead9;
+  --ym-warn: #eaa318;     --ym-warn-bg: #fff9eb;     --ym-warn-line: #fff1d6;
+  --ym-danger: #ec1a03;   --ym-danger-bg: #fff1f0;   --ym-danger-line: #fee3e0;
+  --ym-check: #328052;    --ym-check-bg: #eff5f2;    --ym-check-line: #d2ead9;
+
+  /* ---- radii (Yarmill 6/8/10/16) ---- */
+  --ym-radius-sm: 6px;
+  --ym-radius: 8px;
+  --ym-radius-lg: 10px;
+  --ym-radius-xl: 16px;
+
+  /* ---- motion (Emil Kowalski rules) ---- */
+  --ym-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ym-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ym-dur-fast: 120ms;
+  --ym-dur: 180ms;
+  --ym-dur-slow: 250ms;
+
+  /* ---- shadows (soft, layered, violet-cooled) ---- */
+  --ym-shadow-popover:
+    0 0 0 1px rgba(31, 30, 49, 0.04),
+    0 2px 4px rgba(31, 30, 49, 0.04),
+    0 8px 24px rgba(31, 30, 49, 0.10);
+  --ym-shadow-card: 0 1px 2px rgba(31, 30, 49, 0.05);
+
+  /* ---- chrome metrics (Linear-matched) ---- */
+  --ym-sidebar-w: 280px;
+  --ym-toc-w: 250px;
+  --ym-topbar-h: 64px;
+  --ym-content-max: 1024px;
+  --ym-prose-max: 720px;
+
+  /* ============================================================
+     Fumadocs token remap (LIGHT)
+     ============================================================ */
+  --color-fd-background: var(--ym-bg);
+  --color-fd-foreground: var(--ym-ink);
+  --color-fd-muted: var(--ym-bg-subtle);
+  --color-fd-muted-foreground: var(--ym-muted);
+  --color-fd-popover: var(--ym-bg);
+  --color-fd-popover-foreground: var(--ym-ink);
+  --color-fd-card: var(--ym-bg);
+  --color-fd-card-foreground: var(--ym-ink);
+  --color-fd-border: var(--ym-line);
+  --color-fd-primary: var(--ym-accent);
+  --color-fd-primary-foreground: var(--ym-accent-on);
+  --color-fd-secondary: var(--ym-bg-hover);
+  --color-fd-secondary-foreground: var(--ym-ink);
+  --color-fd-accent: var(--ym-bg-hover);          /* neutral hover */
+  --color-fd-accent-foreground: var(--ym-ink);
+  --color-fd-ring: var(--ym-accent);
+
+  /* Inter everywhere */
+  --ym-font-sans: 'Inter', 'Inter Variable', ui-sans-serif, system-ui,
+    -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --fd-font-sans: var(--ym-font-sans);
+}
+
+/* ============================================================
+   DARK THEME — Yarmill violet-cooled neutrals on #151525
+   Fumadocs toggles the `.dark` class on <html>.
+   ============================================================ */
+.dark {
+  --ym-ink: #fcfbfb;          /* Neutral-2 */
+  --ym-ink-2: #e2e2e8;
+  --ym-muted: #a3a2b5;        /* Neutral-64 */
+  --ym-faint: #6f6e8c;        /* Neutral */
+  --ym-line: #2f2e45;         /* Neutral-Darker */
+  --ym-line-subtle: #2f2e45;
+
+  --ym-bg: #151525;           /* Ultra-Black — page */
+  --ym-bg-sidebar: #151525;
+  --ym-bg-subtle: #1f1e31;    /* Black — cards / code */
+  --ym-bg-hover: #2f2e45;     /* Neutral-Darker — hover */
+
+  --ym-accent: #9e93fb;            /* Brand-56 */
+  --ym-accent-hover: #c3bcfd;      /* Brand-35 */
+  --ym-accent-on: #151525;
+  --ym-accent-subtle: rgba(158, 147, 251, 0.14);
+  --ym-accent-subtle-fg: #c3bcfd;
+  --ym-accent-ring: rgba(158, 147, 251, 0.5);
+
+  --ym-info: #9e93fb;   --ym-info-bg: rgba(158,147,251,0.10);  --ym-info-line: #2f2e45;
+  --ym-tip: #95ccad;    --ym-tip-bg: rgba(50,128,82,0.14);     --ym-tip-line: #2f2e45;
+  --ym-warn: #ffdd99;   --ym-warn-bg: rgba(255,169,0,0.12);    --ym-warn-line: #2f2e45;
+  --ym-danger: #feb9b2; --ym-danger-bg: rgba(253,81,63,0.12);  --ym-danger-line: #2f2e45;
+  --ym-check: #95ccad;  --ym-check-bg: rgba(50,128,82,0.14);   --ym-check-line: #2f2e45;
+
+  --ym-shadow-popover:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 8px 24px rgba(0, 0, 0, 0.5);
+  --ym-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+
+  --color-fd-background: var(--ym-bg);
+  --color-fd-foreground: var(--ym-ink);
+  --color-fd-muted: var(--ym-bg-subtle);
+  --color-fd-muted-foreground: var(--ym-muted);
+  --color-fd-popover: var(--ym-bg-subtle);
+  --color-fd-popover-foreground: var(--ym-ink);
+  --color-fd-card: var(--ym-bg-subtle);
+  --color-fd-card-foreground: var(--ym-ink);
+  --color-fd-border: var(--ym-line);
+  --color-fd-primary: var(--ym-accent);
+  --color-fd-primary-foreground: var(--ym-accent-on);
+  --color-fd-secondary: var(--ym-bg-hover);
+  --color-fd-secondary-foreground: var(--ym-ink);
+  --color-fd-accent: var(--ym-bg-hover);
+  --color-fd-accent-foreground: var(--ym-ink);
+  --color-fd-ring: var(--ym-accent);
+}
+
+/* ============================================================
+   Reading typography — Linear's docs scale, rendered in Inter.
+   The chrome and MDX-component layers own their own files; this
+   block owns base prose + headings only.
+   ============================================================ */
+:root {
+  --ym-h1-size: 40px;  --ym-h1-lh: 44px;  --ym-h1-ls: -0.022em; --ym-h1-w: 590;
+  --ym-h2-size: 24px;  --ym-h2-lh: 32px;  --ym-h2-ls: -0.012em; --ym-h2-w: 590;
+  --ym-h3-size: 18px;  --ym-h3-lh: 26px;  --ym-h3-ls: -0.006em; --ym-h3-w: 590;
+  --ym-body-size: 16px; --ym-body-lh: 1.65;
+  --ym-small-size: 14px;
+}
+
+html {
+  font-family: var(--ym-font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variant-numeric: lining-nums proportional-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
