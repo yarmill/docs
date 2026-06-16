@@ -1,0 +1,76 @@
+name: Deploy docs site
+
+# Mirrors yarmill/web's deploy.yml: build the Next.js static export in CI, then
+# deploy the prebuilt ./out to Netlify with nwtgck/actions-netlify (Netlify only
+# hosts — it does not build). Adapted for this repo: the site lives in site/ and
+# uses npm, and the triggers are scoped to site/** so unrelated (Mintlify) edits
+# don't redeploy.
+#
+# Required repo secrets: NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID.
+#   push to main  → production deploy
+#   pull request  → preview deploy (URL auto-commented on the PR)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - '.github/workflows/docs-site-deploy.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - '.github/workflows/docs-site-deploy.yml'
+
+concurrency:
+  group: docs-site-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - run: npm ci
+
+      - name: Build (static export → site/out)
+        run: npm run build
+
+      - name: Deploy to Netlify (Production)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: nwtgck/actions-netlify@v3
+        with:
+          publish-dir: site/out
+          production-deploy: true
+          deploy-message: "Production deploy ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Deploy to Netlify (Preview)
+        if: github.event_name == 'pull_request'
+        uses: nwtgck/actions-netlify@v3
+        with:
+          publish-dir: site/out
+          production-deploy: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy Preview for PR #${{ github.event.pull_request.number }}"
+          enable-pull-request-comment: true
+          enable-commit-comment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
