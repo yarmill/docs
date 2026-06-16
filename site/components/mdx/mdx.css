@@ -213,33 +213,33 @@
   .ym-cardgroup { grid-template-columns: 1fr; }
 }
 
+/* Linear-style card: flat surface (no shadow), a bare icon pinned to the top,
+   and the title + description sitting at the bottom — the tall, airy layout
+   from linear.app/docs, not Mintlify's compact icon-tile card. */
 .ym-card {
   display: flex;
   flex-direction: column;
-  gap: 8px;
   height: 100%;
+  min-height: 150px;
   padding: 20px;
   border: 1px solid var(--ym-line);
   border-radius: var(--ym-radius-lg);
   background: var(--ym-bg);
-  box-shadow: var(--ym-shadow-card);
 }
 .ym-card-icon {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  margin-bottom: 4px;
-  border-radius: var(--ym-radius);
-  background: var(--ym-accent-subtle);
-  color: var(--ym-accent-subtle-fg);
+  /* Top-LEFT glyph (Linear), no tile; margin-bottom:auto pushes the title/body
+     to the bottom of the card. align-self keeps it from stretching full-width. */
+  align-self: flex-start;
+  margin-bottom: auto;
+  color: var(--ym-ink);
 }
-.ym-card-icon svg { width: 19px; height: 19px; }
+.ym-card-icon svg { width: 22px; height: 22px; }
 .ym-card-title {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-top: 16px;
   font-size: 15px;
   font-weight: 590;
   letter-spacing: -0.006em;
@@ -257,7 +257,8 @@
 }
 .ym-card-arrow svg { width: 15px; height: 15px; }
 .ym-card-body {
-  font-size: 15px;
+  margin-top: 6px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--ym-muted);
 }

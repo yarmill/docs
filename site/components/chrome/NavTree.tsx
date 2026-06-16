@@ -56,7 +56,11 @@ function NavGroupBlock({ group, pathname }: { group: NavGroup; pathname: string 
   }
 
   return (
-    <div className="ym-nav-group" data-open={open}>
+    <div
+      className="ym-nav-group"
+      data-open={open}
+      data-active-section={containsActive}
+    >
       <button
         type="button"
         className="ym-nav-group-label"

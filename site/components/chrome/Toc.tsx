@@ -91,7 +91,6 @@ export function Toc({ items }: { items: TocItem[] }) {
 
   return (
     <div id="nd-toc">
-      <h3>On this page</h3>
       <nav aria-label="On this page">
         <div className="ym-toc-list" ref={listRef}>
           <span ref={indicatorRef} className="ym-toc-indicator" aria-hidden />

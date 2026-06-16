@@ -221,7 +221,7 @@
 .ym-shell #nd-page {
   flex: 1 1 auto;
   min-width: 0;
-  padding-block: 32px 64px;
+  padding-block: 48px 64px;
 }
 /* Full-width pages (mode: wide) drop the TOC and widen the wrapper. */
 .ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-max); }
@@ -273,13 +273,13 @@
   font-weight: 400;
   letter-spacing: var(--ym-body-ls);
   color: var(--ym-prose-text);
-  margin-top: 20px;
-  margin-bottom: 28px;
+  margin-top: 24px;
+  margin-bottom: 36px;
 }
 /* First content block after the lead keeps the breathing room (the prose
    first-child reset would otherwise collapse it against the lead). */
 .ym-shell #nd-page .ym-lead + .prose {
-  margin-top: 28px;
+  margin-top: 36px;
 }
 /* Anchor jumps (TOC clicks) land below the sticky 64px top bar, not under it —
    so clicking any heading, including the last, scrolls it into clear view. */
@@ -429,7 +429,7 @@
   background-clip: padding-box;
 }
 
-.ym-nav { display: flex; flex-direction: column; gap: 2px; }
+.ym-nav { display: flex; flex-direction: column; gap: 4px; }
 .ym-nav-group { display: flex; flex-direction: column; }
 /* Uniform collapsible section row (Linear). */
 .ym-nav-group-label {
@@ -437,7 +437,7 @@
   align-items: center;
   gap: 6px;
   width: 100%;
-  height: 36px;
+  height: 34px;
   padding-inline: 8px;
   border-radius: var(--ym-radius);
   color: var(--ym-muted);
@@ -469,11 +469,11 @@
 
 .ym-nav-list {
   list-style: none;
-  margin: 0;
+  margin: 2px 0 0; /* small gap between a section label and its first child */
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   /* Host for the shared sliding active-indicator (positioned absolutely). */
   position: relative;
 }
@@ -512,10 +512,12 @@
     color: var(--ym-ink);
   }
 }
-/* Active = colour only (Linear is restrained): accent text/icon, no fill. */
+/* Active = colour only (Linear is restrained): the page reads as dark ink +
+   slightly heavier weight, NOT indigo, and no fill. */
 .ym-nav-link[data-active='true'] {
   background: transparent;
-  color: var(--ym-accent);
+  color: var(--ym-ink);
+  font-weight: 590;
 }
 .ym-nav-icon {
   display: inline-flex;
@@ -523,7 +525,13 @@
   color: var(--ym-faint);
 }
 .ym-nav-icon svg { width: 16px; height: 16px; }
-.ym-nav-link[data-active='true'] .ym-nav-icon { color: var(--ym-accent); }
+.ym-nav-link[data-active='true'] .ym-nav-icon { color: var(--ym-ink); }
+/* The parent section of the active page also reads as selected — dark ink +
+   heavier weight (Linear) — so the open section is visually anchored. */
+.ym-nav-group[data-active-section='true'] > .ym-nav-group-label {
+  color: var(--ym-ink);
+  font-weight: 590;
+}
 .ym-nav-label {
   flex: 1;
   overflow: hidden;
@@ -755,13 +763,6 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding-block: 32px 16px;
-}
-.ym-shell #nd-toc h3 {
-  color: var(--ym-muted);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0;
-  margin: 0 0 12px;
 }
 /* The list: relatively-positioned host for the track + sliding indicator. */
 .ym-toc-list {
