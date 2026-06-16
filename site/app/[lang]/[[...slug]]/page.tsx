@@ -39,7 +39,9 @@ export default async function DocPage(props: PageProps) {
             </PageTransition>
           </article>
 
-          <Toc items={toc} />
+          {/* Wide pages (mode: wide — homepage dashboard, changelog) use the full
+              width and drop the right-hand TOC. */}
+          {!isWide && <Toc items={toc} />}
         </div>
       </div>
     </div>

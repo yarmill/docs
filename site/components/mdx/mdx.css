@@ -205,41 +205,57 @@
    ============================================================ */
 .ym-cardgroup {
   display: grid;
-  grid-template-columns: repeat(var(--ym-cols, 2), minmax(0, 1fr));
+  /* Responsive: fit as many ~256px cards as the width allows; empty tracks
+     collapse (auto-fit) so a short row still spans the full width. 256px lets a
+     4-card group fill one row at the wide (homepage) width while a 3-card group
+     stays 3-across. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 256px), 1fr));
   gap: 16px;
   margin: 1.5rem 0;
+}
+/* Honor an explicit column count when one is reliably provided. */
+.ym-cardgroup:not([data-cols='auto']) {
+  grid-template-columns: repeat(var(--ym-cols), minmax(0, 1fr));
 }
 @media (max-width: 640px) {
   .ym-cardgroup { grid-template-columns: 1fr; }
 }
 
-/* Linear-style card: flat surface (no shadow), a bare icon pinned to the top,
-   and the title + description sitting at the bottom — the tall, airy layout
-   from linear.app/docs, not Mintlify's compact icon-tile card. */
+/* Linear-style card (linear.app/docs): flat surface (no shadow) split into two
+   zones by a full-bleed hairline — a tall top zone holding a bare top-left icon,
+   and a bottom zone with the title + muted description. Not Mintlify's compact
+   icon-tile card. */
 .ym-card {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 150px;
-  padding: 20px;
   border: 1px solid var(--ym-line);
   border-radius: var(--ym-radius-lg);
   background: var(--ym-bg);
+  /* Clip the full-bleed divider to the rounded corners. */
+  overflow: hidden;
+}
+/* Icon zone — fixed height so the divider lands at the same place on every card
+   in a row; the bottom zone absorbs height differences from longer copy. */
+.ym-card-top {
+  flex: none;
+  height: 96px;
+  padding: 22px;
+  border-bottom: 1px solid var(--ym-line);
 }
 .ym-card-icon {
   display: inline-flex;
-  /* Top-LEFT glyph (Linear), no tile; margin-bottom:auto pushes the title/body
-     to the bottom of the card. align-self keeps it from stretching full-width. */
-  align-self: flex-start;
-  margin-bottom: auto;
   color: var(--ym-ink);
 }
 .ym-card-icon svg { width: 22px; height: 22px; }
+.ym-card-bottom {
+  flex: 1 1 auto;
+  padding: 18px 22px 22px;
+}
 .ym-card-title {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 16px;
   font-size: 15px;
   font-weight: 590;
   letter-spacing: -0.006em;

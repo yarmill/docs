@@ -15,23 +15,27 @@ export function Card({
   children?: ReactNode;
 }) {
   const inner = (
-    <div className="ym-card">
+    <div className="ym-card" data-has-icon={icon ? true : undefined}>
       {icon ? (
-        <span className="ym-card-icon" aria-hidden="true">
-          <Icon name={icon} />
-        </span>
-      ) : null}
-      {title ? (
-        <div className="ym-card-title">
-          <span>{title}</span>
-          {href ? (
-            <span className="ym-card-arrow" aria-hidden="true">
-              <ArrowRight />
-            </span>
-          ) : null}
+        <div className="ym-card-top">
+          <span className="ym-card-icon" aria-hidden="true">
+            <Icon name={icon} />
+          </span>
         </div>
       ) : null}
-      {children ? <div className="ym-card-body">{children}</div> : null}
+      <div className="ym-card-bottom">
+        {title ? (
+          <div className="ym-card-title">
+            <span>{title}</span>
+            {href ? (
+              <span className="ym-card-arrow" aria-hidden="true">
+                <ArrowRight />
+              </span>
+            ) : null}
+          </div>
+        ) : null}
+        {children ? <div className="ym-card-body">{children}</div> : null}
+      </div>
     </div>
   );
 

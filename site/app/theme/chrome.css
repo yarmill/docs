@@ -223,8 +223,9 @@
   min-width: 0;
   padding-block: 48px 64px;
 }
-/* Full-width pages (mode: wide) drop the TOC and widen the wrapper. */
-.ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-max); }
+/* Full-width pages (mode: wide) drop the TOC (see page.tsx) and widen the
+   wrapper so the content — e.g. the homepage card dashboard — uses the space. */
+.ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-wide); }
 
 /* ---------- Reading typography (Linear scale in Inter) -----
    Scoped to #nd-page so the id specificity (1,0,1 for `#id el`) beats
