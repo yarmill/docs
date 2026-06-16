@@ -23,6 +23,11 @@
   --ym-bg-subtle: #f8f8f8;    /* Background-02 — cards / code */
   --ym-bg-hover: #f4f4f6;     /* Neutral-8 — neutral hover */
 
+  /* Doc cards (Linear: a barely-there soft fill + hairline border, no shadow) */
+  --ym-card-bg: rgba(31, 30, 49, 0.02);
+  --ym-card-bg-hover: rgba(31, 30, 49, 0.045);
+  --ym-card-line: rgba(31, 30, 49, 0.07);
+
   --ym-accent: #513ff8;            /* Brand-Yarmill */
   --ym-accent-hover: #3b02d6;      /* Brand-Dark */
   --ym-accent-on: #ffffff;         /* text on accent */
@@ -90,6 +95,10 @@
   --ym-bg-sidebar: #151525;
   --ym-bg-subtle: #1f1e31;    /* Black — cards / code */
   --ym-bg-hover: #2f2e45;     /* Neutral-Darker — hover */
+
+  --ym-card-bg: rgba(255, 255, 255, 0.024);
+  --ym-card-bg-hover: rgba(255, 255, 255, 0.05);
+  --ym-card-line: rgba(255, 255, 255, 0.08);
 
   --ym-prose-text: #c9cad6;   /* softer-than-ink body copy */
 

@@ -205,59 +205,56 @@
    ============================================================ */
 .ym-cardgroup {
   display: grid;
-  /* Responsive: fit as many ~256px cards as the width allows; empty tracks
-     collapse (auto-fit) so a short row still spans the full width. 256px lets a
-     4-card group fill one row at the wide (homepage) width while a 3-card group
-     stays 3-across. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 256px), 1fr));
+  /* Linear's docs cards are a fixed portrait size (~242px), not stretched: fit
+     as many ~236–244px cards as the width allows and left-align them, so cards
+     stay the same shape whether a row holds 3 or 4. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 212px), 244px));
+  justify-content: start;
   gap: 16px;
   margin: 1.5rem 0;
-}
-/* Honor an explicit column count when one is reliably provided. */
-.ym-cardgroup:not([data-cols='auto']) {
-  grid-template-columns: repeat(var(--ym-cols), minmax(0, 1fr));
 }
 @media (max-width: 640px) {
   .ym-cardgroup { grid-template-columns: 1fr; }
 }
 
-/* Linear-style card (linear.app/docs): flat surface (no shadow) split into two
-   zones by a full-bleed hairline — a tall top zone holding a bare top-left icon,
-   and a bottom zone with the title + muted description. Not Mintlify's compact
-   icon-tile card. */
+/* Linear-style card (linear.app/docs): portrait, a barely-there soft fill + a
+   hairline border (no shadow), split into two zones by a divider — a top zone
+   holding a bare 20px ink icon, and a bottom zone with the title + muted
+   description. */
 .ym-card {
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 1px solid var(--ym-line);
-  border-radius: var(--ym-radius-lg);
-  background: var(--ym-bg);
-  /* Clip the full-bleed divider to the rounded corners. */
+  min-height: 232px;
+  border: 1px solid var(--ym-card-line);
+  border-radius: var(--ym-radius); /* 8px, like Linear */
+  background: var(--ym-card-bg);
   overflow: hidden;
 }
 /* Icon zone — fixed height so the divider lands at the same place on every card
    in a row; the bottom zone absorbs height differences from longer copy. */
 .ym-card-top {
   flex: none;
-  height: 96px;
-  padding: 22px;
-  border-bottom: 1px solid var(--ym-line);
+  height: 88px;
+  padding: 24px 20px;
 }
 .ym-card-icon {
   display: inline-flex;
   color: var(--ym-ink);
 }
-.ym-card-icon svg { width: 22px; height: 22px; }
+.ym-card-icon svg { width: 20px; height: 20px; }
 .ym-card-bottom {
   flex: 1 1 auto;
-  padding: 18px 22px 22px;
+  padding: 18px 20px 20px;
+  border-top: 1px solid var(--ym-card-line);
 }
 .ym-card-title {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 15px;
-  font-weight: 590;
+  font-weight: 510; /* Linear card title weight */
+  line-height: 24px;
   letter-spacing: -0.006em;
   color: var(--ym-ink);
 }
@@ -273,9 +270,10 @@
 }
 .ym-card-arrow svg { width: 15px; height: 15px; }
 .ym-card-body {
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 14px;
-  line-height: 1.55;
+  font-weight: 400;
+  line-height: 21px;
   color: var(--ym-muted);
 }
 .ym-card-body > :first-child { margin-top: 0; }
@@ -286,16 +284,16 @@
   display: block;
   height: 100%;
   text-decoration: none;
-  border-radius: var(--ym-radius-lg);
+  border-radius: var(--ym-radius);
 }
 .ym-card-link .ym-card {
   transition: background-color var(--ym-dur) ease,
     border-color var(--ym-dur) ease;
 }
 @media (hover: hover) {
-  /* Linear: a subtle surface fill on hover — no border-accent, no lift. */
+  /* Linear: the soft fill deepens slightly on hover — no border-accent, no lift. */
   .ym-card-link:hover .ym-card {
-    background: var(--ym-bg-hover);
+    background: var(--ym-card-bg-hover);
   }
   .ym-card-link:hover .ym-card-arrow {
     opacity: 1;
