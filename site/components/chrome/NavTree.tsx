@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 import {
   useEffect,
@@ -178,8 +178,19 @@ function NavLink({
   linkRefs: React.RefObject<Map<string, HTMLAnchorElement>>;
 }) {
   const { setOpen } = useSidebar();
+  const router = useRouter();
   const active = page.url === pathname;
   const ref = useRef<HTMLAnchorElement>(null);
+  // Hover/focus-intent prefetch: warm the route the moment the pointer or focus
+  // lands on the link, in addition to Next's default in-viewport prefetch. Guard
+  // so it only fires once per link (router.prefetch is idempotent, but this
+  // avoids redundant calls on repeated hovers).
+  const prefetched = useRef(false);
+  const prefetchIntent = () => {
+    if (prefetched.current || active) return;
+    prefetched.current = true;
+    router.prefetch(page.url);
+  };
 
   useEffect(() => {
     if (active) ref.current?.scrollIntoView({ block: 'nearest' });
@@ -197,6 +208,8 @@ function NavLink({
         className="ym-nav-link"
         data-active={active}
         aria-current={active ? 'page' : undefined}
+        onMouseEnter={prefetchIntent}
+        onFocus={prefetchIntent}
         onClick={() => setOpen(false)}
       >
         {page.icon ? (

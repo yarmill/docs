@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  Fragment,
   useCallback,
   useContext,
   useEffect,
@@ -11,10 +12,11 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type MiniSearch from 'minisearch';
 import type { SearchResult } from 'minisearch';
-import { Search as SearchIcon, CornerDownLeft } from 'lucide-react';
+import { Search as SearchIcon, CornerDownLeft, Hash, Clock } from 'lucide-react';
+import { getRecents, type RecentPage } from '@/lib/recents';
 
 /**
  * ⌘K command palette — a Linear-style centered modal in Yarmill's brand.
@@ -27,6 +29,12 @@ import { Search as SearchIcon, CornerDownLeft } from 'lucide-react';
  * It builds a highlighted body snippet from MiniSearch match data and navigates
  * to the selected page on Enter. Opens via ⌘K / Ctrl+K and the sidebar search
  * button (SearchContext).
+ *
+ * Empty-query state (no text typed): instead of just a hint, the palette shows
+ * quick navigation — "On this page" (the current page's h2/h3 headings, read
+ * live from the DOM, Enter scrolls to the anchor) and "Recent" (the last pages
+ * visited, from localStorage). Once the user types, it switches to full search
+ * results. Keyboard nav (↑/↓/Enter) runs across whichever combined list is shown.
  *
  * A11y: dialog role + aria-modal, labelled input, focus trap, body scroll
  * lock, focus restored to the trigger on close. Open animation is fade +
@@ -49,6 +57,13 @@ interface Hit {
   group: string;
   /** Snippet segments — `match` segments are highlighted in accent. */
   snippet: { text: string; match: boolean }[] | null;
+}
+
+/** A current-page heading shown under "On this page" in the empty state. */
+interface SectionItem {
+  id: string;
+  text: string;
+  depth: number;
 }
 
 interface SearchCtx {
@@ -139,6 +154,23 @@ function escapeRe(s: string): string {
 }
 
 /**
+ * Read the current page's section headings straight from the rendered article
+ * (`#nd-page :is(h2,h3)[id]`) — simplest and always correct for the page in view.
+ * The leading H1 is the page title (no id from rehype-slug on the synthetic
+ * title), so this naturally yields just the in-page sections.
+ */
+function readPageSections(): SectionItem[] {
+  if (typeof document === 'undefined') return [];
+  const nodes = document.querySelectorAll<HTMLHeadingElement>('#nd-page :is(h2, h3)[id]');
+  const out: SectionItem[] = [];
+  nodes.forEach((el) => {
+    const text = el.textContent?.trim();
+    if (el.id && text) out.push({ id: el.id, text, depth: el.tagName === 'H3' ? 3 : 2 });
+  });
+  return out;
+}
+
+/**
  * Build a highlighted body snippet from MiniSearch match data. We take the
  * matched terms, find the earliest occurrence in the page text, slice a window
  * around it, then split that window on the matched terms so they can be wrapped
@@ -184,6 +216,7 @@ function buildSnippet(text: string, terms: string[]): Hit['snippet'] {
 
 function SearchDialog({ onClose }: { onClose: () => void }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -210,8 +243,10 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
     };
   }, []);
 
+  const hasQuery = query.trim().length > 0;
+
   const hits = useMemo<Hit[]>(() => {
-    if (!mini || !query.trim()) return [];
+    if (!mini || !hasQuery) return [];
     const raw = mini.search(query).slice(0, MAX_RESULTS) as (SearchResult & SearchDoc)[];
     return raw.map((r) => {
       const terms = r.terms ?? [];
@@ -228,10 +263,33 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
         snippet: buildSnippet(r.text, bodyMatched.length ? bodyMatched : terms),
       };
     });
-  }, [query, mini]);
+  }, [query, mini, hasQuery]);
 
-  // Reset selection whenever the query changes — done during render (keyed on
-  // the previous query) rather than in an effect, so there's no extra commit.
+  // Empty-query quick-nav: current-page sections + recent pages. Captured once
+  // when the dialog mounts (the page behind the modal can't change while open).
+  const [sections] = useState<SectionItem[]>(() => readPageSections());
+  // Exclude the current page from "Recent" — it's already covered by the
+  // "On this page" group, and is always the most-recent entry.
+  const [recents] = useState<RecentPage[]>(() =>
+    getRecents().filter((r) => r.url !== pathname),
+  );
+
+  // Flatten the empty-state lists into one selectable sequence so ↑/↓/Enter can
+  // run across both groups. Sections scroll to an anchor; recents navigate.
+  const quickItems = useMemo(
+    () => [
+      ...sections.map((s) => ({ kind: 'section' as const, key: `s:${s.id}`, item: s })),
+      ...recents.map((r) => ({ kind: 'recent' as const, key: `r:${r.url}`, item: r })),
+    ],
+    [sections, recents],
+  );
+
+  // How many selectable rows the active view shows (search hits or quick-nav).
+  const count = hasQuery ? hits.length : quickItems.length;
+
+  // Reset selection whenever the query toggles between empty/non-empty or the
+  // text changes — done during render (keyed on the previous query) rather than
+  // in an effect, so there's no extra commit.
   const [prevQuery, setPrevQuery] = useState(query);
   if (query !== prevQuery) {
     setPrevQuery(query);
@@ -268,20 +326,47 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
     [onClose, router],
   );
 
+  // Scroll to an in-page section (empty-state "On this page"). We close first,
+  // then jump to the anchor; honours the page's scroll-margin-top so the heading
+  // clears the sticky top bar. Also reflect it in the URL hash.
+  const goSection = useCallback(
+    (id: string) => {
+      onClose();
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ block: 'start' });
+        history.replaceState(null, '', `#${id}`);
+      }
+    },
+    [onClose],
+  );
+
+  // Activate the currently-selected row in whichever list is showing.
+  const selectActive = useCallback(() => {
+    if (hasQuery) {
+      const r = hits[active];
+      if (r) go(r.url);
+      return;
+    }
+    const q = quickItems[active];
+    if (!q) return;
+    if (q.kind === 'section') goSection(q.item.id);
+    else go(q.item.url);
+  }, [hasQuery, hits, quickItems, active, go, goSection]);
+
   function onKeyDown(e: React.KeyboardEvent) {
     if (e.key === 'Escape') {
       e.preventDefault();
       onClose();
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setActive((i) => (hits.length ? (i + 1) % hits.length : 0));
+      setActive((i) => (count ? (i + 1) % count : 0));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setActive((i) => (hits.length ? (i - 1 + hits.length) % hits.length : 0));
+      setActive((i) => (count ? (i - 1 + count) % count : 0));
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      const r = hits[active];
-      if (r) go(r.url);
+      selectActive();
     } else if (e.key === 'Tab') {
       // Focus trap: only the input is tabbable, so keep focus on it.
       e.preventDefault();
@@ -291,8 +376,11 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
 
   // While the index is still loading, a typed query shows a "Searching…" hint
   // rather than a false "No results".
-  const isSearching = query.trim().length > 0 && loading && !mini;
-  const showEmpty = query.trim().length > 0 && !isSearching && hits.length === 0;
+  const isSearching = hasQuery && loading && !mini;
+  const showEmpty = hasQuery && !isSearching && hits.length === 0;
+  // Empty query → quick-nav view (sections + recents) when there's anything to
+  // show; otherwise the input row + keyboard hint stand alone.
+  const showQuick = !hasQuery && quickItems.length > 0;
 
   return (
     <div className="ym-search-overlay" onClick={onClose} role="presentation">
@@ -315,9 +403,9 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             role="combobox"
-            aria-expanded={hits.length > 0}
+            aria-expanded={count > 0}
             aria-controls="ym-search-listbox"
-            aria-activedescendant={hits[active] ? `ym-search-opt-${active}` : undefined}
+            aria-activedescendant={count > active ? `ym-search-opt-${active}` : undefined}
             aria-label="Search documentation"
             autoComplete="off"
             spellCheck={false}
@@ -325,7 +413,7 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
           <kbd className="ym-search-esc">ESC</kbd>
         </div>
 
-        {hits.length > 0 ? (
+        {hasQuery && hits.length > 0 ? (
           <ul
             ref={listRef}
             id="ym-search-listbox"
@@ -369,6 +457,72 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
                 </button>
               </li>
             ))}
+          </ul>
+        ) : null}
+
+        {showQuick ? (
+          <ul
+            ref={listRef}
+            id="ym-search-listbox"
+            className="ym-search-results"
+            role="listbox"
+            aria-label="Quick navigation"
+          >
+            {sections.length > 0 ? (
+              <li className="ym-search-section-label" role="presentation" aria-hidden>
+                On this page
+              </li>
+            ) : null}
+            {quickItems.map((q, i) =>
+              q.kind === 'section' ? (
+                <li key={q.key} role="presentation">
+                  <button
+                    type="button"
+                    id={`ym-search-opt-${i}`}
+                    role="option"
+                    aria-selected={i === active}
+                    className="ym-search-result ym-search-result--quick"
+                    data-active={i === active}
+                    data-depth={q.item.depth}
+                    onMouseMove={() => setActive(i)}
+                    onClick={() => goSection(q.item.id)}
+                  >
+                    <Hash className="ym-search-quick-icon" aria-hidden />
+                    <span className="ym-search-result-main">
+                      <span className="ym-search-title">{q.item.text}</span>
+                    </span>
+                    <CornerDownLeft className="ym-search-enter" aria-hidden />
+                  </button>
+                </li>
+              ) : (
+                <Fragment key={q.key}>
+                  {/* Group label before the first recent item. */}
+                  {quickItems[i - 1]?.kind !== 'recent' ? (
+                    <li className="ym-search-section-label" role="presentation" aria-hidden>
+                      Recent
+                    </li>
+                  ) : null}
+                  <li role="presentation">
+                    <button
+                      type="button"
+                      id={`ym-search-opt-${i}`}
+                      role="option"
+                      aria-selected={i === active}
+                      className="ym-search-result ym-search-result--quick"
+                      data-active={i === active}
+                      onMouseMove={() => setActive(i)}
+                      onClick={() => go(q.item.url)}
+                    >
+                      <Clock className="ym-search-quick-icon" aria-hidden />
+                      <span className="ym-search-result-main">
+                        <span className="ym-search-title">{q.item.title}</span>
+                      </span>
+                      <CornerDownLeft className="ym-search-enter" aria-hidden />
+                    </button>
+                  </li>
+                </Fragment>
+              ),
+            )}
           </ul>
         ) : null}
 

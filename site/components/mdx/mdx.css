@@ -350,6 +350,8 @@
   margin: 1.75rem 0;
 }
 .ym-frame-media {
+  display: block;
+  position: relative;
   overflow: hidden;
   padding: 8px;
   border: 1px solid var(--ym-line);
@@ -362,6 +364,136 @@
   width: 100%;
   height: auto;
   border-radius: var(--ym-radius);
+}
+/* Click-to-zoom button: reset the native button chrome, keep the frame look,
+   and signal zoomability with a cursor + a subtle hover lift on the image. */
+.ym-frame-zoom {
+  width: 100%;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: zoom-in;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ym-frame-zoom img {
+  transition: transform var(--ym-dur) var(--ym-ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-frame-zoom:hover img { transform: scale(1.012); }
+}
+/* Unobtrusive hover hint — a small "expand" glyph, top-right of the media. */
+.ym-frame-zoom::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ym-radius-sm);
+  background:
+    var(--ym-bg) center / 15px 15px no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%236f6e8c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6'/%3E%3Cpath d='M9 21H3v-6'/%3E%3Cpath d='M21 3l-7 7'/%3E%3Cpath d='M3 21l7-7'/%3E%3C/svg%3E");
+  border: 1px solid var(--ym-line);
+  box-shadow: var(--ym-shadow-card);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity var(--ym-dur) var(--ym-ease-out), transform var(--ym-dur) var(--ym-ease-out);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-frame-zoom:hover::after,
+  .ym-frame-zoom:focus-visible::after {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-frame-zoom img,
+  .ym-frame-zoom::after { transition: opacity var(--ym-dur-fast) linear; }
+  .ym-frame-zoom:hover img { transform: none; }
+}
+
+/* ---- Lightbox (D3) ---- */
+.ym-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: clamp(24px, 5vw, 64px);
+  background: rgba(15, 14, 30, 0.7);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  cursor: zoom-out;
+  animation: ym-lightbox-overlay-in var(--ym-dur) var(--ym-ease-out);
+}
+.ym-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ym-radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+.ym-lightbox-close svg { width: 18px; height: 18px; }
+@media (hover: hover) and (pointer: fine) {
+  .ym-lightbox-close:hover { background: rgba(255, 255, 255, 0.2); }
+}
+.ym-lightbox-close:focus-visible {
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+}
+.ym-lightbox-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: default;
+  animation: ym-lightbox-figure-in var(--ym-dur) var(--ym-ease-out);
+}
+.ym-lightbox-img {
+  display: block;
+  max-width: min(1200px, 100%);
+  max-height: 78vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--ym-radius);
+  box-shadow: var(--ym-shadow-popover);
+}
+.ym-lightbox-caption {
+  max-width: 640px;
+  text-align: center;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+}
+@keyframes ym-lightbox-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ym-lightbox-figure-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-lightbox { animation: ym-lightbox-overlay-in var(--ym-dur-fast) ease; }
+  .ym-lightbox-figure { animation: ym-lightbox-overlay-in var(--ym-dur-fast) ease; }
 }
 .ym-frame-caption {
   margin-top: 10px;

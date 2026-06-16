@@ -6,6 +6,9 @@ import { SidebarProvider } from './SidebarContext';
 import { SearchProvider } from './Search';
 import { Sidebar } from './Sidebar';
 import { CodeBlockEnhancer } from '@/components/mdx/CodeBlock';
+import { useShortcuts } from './useShortcuts';
+import { useTrackRecent } from './useTrackRecent';
+import { ShortcutsDialog } from './ShortcutsDialog';
 
 /**
  * Client shell: providers (sidebar drawer state + ⌘K search) wrap the Linear
@@ -29,7 +32,21 @@ export function DocsShell({
         </div>
         {/* Global: adds copy buttons to every code block, on any page. */}
         <CodeBlockEnhancer />
+        {/* Global keyboard layer + recents tracking (inside SearchProvider so it
+            can drive the palette). Renders the shortcuts help sheet. */}
+        <GlobalKeys />
       </SidebarProvider>
     </SearchProvider>
   );
+}
+
+/**
+ * Mounts the global keyboard shortcuts and the recent-pages tracker, and renders
+ * the keyboard-shortcuts help sheet. Lives inside SearchProvider so `useShortcuts`
+ * can open the ⌘K palette via context.
+ */
+function GlobalKeys() {
+  useTrackRecent();
+  const { shortcutsOpen, closeShortcuts } = useShortcuts();
+  return shortcutsOpen ? <ShortcutsDialog onClose={closeShortcuts} /> : null;
 }
