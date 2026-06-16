@@ -6,6 +6,7 @@ import { renderMDX } from '@/lib/mdx';
 import { TopBar } from '@/components/chrome/TopBar';
 import { Toc } from '@/components/chrome/Toc';
 import { PrevNext } from '@/components/chrome/PrevNext';
+import { PageTransition } from '@/components/chrome/PageTransition';
 
 interface PageProps {
   params: Promise<{ lang: string; slug?: string[] }>;
@@ -28,12 +29,14 @@ export default async function DocPage(props: PageProps) {
       <div className="ym-content">
         <div className="ym-content-row">
           <article id="nd-page" data-full={isWide || undefined}>
-            {page.frontmatter.title ? <h1>{page.frontmatter.title}</h1> : null}
-            {page.frontmatter.description ? (
-              <p className="ym-lead">{page.frontmatter.description}</p>
-            ) : null}
-            <div className="prose">{content}</div>
-            <PrevNext prev={prev} next={next} />
+            <PageTransition>
+              {page.frontmatter.title ? <h1>{page.frontmatter.title}</h1> : null}
+              {page.frontmatter.description ? (
+                <p className="ym-lead">{page.frontmatter.description}</p>
+              ) : null}
+              <div className="prose">{content}</div>
+              <PrevNext prev={prev} next={next} />
+            </PageTransition>
           </article>
 
           <Toc items={toc} />

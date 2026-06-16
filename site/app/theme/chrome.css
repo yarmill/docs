@@ -1145,3 +1145,72 @@ html {
   }
   .ym-search-modal { transform: none; }
 }
+
+/* ============================================================
+   Block C — continuity & motion
+   ============================================================ */
+
+/* ---------- C1: cross-page article fade-up ----------------
+   Replays on every client navigation because PageTransition keys this
+   element on the pathname (it remounts). Transform/opacity only, ease-out,
+   one --ym-dur. Sidebar + top bar live outside it, so they stay static. */
+.ym-page-enter {
+  animation: ym-page-enter var(--ym-dur) var(--ym-ease-out) both;
+  /* Hint the compositor for the brief entrance, then release. */
+  will-change: opacity, transform;
+}
+@keyframes ym-page-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Instant: no transform, content simply present. */
+  .ym-page-enter {
+    animation: none;
+    will-change: auto;
+  }
+}
+
+/* ---------- C2: theme-toggle circular reveal --------------
+   The JS in ThemeToggle drives the expanding clip-path on the NEW root via
+   document.documentElement.animate(). Here we (a) stop the browser's default
+   cross-fade on both snapshots, and (b) stack the new root on top so the wipe
+   reads as a clean reveal rather than a blend. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 0; }
+::view-transition-new(root) { z-index: 1; }
+
+/* ---------- C3: scroll-progress line ----------------------
+   2px accent bar pinned to the bottom edge of the top bar. The inner bar is
+   scaled on the X axis (transform only) by the client component; the track is
+   transparent and hidden when there's nothing to scroll. */
+.ym-scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px; /* sit on the hairline so it reads as one continuous edge */
+  height: 2px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity var(--ym-dur) var(--ym-ease-out);
+}
+.ym-scroll-progress[data-visible='false'] { opacity: 0; }
+.ym-scroll-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--ym-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  /* Smooth the per-frame steps slightly so fast scrolls don't look jittery. */
+  transition: transform 80ms linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Still show the bar (it reflects position, not decoration), but track the
+     scroll instantly with no smoothing transition. */
+  .ym-scroll-progress { transition: none; }
+  .ym-scroll-progress-bar { transition: none; }
+}

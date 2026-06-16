@@ -4,6 +4,7 @@ import { Menu } from 'lucide-react';
 import { CopyPage } from './CopyPage';
 import { ThemeToggle } from './ThemeToggle';
 import { Wordmark } from './Wordmark';
+import { ScrollProgress } from './ScrollProgress';
 import { useSidebar } from './SidebarContext';
 
 const APP_URL = 'https://yarmill.com/en/sign-in';
@@ -52,6 +53,8 @@ export function TopBar({ group, page }: { group?: string; page?: string }) {
           Open Yarmill
         </a>
       </div>
+
+      <ScrollProgress />
     </header>
   );
 }
