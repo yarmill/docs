@@ -415,7 +415,9 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 4px 16px 16px;
+  /* Linear's nav: ~12px horizontal inset (rows then add their own 8px padding,
+     landing text ~20px from the edge) + generous top/bottom breathing room. */
+  padding: 12px 12px 32px;
 }
 /* Small, contained scrollbar (Emil: only customise inside elements). */
 .ym-sidebar-scroll {
@@ -438,7 +440,7 @@
   align-items: center;
   gap: 6px;
   width: 100%;
-  height: 34px;
+  height: 36px;
   padding-inline: 8px;
   border-radius: var(--ym-radius);
   color: var(--ym-muted);
@@ -495,7 +497,7 @@
   align-items: center;
   gap: 9px;
   width: 100%;
-  min-height: 32px;
+  min-height: 34px;
   padding: 0 8px;
   border-radius: var(--ym-radius);
   color: var(--ym-muted);

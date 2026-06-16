@@ -205,11 +205,12 @@
    ============================================================ */
 .ym-cardgroup {
   display: grid;
-  /* Linear's docs cards are a fixed portrait size (~242px), not stretched: fit
-     as many ~236–244px cards as the width allows and left-align them, so cards
-     stay the same shape whether a row holds 3 or 4. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 212px), 244px));
-  justify-content: start;
+  /* Responsive (auto-FILL + 1fr): fit as many ≥216px columns as the width
+     allows and reflow at any size; auto-fill keeps the track count stable so a
+     3-card row keeps the same card width as a 4-card row (it just leaves the
+     last track empty) instead of stretching wide. At the 1024 wide width this
+     is 4 columns of ~244px — Linear's size. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 216px), 1fr));
   gap: 16px;
   margin: 1.5rem 0;
 }
@@ -225,17 +226,16 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 232px;
+  min-height: 280px; /* Linear's portrait card */
   border: 1px solid var(--ym-card-line);
   border-radius: var(--ym-radius); /* 8px, like Linear */
   background: var(--ym-card-bg);
   overflow: hidden;
 }
-/* Icon zone — fixed height so the divider lands at the same place on every card
-   in a row; the bottom zone absorbs height differences from longer copy. */
+/* Icon zone — the icon sits at the top; the generous whitespace down to the
+   divider comes from the bottom zone being pinned to the card's base. */
 .ym-card-top {
   flex: none;
-  height: 88px;
   padding: 24px 20px;
 }
 .ym-card-icon {
@@ -243,9 +243,14 @@
   color: var(--ym-ink);
 }
 .ym-card-icon svg { width: 20px; height: 20px; }
+/* Text zone — pinned to the bottom (margin-top:auto), with a fixed min-height
+   so the divider lands at the same place on every card in a row regardless of
+   description length (Linear). */
 .ym-card-bottom {
-  flex: 1 1 auto;
-  padding: 18px 20px 20px;
+  flex: none;
+  margin-top: auto;
+  min-height: 132px;
+  padding: 20px;
   border-top: 1px solid var(--ym-card-line);
 }
 .ym-card-title {

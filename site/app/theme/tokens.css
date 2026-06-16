@@ -71,7 +71,7 @@
   --ym-toc-w: 250px;
   --ym-topbar-h: 64px;
   --ym-content-max: 1024px;
-  --ym-content-wide: 1140px; /* mode: wide — dashboard/changelog, no TOC */
+  --ym-content-wide: 1024px; /* mode: wide — matches Linear's docs content width */
   --ym-prose-max: 650px;
 
   /* Inter everywhere */
