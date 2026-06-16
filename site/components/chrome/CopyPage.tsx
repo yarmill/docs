@@ -9,16 +9,19 @@ import { useEffect, useRef, useState } from 'react';
  * Main button copies the current page's rendered text to the clipboard (and
  * shows a brief "Copied" state). The chevron opens a small menu:
  *   • Copy page          — copies the real source Markdown to the clipboard
- *   • View as Markdown    — opens the raw source in a new tab (`/raw/<lang>/<slug>`)
+ *   • View as Markdown    — opens the raw source in a new tab (`/raw/<lang>/<slug>.md`)
  *   • Open in ChatGPT     — prefilled prompt referencing the page URL
  *   • Open in Claude      — prefilled prompt referencing the page URL
  *
- * Source Markdown comes from the `/raw/<lang>/<slug>` route (statically
- * generated from the .mdx files). If that fetch ever fails we fall back to the
- * rendered article text scraped from the DOM.
+ * Source Markdown comes from the static `/raw/<lang>/<slug>.md` files
+ * (scripts/build-raw-md.mjs, mirrored from the .mdx at build). If that fetch
+ * ever fails we fall back to the rendered article text scraped from the DOM.
  */
 function rawUrl(): string {
-  return `/raw${window.location.pathname}`.replace(/\/$/, '');
+  // Static .md mirror of the page (scripts/build-raw-md.mjs): /en/plan/goals ->
+  // /raw/en/plan/goals.md, /en -> /raw/en.md.
+  const p = window.location.pathname.replace(/\/$/, '') || '/en';
+  return `/raw${p}.md`;
 }
 
 function getDomText(): string {

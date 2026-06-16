@@ -4,11 +4,614 @@ description: "Product updates and announcements from Yarmill."
 mode: "wide"
 ---
 
-{/* TODO(yarmill): replace the example entry below with real release notes.
-   Add the newest entry at the top. Each <Update> takes a `label` (the date or
-   period) and an optional `description` (e.g. a version tag). */}
+{/* TODO(yarmill): BACKFILL — last 12 months (Jun 2025 → Jun 2026), generated from
+   Linear via scripts/linear-*.mjs + an editorial pass (translate CZ→EN, drop
+   internal/per-client/unreleased work, cluster by shipment). Dates are Linear
+   completedAt (a proxy for shipped; firms up with GitHub merge dates in P1.5).
+   Hero images are placeholders pending the visual phase. Newest post first. */}
 
-<Update label="June 2026">
-  First release of the new Yarmill documentation — guides for coaches, athletes,
-  and administrators across every module.
+<Update label="June 16, 2026" title="Yollanda reads your Tabular data">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Yollanda answering with figures pulled straight from a Tabular view.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda referencing an athlete's Tabular data in her answer." />
+  </Frame>
+
+  Much of what a coach tracks lives in Tabular — training entries, results, body composition, the day-to-day numbers you type in by hand. Until now [Yollanda](/en/platform/yollanda) couldn't see any of it, so questions about those figures came back thin.
+
+  Now she reads your Tabular data, and this is live across every instance. Ask about an athlete's recent sessions, a results table, or a metric you log there, and Yollanda answers from the actual numbers instead of guessing around them.
+
+  <Info>
+    Tabular connection is enabled per instance. It is now switched on everywhere, but the exact tables Yollanda can see depend on how your Tabular is configured.
+  </Info>
+
+  ## Snappier answers
+
+  Yollanda now caches the work behind repeated questions, so common asks come back faster and cost less to run. Her chat also recovers on its own when a response stalls mid-stream, instead of hanging until you give up and reload.
+
+  ### Improvements
+
+  - **Athlete profiles** — The module previously labelled "Evidence" is now called Athlete profiles everywhere in the app, matching what it actually holds.
+  - **Wellness questionnaire** — The [questionnaire](/en/reality/wellness-questionnaire) reads more clearly: mood now uses expression icons, soreness and fatigue carry descriptive labels, questions sit grouped under their topics, and the Tabular overview shows both the number and its meaning.
+  - **Reporting** — Data from the Athlete profiles, Medical, and OKR modules now flows into reporting, so those areas can be analysed alongside the rest of an athlete's record.
+  - **Biathlon** — Shooting visuals that trend over time (item time, time to first shot) now include the hold, bringing them in line with the rest of the framework's shooting charts.
+  - **Body composition** — The Tanita report gained labelled Y-axes and now uses the standard framework visuals, matching the InBody report it sits beside.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **WHOOP** — Data processing errors that left some athletes with missing or stalled WHOOP data are resolved, and the affected gaps have been backfilled.
+  - **Apple Watch** — Training duration and the time counted in heart-rate zones now agree, so a session's summary no longer shows a shorter span than the workout actually ran.
+  - **Yollanda** — Output failures that occasionally broke an answer are fixed.
+  - **Medical** — The group overview no longer drops an athlete whose account wasn't tied to a specific instance.
+  - **Analytics** — The status dot in the analytical-framework view now sits at the position its value implies, so a reading just inside or outside the norm reads correctly at a glance.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="May 29, 2026" title="VALD Performance integration">
+  {/* NOTE(yarmill): placeholder hero — real visual generated later via yarmill-visuals. */}
+  <Frame caption="VALD test results flowing into an athlete's reports in Yarmill.">
+    <img src="/images/changelog/_placeholder.svg" alt="VALD Performance test data shown in a Yarmill report." />
+  </Frame>
+
+  Bring your VALD Performance testing into Yarmill. The integration pulls results from VALD's
+  devices — **ForceDecks**, **ForceFrame**, **NordBord** and **DynaMo** — so the jump,
+  strength and dynamometry tests your staff already run sit alongside the rest of an
+  athlete's data in the [reports](/en/platform/integrations).
+
+  This is built for the testing you do all season. Track countermovement jump (CMJ) trends
+  through the year, run your pre-season testing battery and compare it against last season,
+  and keep an eye on left/right asymmetries or strength deficits as they develop.
+
+  <Info>
+    VALD Performance is connected per team. Each federation or club needs a custom setup on
+    our side before data flows — get in touch to enable it for your instance.
+  </Info>
+
+  ## Yollanda fits how each athlete trains
+
+  [Yollanda](/en/platform/yollanda) now reads each user's own settings before she answers.
+  She respects the heart-rate zones you've configured and the devices an athlete has
+  connected, so her analysis of load and recovery lines up with how that person actually
+  trains — not a generic default.
+
+  ### Fixes
+
+  - **Evidence** — Filtering in the Reporting view no longer surfaces records that shouldn't match, so a filtered list now shows exactly what you asked for.
+  - **Yollanda** — Her chat no longer hangs while loading Tabular data, she now validates the links she generates so they always point to the right module, and she reads WHOOP heart-rate data correctly. Logging of Yollanda interactions in Analytics is also working again after it had quietly stopped.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="May 11, 2026" title="Ask Yollanda about your whole squad">
+  {/* NOTE(yarmill): placeholder hero — real visual generated later via yarmill-visuals. */}
+  <Frame caption="Yollanda comparing athletes across a squad.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda answering a question across a whole squad of athletes." />
+  </Frame>
+
+  Until now, [Yollanda](/en/platform/yollanda) answered questions one athlete at a time. To
+  get a read on a whole squad, you opened each athlete in turn and asked again.
+
+  Now Yollanda works at the squad level. Ask about a training squad and she reasons over
+  everyone at once — group overviews, the squad's plan, and side-by-side comparisons between
+  athletes. See who's trending up, who needs attention, and how the squad stacks up against
+  itself, all without leaving the group view.
+
+  ## Open Yollanda wherever you're working
+
+  You no longer have to go looking for Yollanda to start a conversation. Open her directly
+  from an athlete's profile and from Tabular, and she keeps track of where you opened her —
+  so a question you ask from a profile already has that athlete in context.
+</Update>
+
+<Update label="April 28, 2026" title="Yollanda starts the conversation">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Yollanda opening a session with what's on an athlete's plate today.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda greeting a coach with a summary of the day's training and readiness." />
+  </Frame>
+
+  Until now you opened [Yollanda](/en/platform/yollanda) to a blank prompt and had to know what to ask. That is an extra step every time, and it is easy to miss the thing worth looking at.
+
+  Now Yollanda opens with a head start. She can greet you with what the day holds — the planned session and how ready the athlete or squad is for it — and pick up where you left off by searching and continuing your past conversations instead of starting cold each time. You stay in one thread as your questions build on each other.
+
+  ## Turn free text into structured entries
+
+  Yollanda can now read free-form text and map it into Yarmill's structure. Paste or dictate a loose note and she turns it into the right fields, so notes from a watch, a chat message, or a quick write-up land where they belong instead of being retyped by hand.
+
+  ### Improvements
+
+  - **Yollanda** — Group questions answer faster: a lighter conversation mode skips planning steps it does not need and goes straight to the answer for squad-level queries.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Permissions** — A report no longer opens for someone whose access to it is switched off, and an athlete can no longer reach another athlete's data through a report's Analytics view, so restricted reports stay restricted.
+  - **Athlete profile** — A half-written comment in an athlete's profile no longer follows you when you switch to a different athlete, and clicking the close icon no longer throws an error.
+  - **Analytics** — Race analyses that failed to load for some swimming federations now open again, and a report that broke on its season filter loads correctly.
+  - **Medical** — Reopening a medical issue no longer locks you out of valid dates, so you can set the start date you actually need. See the [medical module](/en/medical/medical-module).
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="April 7, 2026" title="Ask Yollanda from inside Tabular">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Opening Yollanda from a Tabular view, with the table already in context.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda opened from a Tabular view in Yarmill." />
+  </Frame>
+
+  [Yollanda](/en/platform/yollanda) already sat one click away from the plan and the training log. Tabular was the gap — to ask about what was in front of you, you left the table first.
+
+  Now Yollanda opens straight from Tabular, from the same top-right icon you use elsewhere, with the table you are looking at already in context. Ask about the numbers on screen without breaking your flow.
+
+  ### Improvements
+
+  - **Yollanda** — Her examples and prompts were refreshed to cover the newer modules and multi-athlete questions, so her suggestions match what you can actually ask today.
+  - **Load and readiness** — The load-and-readiness report now reflects illness and injury straight from the [medical module](/en/medical/medical-module) and shows the day's training focus from the [plan](/en/plan/plan) or the [training log](/en/reality/training-log), so the report reads true without duplicate entry.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Yollanda** — Report cost figures that looked inflated in chat now match the numbers in Analytics, dates inside generated links are formatted correctly, role counts in reports add up, and the AI Insights box no longer flickers while its description and interpretation are being written.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="March 26, 2026" title="A refreshed Yollanda, right where you work">
+  {/* NOTE(yarmill): placeholder hero — real visual generated later via yarmill-visuals. */}
+  <Frame caption="Yollanda's refreshed look, opened straight from an athlete's profile.">
+    <img src="/images/changelog/_placeholder.svg" alt="The redesigned Yollanda chat opened from an athlete's profile in Yarmill." />
+  </Frame>
+
+  [Yollanda](/en/platform/yollanda) gets a visual refresh this month, with a cleaner, calmer chat that's easier to read through a long conversation.
+
+  She's also wired into the [athlete profile](/en/platform/athlete-profile). Open her straight from a profile and she already has that athlete in context, so you can ask about the person in front of you without setting anything up first.
+
+  ### Improvements
+
+  - **Medical** — A health issue can no longer be saved with a start date that falls after its end date, so the timeline an athlete's record builds on stays consistent and analytics read it correctly.
+  - **Wellness report** — The wellness report is now available to athletes, not just staff, so an athlete can follow their own recovery trend.
+  - **Report sharing** — Reports can now be opened up to a group or an individual athlete with the right filter applied, so you can give athletes access to their own data without exposing the rest of the squad.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Charts** — Category charts now show every value along the x-axis instead of clipping the last ones, and load and readiness KPIs read only from the actual side when you choose it.
+  - **Reports** — A training-shooting report no longer showed another athlete's name in its filter, so each athlete now sees only their own.
+  - **Copying plans** — Attachments now come along when you copy a plan from a group down to its athletes, instead of being left behind.
+  - **Command palette** — The command palette no longer hides behind dropdowns, and the Analytics entry is back in its menu.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="March 17, 2026" title="Yollanda learns her way around Yarmill">
+  {/* NOTE(yarmill): placeholder hero — real visual generated later via yarmill-visuals. */}
+  <Frame caption="Yollanda linking straight to the module behind her answer.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda answering with a direct link into a Yarmill module." />
+  </Frame>
+
+  When you asked [Yollanda](/en/platform/yollanda) about something, she could explain it but couldn't take you there, and she didn't always know which parts of Yarmill a given athlete or team actually used.
+
+  Now she understands the app around her. She knows what each module is for, respects the modules you're allowed to see so she only works with what's available to you, and links straight into the relevant module, analysis or tabular so you can jump from an answer to the data behind it in one click.
+
+  ## Tuned to how your team trains
+
+  Yollanda now factors in your instance's primary sport and focus, so her reasoning leans on what your team actually does rather than a generic default. She also reads the methodology guidance set up for your team, grounding her answers in your own coaching material.
+
+  <Info>
+    A team's primary sport, available modules and methodology content are configured per instance, so Yollanda's awareness reflects your own setup.
+  </Info>
+
+  ### Improvements
+
+  - **Typography** — Yarmill now renders in Inter, for cleaner, more consistent text across the app.
+  - **Focus states** — Keyboard navigation is more reliable: focus styling is consistent in the new design, more elements are reachable by Tab, and focused controls respond to Enter.
+  - **Wellness report** — On tablet and mobile, the dots for previous weeks no longer overlap, so past weeks stay readable on smaller screens.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Yollanda** — She no longer returns the occasional empty answer, recovers properly instead of failing outright after repeated retries, and her analysis stream is stable again.
+  - **Analytics** — An athlete's data now loads reliably even when it had previously appeared empty, and InBody filters no longer list users from outside the selected group.
+  - **Design** — Fixed a layout glitch in the goals and medical overview.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="February 26, 2026" title="Yollanda answers faster">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Yollanda returning an answer for a group of athletes.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda answering a question across a group of athletes." />
+  </Frame>
+
+  Pulling together everything Yollanda needs to answer — diary entries, workouts and recovery data — used to be done one athlete at a time. For a single athlete that was fine, but the moment you asked about a group, the wait added up.
+
+  Now [Yollanda](/en/platform/yollanda) loads that data for everyone in a group in one pass instead of athlete by athlete. Questions return noticeably faster, especially when you ask about a whole training group, and her answers draw on the latest diary data even right after a fresh sync.
+
+  ### Improvements
+
+  - **Yollanda** — Group questions are quicker to answer, and she now pulls in the most recently synced diary data so her reasoning reflects what an athlete logged today.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Yollanda** — When a model occasionally returned raw code instead of an answer, Yollanda now catches it and falls back cleanly, so you get a proper response rather than a broken reply.
+  - **WHOOP** — Restored WHOOP data processing after it stalled, and reprocessed the backlog so missing days show up again in athletes' data.
+  - **Daily readiness** — Corrected a mix-up that showed fatigue and soreness values swapped in the report, and the report no longer pulls in data a user shouldn't have access to.
+  - **Plan** — Copying a plan no longer deletes an attachment when you skip a conflict or merge, so files stay intact through a copy.
+  - **Biathlon** — Polished the race-analysis visuals so the charts read more clearly.
+  - **Medical** — Fixed layout glitches in the Medical module on mobile.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="January 20, 2026" title="Reach for your most-used diagnoses first">
+  {/* NOTE(yarmill): placeholder hero — real visual generated later via yarmill-visuals. */}
+  <Frame caption="The most common diagnoses surfaced for quick selection in the Medical module.">
+    <img src="/images/changelog/_placeholder.svg" alt="A shortlist of frequently used diagnoses at the top of the Medical module's diagnosis picker." />
+  </Frame>
+
+  Logging an injury or illness meant scrolling the full diagnosis list every time, even though most of what you record day to day is a handful of the same conditions.
+
+  Now your most common diagnoses sit up front in the [Medical module](/en/medical/medical-module), so the everyday cases are one tap away. The complete list stays available alongside them for the rarer conditions you still need to find.
+
+  <Info>
+    The shortlist of frequent diagnoses is configured per team, so each medical staff sees the conditions their setup uses most.
+  </Info>
+
+  ## Yollanda keeps looking when the first search comes up empty
+
+  When you asked [Yollanda](/en/platform/yollanda) about something from earlier in the season, she searched a narrow recent window and sometimes returned nothing even though the answer was there.
+
+  Now she searches further back through your conversation history on her own when a first pass finds nothing, so questions about past sessions and notes are far more likely to land. She also reads activities synced from watches in your language, and no longer piles up duplicate notes when you ask about the same notes again in a conversation.
+
+  ### Improvements
+
+  - **Trend analytics** — Sporttester data now feeds the trend views, so heart-rate and training data from those devices shows up alongside everything else you track over a season.
+  - **InBody** — Body-composition reports show more metrics and plot their data points in the right order, so segmental lean-mass readings are easier to read at a glance.
+  - **Swimming analysis** — The 800 m race report now breaks the swim down into 50 m segments with split times, matching the detail already available for longer distances.
+  - **Empty states** — Reports show clearer "no data" messages when a group or athlete has nothing to display, so an empty view explains itself instead of looking broken.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Daily readiness** — A false red warning no longer appears for athletes whose WHOOP recovery data is simply a few days old, so the readiness view reflects the real picture.
+  - **Reports** — Switching to a different report no longer silently changes which athlete you're viewing, so you stay on the person you selected.
+  - **Medical** — The last character you type in a note now saves reliably, and illnesses no longer show up mixed into the list of injuries.
+  - **Daily readiness** — Oura readiness now uses the correct colours after Oura's own redesign, so the scale reads as intended.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="December 23, 2025" title="Yollanda understands your medical and plan context">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Yollanda answering with medical and mesocycle context in view.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda referencing medical records and mesocycle numbers in an athlete's analysis." />
+  </Frame>
+
+  [Yollanda](/en/platform/yollanda) could already reason over training and recovery, but she didn't see the [Medical module](/en/medical/medical-module) — so questions about an athlete's injuries or availability fell outside what she could answer.
+
+  Now Yollanda reads the Medical module too. Ask about an athlete's injury history or current status and she factors it into her answer, alongside their training and recovery data.
+
+  ## She follows your season structure
+
+  If your season runs on four-week mesocycles rather than calendar months, Yollanda now uses those numbers when she lays out an athlete's [training sheet](/en/plan/season-calendar) — so her reading of the year matches how you actually plan it.
+
+  <Info>
+    Whether a season is split into 12 months or 13 four-week mesocycles is configured per instance, and Yollanda follows that setting.
+  </Info>
+
+  ### Improvements
+
+  - **Tabular** — New rows now appear at the top of a table straight away, matching the newest-first order you already see, instead of dropping to the bottom until you refresh.
+  - **Admin invites** — You can now invite a teammate with the Admin role directly, without having to invite them as a coach first and change the role afterwards.
+  - **InBody** — The individual report now shows an athlete's full measurement history rather than trimming early results to the calendar range, so long-term body-composition trends stay complete.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Season calendar** — Events deleted from the calendar no longer reappear after a refresh, so removals now stick.
+  - **Analytics** — WHOOP data now shows up in trend analysis, not just in the training-load report, so athletes on a WHOOP band get a complete trend view.
+  - **Yollanda** — Her answers now include days an athlete left blank in the diary instead of skipping them, she picks up fresh entries right after you add them rather than serving stale cached data, and she no longer stalls or errors on athletes with little or no data. Date formatting, text formatting in interpretations, and her reading of right-side column descriptions are all corrected too.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="December 7, 2025" title="The refreshed Yarmill logo, everywhere">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="The current Yarmill logo across the web app, mobile apps, and PDF exports.">
+    <img src="/images/changelog/_placeholder.svg" alt="The updated Yarmill logo shown across the app and exported reports." />
+  </Frame>
+
+  A few corners of the product still carried the old Yarmill logo — in PDF exports, on the iOS and Android apps, and in the mobile widget and announcements.
+
+  Now the current logo appears consistently across all of them, so the app and everything it produces look like one Yarmill.
+
+  ### Improvements
+
+  - **Analytics** — Trend charts now show the Y axis, its labels, and matching gridlines by default, so a trend is easier to read at a glance without extra setup.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Training log** — Workouts that already existed now show up immediately when a coach opens an athlete's reality view, instead of appearing only after a manual refresh.
+  - **Yollanda** — Season selection now keys off the date alone, so her evaluation no longer slips around the time of day as a season ends.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="November 21, 2025" title="FIS competition analytics for freestyle skiing">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="FIS competition results turned into season analytics for a freestyle skiing squad.">
+    <img src="/images/changelog/_placeholder.svg" alt="Freestyle skiing competition results charted from FIS data in Yarmill." />
+  </Frame>
+
+  Freestyle skiing now gets the same competition analytics that biathlon teams already rely on, built straight from FIS data. Until now this depth of race analysis only existed for the biathlon reports.
+
+  Now you get a starter package of three reports for Big Air, Slopestyle and Halfpipe. Track one athlete's results across the season, see a full team or group overview at a glance, and break results down by age and discipline against the wider field. It is the read you need for post-season review and pre-season planning, sitting next to the rest of an athlete's [analytics](/en/analytics/analytics).
+
+  <Info>
+    The freestyle FIS analytics package is set up per team. Each federation or club needs its FIS data connected on our side before the reports populate — get in touch to enable it for your instance.
+  </Info>
+
+  ## Trick recording for freestyle skiing
+
+  Trick parsing now works on freestyle ski instances the same way it has on snowboard, adapted to how skiers log spins — left and right rotation rather than frontside and backside. Record a run and the trick analysis reads it correctly, so your jump and rotation breakdowns line up with how athletes actually write them down.
+
+  ### Improvements
+
+  - **Trend analytics** — More squads moved from the old general analytics to the newer trend analytics view, and the trend charts picked up grid lines and other small refinements that make them easier to read.
+  - **Load analysis** — Training-load calculations can now draw TRIMP from the right-side power data instead of only from a watch, so teams testing that way get a load figure that matches their setup.
+  - **Evidence** — Number inputs in stepped forms now match the design, with shorter whole-number and decimal fields and a progress bar across the top so athletes can see how far through a form they are.
+  - **Yollanda** — Her "what Yollanda can do" overview now mentions that she reads connected [watches and health data](/en/platform/yollanda), so it is clearer what you can ask her about.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Team daily readiness** — The report no longer swaps soreness and fatigue, so the [readiness](/en/reality/wellness-questionnaire) view attributes each athlete's worst scores to the right measure.
+  - **Medical module** — Read and write permissions now apply correctly at the group level in the [medical module](/en/medical/medical-module), so a coach given read-only access to a group sees exactly that.
+  - **OKRs** — Fixed missing translations, the first item in the goals export ("Export goals") not being clickable, and long names in the team overview overflowing instead of stacking.
+  - **Analytics** — Restored a broken analytics view for an affected athlete, and corrected RTC evaluation totals that disagreed between the Season and Trend views.
+  - **Evidence** — Links inside rich-text fields no longer jump you back to the top of the page, and the Continue button no longer escapes its bar on iPad.
+  - **Yollanda** — She wraps generated code reliably and escapes dots in dates, so answers stop failing on those edge cases.
+  - **Integrations** — Motocross activities from Garmin now sync through, and a video-processing job that had stalled is running again.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="October 30, 2025" title="Yollanda reads your wearable data">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Yollanda answering a question using an athlete's watch and health data.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda reasoning over an athlete's workout and recovery data from a wearable." />
+  </Frame>
+
+  Until now, [Yollanda](/en/platform/yollanda) reasoned over what was logged in the training diary. The data flowing in from athletes' watches and bands sat outside her reach, so questions about a recorded session or last night's recovery went unanswered.
+
+  Now Yollanda reads that data too. She picks up whole activities synced from a watch, with their sport, duration and heart-rate zones, and she pulls in health metrics like HRV, resting heart rate and sleep. Ask how an athlete recovered after a hard block or how their sleep tracked through a camp, and her answer draws on the same numbers their device recorded.
+
+  Yollanda treats wearable data and diary entries as two separate sources of the "same" measurement, so she won't double-count a session that exists in both places. She also knows which provider each athlete is connected to, so she can tell whose numbers come from where.
+
+  ## A coach view over Oura data
+
+  Athletes on Oura now feed a dedicated coach report. See sleep and recovery trends from the ring across your group in one place, alongside the rest of an athlete's data.
+
+  ### Improvements
+
+  - **Yollanda** — Tables and charts in her chat now render in a monospace layout, so columns line up and data is easier to read at a glance.
+  - **Biochemistry** — Positive changes between two CASRI lab measurements now carry a `+` sign, matching the `-` already shown for decreases, so the direction of every change reads clearly.
+  - **Race analysis** — In swimming you can now compare across different disciplines, for example a relay leg against a solo race, instead of being limited to matching events.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Daily readiness** — WHOOP Recovery no longer appears for athletes who don't have a WHOOP connected, so the team readiness view only shows data that actually exists.
+  - **Yollanda** — Links she generates now work reliably, including links with underscores, and her analysis no longer stalls intermittently.
+  - **Rich text** — Notes no longer show stray HTML characters or an extra blank line, and bullet formatting renders correctly.
+  - **Files** — A file uploaded on the left side now appears immediately, without needing a page refresh.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="October 13, 2025" title="A clearer Medical module">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Recording a health issue with diagnosis and circumstances in the Medical module.">
+    <img src="/images/changelog/_placeholder.svg" alt="The Medical module showing a diagnosis and injury circumstances." />
+  </Frame>
+
+  Recording an injury or illness in the [Medical module](/en/medical/medical-module) asked for more detail than most staff could give, and the diagnosis catalogue was English-only. The result was half-filled records that were hard to read back later.
+
+  Now the module is simpler and clearer to fill in. The diagnosis catalogue is available in Czech alongside English, the diagnosis section shows the affected side right where you record an injury, and the confusing injury-onset list is gone. When a health issue closes, it's marked **Full training** automatically, so an athlete's status stays current without a manual step.
+
+  <Info>
+    The set of injury circumstances is configured per team. Football clubs, for example, can now log mechanism of injury, playing surface and severity from purpose-built lists.
+  </Info>
+
+  ### Improvements
+
+  - The Medical overview now gives each record room to breathe, so statuses, names and expected return dates stay readable instead of crowding together.
+  - **Headings** — Table, report and dashboard titles now use sentence case consistently across the app.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Medical module** — Diagnoses and comments now save reliably and survive a refresh, and on mobile the cross button for clearing a date or circumstance works again.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="September 24, 2025" title="Health issues: a clearer medical record">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="An athlete's health issues with a grouped activity log in Yarmill.">
+    <img src="/images/changelog/_placeholder.svg" alt="The Yarmill medical record showing health issues and a grouped activity log." />
+  </Frame>
+
+  We've been refining the [medical module](/en/medical/medical-module) through the season, and this drop tidies up the things you touch every day. The naming is now consistent end to end: what you track is **health issues**, the same word in the record, the activity log and the reports.
+
+  The activity log reads more cleanly too. Related changes are grouped together the way goals already are, so a string of edits to one injury shows as one block instead of a wall of separate lines. The drawer's empty state, the action icons and the date picker all got a pass, and the whole module works properly on a phone.
+
+  ## Yollanda answers from fresher data, and your own methodology
+
+  [Yollanda](/en/platform/yollanda) used to reason over diary data that was recalculated once a night, so the training an athlete logged this morning wasn't there yet when you asked. Now, when you open her, she pulls in anything edited in roughly the last day and merges it in, so her answer reflects what just happened.
+
+  She also follows your team's own coaching guidance. Instance-specific methodical notes can be fed into her guidelines, so her answers speak your program's language rather than a generic default.
+
+  <Info>
+    The methodical guidance Yollanda draws on is configured per team. Talk to us about adding your program's notes.
+  </Info>
+
+  ### Improvements
+
+  - **Garmin** — Workouts now carry the name of the device that recorded them, and all Garmin data is clearly marked as coming from Garmin, so you can see at a glance where a number originated.
+  - **Evidence** — Stepped questionnaires can show the description text for an attribute or question, and sharing a link straight to a questionnaire is cleaner.
+  - **Text fields** — You can click anywhere in a text area to start typing, not just on the first line.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Yollanda** — She no longer formats dates as a numbered list, refers to an athlete in the second person when they ask about themselves, and gets time values in minutes right. Stray invalid links and over-eager use of module guidelines on general questions are fixed too.
+  - **Analytics** — Reports keep loading when you switch dashboards while viewing as an athlete, InBody and movement time-charts label their X-axis correctly, and the weekly micro-cycle team overview shows the right week numbers across a season boundary.
+  - **Medical** — You can now confirm circumstances with Enter, and adding a new injury through the plus button works again.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="September 15, 2025" title="Race results in the training diary">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="A biathlon race summary shown in the left side of the training diary.">
+    <img src="/images/changelog/_placeholder.svg" alt="A biathlon race summary card in the Yarmill training diary." />
+  </Frame>
+
+  A race result used to live separately from the day it belonged to. Now an IBU race summary shows up right in the left side of the [training log](/en/reality/training-log), alongside the watch and health data for that day.
+
+  Each summary carries what you'd want at a glance: the event type, the venue, the discipline and distance, the shooting line, and the finishing place. It gives a race day the same at-a-glance card the rest of the day already has.
+
+  <Info>
+    Race summaries come from the IBU data feed and apply to biathlon instances. Availability depends on your team's setup.
+  </Info>
+
+  ### Improvements
+
+  - **Analytics** — Reports stay on the same athlete as you move between load-and-readiness dashboards, recovery analytics label their average lines more clearly, and an unfilled wellness questionnaire over the last seven days is now shown for what it is.
+  - **Charts** — Bar-chart data labels sit in a clearer position, and richtext business formats can set their own text colour.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Analytics** — Players no longer drop out of the filter in the GPS report, nested visuals show their labels, and team daily readiness correctly reflects whether the wellbeing questionnaire was filled in.
+  - **Polar** — Connecting Yarmill to Polar Flow no longer errors out.
+  - **Charts** — Horizontal column charts now show negative values and render outside-positioned labels.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="September 12, 2025" title="WHOOP data that lines up">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="WHOOP sleep, recovery and workout data in the left side of the diary.">
+    <img src="/images/changelog/_placeholder.svg" alt="WHOOP recovery and workout metrics shown in the Yarmill training diary." />
+  </Frame>
+
+  Yarmill is now an approved WHOOP application, and this release makes the data it brings in trustworthy. If an athlete wears a WHOOP band, their recovery, sleep and workout numbers now read correctly in the left side of the [training log](/en/reality/training-log).
+
+  We fixed the things that quietly made the numbers wrong: sleep and workout start times were off by two hours, recovery wasn't showing at all, distance and average heart rate were missing from the workout overview, and some Sundays had no health data. Where a chart genuinely has no data behind it, we now leave it out rather than showing an empty frame.
+
+  ### Fixes
+
+  - **WHOOP** — Sleep and recovery metrics are no longer duplicated into a single box in the diary's left side.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="August 26, 2025" title="Cleaner, more reliable trend analytics">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Trend analytics with empty visuals handled cleanly and labels hidden where there's no data.">
+    <img src="/images/changelog/_placeholder.svg" alt="A Yarmill trend report rendering cleanly when some visuals have no data." />
+  </Frame>
+
+  Trend reports are only useful if you can trust what's on the chart. When a visual had no data behind it, it could still draw odd axes and stray gridlines, and labels would show variable placeholders that read as noise.
+
+  Now [analytics](/en/analytics/analytics) handles empty visuals cleanly. Charts with no data render with sensible axis ranges instead of stray marks, and labels built from variables stay hidden when those variables have nothing to show, so a report reads clearly even when part of it is empty.
+
+  ## Jump from any date straight to that day
+
+  Dates in analytics are now links. Click a date anywhere in a report and you land on that day in [reality](/en/reality/training-log), so you can go from a number in a trend straight to the session behind it without hunting for it.
+
+  ### Improvements
+
+  - Refined the export icon and added clearer "from" and "to" icons to the date picker, so range pickers read at a glance.
+  - Plus a range of smaller polish across the app.
+
+  ### Fixes
+
+  - **Analytics** — Empty visuals in trend reports no longer draw misleading Y-axes, and weekly dashboards that loaded by email but not in-app now open correctly when you click through.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="July 17, 2025" title="OKRs, redesigned">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="The redesigned OKRs view for season goals.">
+    <img src="/images/changelog/_placeholder.svg" alt="The rebuilt OKRs interface for setting and tracking season goals." />
+  </Frame>
+
+  Setting and reviewing season [goals](/en/plan/goals) had grown slow and cramped, and there was no real way to work with them on a phone.
+
+  Now OKRs have a fresh design throughout. Objectives and key results are clearer to scan, filtering is faster to narrow down to the goals you care about, and loading and saving are quicker so editing a goal no longer means waiting. The view now works properly on mobile, so you can check in on progress between sessions.
+
+  ## Export goals for the right season
+
+  Exporting goals used to print whichever season happened to be selected, with no way to choose. Now the export lets you pick the season you want, so the printed goals always match what you meant to share.
+
+  You can also jump straight from a goal to its methodology guidance, and coaches and admins are now marked distinctly in the side menu so you can tell at a glance who is who.
+
+  ### Improvements
+
+  - **Recovery analytics** — The recovery report now covers more of the picture, giving you a fuller read on how athletes are bouncing back.
+  - **Report icons** — More reports now use the refreshed icon set, so the look stays consistent as you move between them.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Yollanda** — [Yollanda](/en/platform/yollanda) now addresses you directly rather than in the third person, and typing to her on mobile web works smoothly.
+  - **OKRs** — Clicking outside a dropdown now closes it cleanly, logos no longer appear distorted in the redesigned view, and a cancelled key result correctly shows as closed in its drawer.
+  - **Reports** — Whole numbers and chart labels now display correctly instead of being cut off or misplaced, and the weekly dashboard uses a distinct icon for a logged session that differs from the plan.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="July 8, 2025" title="Yollanda writes the insight, right in the report">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="A Yollanda AI insight shown inside a report.">
+    <img src="/images/changelog/_placeholder.svg" alt="Yollanda's written analysis appearing inside a Yarmill report." />
+  </Frame>
+
+  Reading a report well takes practice. The numbers are there, but knowing what to make of them is its own skill.
+
+  Now [Yollanda](/en/platform/yollanda) reads the report for you and writes a short interpretation right alongside it. Open a report and her AI Insights spell out what the data is saying, so the takeaway is there without you having to piece it together yourself.
+
+  ### Improvements
+
+  - **Weekly dashboard** — The watch-data tooltip now shows the number of workouts, so you can see how much activity sits behind the week's totals at a glance.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Yollanda** — She no longer exposes technical implementation details in her answers, her AI Insights bullets are formatted correctly, and the AI Insights icon no longer stays stuck blue in Chrome.
+  - Plus a number of smaller fixes and performance improvements.
+</Update>
+
+<Update label="June 26, 2025" title="The new Yollanda, now for nearly every team">
+  {/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+  <Frame caption="Yollanda answering a coach's question inside Yarmill.">
+    <img src="/images/changelog/_placeholder.svg" alt="The new Yollanda answering a question inside Yarmill." />
+  </Frame>
+
+  The rebuilt [Yollanda](/en/platform/yollanda) has been running with a handful of teams while we put her through real season use. She's ready for everyone now.
+
+  Yollanda is switched on across nearly every instance, with an in-app announcement that shows what she can do, how she looks, and where to find her. Ask her about an athlete's load, recovery, or plan and get a straight answer without leaving the view you're in.
+
+  <Info>
+    Yollanda is enabled per team. A few instances without both plan and reality data stay out of scope for now — get in touch if you'd like her turned on.
+  </Info>
+
+  ## Insights that read your charts for you
+
+  A chart shows the trend, but reading it still takes a trained eye. Yollanda now sits on your analytics charts: tap the insights button on a graph and she explains what's actually visible in it — the rise, the dip, the outlier week — in plain language right next to the data.
+
+  ### Improvements
+
+  - **Yollanda** — She's less chatty on small talk now. Greet her and she greets you back and asks how she can help, instead of launching into an unprompted analysis.
+  - **Yollanda** — Every answer in the Yollanda module and in [Analytics](/en/analytics/analytics) insights now carries a clear note that it's AI-generated and can be wrong, so it's obvious when to double-check a number.
+  - Plus a range of smaller improvements across the app.
+
+  ### Fixes
+
+  - **Files** — Files from a previous user no longer linger in an athlete's [profile records](/en/platform/athlete-profile) when the next person opens it, so each athlete sees only their own attachments.
+  - **Files** — Adding attachments to a record is reliable again: newly uploaded files now appear and stay put instead of flashing up and vanishing.
+  - **Analytics** — Decimal values entered in records no longer come back padded with trailing zeros after a refresh, so 179 stays 179.
+  - **Analytics** — Trend analysis decomposes heart-rate zones correctly again, and biochemistry markers keep one consistent colour between the detail and trend charts.
+  - **Analytics** — Yollanda's chart insights now render stacked bar charts correctly, and the insights icon stays inside the chart area instead of drifting outside it.
+  - **Mobile** — The Yollanda icon is visible again on mobile, the app no longer crashes when syncing a snowboarding activity from Apple Watch, and the in-app announcement opens at the top instead of scrolled halfway down.
+  - **Results** — An athlete's name now prints on the results-trend PDF instead of being left blank.
+  - Plus a number of smaller fixes and performance improvements.
 </Update>
