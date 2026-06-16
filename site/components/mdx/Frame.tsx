@@ -1,26 +1,13 @@
-'use client';
-
-import {
-  Children,
-  isValidElement,
-  useRef,
-  useState,
-  type ReactElement,
-  type ReactNode,
-} from 'react';
-import { Lightbox } from './Lightbox';
+import { Children, isValidElement, type ReactElement, type ReactNode } from 'react';
+import { ZoomImage } from './ZoomImage';
 
 /**
- * Product-screenshot frame. The image is click-to-zoom: clicking opens a
- * lightbox (Lightbox.tsx) with the enlarged image + caption.
+ * Product-screenshot frame with Linear-style click-to-zoom.
  *
- * The clickable button is ALWAYS rendered, and the src is resolved at click
- * time from the live `<img>` in the DOM (works for any rendering) with the MDX
- * child's `src` prop as a fallback — so zoom is robust in dev and on a
- * production/CDN build alike. The MDX author keeps writing a plain `<img>`.
- *
- * Discoverability: a `zoom-in` cursor + an unobtrusive hover hint (mdx.css).
- * SSR-safe — the Lightbox only mounts on the client when open.
+ * The image's `src`/`alt` are read from the MDX child element's props, then
+ * rendered through <ZoomImage>, which reproduces Linear's FLIP zoom (the image
+ * grows from its in-page box to a centred, viewport-fitted size on a
+ * page-coloured canvas). The caption stays put — only the image zooms.
  */
 function findImageProps(node: ReactNode): { src: string; alt: string } | null {
   let found: { src: string; alt: string } | null = null;
@@ -46,39 +33,14 @@ export function Frame({
   caption?: ReactNode;
   children?: ReactNode;
 }) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [zoom, setZoom] = useState<{ src: string; alt: string } | null>(null);
-  const captionText = typeof caption === 'string' ? caption : undefined;
-
-  function open() {
-    const imgEl = ref.current?.querySelector('img');
-    let src = imgEl?.currentSrc || imgEl?.getAttribute('src') || '';
-    let alt = imgEl?.getAttribute('alt') ?? '';
-    if (!src) {
-      const fromProps = findImageProps(children);
-      if (fromProps) {
-        src = fromProps.src;
-        alt = fromProps.alt;
-      }
-    }
-    if (src) setZoom({ src, alt });
-  }
+  const image = findImageProps(children);
 
   return (
     <figure className="ym-frame">
-      <button
-        type="button"
-        ref={ref}
-        className="ym-frame-media ym-frame-zoom"
-        aria-label="Enlarge image"
-        onClick={open}
-      >
-        {children}
-      </button>
+      <div className="ym-frame-media">
+        {image ? <ZoomImage src={image.src} alt={image.alt} /> : children}
+      </div>
       {caption ? <figcaption className="ym-frame-caption">{caption}</figcaption> : null}
-      {zoom ? (
-        <Lightbox src={zoom.src} alt={zoom.alt} caption={captionText} onClose={() => setZoom(null)} />
-      ) : null}
     </figure>
   );
 }
