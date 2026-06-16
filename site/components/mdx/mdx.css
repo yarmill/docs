@@ -362,11 +362,11 @@
   height: auto;
   border-radius: var(--ym-radius);
 }
-/* ---- Click-to-zoom (Linear-style FLIP, ZoomImage.tsx) ----
-   The in-page image is the trigger; clicking opens a body-portal overlay
-   (page-coloured, fades in) and a fixed clone that GROWS from the image's box
-   to a centred, viewport-fitted size. Transforms are driven inline by the
-   component; this file styles the surfaces. */
+/* ---- Click-to-zoom (Linear-style, ZoomImage.tsx) ----
+   The in-page image IS the zoomed element — clicking transforms that same
+   `<img>` to a centred, viewport-fitted size (no clone, so no swap and no
+   flash) while this body-portal overlay fades in behind it. Transforms +
+   opacity are driven inline by the component; this file styles the surfaces. */
 .ym-zoom-trigger {
   display: block;
   width: 100%;
@@ -399,22 +399,33 @@
   .ym-frame-media:hover::after { opacity: 1; }
 }
 
-/* Open state — page-coloured full-screen canvas + the growing clone. */
+/* Open state — page-coloured full-screen canvas behind the enlarged image. */
 .ym-zoom-overlay {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 200; /* the image is lifted to z-index 210, above this */
   background: var(--ym-bg);
   cursor: zoom-out;
   opacity: 0; /* WAAPI fades this in; avoids a one-frame flash on mount */
 }
-.ym-zoom-clone {
+/* "esc" hint pill, bottom-centre (matches Linear). */
+.ym-zoom-esc {
   position: fixed;
-  margin: 0;
-  object-fit: contain;
-  border-radius: var(--ym-radius);
-  box-shadow: var(--ym-shadow-popover);
-  will-change: transform;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 510;
+  letter-spacing: 0.01em;
+  color: var(--ym-muted);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+  box-shadow: var(--ym-shadow-card);
+  pointer-events: none;
+  user-select: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .ym-frame-media::after { transition: none; }
@@ -663,6 +674,18 @@
 
 .ym-update-body > :first-child { margin-top: 0; }
 .ym-update-body > :last-child { margin-bottom: 0; }
+
+/* Secondary-feature headings inside a post (Linear-style: each additional big
+   topic gets its own heading, subordinate to the post title, with body prose. */
+.ym-update-body h2 {
+  margin: 28px 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.006em;
+  line-height: 1.3;
+  text-transform: none;
+  color: var(--ym-ink);
+}
 
 /* Compact "Improvements" / "Fixes" sub-sections inside an entry (Linear-style:
    muted, smaller heading + tight bullet list of one-line tweaks). */

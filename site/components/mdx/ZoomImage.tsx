@@ -4,46 +4,28 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 /**
- * Linear-style click-to-zoom (medium-zoom behaviour) for a single image.
+ * Linear-style click-to-zoom for a single image (medium-zoom mechanism).
  *
- * Clicking opens a body portal — a page-COLOURED overlay fades in and a
- * fixed-position clone of the image GROWS (transform FLIP) from the image's
- * exact on-page box to a centred, viewport-fitted size. Clicking / Esc /
- * scrolling / resizing reverses it. Body is scroll-locked (with scrollbar-width
- * compensation so the page doesn't shift). Reduced motion / hidden tab → instant.
+ * There is exactly ONE image element — the real in-page `<img>`. Clicking
+ * transforms that same element (scale + translate) from its inline box to a
+ * centred, viewport-fitted size while a body-portal overlay fades in. Closing
+ * reverses the transform on the SAME element. Because nothing is ever swapped
+ * (no clone), the motion is one continuous transform and there is structurally
+ * no flash — this is what Linear's docs do.
  *
- * No-flash contract:
- * - The original image is hidden for the ENTIRE open→zoomed→close lifetime, so a
- *   duplicate is never visible behind the clone (no "original showing through").
- * - At the exact end of the close, the original is revealed AND the clone is
- *   hidden in the SAME synchronous tick (atomic swap), before React unmounts —
- *   so there's no gap and no snap-back. The clone is held at its shrunk end via
- *   fill:'forwards', which equals the original's box exactly.
+ * For the in-flow image to paint above the overlay and not be clipped:
+ * - `.ym-page-enter` no longer leaves a permanent `will-change`/`transform`, so
+ *   no ancestor creates a stacking context or containing block (see chrome.css).
+ *   The image gets `position: relative; z-index` above the overlay and resolves
+ *   in the root stacking context.
+ * - The image's frame (`.ym-frame-media`) is `overflow: hidden`; we flip it to
+ *   `visible` for the duration of the zoom so the enlarged image isn't clipped.
  *
- * The clone lives in a portal (not the article) because an ancestor of the
- * article has `will-change: transform`, which would trap a `position: fixed`
- * descendant in its containing block.
+ * Reduced motion / hidden tab → instant (no transition).
  */
-const MARGIN = 0.05;
-const OPEN_MS = 300;
-const CLOSE_MS = 240;
-const EASE = 'cubic-bezier(0, 0, 0.2, 1)'; // ease-out (Emil: enter + exit)
-const IDENTITY = 'translate(0px, 0px) scale(1)';
-
-function fitRect(natW: number, natH: number) {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const maxW = vw * (1 - MARGIN * 2);
-  const maxH = vh * (1 - MARGIN * 2);
-  const ar = natW / natH || 1;
-  let w = Math.min(maxW, natW);
-  let h = w / ar;
-  if (h > maxH) {
-    h = maxH;
-    w = h * ar;
-  }
-  return { left: (vw - w) / 2, top: (vh - h) / 2, width: w, height: h };
-}
+const MARGIN = 40; // px of viewport breathing room around the zoomed image
+const DUR = 300;
+const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'; // ease-out (Emil: enter + exit)
 
 function prefersReduced() {
   return (
@@ -54,138 +36,163 @@ function prefersReduced() {
 
 export function ZoomImage({ src, alt }: { src: string; alt: string }) {
   const imgRef = useRef<HTMLImageElement>(null);
-  const cloneRef = useRef<HTMLImageElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const firstRect = useRef<DOMRect | null>(null);
-  const anims = useRef<Animation[]>([]);
+  const targetTransform = useRef<string>('none');
   const [open, setOpen] = useState(false);
 
-  const handleOpen = useCallback(() => {
-    const o = imgRef.current;
-    if (o) firstRect.current = o.getBoundingClientRect();
-    setOpen(true);
-  }, []);
+  const handleOpen = useCallback(() => setOpen(true), []);
 
+  // Open: lock scroll, free the frame's clip, transform the real image to a
+  // centred fit, fade the overlay in. The cleanup return restores everything,
+  // so it doubles as the teardown after close() unmounts the overlay.
   useEffect(() => {
     if (!open) return;
-    const orig = imgRef.current;
-    const clone = cloneRef.current;
+    const img = imgRef.current;
     const overlay = overlayRef.current;
-    if (!orig || !clone || !overlay) return;
+    if (!img || !overlay) return;
 
-    const first = firstRect.current ?? orig.getBoundingClientRect();
-    const target = fitRect(orig.naturalWidth || first.width, orig.naturalHeight || first.height);
-    clone.style.left = `${target.left}px`;
-    clone.style.top = `${target.top}px`;
-    clone.style.width = `${target.width}px`;
-    clone.style.height = `${target.height}px`;
-    clone.style.transformOrigin = 'top left';
-
-    // Hide the original for the whole lifetime (visibility keeps its layout box,
-    // so measurements stay valid). Lock scroll, compensating for the scrollbar
-    // so the page (and the original's box) doesn't shift horizontally.
-    orig.style.visibility = 'hidden';
+    // Scroll-lock, compensating for the scrollbar so the page can't shift.
     const sbw = window.innerWidth - document.documentElement.clientWidth;
     const prevOverflow = document.body.style.overflow;
     const prevPad = document.body.style.paddingRight;
     document.body.style.overflow = 'hidden';
     if (sbw > 0) document.body.style.paddingRight = `${sbw}px`;
 
-    anims.current.forEach((a) => a.cancel());
-    anims.current = [];
+    // Let the enlarged image escape its frame's overflow clip.
+    const frame = img.closest('.ym-frame-media') as HTMLElement | null;
+    const prevFrameOverflow = frame?.style.overflow ?? '';
+    if (frame) frame.style.overflow = 'visible';
 
-    // Resting end-state inline (large + visible), so it's correct even if the
-    // animation never ticks (hidden tab); the FLIP is layered on as an entrance.
-    clone.style.transform = IDENTITY;
-    clone.style.opacity = '1';
+    // Neutralise the page-entrance wrapper's stacking context for the duration
+    // of the zoom. While `.ym-page-enter`'s animation is in its active phase it
+    // applies a transform/opacity that creates a stacking context + containing
+    // block, which would trap the in-flow image BELOW the body-portal overlay.
+    // Forcing it static (it equals the resting state once the entrance is done)
+    // guarantees the image's z-index resolves at the root, above the overlay —
+    // regardless of entrance timing or tab-throttled animation clocks.
+    const enter = img.closest('.ym-page-enter') as HTMLElement | null;
+    const prevEnter = enter
+      ? {
+          animation: enter.style.animation,
+          transform: enter.style.transform,
+          opacity: enter.style.opacity,
+          willChange: enter.style.willChange,
+        }
+      : null;
+    if (enter) {
+      enter.style.animation = 'none';
+      enter.style.transform = 'none';
+      enter.style.opacity = '1';
+      enter.style.willChange = 'auto';
+    }
+
+    // Target transform: scale to fit (capped at natural size), translate centre
+    // to viewport centre. Form `translate() scale()` ⇒ translate is in real CSS
+    // pixels (applied outside the scale), so no division by scale is needed.
+    const r = img.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const scale = Math.min(
+      (vw - MARGIN * 2) / r.width,
+      (vh - MARGIN * 2) / r.height,
+      (img.naturalWidth || r.width) / r.width,
+    );
+    const tx = vw / 2 - (r.left + r.width / 2);
+    const ty = vh / 2 - (r.top + r.height / 2);
+    const target = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    targetTransform.current = target;
+
+    // Resting (open) state inline, so it holds even if the animation never ticks
+    // (hidden tab); the transition is layered on as an entrance.
+    img.style.position = 'relative';
+    img.style.zIndex = '210'; // above the overlay (z-index 200)
+    img.style.cursor = 'zoom-out';
+    img.style.transformOrigin = 'center center';
+    img.style.willChange = 'transform';
+    img.style.transform = target;
     overlay.style.opacity = '1';
 
     if (!prefersReduced() && !document.hidden) {
-      const from = `translate(${first.left - target.left}px, ${first.top - target.top}px) scale(${first.width / target.width})`;
-      anims.current = [
-        clone.animate([{ transform: from }, { transform: IDENTITY }], {
-          duration: OPEN_MS,
-          easing: EASE,
-        }),
-        overlay.animate([{ opacity: 0 }, { opacity: 1 }], {
-          duration: OPEN_MS,
-          easing: EASE,
-        }),
-      ];
+      img.animate([{ transform: 'none' }, { transform: target }], {
+        duration: DUR,
+        easing: EASE,
+      });
+      overlay.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: DUR,
+        easing: EASE,
+      });
     }
 
     return () => {
-      anims.current.forEach((a) => a.cancel());
-      anims.current = [];
       document.body.style.overflow = prevOverflow;
       document.body.style.paddingRight = prevPad;
-      orig.style.visibility = '';
+      if (frame) frame.style.overflow = prevFrameOverflow;
+      if (enter && prevEnter) {
+        enter.style.animation = prevEnter.animation;
+        enter.style.transform = prevEnter.transform;
+        enter.style.opacity = prevEnter.opacity;
+        enter.style.willChange = prevEnter.willChange;
+      }
+      img.style.position = '';
+      img.style.zIndex = '';
+      img.style.cursor = '';
+      img.style.transformOrigin = '';
+      img.style.willChange = '';
+      img.style.transform = '';
     };
   }, [open]);
 
+  // Close: reverse the transform on the SAME element + fade the overlay, then
+  // unmount (which runs the effect cleanup). Resting-end values are set inline
+  // up front so the no-fill animations land on them — no end-of-close flash.
   const close = useCallback(() => {
-    const orig = imgRef.current;
-    const clone = cloneRef.current;
+    const img = imgRef.current;
     const overlay = overlayRef.current;
-    if (!orig || !clone || !overlay || prefersReduced() || document.hidden) {
+    if (!img || !overlay || prefersReduced() || document.hidden) {
       setOpen(false);
       return;
     }
 
-    const first = orig.getBoundingClientRect();
-    const tLeft = parseFloat(clone.style.left) || 0;
-    const tTop = parseFloat(clone.style.top) || 0;
-    const tWidth = clone.offsetWidth || first.width;
-    const to = `translate(${first.left - tLeft}px, ${first.top - tTop}px) scale(${first.width / tWidth})`;
-    const computed = getComputedStyle(clone).transform;
-    const from = computed === 'none' ? IDENTITY : computed;
-
-    anims.current.forEach((a) => a.cancel());
-    anims.current = [];
+    const target = targetTransform.current;
+    img.style.transform = 'none';
+    overlay.style.opacity = '0';
 
     let done = false;
     const finish = () => {
       if (done) return;
       done = true;
-      // Atomic swap: reveal the original AND hide the clone in the same tick,
-      // then unmount. No gap, no duplicate.
-      orig.style.visibility = '';
-      clone.style.opacity = '0';
       setOpen(false);
     };
 
-    // Paired (Emil): clone + overlay share duration + easing; fill:'forwards'
-    // holds the shrunk end-state (== original's box) until the atomic swap.
-    const a = clone.animate([{ transform: from }, { transform: to }], {
-      duration: CLOSE_MS,
+    const a = img.animate([{ transform: target }, { transform: 'none' }], {
+      duration: DUR,
       easing: EASE,
-      fill: 'forwards',
     });
-    overlay.animate([{ opacity: getComputedStyle(overlay).opacity }, { opacity: 0 }], {
-      duration: CLOSE_MS,
+    overlay.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: DUR,
       easing: EASE,
-      fill: 'forwards',
     });
     a.onfinish = finish;
     a.oncancel = finish;
-    window.setTimeout(finish, CLOSE_MS + 80);
+    window.setTimeout(finish, DUR + 80);
   }, []);
 
+  // Esc / scroll-intent / resize all close (Linear closes on scroll).
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close();
     };
-    const onScrollIntent = () => close();
+    const onIntent = () => close();
     window.addEventListener('keydown', onKey);
-    window.addEventListener('wheel', onScrollIntent, { passive: true });
-    window.addEventListener('touchmove', onScrollIntent, { passive: true });
-    window.addEventListener('resize', onScrollIntent);
+    window.addEventListener('wheel', onIntent, { passive: true });
+    window.addEventListener('touchmove', onIntent, { passive: true });
+    window.addEventListener('resize', onIntent);
     return () => {
       window.removeEventListener('keydown', onKey);
-      window.removeEventListener('wheel', onScrollIntent);
-      window.removeEventListener('touchmove', onScrollIntent);
-      window.removeEventListener('resize', onScrollIntent);
+      window.removeEventListener('wheel', onIntent);
+      window.removeEventListener('touchmove', onIntent);
+      window.removeEventListener('resize', onIntent);
     };
   }, [open, close]);
 
@@ -197,7 +204,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
         src={src}
         alt={alt}
         className="ym-zoom-trigger"
-        onClick={handleOpen}
+        onClick={() => (open ? close() : handleOpen())}
       />
       {open &&
         createPortal(
@@ -209,8 +216,9 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
             aria-label={alt || 'Image preview'}
             onClick={close}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img ref={cloneRef} src={src} alt={alt} className="ym-zoom-clone" />
+            <span className="ym-zoom-esc" aria-hidden>
+              esc
+            </span>
           </div>,
           document.body,
         )}

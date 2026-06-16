@@ -1254,9 +1254,13 @@
    element on the pathname (it remounts). Transform/opacity only, ease-out,
    one --ym-dur. Sidebar + top bar live outside it, so they stay static. */
 .ym-page-enter {
-  animation: ym-page-enter var(--ym-dur) var(--ym-ease-out) both;
-  /* Hint the compositor for the brief entrance, then release. */
-  will-change: opacity, transform;
+  /* `backwards` (not `both`) + no `will-change`: the entrance holds its
+     from-state before it starts, then reverts to a fully static element once
+     finished — so it creates NO lingering stacking context or containing block.
+     That's what lets the in-flow click-to-zoom image (ZoomImage.tsx) paint above
+     the body-portal overlay; a persistent will-change/transform here would trap
+     it. */
+  animation: ym-page-enter var(--ym-dur) var(--ym-ease-out) backwards;
 }
 @keyframes ym-page-enter {
   from { opacity: 0; transform: translateY(4px); }
