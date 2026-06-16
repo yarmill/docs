@@ -476,33 +476,8 @@ html {
   position: relative;
 }
 
-/* Shared sliding active marker (NavTree.tsx): a 2.5px accent bar at the left of
-   the active page link. JS sets transform: translateY() + height to the active
-   link's box; it SLIDES between siblings (ease-out ~180ms), echoing the TOC
-   rail. Hidden until first placed (then fades in — no slide from off-screen). */
-.ym-nav-indicator {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 2.5px;
-  height: 0;
-  border-radius: 2px;
-  background: var(--ym-accent);
-  transform: translateY(0);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    transform var(--ym-dur) var(--ym-ease-out),
-    height var(--ym-dur) var(--ym-ease-out),
-    opacity var(--ym-dur-fast) ease;
-}
-.ym-nav-indicator[data-visible='true'] { opacity: 1; }
-/* Reduced motion — the marker snaps to position, only the fade remains. */
-@media (prefers-reduced-motion: reduce) {
-  .ym-nav-indicator {
-    transition: opacity var(--ym-dur-fast) linear !important;
-  }
-}
+/* Active page link = colour only (Linear): brand-accent text, no background and
+   no indicator bar. (Styled on `.ym-nav-link[data-active]` below.) */
 /* Child links sit indented under their section label. */
 .ym-nav-group .ym-nav-list { padding-left: 8px; }
 .ym-nav-list--nested {
@@ -1291,19 +1266,6 @@ html {
     will-change: auto;
   }
 }
-
-/* ---------- C2: theme-toggle circular reveal --------------
-   The JS in ThemeToggle drives the expanding clip-path on the NEW root via
-   document.documentElement.animate(). Here we (a) stop the browser's default
-   cross-fade on both snapshots, and (b) stack the new root on top so the wipe
-   reads as a clean reveal rather than a blend. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-::view-transition-old(root) { z-index: 0; }
-::view-transition-new(root) { z-index: 1; }
 
 /* ---------- C3: scroll-progress line ----------------------
    2px accent bar pinned to the bottom edge of the top bar. The inner bar is

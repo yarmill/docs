@@ -36,16 +36,14 @@
   color: var(--ym-faint);
   text-decoration: none;
   opacity: 0;
-  transform: translateX(2px);
+  /* Pure opacity reveal — no positional transform, so the icon never shifts. */
   transition:
     opacity var(--ym-dur) var(--ym-ease-out),
-    transform var(--ym-dur) var(--ym-ease-out),
     color var(--ym-dur-fast) ease;
 }
 .ym-heading:hover .ym-heading-anchor,
 .ym-heading:focus-within .ym-heading-anchor {
   opacity: 1;
-  transform: translateX(0);
 }
 @media (hover: hover) and (pointer: fine) {
   .ym-heading-anchor:hover { color: var(--ym-accent); }
@@ -55,7 +53,6 @@
   outline-offset: 2px;
   border-radius: var(--ym-radius-sm);
   opacity: 1;
-  transform: translateX(0);
 }
 .ym-heading-anchor[data-copied] { color: var(--ym-tip); opacity: 1; }
 
