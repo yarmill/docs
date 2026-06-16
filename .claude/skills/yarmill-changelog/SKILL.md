@@ -92,6 +92,8 @@ cd site && node scripts/linear-curate.mjs timeline 2026-05   # or a YYYY-MM-DD s
 - **Voice:** Linear's register — imperative, benefit-first, concrete, calm, no fluff. Pattern:
   set up the context/problem, then "Now …" delivers the change + benefit. **No ellipses.**
   Polish with `anthropic-skills:yarmill-copy` if needed.
+- **Naming map** (Linear uses old/internal names — always use the current product name):
+  `Evidence` → **Athlete profiles** (never surface "Evidence"). Add new mappings here as they come up.
 - **Cross-link** to module docs (`/en/<module>/…`) where it helps (verify the page exists).
 
 ### 6. Emit MDX
