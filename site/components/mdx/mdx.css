@@ -281,6 +281,18 @@
   letter-spacing: -0.013em; /* Linear: -0.182px @14px */
   color: var(--ym-muted);
 }
+/* The description usually renders as a <p>, which the prose rule
+   (`#nd-page :where(p, li)`, specificity 1,0,1) would otherwise pull to 15px and
+   the darker prose-text colour. Re-assert the card's lighter 14px text on the
+   inner element with enough specificity (#nd-page + class + element = 1,1,1). */
+.ym-shell #nd-page .ym-card-body :where(p, li) {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: -0.013em;
+  color: var(--ym-muted);
+  margin: 0;
+}
 .ym-card-body > :first-child { margin-top: 0; }
 .ym-card-body > :last-child { margin-bottom: 0; }
 
