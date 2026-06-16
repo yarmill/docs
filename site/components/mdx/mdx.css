@@ -232,10 +232,12 @@
   background: var(--ym-card-bg);
   overflow: hidden;
 }
-/* Icon zone — the icon sits at the top; the generous whitespace down to the
-   divider comes from the bottom zone being pinned to the card's base. */
+/* Icon zone — a FIXED-height block (icon at top, generous whitespace below), so
+   the divider is locked at the same Y on every card in a row no matter how long
+   the title/description is (this is the key to Linear's aligned dividers). */
 .ym-card-top {
   flex: none;
+  height: 148px;
   padding: 24px 20px;
 }
 .ym-card-icon {
@@ -243,13 +245,10 @@
   color: var(--ym-ink);
 }
 .ym-card-icon svg { width: 20px; height: 20px; }
-/* Text zone — pinned to the bottom (margin-top:auto), with a fixed min-height
-   so the divider lands at the same place on every card in a row regardless of
-   description length (Linear). */
+/* Text zone — top-aligned right under the divider; grows downward for longer
+   copy (the card grows; grid equalises the row) so text never clips. */
 .ym-card-bottom {
-  flex: none;
-  margin-top: auto;
-  min-height: 132px;
+  flex: 1 1 auto;
   padding: 20px;
   border-top: 1px solid var(--ym-card-line);
 }
