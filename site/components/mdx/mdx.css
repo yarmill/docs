@@ -145,24 +145,19 @@
   border-radius: var(--ym-radius-lg);
 }
 .ym-card-link .ym-card {
-  transition: border-color var(--ym-dur) var(--ym-ease-out),
-    box-shadow var(--ym-dur) var(--ym-ease-out),
-    transform var(--ym-dur) var(--ym-ease-out);
+  transition: background-color var(--ym-dur) ease,
+    border-color var(--ym-dur) ease;
 }
 @media (hover: hover) {
+  /* Linear: a subtle surface fill on hover — no border-accent, no lift. */
   .ym-card-link:hover .ym-card {
-    border-color: var(--ym-accent);
-    box-shadow: var(--ym-shadow-popover);
-    transform: translateY(-1px);
+    background: var(--ym-bg-hover);
   }
   .ym-card-link:hover .ym-card-arrow {
     opacity: 1;
     transform: translateX(0);
-    color: var(--ym-accent);
+    color: var(--ym-muted);
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ym-card-link:hover .ym-card { transform: none; }
 }
 
 /* ============================================================

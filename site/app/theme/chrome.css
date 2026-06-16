@@ -188,7 +188,8 @@
   justify-content: space-between;
   gap: 8px;
   height: var(--ym-topbar-h);
-  padding-inline: 16px;
+  padding-left: 24px;
+  padding-right: 16px;
   flex: none;
   /* Hairline that lines up with the top bar's bottom border so the divider
      runs continuously across the sidebar header and the main top bar. */
@@ -229,7 +230,7 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 4px 12px 16px;
+  padding: 4px 16px 16px;
 }
 /* Small, contained scrollbar (Emil: only customise inside elements). */
 .ym-sidebar-scroll {
@@ -354,7 +355,7 @@
 /* Pinned footer */
 .ym-sidebar-footer {
   flex: none;
-  padding: 10px 12px;
+  padding: 10px 16px;
   border-top: 1px solid var(--ym-line);
   display: flex;
   flex-direction: column;
@@ -440,11 +441,13 @@
 }
 
 /* Copy-page control — a "Copy page" pill + a separate chevron pill (Linear). */
+/* One connected split button: a single rounded pill with an internal hairline
+   divider between the label and the chevron (Linear). */
 .ym-split {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 0;
 }
 .ym-split-main {
   display: inline-flex;
@@ -453,29 +456,28 @@
   height: 32px;
   padding-inline: 12px;
   border: 1px solid var(--ym-line);
-  border-radius: var(--ym-radius-pill);
+  border-right: none;
+  border-radius: var(--ym-radius-pill) 0 0 var(--ym-radius-pill);
   background: var(--ym-bg);
   color: var(--ym-ink);
   font-size: 13px;
   font-weight: 510;
   cursor: pointer;
-  transition: background-color var(--ym-dur-fast) ease,
-    border-color var(--ym-dur-fast) ease;
+  transition: background-color var(--ym-dur-fast) ease;
 }
 .ym-split-icon { width: 15px; height: 15px; }
 .ym-split-chevron {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
+  width: 30px;
   height: 32px;
   border: 1px solid var(--ym-line);
-  border-radius: var(--ym-radius-pill);
+  border-radius: 0 var(--ym-radius-pill) var(--ym-radius-pill) 0;
   background: var(--ym-bg);
   color: var(--ym-muted);
   cursor: pointer;
-  transition: background-color var(--ym-dur-fast) ease,
-    border-color var(--ym-dur-fast) ease;
+  transition: background-color var(--ym-dur-fast) ease;
 }
 .ym-split-chevron svg { width: 14px; height: 14px; }
 @media (hover: hover) and (pointer: fine) {
@@ -718,17 +720,13 @@
   border-radius: var(--ym-radius);
   color: var(--ym-ink);
   text-decoration: none;
-  transition:
-    border-color var(--ym-dur-fast) ease,
-    transform var(--ym-dur-fast) var(--ym-ease-out),
-    box-shadow var(--ym-dur-fast) ease;
+  transition: background-color var(--ym-dur-fast) ease;
 }
 .ym-prevnext-next { justify-content: flex-end; text-align: right; }
 @media (hover: hover) and (pointer: fine) {
+  /* Subtle surface fill on hover — consistent with cards/nav (Linear). */
   .ym-prevnext-link:hover {
-    border-color: var(--ym-accent);
-    transform: translateY(-2px);
-    box-shadow: var(--ym-shadow-card);
+    background: var(--ym-bg-hover);
   }
 }
 .ym-prevnext-icon { width: 16px; height: 16px; flex: none; color: var(--ym-muted); }
