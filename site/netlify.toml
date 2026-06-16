@@ -1,0 +1,18 @@
+# Mirrors yarmill/web: a Next.js static export (output: 'export') that Netlify
+# only hosts. The site is built + deployed from GitHub Actions
+# (.github/workflows/docs-site-deploy.yml), so Netlify itself does not build —
+# `command`/`publish` are declarative for any manual/Git build. No SSR runtime
+# (the @netlify/plugin-nextjs adapter is intentionally NOT used).
+#
+# The export emits real .html files, so Netlify serves clean URLs (/en → en.html)
+# and uses out/404.html automatically — no redirects needed.
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

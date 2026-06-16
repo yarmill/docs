@@ -1,0 +1,103 @@
+---
+title: "Season Calendar"
+description: "The full-season scaffold of camps, competitions, testing, and time off — events that flow into the Plan on their dates."
+icon: "calendar"
+---
+
+Lay the season's fixed points — camps, competitions, testing, time off — on one year-long wall.
+
+
+<PageMeta audience="Coaches & athletes" where="Web app" />
+
+{/* TODO(yarmill): hero visual — year wall, filled (Planner mid-refresh, render once the new design lands). */}
+
+<Info>The Planner is on Yarmill's newer design and is being actively refreshed; **Plan and Planner are slated to merge** over time. Exact controls may change, but the core mechanics below are stable.</Info>
+
+The Season Calendar (also called the **Planner**) keeps the whole season legible at a glance. Events you add here flow automatically into the [Plan](/en/plan/plan) on their dates, so each week carries its context without re-typing. And because athletes can add their own events, the calendar doubles as a coach–athlete communication channel.
+
+## Event types
+
+Every event has a **type**, which sets its default colour so the wall reads at a glance. This instance uses seven:
+
+<ParamField path="Competition event">A competition-day event (pink by default).</ParamField>
+<ParamField path="Competition">A race or competition (red).</ParamField>
+<ParamField path="Training camp">A camp (amber).</ParamField>
+<ParamField path="Training">A training block (purple).</ParamField>
+<ParamField path="Vacation">Time off (green).</ParamField>
+<ParamField path="Test">A testing day (blue).</ParamField>
+<ParamField path="Other">Anything else (cyan).</ParamField>
+
+<Info>The **event-type list and its default colours are configured per team** — your
+instance may have different types and colours. When you add an event you can also recolour
+it from a swatch palette, independent of its type.</Info>
+
+## The year wall
+
+The wall shows the whole year with **months as columns** and **days as rows**, so a season fits on one screen. Each event is a **coloured block** spanning its dates, with a small date kicker (e.g. "SAT 14 - TUE 17") above its title.
+
+**A GROUP panel in the left sidebar scopes the wall:** pick **Entire Group** for the whole squad's events, or an athlete to see theirs. A **year selector** and **filter** sit in the top bar; footer controls **zoom** the wall's density and **scroll** across the months.
+
+{/* TODO(yarmill): add screenshot — year wall with month columns, day rows, and event blocks. */}
+
+## Add an event
+
+<Steps>
+  <Step title="Open the add-event panel">
+    Select **New event (+)** in the top bar. A panel opens for the new event.
+  </Step>
+  <Step title="Name it and choose a type">
+    Set the **title**, then pick the event **type** — which sets its colour. You can
+    recolour it from the swatch palette if you want.
+  </Step>
+  <Step title="Set the dates">
+    Choose **Starts** and **Ends**. Both default to today, so a new event is a single day
+    until you extend it into a range.
+  </Step>
+  <Step title="Add location, attributes, and a note">
+    Optionally add a **location**, **attributes** (tags configured for your team), and a
+    **note** — logistics, agenda, links.
+  </Step>
+  <Step title="Create the event">
+    Select **Create event**. The event appears as a block on the wall and surfaces on its
+    dates in the Plan.
+  </Step>
+</Steps>
+
+<Warning>Opening the add-event panel auto-creates and saves a draft event on today's date
+straight away — so abandoning the panel without finishing can leave a stray "New event" on
+the wall. Open an event and delete it (the trash icon, with a confirmation) to clear it.</Warning>
+
+The event's scope follows the **GROUP-panel selection** at the time you create it — Entire
+Group, or the athlete you have open.
+
+{/* TODO(yarmill): add screenshot — add-event panel (dark). */}
+
+## Event sets
+
+**The Events box** (the clipboard icon in the top bar) opens a library of reusable **event sets** — predefined collections you can pull onto the wall in one go, such as an official competition calendar for the year.
+
+{/* TODO(yarmill): add screenshot — Events box / event sets (dark). */}
+
+## How events reach the Plan
+
+**Every event flows automatically into the [Plan](/en/plan/plan)** on its dates, locked and read-only, so the week always carries its camp or competition context without re-entry. To change an event, edit it back here in the Season Calendar, not in the Plan.
+
+{/* TODO(yarmill): add screenshot — an event surfacing locked in the Plan. */}
+
+## What athletes can do
+
+**Athletes can add their own events** — a family holiday, an exam, a wedding — so the coach sees what's coming in an athlete's life before planning load against it. An athlete opens the Planner, selects **New event (+)**, and creates the event (for example a **Vacation** block) the same way a coach does; it appears on the same wall.
+
+{/* TODO(yarmill): verify athlete scope — whether athletes can edit coach-created events, and whether they see whole-group events or only their own plus team events. */}
+
+## Locking an event
+
+Beyond being locked in the Plan, **an event can be locked outright** so it can't be changed by accident — useful for fixed dates like a national championships. {/* TODO(yarmill): verify the lock affordance in the refreshed Planner UI — not observed in the current design (possibly admin-only or changed in the refresh). */}
+
+## How it connects
+
+- Events flow into the [Plan](/en/plan/plan) on their dates and are **locked** there — the
+  Season Calendar is the single source of truth for events.
+- [Goals](/en/plan/goals) and the [Training Log](/en/reality/training-log) share the same
+  planning and daily structure, so the season's fixed points line up with the work logged
+  against them.

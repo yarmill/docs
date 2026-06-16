@@ -1,0 +1,115 @@
+---
+title: "Results"
+description: "Record competition results and test outcomes, and track them over time."
+icon: "trophy"
+---
+
+Record races, matches, and structured tests in a configurable per-athlete table, so performance over a season is data, not memory.
+
+
+<PageMeta audience="Coaches & athletes" where="Web app" />
+
+{/* TODO(yarmill): hero visual — filled "Races results" table with New result button and column funnels */}
+
+Results answers the closing question of the training loop: did the work produce the effect?
+
+<Info>Results tables are **configured per team and sport** — columns, form fields, types, and dropdown values are all set for your sport, so the examples below are one team's setup, not universal.</Info>
+
+## The results table
+
+**Pick an athlete first.** Results is a per-athlete module — choose someone from the group panel and their table loads, one row per result, under a configured title (for this team, **"Races results"**). A **New result** button sits top-right.
+
+**Columns are configured per sport.** For a biathlon team they are **Date · Location · Weather · Discipline · Rank · Note**. A filled row reads, for example: **24/06/2025 · Zermatt · ☀️ sunny · Slopestyle · 1. · Top** — where **Weather** comes from a dropdown and renders with an emoji. Your sport's columns will differ.
+
+**Edit inline.** Each row carries **edit** (pencil) and **delete** (trash) icons at its right end. There's no separate detail view — editing opens the same form as **New result**, populated with the row's values.
+
+Before any results exist, the table reads **"No records"** rather than showing an empty grid.
+
+## Record a result
+
+<Steps>
+  <Step title="Select the athlete">
+    Open **Results** and choose an athlete from the group panel — results are kept per person.
+  </Step>
+  <Step title="Open the form">
+    Select **New result**. A full-screen form titled **"New result"** opens with the configured
+    fields.
+  </Step>
+  <Step title="Fill in the fields">
+    Enter the result. For this team's setup, that's:
+
+    <ParamField path="Date" required>
+      A date field. **Required**, and it defaults to today.
+    </ParamField>
+    <ParamField path="Location">
+      Free text. Optional.
+    </ParamField>
+    <ParamField path="Weather">
+      A dropdown of configured values. Optional. Values render with an emoji in the table.
+    </ParamField>
+    <ParamField path="Discipline">
+      Free text in this instance. Optional. A different sport's setup may make this a dropdown.
+    </ParamField>
+    <ParamField path="Rank">
+      Free text, labelled **Final ranking**. Optional.
+    </ParamField>
+    <ParamField path="Note">
+      Free-text notes. Optional.
+    </ParamField>
+
+    Only **Date** is required; every other field is optional, and which fields appear is
+    configured for your sport.
+  </Step>
+  <Step title="Save">
+    Select **Save result** to write the row, or **Cancel** to discard. The form is **explicit
+    save** — opening it creates nothing, and the result is recorded only when you save.
+  </Step>
+</Steps>
+
+To edit later, select the row's **edit** (pencil) icon, adjust the fields, and **Save result** again. To remove one, use the **delete** (trash) icon.
+
+## Find results fast
+
+**Every column header carries a funnel icon.** Selecting it opens a popover combining sort and filter for that column:
+
+- **Sort** — **Ascending** or **Descending**.
+- A **filter** matched to the column type. For **Date**, the options are **This week · Last week · This month · Last month · Exact date · Range**.
+- **Clear** and **Apply** at the bottom.
+
+Use the **Discipline** funnel to compare sprint results, or the **Date** funnel to scope a season block — without scrolling the whole table.
+
+## Automatic import (federation databases)
+
+**Some sports don't enter races by hand at all.** Where a federation publishes results in a public database — **IBU SIWIDATA** for biathlon, **FIS** for skiing and snowboard, and others — results flow into the table automatically, and the coach reviews rather than re-keys.
+
+<Info>Automatic import is **configured per sport** and depends on two things: the connection
+set up under [Integrations](/en/platform/integrations) (which requires a license agreement
+with the data provider), and the athlete's federation ID — for example their **IBU ID** — set
+on their [Athlete profile](/en/platform/athlete-profile).</Info>
+
+{/* TODO(yarmill): verify editability of auto-imported rows inside Yarmill (imported training data is read-only; unconfirmed whether the same applies to imported results). */}
+
+## Testing & Diagnostics
+
+Teams that run structured testing — strength, lactate, body composition, or sport-specific protocols — record it in the same kind of configurable form, a sibling tabular module alongside Results. Each test feeds its reports in [Analytics](/en/analytics/analytics).
+
+{/* TODO(yarmill): this instance has no Testing & Diagnostics forms configured — verify the module name, route, selection UI, and field layout on an instance that has them. */}
+
+## What athletes see
+
+Athletes can open their own results table to see how the season has gone in concrete numbers.
+
+{/* TODO(yarmill): verify whether athletes can create/edit/delete their own results or only view them, and whether visibility is permission-gated per instance — only the coach view was tested. */}
+
+## How it connects
+
+Results sits at the end of the loop **Plan → Reality → Results → Analytics**, recording the
+outcome of the work logged in [Reality](/en/reality/training-log):
+
+- Race and test data feed **race analyses** and **Test & Diagnostics reports** in
+  [Analytics](/en/analytics/analytics), so the team reads progress against the field and
+  against its own benchmarks.
+- Federation connections for automatic import are set up under
+  [Integrations](/en/platform/integrations).
+- An athlete's external IDs — such as their **IBU ID** — on the
+  [Athlete profile](/en/platform/athlete-profile) link them to the results database for import.

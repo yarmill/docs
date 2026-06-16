@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Changelog hero placeholder">
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEEBFF"/>
+      <stop offset="1" stop-color="#DAD3FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#wash)"/>
+  <circle cx="600" cy="285" r="74" fill="none" stroke="#513FF8" stroke-width="6" opacity="0.85"/>
+  <path d="M600 250 v70 M565 285 h70" stroke="#513FF8" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+  <text x="600" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="30" font-weight="600" fill="#513FF8">Hero visual — generated per entry</text>
+  <text x="600" y="472" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#6B6486">images/changelog/&lt;slug&gt;.png</text>
+</svg>

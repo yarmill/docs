@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+
+@import './theme/tokens.css';
+
+/* ---------- Branded text selection -------------------------
+   A soft brand wash on selected prose — readable in both themes
+   (subtle accent-tint background, ink text). Flips automatically
+   with the .dark token set. */
+::selection {
+  background: var(--ym-accent-subtle);
+  color: var(--ym-ink);
+}
+::-moz-selection {
+  background: var(--ym-accent-subtle);
+  color: var(--ym-ink);
+}

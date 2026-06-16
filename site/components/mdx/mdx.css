@@ -1,0 +1,1133 @@
+/* ============================================================
+   Yarmill Docs — MDX content components
+   Linear-docs feel, Yarmill brand. Consumes --ym-* tokens only
+   (defined in app/theme/tokens.css) so dark mode flips for free.
+   Owned by the MDX phase; imported once from mdx-components.tsx.
+   ============================================================ */
+
+/* ---- shared focus ring (Emil: 2px brand, visible only on keyboard) ---- */
+.ym-card-link:focus-visible,
+.ym-tab-trigger:focus-visible,
+.ym-accordion-trigger:focus-visible {
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+  border-radius: var(--ym-radius);
+}
+
+/* ============================================================
+   0. Heading permalink anchor (Heading.tsx — h2/h3)
+   A hover/focus-revealed "#"-style link to the LEFT of the heading.
+   Absolutely positioned so it reserves no space (zero layout shift);
+   clicking copies the deep link and shows a brief "Copied" toast.
+   ============================================================ */
+.ym-shell #ym-page .ym-heading {
+  position: relative;
+}
+.ym-heading-anchor {
+  position: absolute;
+  top: 0;
+  /* Sit in the left gutter; the icon is ~22px, leave a little gap. */
+  left: -1.55em;
+  display: inline-flex;
+  align-items: center;
+  height: 1em;
+  /* Vertically centre on the heading's first line box. */
+  margin-top: 0.18em;
+  color: var(--ym-faint);
+  text-decoration: none;
+  opacity: 0;
+  /* Pure opacity reveal — no positional transform, so the icon never shifts. */
+  transition:
+    opacity var(--ym-dur) var(--ym-ease-out),
+    color var(--ym-dur-fast) ease;
+}
+.ym-heading:hover .ym-heading-anchor,
+.ym-heading:focus-within .ym-heading-anchor {
+  opacity: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-heading-anchor:hover { color: var(--ym-accent); }
+}
+.ym-heading-anchor:focus-visible {
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+  border-radius: var(--ym-radius-sm);
+  opacity: 1;
+}
+.ym-heading-anchor[data-copied] { color: var(--ym-tip); opacity: 1; }
+
+/* Icon: link glyph crossfades to a check on copy. */
+.ym-heading-anchor-icon {
+  position: relative;
+  display: inline-flex;
+  width: 15px;
+  height: 15px;
+}
+.ym-heading-anchor-icon svg {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity var(--ym-dur-fast) var(--ym-ease-out),
+    transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-heading-anchor-check { opacity: 0; transform: scale(0.7); }
+.ym-heading-anchor[data-copied] .ym-heading-anchor-link {
+  opacity: 0;
+  transform: scale(0.7);
+}
+.ym-heading-anchor[data-copied] .ym-heading-anchor-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* "Copied" toast — a tiny pill above the anchor; absolutely positioned so it
+   never shifts layout. Visible only while data-copied is set. */
+.ym-heading-anchor-toast {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(3px);
+  padding: 3px 7px;
+  border-radius: var(--ym-radius-sm);
+  font-size: 11px;
+  font-weight: 510;
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ym-accent-on);
+  background: var(--ym-ink);
+  box-shadow: var(--ym-shadow-card);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--ym-dur-fast) var(--ym-ease-out),
+    transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-heading-anchor[data-copied] .ym-heading-anchor-toast {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* On narrow gutters (no room to the left) tuck the anchor inline-trailing so it
+   never collides with the content edge. */
+@media (max-width: 1100px) {
+  .ym-heading-anchor {
+    left: auto;
+    margin-inline-start: 6px;
+    position: static;
+    height: auto;
+    margin-top: 0;
+    vertical-align: middle;
+  }
+  .ym-heading-anchor-toast { left: 0; transform: translateY(3px); }
+  .ym-heading-anchor[data-copied] .ym-heading-anchor-toast { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ym-heading-anchor,
+  .ym-heading-anchor-icon svg {
+    transition: opacity var(--ym-dur-fast) linear !important;
+    transform: none !important;
+  }
+  .ym-heading:hover .ym-heading-anchor,
+  .ym-heading:focus-within .ym-heading-anchor { transform: none; }
+  /* Keep the centring transform; just drop the slide-in tween. */
+  .ym-heading-anchor-toast {
+    transition: opacity var(--ym-dur-fast) linear !important;
+    transform: translateX(-50%) !important;
+  }
+  .ym-heading-anchor[data-copied] .ym-heading-anchor-toast {
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* ============================================================
+   1. Callouts
+   ============================================================ */
+.ym-callout {
+  display: flex;
+  gap: 12px;
+  margin: 1.25rem 0;
+  padding: 14px 16px;
+  border: 1px solid var(--ym-callout-line, var(--ym-line));
+  border-radius: var(--ym-radius-lg);
+  background: var(--ym-callout-bg, var(--ym-bg-subtle));
+  color: var(--ym-ink);
+  font-size: var(--ym-small-size, 14px);
+  line-height: 1.6;
+}
+.ym-callout-icon {
+  flex: none;
+  display: inline-flex;
+  margin-top: 1px;
+  color: var(--ym-callout-fg, var(--ym-muted));
+}
+.ym-callout-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.ym-callout-body {
+  min-width: 0;
+}
+/* tighten prose inside callouts */
+.ym-callout-body > :first-child { margin-top: 0; }
+.ym-callout-body > :last-child { margin-bottom: 0; }
+.ym-callout-body p { margin: 0.4em 0; }
+
+.ym-callout-info {
+  --ym-callout-bg: var(--ym-info-bg);
+  --ym-callout-line: var(--ym-info-line);
+  --ym-callout-fg: var(--ym-info);
+}
+.ym-callout-tip {
+  --ym-callout-bg: var(--ym-tip-bg);
+  --ym-callout-line: var(--ym-tip-line);
+  --ym-callout-fg: var(--ym-tip);
+}
+.ym-callout-warning {
+  --ym-callout-bg: var(--ym-warn-bg);
+  --ym-callout-line: var(--ym-warn-line);
+  --ym-callout-fg: var(--ym-warn);
+}
+.ym-callout-note {
+  --ym-callout-bg: var(--ym-bg-subtle);
+  --ym-callout-line: var(--ym-line);
+  --ym-callout-fg: var(--ym-muted);
+}
+.ym-callout-check {
+  --ym-callout-bg: var(--ym-check-bg);
+  --ym-callout-line: var(--ym-check-line);
+  --ym-callout-fg: var(--ym-check);
+}
+
+/* ============================================================
+   2. Card + CardGroup
+   ============================================================ */
+.ym-cardgroup {
+  display: grid;
+  /* Responsive (auto-FILL + 1fr): fit as many ≥216px columns as the width
+     allows and reflow at any size; auto-fill keeps the track count stable so a
+     3-card row keeps the same card width as a 4-card row (it just leaves the
+     last track empty) instead of stretching wide. At the 1024 wide width this
+     is 4 columns of ~244px — Linear's size. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 216px), 1fr));
+  gap: 16px;
+  margin: 1.5rem 0;
+}
+@media (max-width: 640px) {
+  .ym-cardgroup { grid-template-columns: 1fr; }
+}
+
+/* Linear-style card (linear.app/docs): portrait, a barely-there soft fill + a
+   hairline border (no shadow), split into two zones by a divider — a top zone
+   holding a bare 20px ink icon, and a bottom zone with the title + muted
+   description. */
+.ym-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 280px; /* Linear's portrait card */
+  border: 1px solid var(--ym-card-line);
+  border-radius: var(--ym-radius); /* 8px, like Linear */
+  background: var(--ym-card-bg);
+  overflow: hidden;
+}
+/* Icon zone — a FIXED-height block (icon at top, generous whitespace below), so
+   the divider is locked at the same Y on every card in a row no matter how long
+   the title/description is (this is the key to Linear's aligned dividers). */
+.ym-card-top {
+  flex: none;
+  height: 148px;
+  padding: 24px 20px;
+}
+.ym-card-icon {
+  display: inline-flex;
+  color: var(--ym-ink);
+}
+.ym-card-icon svg { width: 20px; height: 20px; }
+/* Text zone — top-aligned right under the divider; grows downward for longer
+   copy (the card grows; grid equalises the row) so text never clips. */
+.ym-card-bottom {
+  flex: 1 1 auto;
+  padding: 20px;
+  border-top: 1px solid var(--ym-card-line);
+}
+.ym-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 510; /* Linear card title weight */
+  line-height: 24px;
+  letter-spacing: -0.011em; /* Linear: -0.165px @15px */
+  color: var(--ym-ink);
+}
+.ym-card-arrow {
+  flex: none;
+  display: inline-flex;
+  color: var(--ym-faint);
+  opacity: 0;
+  transform: translateX(-2px);
+  transition: opacity var(--ym-dur) var(--ym-ease-out),
+    transform var(--ym-dur) var(--ym-ease-out),
+    color var(--ym-dur) var(--ym-ease-out);
+}
+.ym-card-arrow svg { width: 15px; height: 15px; }
+.ym-card-body {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: -0.013em; /* Linear: -0.182px @14px */
+  color: var(--ym-muted);
+}
+/* The description usually renders as a <p>, which the prose rule
+   (`#ym-page :where(p, li)`, specificity 1,0,1) would otherwise pull to 15px and
+   the darker prose-text colour. Re-assert the card's lighter 14px text on the
+   inner element with enough specificity (#ym-page + class + element = 1,1,1). */
+.ym-shell #ym-page .ym-card-body :where(p, li) {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: -0.013em;
+  color: var(--ym-muted);
+  margin: 0;
+}
+.ym-card-body > :first-child { margin-top: 0; }
+.ym-card-body > :last-child { margin-bottom: 0; }
+
+/* linked card */
+.ym-card-link {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  border-radius: var(--ym-radius);
+}
+.ym-card-link .ym-card {
+  transition: background-color var(--ym-dur) ease,
+    border-color var(--ym-dur) ease;
+}
+@media (hover: hover) {
+  /* Linear: the soft fill deepens slightly on hover — no border-accent, no lift. */
+  .ym-card-link:hover .ym-card {
+    background: var(--ym-card-bg-hover);
+  }
+  .ym-card-link:hover .ym-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--ym-muted);
+  }
+}
+
+/* ============================================================
+   3. Steps + Step
+   ============================================================ */
+.ym-steps {
+  margin: 1.5rem 0;
+  padding-left: 14px;
+  counter-reset: ym-step;
+}
+.ym-step {
+  position: relative;
+  padding-left: 28px;
+  padding-bottom: 20px;
+  border-left: 1px solid var(--ym-line);
+}
+.ym-step:last-child {
+  padding-bottom: 2px;
+  border-left-color: transparent;
+}
+.ym-step::before {
+  counter-increment: ym-step;
+  content: counter(ym-step);
+  position: absolute;
+  left: -11px;
+  top: -1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  /* V1 shape (filled circle + connector) with V6's soft indigo-tint colour.
+     The tint is translucent in dark mode, so layer it over an opaque page-bg
+     fill — otherwise the connector line shows through the badge. */
+  background-color: var(--ym-bg);
+  background-image: linear-gradient(var(--ym-accent-subtle), var(--ym-accent-subtle));
+  color: var(--ym-accent-subtle-fg);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  /* Ring in the page colour so the connector line doesn't run up to it. */
+  box-shadow: 0 0 0 4px var(--ym-bg);
+}
+.ym-step-title {
+  margin-bottom: 3px;
+  font-size: 15px;
+  font-weight: 590;
+  letter-spacing: -0.006em;
+  color: var(--ym-ink);
+}
+.ym-step-body { color: var(--ym-prose-text); }
+.ym-step-body > :first-child { margin-top: 0; }
+.ym-step-body > :last-child { margin-bottom: 0; }
+
+/* ============================================================
+   4. Frame
+   ============================================================ */
+.ym-frame {
+  margin: 1.75rem 0;
+}
+.ym-frame-media {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding: 8px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-lg);
+  background: var(--ym-bg-subtle);
+  box-shadow: var(--ym-shadow-card);
+}
+.ym-frame-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--ym-radius);
+}
+/* ---- Click-to-zoom (Linear-style, ZoomImage.tsx) ----
+   The in-page image IS the zoomed element — clicking transforms that same
+   `<img>` to a centred, viewport-fitted size (no clone, so no swap and no
+   flash) while this body-portal overlay fades in behind it. Transforms +
+   opacity are driven inline by the component; this file styles the surfaces. */
+.ym-zoom-trigger {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--ym-radius);
+  cursor: zoom-in;
+}
+
+/* Unobtrusive hover hint — a small "expand" glyph, top-right of the media. */
+.ym-frame-media { position: relative; }
+.ym-frame-media::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ym-radius-sm);
+  border: 1px solid var(--ym-line);
+  box-shadow: var(--ym-shadow-card);
+  background:
+    var(--ym-bg) center / 15px 15px no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%236f6e8c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6'/%3E%3Cpath d='M9 21H3v-6'/%3E%3Cpath d='M21 3l-7 7'/%3E%3Cpath d='M3 21l7-7'/%3E%3C/svg%3E");
+  opacity: 0;
+  transition: opacity var(--ym-dur) var(--ym-ease-out);
+  pointer-events: none;
+  z-index: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-frame-media:hover::after { opacity: 1; }
+}
+
+/* Open state — page-coloured full-screen canvas behind the enlarged image. */
+.ym-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200; /* the image is lifted to z-index 210, above this */
+  background: var(--ym-bg);
+  cursor: zoom-out;
+  opacity: 0; /* WAAPI fades this in; avoids a one-frame flash on mount */
+}
+/* "esc" hint pill, bottom-centre (matches Linear). */
+.ym-zoom-esc {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 510;
+  letter-spacing: 0.01em;
+  color: var(--ym-muted);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+  box-shadow: var(--ym-shadow-card);
+  pointer-events: none;
+  user-select: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-frame-media::after { transition: none; }
+}
+.ym-frame-caption {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ym-muted);
+}
+
+/* ============================================================
+   5. ParamField
+   ============================================================ */
+.ym-paramfield {
+  padding: 14px 0;
+  border-top: 1px solid var(--ym-line);
+}
+.ym-paramfield:last-of-type {
+  border-bottom: 1px solid var(--ym-line);
+}
+.ym-paramfield-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ym-paramfield-name {
+  font-family: var(--ym-font-mono, ui-monospace, "JetBrains Mono", "SF Mono",
+    Menlo, monospace);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ym-ink);
+  background: none;
+  padding: 0;
+}
+.ym-paramfield-type {
+  font-size: 12.5px;
+  color: var(--ym-muted);
+}
+.ym-paramfield-required {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 1px 7px;
+  border-radius: 999px;
+  color: var(--ym-danger);
+  background: var(--ym-danger-bg);
+  border: 1px solid var(--ym-danger-line);
+}
+.ym-paramfield-default {
+  font-size: 12.5px;
+  color: var(--ym-muted);
+}
+.ym-paramfield-default code {
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: var(--ym-radius-sm);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  color: var(--ym-ink);
+}
+.ym-paramfield-body {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ym-muted);
+}
+.ym-paramfield-body > :first-child { margin-top: 0; }
+.ym-paramfield-body > :last-child { margin-bottom: 0; }
+
+/* ============================================================
+   6. Tabs
+   ============================================================ */
+.ym-tabs {
+  margin: 1.5rem 0;
+}
+.ym-tabs [role="tablist"] {
+  gap: 4px;
+  border-bottom: 1px solid var(--ym-line);
+}
+.ym-tab-trigger {
+  position: relative;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ym-muted);
+  background: none;
+  border: none;
+  border-radius: var(--ym-radius-sm) var(--ym-radius-sm) 0 0;
+  cursor: pointer;
+  transition: color var(--ym-dur) var(--ym-ease-out);
+}
+.ym-tab-trigger::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ym-accent);
+  opacity: 0;
+  transition: opacity var(--ym-dur) var(--ym-ease-out);
+}
+@media (hover: hover) {
+  .ym-tab-trigger:hover { color: var(--ym-ink); }
+}
+.ym-tab-trigger[data-state="active"] {
+  color: var(--ym-ink);
+}
+.ym-tab-trigger[data-state="active"]::after { opacity: 1; }
+.ym-tabs [role="tabpanel"] {
+  padding-top: 14px;
+}
+
+/* ============================================================
+   7. Accordion (Radix-backed; no fumadocs)
+   ============================================================ */
+.ym-accordion-group {
+  margin: 1.5rem 0;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-lg);
+  overflow: hidden;
+}
+.ym-accordion-item + .ym-accordion-item {
+  border-top: 1px solid var(--ym-line);
+}
+.ym-accordion-header { margin: 0; }
+.ym-accordion-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: 0;
+  font-size: 15px;
+  font-weight: 510;
+  color: var(--ym-ink);
+  text-align: left;
+  cursor: pointer;
+}
+.ym-accordion-trigger:hover { background: var(--ym-bg-hover); }
+.ym-accordion-chevron {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--ym-muted);
+  transition: transform 180ms cubic-bezier(0, 0, 0.2, 1);
+}
+.ym-accordion-trigger[data-state='open'] .ym-accordion-chevron {
+  transform: rotate(90deg);
+}
+.ym-accordion-content {
+  overflow: hidden;
+}
+/* Radix exposes the panel height as a CSS var; animate height + opacity. */
+.ym-accordion-content[data-state='open'] {
+  animation: ym-acc-down var(--ym-dur) var(--ym-ease-out);
+}
+.ym-accordion-content[data-state='closed'] {
+  animation: ym-acc-up var(--ym-dur-fast) var(--ym-ease-out);
+}
+@keyframes ym-acc-down {
+  from { height: 0; opacity: 0; }
+  to { height: var(--radix-accordion-content-height); opacity: 1; }
+}
+@keyframes ym-acc-up {
+  from { height: var(--radix-accordion-content-height); opacity: 1; }
+  to { height: 0; opacity: 0; }
+}
+.ym-accordion-body {
+  padding: 0 16px 14px 40px;
+  font-size: 15px;
+  color: var(--ym-prose-text, var(--ym-ink));
+}
+.ym-accordion-body > :first-child { margin-top: 0; }
+.ym-accordion-body > :last-child { margin-bottom: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .ym-accordion-chevron { transition: none; }
+  .ym-accordion-content[data-state='open'],
+  .ym-accordion-content[data-state='closed'] { animation: none; }
+}
+
+/* ============================================================
+   8. Update (changelog entry)
+   ============================================================ */
+.ym-update {
+  position: relative;
+  padding-left: 28px;
+  padding-bottom: 28px;
+  border-left: 1px solid var(--ym-line);
+}
+.ym-update:last-child {
+  padding-bottom: 0;
+}
+.ym-update::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--ym-accent);
+  box-shadow: 0 0 0 4px var(--ym-bg);
+}
+.ym-update-label {
+  margin-bottom: 10px;
+  font-family: var(--ym-font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ym-muted);
+}
+.ym-update-desc {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: var(--ym-muted);
+}
+
+/* Entry headline — the bold title under the date, with a hover-reveal permalink. */
+.ym-update-title {
+  position: relative;
+  margin: 0 0 14px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  line-height: 1.25;
+  scroll-margin-top: 96px;
+}
+.ym-update-anchor {
+  position: absolute;
+  left: -0.85em;
+  color: var(--ym-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.ym-update:hover .ym-update-anchor,
+.ym-update-title:focus-within .ym-update-anchor { opacity: 0.5; }
+.ym-update-anchor:hover { opacity: 1 !important; color: var(--ym-accent); }
+
+.ym-update-body > :first-child { margin-top: 0; }
+.ym-update-body > :last-child { margin-bottom: 0; }
+
+/* Secondary-feature headings inside a post (Linear-style: each additional big
+   topic gets its own heading, subordinate to the post title, with body prose. */
+.ym-update-body h2 {
+  margin: 28px 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.006em;
+  line-height: 1.3;
+  text-transform: none;
+  color: var(--ym-ink);
+}
+
+/* Compact "Improvements" / "Fixes" sub-sections inside an entry (Linear-style:
+   muted, smaller heading + tight bullet list of one-line tweaks). */
+.ym-update-body h3 {
+  margin: 22px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ym-muted);
+}
+.ym-update-body h3 + ul {
+  margin-top: 0;
+}
+.ym-update-body h3 + ul li {
+  font-size: 14.5px;
+  margin: 4px 0;
+}
+
+/* ============================================================
+   9. Columns
+   ============================================================ */
+.ym-columns {
+  display: grid;
+  grid-template-columns: repeat(var(--ym-cols, 2), minmax(0, 1fr));
+  gap: 24px;
+  margin: 1.5rem 0;
+}
+@media (max-width: 640px) {
+  .ym-columns { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   10. PageMeta + TutorialMeta
+   ============================================================ */
+.ym-pagemeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0.25rem 0 1.75rem;
+}
+.ym-pagemeta .pm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1.25;
+  white-space: nowrap;
+  border: 1px solid var(--ym-line);
+  background: var(--ym-bg-subtle);
+}
+.ym-pagemeta .pm-icon {
+  display: inline-flex;
+  color: var(--ym-accent);
+}
+.ym-pagemeta .pm-icon svg { width: 14px; height: 14px; }
+.ym-pagemeta .pm-label {
+  color: var(--ym-muted);
+}
+.ym-pagemeta .pm-value {
+  color: var(--ym-ink);
+}
+.ym-pagemeta .pm-module {
+  border-color: var(--ym-accent-ring);
+  background: var(--ym-accent-subtle);
+  color: var(--ym-accent-subtle-fg);
+}
+
+/* ============================================================
+   11. Prose element details
+   Scoped to #ym-page .prose so id-specificity (1,0,2) beats any
+   leftover preset rules without !important. Base p/li/h1–h3 and
+   prose-link colour live in chrome.css (tokens) — NOT re-styled
+   here. This section owns the elements chrome.css doesn't cover:
+   code, lists, blockquote, hr, tables, bare images.
+   ============================================================ */
+
+/* ---- Block rhythm: ~16px between top-level prose blocks ---- */
+.ym-shell #ym-page .prose > * {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+.ym-shell #ym-page .prose > :first-child { margin-top: 0; }
+/* Headings keep their generous top margins from chrome.css. */
+.ym-shell #ym-page .prose > :where(h2) { margin-top: 56px; }
+.ym-shell #ym-page .prose > :where(h3) { margin-top: 32px; }
+
+/* Rich blocks (media + components) breathe more than flowing text — Linear
+   keeps paragraphs tight (~16) but floats images/components with more room.
+   margin-block (not just top) so they get space AFTER as well, collapsing
+   cleanly with neighbouring margins. */
+.ym-shell #ym-page .prose > :where(
+  .ym-callout,
+  .ym-steps,
+  .ym-cardgroup,
+  .ym-columns,
+  .ym-tabs,
+  .ym-accordion-group,
+  .ym-update,
+  table,
+  figure[data-rehype-pretty-code-figure]
+) {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+/* Images/screenshots get the most air. */
+.ym-shell #ym-page .prose > :where(figure.ym-frame, p > img) {
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+/* But a heading right after a rich block still wins its big top gap. */
+.ym-shell #ym-page .prose > :where(h2) { margin-top: 56px; }
+.ym-shell #ym-page .prose > :where(h3) { margin-top: 32px; }
+
+/* ---- Inline code (not inside a <pre>) ----
+   Scoped to authored prose so component-owned code (ParamField name / Default
+   value) keeps its own type styling and never picks up the inline-code chip. */
+.ym-shell #ym-page .prose :not(pre):not(.ym-paramfield-default) > code:not(.ym-paramfield-name) {
+  font-family: var(--ym-font-mono, ui-monospace, "JetBrains Mono", "SF Mono",
+    Menlo, Consolas, monospace);
+  font-size: 13.5px;
+  line-height: inherit;
+  color: var(--ym-ink);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+  padding: 1px 6px;
+  /* Don't let a long token blow out the line box. */
+  word-break: break-word;
+}
+
+/* ---- Code block (rehype-pretty-code: figure > pre > code) ---- */
+.ym-shell #ym-page figure[data-rehype-pretty-code-figure] {
+  position: relative;
+  margin: 16px 0;
+}
+/* Optional title/filename strip (rehype emits [data-rehype-pretty-code-title]). */
+.ym-shell #ym-page [data-rehype-pretty-code-title] {
+  display: flex;
+  align-items: center;
+  font-family: var(--ym-font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 12.5px;
+  color: var(--ym-muted);
+  padding: 8px 14px;
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-bottom: 0;
+  border-radius: var(--ym-radius) var(--ym-radius) 0 0;
+}
+.ym-shell #ym-page [data-rehype-pretty-code-title] + pre {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.ym-shell #ym-page figure[data-rehype-pretty-code-figure] > pre,
+.ym-shell #ym-page pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 16px;
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius);
+  box-shadow: var(--ym-shadow-card);
+}
+.ym-shell #ym-page pre > code {
+  display: block;
+  font-family: var(--ym-font-mono, ui-monospace, "JetBrains Mono", "SF Mono",
+    Menlo, Consolas, monospace);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ym-ink);
+  background: none;
+  border: 0;
+  padding: 0;
+  /* Shiki tokens stay one-per-line; let lines size to content for scroll. */
+  width: fit-content;
+  min-width: 100%;
+}
+.ym-shell #ym-page pre code [data-line] { display: block; }
+
+/* ---- Language label (rehype-pretty-code sets data-language on the figure) --
+   A small uppercase muted tag in the top-right of the block. It sits to the
+   LEFT of the copy button (which is 8px from the right, ~28px tall) so the two
+   never overlap. Hidden for plaintext/unknown fences. Pointer-events:none so it
+   never steals the copy click. */
+.ym-shell #ym-page figure[data-rehype-pretty-code-figure][data-language]::after {
+  content: attr(data-language);
+  position: absolute;
+  top: 14px;
+  /* Clears the copy button (8px gutter + ~70px pill) so they never overlap. */
+  right: 86px;
+  font-family: var(--ym-font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ym-faint);
+  pointer-events: none;
+  /* Fades in with the copy button on hover/focus, like Linear. */
+  opacity: 0;
+  transition: opacity var(--ym-dur) var(--ym-ease-out);
+}
+.ym-shell #ym-page figure.ym-code:hover[data-language]::after,
+.ym-shell #ym-page figure.ym-code:focus-within[data-language]::after {
+  opacity: 1;
+}
+@media (hover: none) {
+  .ym-shell #ym-page figure[data-rehype-pretty-code-figure][data-language]::after {
+    opacity: 1;
+  }
+}
+/* Plaintext / unknown languages carry no useful label — hide it. */
+.ym-shell #ym-page figure[data-language='plaintext']::after,
+.ym-shell #ym-page figure[data-language='text']::after,
+.ym-shell #ym-page figure[data-language='']::after {
+  content: none;
+}
+/* When a title strip is present the copy button drops to top:44px; keep the
+   language label aligned with it (CodeBlock.tsx adds .ym-code--titled). */
+.ym-shell #ym-page figure.ym-code--titled[data-language]::after {
+  top: 50px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-shell #ym-page figure[data-rehype-pretty-code-figure][data-language]::after {
+    transition: opacity var(--ym-dur-fast) linear;
+  }
+}
+
+/* ---- Line highlighting (meta string e.g. ```ts {1,3-4}) ----
+   rehype-pretty-code marks lines with [data-highlighted-line]; we also add
+   .ym-line--highlighted (see lib/mdx.ts). A subtle accent-tinted band with a
+   2px accent left border. The negative margin + matching padding lets the band
+   bleed to the block's padding edges while the border sits flush left. */
+.ym-shell #ym-page pre code [data-highlighted-line] {
+  margin-inline: -16px;
+  padding-inline: 13px 16px;
+  border-left: 2px solid var(--ym-accent);
+  background: color-mix(in srgb, var(--ym-accent) 9%, transparent);
+}
+/* Highlighted words/chars — a soft accent chip, kept readable. */
+.ym-shell #ym-page pre code [data-highlighted-chars] {
+  padding: 1px 4px;
+  border-radius: var(--ym-radius-sm);
+  background: color-mix(in srgb, var(--ym-accent) 14%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ym-accent) 22%, transparent);
+}
+
+/* Shiki dual-theme: each token carries --shiki-light/--shiki-dark inline.
+   keepBackground:false means we own the surface; we map the FG var per theme. */
+.ym-shell #ym-page pre code,
+.ym-shell #ym-page pre code span {
+  color: var(--shiki-light);
+}
+.dark .ym-shell #ym-page pre code,
+.dark .ym-shell #ym-page pre code span {
+  color: var(--shiki-dark);
+}
+
+/* Thin scrollbar inside code blocks only (Emil: don't restyle page scrollbars). */
+.ym-shell #ym-page pre {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ym-line) transparent;
+}
+.ym-shell #ym-page pre::-webkit-scrollbar { height: 8px; }
+.ym-shell #ym-page pre::-webkit-scrollbar-thumb {
+  background: var(--ym-line);
+  border-radius: 999px;
+}
+
+/* ---- Copy button (injected by CodeBlock.tsx) ---- */
+.ym-code-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 9px;
+  font-size: 12px;
+  font-weight: 510;
+  line-height: 1;
+  color: var(--ym-muted);
+  background: var(--ym-bg);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-1px);
+  transition: opacity var(--ym-dur) var(--ym-ease-out),
+    transform var(--ym-dur) var(--ym-ease-out),
+    color var(--ym-dur-fast) ease,
+    border-color var(--ym-dur-fast) ease;
+}
+/* A title strip pushes the button down so it doesn't overlap the filename. */
+.ym-shell #ym-page [data-rehype-pretty-code-title] + pre .ym-code-copy,
+.ym-code.ym-code--titled .ym-code-copy { top: 44px; }
+
+/* Reveal on hover/focus of the figure; always visible on touch. */
+.ym-code:hover .ym-code-copy,
+.ym-code:focus-within .ym-code-copy { opacity: 1; transform: translateY(0); }
+@media (hover: none) {
+  .ym-code-copy { opacity: 1; transform: none; }
+}
+@media (hover: hover) {
+  .ym-code-copy:hover {
+    color: var(--ym-ink);
+    border-color: var(--ym-faint);
+    background: var(--ym-bg-hover);
+  }
+}
+.ym-code-copy:focus-visible {
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+  opacity: 1;
+}
+.ym-code-copy-icon {
+  display: inline-flex;
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+.ym-code-copy-icon svg {
+  position: absolute;
+  inset: 0;
+  transition: opacity var(--ym-dur-fast) var(--ym-ease-out),
+    transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-code-copy-check { opacity: 0; transform: scale(0.7); color: var(--ym-tip); }
+.ym-code-copy[data-copied] { color: var(--ym-tip); }
+.ym-code-copy[data-copied] .ym-code-copy-icon > svg:first-child {
+  opacity: 0;
+  transform: scale(0.7);
+}
+.ym-code-copy[data-copied] .ym-code-copy-check {
+  opacity: 1;
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-code-copy,
+  .ym-code-copy-icon svg { transition: opacity var(--ym-dur-fast) ease; transform: none; }
+  .ym-code:hover .ym-code-copy,
+  .ym-code:focus-within .ym-code-copy { transform: none; }
+}
+
+/* ---- Lists ---- */
+.ym-shell #ym-page .prose :where(ul, ol) {
+  padding-left: 24px;
+  margin: 16px 0;
+}
+.ym-shell #ym-page .prose ul { list-style: disc; }
+.ym-shell #ym-page .prose ol { list-style: decimal; }
+.ym-shell #ym-page .prose li { margin-top: 8px; }
+.ym-shell #ym-page .prose li:first-child { margin-top: 0; }
+.ym-shell #ym-page .prose li::marker { color: var(--ym-faint); }
+.ym-shell #ym-page .prose ol li::marker { color: var(--ym-muted); }
+/* Nested lists tighten and shed the block-rhythm margins. */
+.ym-shell #ym-page .prose li > :where(ul, ol) { margin: 6px 0 0; }
+.ym-shell #ym-page .prose li > p { margin: 0; }
+
+/* ---- Blockquote ---- */
+.ym-shell #ym-page .prose blockquote {
+  margin: 16px 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--ym-line);
+  color: var(--ym-muted);
+  font-style: italic;
+}
+.ym-shell #ym-page .prose blockquote > :first-child { margin-top: 0; }
+.ym-shell #ym-page .prose blockquote > :last-child { margin-bottom: 0; }
+
+/* ---- Horizontal rule ---- */
+.ym-shell #ym-page .prose hr {
+  height: 1px;
+  border: 0;
+  background: var(--ym-line);
+  margin: 40px 0;
+}
+
+/* ---- Tables (remark-gfm) ---- */
+.ym-shell #ym-page .prose table {
+  display: block;
+  width: 100%;
+  margin: 16px 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.ym-shell #ym-page .prose thead { background: var(--ym-bg-subtle); }
+.ym-shell #ym-page .prose th {
+  text-align: left;
+  font-weight: 590;
+  color: var(--ym-ink);
+}
+.ym-shell #ym-page .prose th,
+.ym-shell #ym-page .prose td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--ym-line);
+  vertical-align: top;
+}
+.ym-shell #ym-page .prose thead th { border-bottom-color: var(--ym-line); }
+.ym-shell #ym-page .prose tbody tr:last-child td { border-bottom: 0; }
+.ym-shell #ym-page .prose td { color: var(--ym-prose-text); }
+
+/* ---- Bare images (product screenshots use <Frame> instead) ---- */
+.ym-shell #ym-page .prose :not(.ym-frame-media) > img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--ym-radius);
+}

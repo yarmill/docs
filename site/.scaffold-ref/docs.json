@@ -81,6 +81,23 @@
             ]
           },
           {
+            "anchor": "Tutorials",
+            "icon": "graduation-cap",
+            "groups": [
+              {
+                "group": "Tutorials",
+                "pages": [
+                  "en/tutorials/index",
+                  "en/tutorials/plan-first-week",
+                  "en/tutorials/set-season-goals",
+                  "en/tutorials/log-a-session",
+                  "en/tutorials/read-readiness",
+                  "en/tutorials/connect-a-watch"
+                ]
+              }
+            ]
+          },
+          {
             "anchor": "API Reference",
             "icon": "code",
             "groups": [

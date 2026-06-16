@@ -1,0 +1,1310 @@
+/* ============================================================
+   Yarmill Docs — app chrome (Linear-matched shell)
+   Owns ONLY the app shell: layout grid, sidebar, top bar, TOC
+   restyle, mobile drawer. Colour/type come from tokens.css; this
+   file consumes the --ym-* contract and never redefines it.
+   Motion follows the Emil Kowalski rules (ease-out entrances,
+   faster exits, transform/opacity only, reduced-motion fallbacks).
+   ============================================================ */
+
+/* ---------- Anchor scrolling -------------------------------
+   NOTE: smooth scrolling is done per-click in JS (TOC + heading anchors), NOT
+   via a global `html { scroll-behavior: smooth }` — that would also animate
+   Next's scroll-to-top on every route change (landing low, then gliding up).
+   Headings carry scroll-margin-top: 88px so they clear the sticky top bar. */
+
+/* ---------- Skip to content (a11y) -------------------------
+   First focusable element on the page: off-screen until keyboard focus, then
+   slides into the top-left over the chrome and links to the article (#ym-page). */
+.ym-skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: var(--ym-radius);
+  background: var(--ym-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 510;
+  text-decoration: none;
+  box-shadow: var(--ym-shadow-popover);
+  /* Hidden off-screen until focused (kept focusable, unlike display:none). */
+  transform: translateY(-150%);
+  opacity: 0;
+  transition: transform var(--ym-dur) var(--ym-ease-out), opacity var(--ym-dur) var(--ym-ease-out);
+}
+.ym-skip-link:focus-visible {
+  transform: translateY(0);
+  opacity: 1;
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-skip-link { transition: none; }
+}
+
+/* ---------- 404 / empty state ------------------------------
+   Rendered inside the shell (TopBar in header, this centred block in main).
+   On-brand, calm: oversized muted "404", short message, primary search button +
+   secondary link, and a short list of popular pages. */
+.ym-notfound {
+  max-width: 520px;
+  margin: 0 auto;
+  padding-block: clamp(64px, 14vh, 140px) 64px;
+  text-align: center;
+}
+.ym-notfound-code {
+  font-size: clamp(72px, 14vw, 120px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ym-line);
+  margin: 0;
+}
+.ym-notfound-title {
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  color: var(--ym-ink);
+  margin: 16px 0 0;
+}
+.ym-notfound-message {
+  font-size: var(--ym-body-size);
+  line-height: var(--ym-body-lh);
+  color: var(--ym-muted);
+  margin: 8px 0 0;
+}
+.ym-notfound-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 28px;
+}
+.ym-notfound-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding-inline: 16px;
+  border-radius: var(--ym-radius);
+  font-size: 14px;
+  font-weight: 510;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color var(--ym-dur-fast) ease,
+    border-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease;
+}
+.ym-notfound-btn-icon { width: 16px; height: 16px; }
+.ym-notfound-btn-primary {
+  background: var(--ym-accent);
+  color: #fff;
+}
+.ym-notfound-btn-secondary {
+  background: var(--ym-bg);
+  border-color: var(--ym-line);
+  color: var(--ym-ink);
+}
+.ym-notfound-kbd {
+  font-size: 11px;
+  font-weight: 510;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: var(--ym-radius-sm);
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-notfound-btn-primary:hover { background: var(--ym-accent-hover, var(--ym-accent)); }
+  .ym-notfound-btn-secondary:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+
+.ym-notfound-popular {
+  margin-top: 40px;
+  text-align: left;
+}
+.ym-notfound-popular-label {
+  font-size: 12px;
+  font-weight: 560;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ym-muted);
+  margin: 0 0 8px;
+}
+.ym-notfound-popular-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ym-notfound-popular-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--ym-radius);
+  color: var(--ym-ink);
+  font-size: 14px;
+  font-weight: 450;
+  text-decoration: none;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+.ym-notfound-popular-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--ym-muted);
+  flex: none;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--ym-dur-fast) ease, transform var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-notfound-popular-link:hover {
+    background: var(--ym-bg-hover);
+  }
+  .ym-notfound-popular-link:hover .ym-notfound-popular-icon {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-notfound-popular-icon { transition: none; }
+}
+
+/* ---------- Layout (Linear: fixed sidebar + offset main) ---
+   DOM: .ym-shell > [ .ym-sidebar (fixed 280) , .ym-main (offset 280) ].
+   .ym-main holds the sticky top bar and a centred 1024px content wrapper;
+   the wrapper holds a row of article (flex, fills) + TOC (fixed 250). The
+   article width therefore DERIVES from the grid (≈650 at the cap, wider when
+   the TOC is hidden) — it is never hard-capped. */
+.ym-shell {
+  min-height: 100dvh;
+  background: var(--ym-bg);
+}
+
+/* The flexible main column, offset to clear the fixed sidebar. */
+.ym-main {
+  margin-left: var(--ym-sidebar-w);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left var(--ym-dur) var(--ym-ease-out);
+}
+.ym-shell[data-sidebar-collapsed='true'] .ym-main { margin-left: 0; }
+
+/* Centred content wrapper (Linear: 1024 cap, 24px gutters). */
+.ym-content {
+  width: 100%;
+  max-width: var(--ym-content-max);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+/* Article + TOC sit in a row with a generous gap; article fills, TOC fixed. */
+.ym-content-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
+}
+
+/* The reading column fills the remaining width (derived, not capped). */
+.ym-shell #ym-page {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-block: 48px 64px;
+}
+/* Full-width pages (mode: wide) drop the TOC (see page.tsx) and widen the
+   wrapper so the content — e.g. the homepage card dashboard — uses the space. */
+.ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-wide); }
+
+/* ---------- Reading typography (Linear scale in Inter) -----
+   Scoped to #ym-page so the id specificity (1,0,1 for `#id el`) beats
+   Fumadocs' `.prose :where(el)` preset (0,1,1) without !important. The
+   article container is #ym-page; its prose lives in a `.prose` child. */
+.ym-shell #ym-page :where(p, li) {
+  font-size: var(--ym-body-size);
+  line-height: var(--ym-body-lh);
+  font-weight: 400;
+  letter-spacing: var(--ym-body-ls);
+  color: var(--ym-prose-text);
+}
+.ym-shell #ym-page h1 {
+  font-size: var(--ym-h1-size);
+  line-height: var(--ym-h1-lh);
+  font-weight: var(--ym-h1-w);
+  letter-spacing: var(--ym-h1-ls);
+  color: var(--ym-ink);
+  margin-top: 0;
+}
+.ym-shell #ym-page h2 {
+  font-size: var(--ym-h2-size);
+  line-height: var(--ym-h2-lh);
+  font-weight: var(--ym-h2-w);
+  letter-spacing: var(--ym-h2-ls);
+  color: var(--ym-ink);
+  margin-top: 56px;
+  margin-bottom: 12px;
+}
+.ym-shell #ym-page h3 {
+  font-size: var(--ym-h3-size);
+  line-height: var(--ym-h3-lh);
+  font-weight: var(--ym-h3-w);
+  letter-spacing: var(--ym-h3-ls);
+  color: var(--ym-ink);
+  margin-top: 32px;
+}
+/* Lead/description paragraph under H1 — normal body text (same size/colour as
+   the prose body; not an oversized subtitle). Generous gap below the title and
+   before the body for breathing room (Linear). */
+/* NB: the title/lead/prose are nested inside the .ym-page-enter transition
+   wrapper, so these use descendant (not direct-child) selectors. */
+.ym-shell #ym-page p.ym-lead {
+  font-size: var(--ym-body-size);
+  line-height: var(--ym-body-lh);
+  font-weight: 400;
+  letter-spacing: var(--ym-body-ls);
+  color: var(--ym-prose-text);
+  margin-top: 24px;
+  margin-bottom: 36px;
+}
+/* First content block after the lead keeps the breathing room (the prose
+   first-child reset would otherwise collapse it against the lead). */
+.ym-shell #ym-page .ym-lead + .prose {
+  margin-top: 36px;
+}
+/* Anchor jumps (TOC clicks) land below the sticky 64px top bar, not under it —
+   so clicking any heading, including the last, scrolls it into clear view. */
+.ym-shell #ym-page :is(h1, h2, h3, h4) {
+  scroll-margin-top: 88px;
+}
+/* Inline prose links: underlined, inherit text colour, hover → accent. */
+.ym-shell #ym-page .prose a:not(.not-prose):not([class*='ym-']) {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--ym-line);
+  transition: color var(--ym-dur-fast) ease,
+    text-decoration-color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-shell #ym-page .prose a:not(.not-prose):not([class*='ym-']):hover {
+    color: var(--ym-accent);
+    text-decoration-color: var(--ym-accent);
+  }
+}
+
+/* ---------- Shared interactive primitives ----------------- */
+:where(.ym-shell, .ym-topbar, .ym-sidebar) button,
+:where(.ym-shell, .ym-topbar, .ym-sidebar) a {
+  touch-action: manipulation;
+}
+
+/* 2px brand focus-visible ring on everything interactive. */
+.ym-shell :focus-visible,
+.ym-topbar :focus-visible,
+.ym-sidebar :focus-visible,
+.ym-menu :focus-visible {
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+  border-radius: var(--ym-radius-sm);
+}
+
+/* Icon buttons — 32×32 circle, hairline border, bg fill (Linear). */
+.ym-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ym-radius-pill);
+  border: 1px solid var(--ym-line);
+  color: var(--ym-muted);
+  background: var(--ym-bg);
+  cursor: pointer;
+  transition: background-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease,
+    border-color var(--ym-dur-fast) ease;
+}
+.ym-icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-icon-btn:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+
+/* ---------- Sidebar (fixed, full height) ------------------ */
+.ym-sidebar {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 40;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  width: var(--ym-sidebar-w);
+  background: var(--ym-bg-sidebar);
+  border-right: 1px solid var(--ym-line);
+  overflow: hidden;
+}
+/* When collapsed on desktop, slide the rail out. */
+.ym-shell[data-sidebar-collapsed='true'] .ym-sidebar {
+  transform: translateX(-100%);
+  transition: transform var(--ym-dur) var(--ym-ease-out);
+}
+
+.ym-sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: var(--ym-topbar-h);
+  padding-left: 24px;
+  padding-right: 16px;
+  flex: none;
+  /* Hairline that lines up with the top bar's bottom border so the divider
+     runs continuously across the sidebar header and the main top bar. */
+  border-bottom: 1px solid var(--ym-line);
+}
+/* Symbol logo · vertical divider · "Docs" wordmark. */
+.ym-sidebar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.ym-sidebar-symbol {
+  height: 24px;
+  width: auto;
+  display: block;
+}
+/* Thin vertical divider between the logo mark and "Docs" (Linear). */
+.ym-sidebar-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--ym-line);
+  flex: none;
+}
+.ym-symbol-dark { display: none; }
+.dark .ym-symbol-light { display: none; }
+.dark .ym-symbol-dark { display: block; }
+.ym-sidebar-docs {
+  font-size: 16px;
+  font-weight: 510;
+  color: var(--ym-ink);
+  letter-spacing: -0.011em;
+}
+
+/* Scrollable nav */
+.ym-sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Linear's nav: ~12px horizontal inset (rows then add their own 8px padding,
+     landing text ~20px from the edge) + generous top/bottom breathing room. */
+  padding: 12px 12px 32px;
+}
+/* Small, contained scrollbar (Emil: only customise inside elements). */
+.ym-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ym-line) transparent;
+}
+.ym-sidebar-scroll::-webkit-scrollbar { width: 8px; }
+.ym-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: var(--ym-line);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.ym-nav { display: flex; flex-direction: column; gap: 4px; }
+.ym-nav-group { display: flex; flex-direction: column; }
+/* Uniform collapsible section row (Linear). */
+.ym-nav-group-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 36px;
+  padding-inline: 8px;
+  border-radius: var(--ym-radius);
+  color: var(--ym-muted);
+  font-size: 14px;
+  font-weight: 510;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  transition: background-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-nav-group-label:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+.ym-nav-group-name { flex: 1; min-width: 0; }
+.ym-nav-group-chevron {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  transition: transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+/* Open = chevron down (0deg); collapsed = points right (-90deg). */
+.ym-nav-group[data-open='false'] .ym-nav-group-chevron {
+  transform: rotate(-90deg);
+}
+
+.ym-nav-list {
+  list-style: none;
+  margin: 2px 0 0; /* small gap between a section label and its first child */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* Host for the shared sliding active-indicator (positioned absolutely). */
+  position: relative;
+}
+
+/* Active page link = colour only (Linear): brand-accent text, no background and
+   no indicator bar. (Styled on `.ym-nav-link[data-active]` below.) */
+/* Child links share the section label's left padding, so a child's ICON aligns
+   with the parent label's TEXT (Linear). No extra indent. */
+.ym-nav-group .ym-nav-list { padding-left: 0; }
+.ym-nav-list--nested {
+  margin-left: 12px;
+  padding-left: 8px;
+  border-left: 1px solid var(--ym-line-subtle);
+}
+
+.ym-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 34px;
+  padding: 0 8px;
+  border-radius: var(--ym-radius);
+  color: var(--ym-muted);
+  font-size: 14px;
+  font-weight: 510;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-nav-link:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+/* Active = colour only (Linear is restrained): the page reads as dark ink +
+   slightly heavier weight, NOT indigo, and no fill. */
+.ym-nav-link[data-active='true'] {
+  background: transparent;
+  color: var(--ym-ink);
+  font-weight: 590;
+}
+.ym-nav-icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--ym-faint);
+}
+.ym-nav-icon svg { width: 16px; height: 16px; }
+.ym-nav-link[data-active='true'] .ym-nav-icon { color: var(--ym-ink); }
+/* The parent section of the active page also reads as selected — dark ink +
+   heavier weight (Linear) — so the open section is visually anchored. */
+.ym-nav-group[data-active-section='true'] > .ym-nav-group-label {
+  color: var(--ym-ink);
+  font-weight: 590;
+}
+.ym-nav-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ym-nav-folder-trigger { width: 100%; }
+.ym-nav-folder-chevron {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--ym-faint);
+  transition: transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-nav-folder[data-open='false'] .ym-nav-folder-chevron {
+  transform: rotate(-90deg);
+}
+
+/* Pinned footer */
+.ym-sidebar-footer {
+  flex: none;
+  padding: 10px 16px;
+  border-top: 1px solid var(--ym-line);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.ym-footer-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 34px;
+  padding: 0 8px;
+  border-radius: var(--ym-radius);
+  color: var(--ym-muted);
+  font-size: 14px;
+  font-weight: 510;
+  transition: background-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-footer-link:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+/* Active space switcher — brand accent (color-only, like the nav). */
+.ym-footer-link[data-active='true'] {
+  color: var(--ym-accent);
+}
+.ym-footer-icon { width: 16px; height: 16px; flex: none; }
+
+/* ---------- Top bar (sticky inside main) ------------------ */
+.ym-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--ym-topbar-h);
+  padding-inline: 24px;
+  border-bottom: 1px solid var(--ym-line);
+  background: color-mix(in srgb, var(--ym-bg) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ym-topbar-burger,
+.ym-topbar-wordmark { display: none; }
+
+/* Mobile wordmark image sizing + theme variants (link wrapper is
+   `.ym-topbar-wordmark`; constrain the imgs inside it). */
+.ym-topbar-wordmark .ym-wordmark {
+  height: 20px;
+  width: auto;
+  display: block;
+}
+.ym-topbar-wordmark .ym-wordmark-dark { display: none; }
+.dark .ym-topbar-wordmark .ym-wordmark-light { display: none; }
+.dark .ym-topbar-wordmark .ym-wordmark-dark { display: block; }
+
+.ym-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  min-width: 0;
+}
+.ym-crumb-muted { color: var(--ym-muted); }
+.ym-crumb-sep { color: var(--ym-faint); }
+.ym-crumb-current {
+  color: var(--ym-ink);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ym-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Copy-page control — a "Copy page" pill + a separate chevron pill (Linear). */
+/* One connected split button: a single rounded pill with an internal hairline
+   divider between the label and the chevron (Linear). */
+.ym-split {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+.ym-split-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding-inline: 12px;
+  border: 1px solid var(--ym-line);
+  border-right: none;
+  border-radius: var(--ym-radius-pill) 0 0 var(--ym-radius-pill);
+  background: var(--ym-bg);
+  color: var(--ym-ink);
+  font-size: 13px;
+  font-weight: 510;
+  cursor: pointer;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+.ym-split-icon { width: 15px; height: 15px; }
+.ym-split-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 32px;
+  border: 1px solid var(--ym-line);
+  border-radius: 0 var(--ym-radius-pill) var(--ym-radius-pill) 0;
+  background: var(--ym-bg);
+  color: var(--ym-muted);
+  cursor: pointer;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+.ym-split-chevron svg { width: 14px; height: 14px; }
+@media (hover: hover) and (pointer: fine) {
+  .ym-split-main:hover,
+  .ym-split-chevron:hover { background: var(--ym-bg-hover); }
+}
+
+/* Dropdown menu */
+.ym-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  min-width: 200px;
+  padding: 4px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius);
+  background: var(--ym-bg);
+  box-shadow: var(--ym-shadow-popover);
+  animation: ym-menu-in var(--ym-dur) var(--ym-ease-out);
+  transform-origin: top right;
+}
+@keyframes ym-menu-in {
+  from { opacity: 0; transform: scale(0.97) translateY(-2px); }
+  to { opacity: 1; transform: none; }
+}
+.ym-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--ym-radius-sm);
+  color: var(--ym-ink);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-menu-item:hover { background: var(--ym-bg-hover); }
+}
+.ym-menu-icon { width: 15px; height: 15px; color: var(--ym-muted); flex: none; }
+.ym-menu-sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--ym-line-subtle);
+}
+
+/* Primary CTA — filled accent pill (Linear). */
+.ym-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding-inline: 12px;
+  border-radius: var(--ym-radius-pill);
+  background: var(--ym-accent);
+  color: var(--ym-accent-on);
+  font-size: 13px;
+  font-weight: 510;
+  white-space: nowrap;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-cta:hover { background: var(--ym-accent-hover); }
+}
+
+/* ---------- TOC — "On this page" (Linear sliding indicator) -
+   Mechanism: ONE continuous 2px vertical track runs the full height of the
+   list (`.ym-toc-list::before`), colour --ym-line. A SINGLE 2px --ym-accent
+   bar (`.ym-toc-indicator`) is absolutely positioned inside the list and
+   SLIDES (transform translateY + height) to the active item's box. No
+   per-item borders anywhere. */
+.ym-shell #ym-toc {
+  flex: 0 0 var(--ym-toc-w);
+  width: var(--ym-toc-w);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  max-height: calc(100vh - 96px - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-block: 32px 16px;
+}
+/* The list: relatively-positioned host for the track + sliding indicator. */
+.ym-toc-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-left: 16px;
+}
+/* Continuous 2px track, full height of the list. */
+.ym-toc-list::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background: var(--ym-line);
+  border-radius: 2px;
+}
+/* The single sliding accent bar (positioned/animated from JS). */
+.ym-toc-indicator {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 2px;
+  height: 0;
+  border-radius: 2px;
+  background: var(--ym-accent);
+  transform: translateY(0);
+  opacity: 0;
+  transition:
+    transform var(--ym-dur) var(--ym-ease-out),
+    height var(--ym-dur) var(--ym-ease-out),
+    opacity var(--ym-dur-fast) ease;
+  pointer-events: none;
+}
+.ym-toc-indicator[data-visible='true'] { opacity: 1; }
+/* TOC links — no borders; muted → ink active; nested h3 indented. */
+.ym-shell #ym-toc a {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 19.5px;
+  color: var(--ym-muted);
+  /* Tabular figures so a number in a heading can't reflow the rail (and the
+     sliding indicator/track stay aligned regardless of digit width). */
+  font-variant-numeric: tabular-nums;
+  transition: color var(--ym-dur-fast) ease;
+}
+.ym-shell #ym-toc a[data-depth='3'] { padding-inline-start: 12px; }
+.ym-shell #ym-toc a[data-active='true'] { color: var(--ym-ink); }
+@media (hover: hover) and (pointer: fine) {
+  .ym-shell #ym-toc a:hover { color: var(--ym-ink); }
+}
+
+/* Reduced motion — the indicator snaps, no transform/height tween. */
+@media (prefers-reduced-motion: reduce) {
+  .ym-toc-indicator {
+    transition: opacity var(--ym-dur-fast) linear !important;
+  }
+}
+
+/* ---------- Mobile drawer + responsive -------------------- */
+.ym-drawer-overlay { display: none; }
+
+/* ≤1024px — hide the right TOC; the article fills the wrapper. */
+@media (max-width: 1024px) {
+  .ym-shell #ym-toc { display: none !important; }
+}
+
+/* ≤768px — sidebar becomes a slide-in drawer behind a hamburger. */
+@media (max-width: 768px) {
+  .ym-main { margin-left: 0; }
+  .ym-shell[data-sidebar-collapsed='true'] .ym-main { margin-left: 0; }
+
+  .ym-topbar { padding-inline: 12px; gap: 8px; }
+  .ym-topbar-burger { display: inline-flex; }
+  .ym-topbar-wordmark { display: block; height: 20px; }
+  .ym-breadcrumb { display: none; }
+  /* Keep only the CTA in the action cluster on small screens. */
+  .ym-split { display: none; }
+
+  .ym-drawer-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: rgba(31, 30, 49, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--ym-dur-slow) var(--ym-ease-out);
+  }
+  .ym-drawer-overlay[data-open='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .ym-sidebar {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 50;
+    height: 100dvh;
+    transform: translateX(-100%);
+    transition: transform var(--ym-dur-slow) var(--ym-ease-out);
+    box-shadow: var(--ym-shadow-popover);
+  }
+  .ym-sidebar[data-open='true'] { transform: translateX(0); }
+  /* Don't let the desktop-collapse transform fight the drawer. */
+  .ym-shell[data-sidebar-collapsed='true'] .ym-sidebar { transform: translateX(-100%); }
+  .ym-sidebar[data-open='true'][data-collapsed='true'] { transform: translateX(0); }
+
+  /* ≥40px tap targets on touch. */
+  .ym-nav-link,
+  .ym-footer-link,
+  .ym-nav-group-label { min-height: 40px; }
+  .ym-icon-btn { width: 40px; height: 40px; }
+}
+
+/* Reduced motion — plain fades, no transforms. */
+@media (prefers-reduced-motion: reduce) {
+  .ym-shell,
+  .ym-sidebar,
+  .ym-drawer-overlay,
+  .ym-menu,
+  .ym-nav-group-chevron,
+  .ym-nav-folder-chevron {
+    transition: opacity var(--ym-dur-fast) linear !important;
+    animation: none !important;
+  }
+  .ym-sidebar { transition: none !important; }
+}
+
+/* No horizontal scroll at narrow widths. */
+.ym-shell { overflow-x: clip; }
+
+/* ---------- Prev/next (bottom of article) ----------------- */
+.ym-prevnext {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 80px;
+}
+.ym-prevnext-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius);
+  color: var(--ym-ink);
+  text-decoration: none;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+.ym-prevnext-next { justify-content: flex-end; text-align: right; }
+@media (hover: hover) and (pointer: fine) {
+  /* Subtle surface fill on hover — consistent with cards/nav (Linear). */
+  .ym-prevnext-link:hover {
+    background: var(--ym-bg-hover);
+  }
+}
+.ym-prevnext-icon { width: 16px; height: 16px; flex: none; color: var(--ym-muted); }
+.ym-prevnext-cap { display: block; font-size: 12px; color: var(--ym-muted); margin-bottom: 2px; }
+.ym-prevnext-title { display: block; font-size: 14px; font-weight: 510; color: var(--ym-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ym-prevnext-link { transition: border-color var(--ym-dur-fast) ease !important; }
+  .ym-prevnext-link:hover { transform: none; }
+}
+
+/* ---------- ⌘K search palette ----------------------------- */
+.ym-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 15vh 16px 16px;
+  background: rgba(15, 14, 30, 0.5);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  animation: ym-search-overlay-in var(--ym-dur) var(--ym-ease-out);
+}
+.ym-search-modal {
+  width: min(640px, 100%);
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: var(--ym-bg);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-lg);
+  box-shadow: var(--ym-shadow-popover);
+  overflow: hidden;
+  transform-origin: center top;
+  animation: ym-search-modal-in var(--ym-dur) var(--ym-ease-out);
+}
+
+/* Input row */
+.ym-search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  height: 56px;
+  flex: none;
+  border-bottom: 1px solid var(--ym-line);
+}
+.ym-search-input-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--ym-muted);
+  flex: none;
+}
+.ym-search-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: -0.011em;
+  color: var(--ym-ink);
+}
+.ym-search-input::placeholder { color: var(--ym-muted); }
+.ym-search-esc {
+  flex: none;
+  font-size: 11px;
+  font-weight: 510;
+  line-height: 1;
+  color: var(--ym-muted);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+  padding: 4px 7px;
+}
+
+/* Results list */
+.ym-search-results {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ym-search-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--ym-radius);
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+.ym-search-result-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+.ym-search-crumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ym-muted);
+  min-width: 0;
+}
+.ym-search-crumb-sep { color: var(--ym-muted); opacity: 0.6; }
+.ym-search-title {
+  font-size: 14px;
+  font-weight: 510;
+  color: var(--ym-ink);
+  letter-spacing: -0.006em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ym-search-snippet {
+  font-size: 12.5px;
+  line-height: 18px;
+  color: var(--ym-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ym-search-mark {
+  background: transparent;
+  color: var(--ym-accent);
+  font-weight: 510;
+}
+.ym-search-enter {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--ym-muted);
+  opacity: 0;
+  transition: opacity var(--ym-dur-fast) ease;
+}
+
+/* Active / hover row — color + subtle neutral fill (no layout shift) */
+.ym-search-result[data-active='true'] {
+  background: var(--ym-bg-hover);
+}
+.ym-search-result[data-active='true'] .ym-search-title { color: var(--ym-accent); }
+.ym-search-result[data-active='true'] .ym-search-enter { opacity: 1; }
+
+/* Empty-state quick-nav: group labels + compact rows (Jump to section / Recent) */
+.ym-search-section-label {
+  list-style: none;
+  padding: 10px 12px 4px;
+  font-size: 11px;
+  font-weight: 560;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ym-muted);
+}
+/* First label sits flush with the list's own top padding. */
+.ym-search-results > .ym-search-section-label:first-child { padding-top: 2px; }
+
+.ym-search-result--quick { gap: 10px; }
+.ym-search-quick-icon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--ym-faint);
+}
+.ym-search-result--quick[data-active='true'] .ym-search-quick-icon { color: var(--ym-accent); }
+/* h3 sections nudge in a touch so the hierarchy reads. */
+.ym-search-result--quick[data-depth='3'] { padding-left: 24px; }
+
+/* Empty + hint states */
+.ym-search-empty {
+  padding: 28px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ym-muted);
+}
+.ym-search-hint {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 10px 16px;
+  border-top: 1px solid var(--ym-line);
+  font-size: 12px;
+  color: var(--ym-muted);
+}
+.ym-search-hint span { display: inline-flex; align-items: center; gap: 5px; }
+.ym-search-hint kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 11px;
+  font-family: inherit;
+  color: var(--ym-muted);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+}
+
+/* ---------- Keyboard shortcuts help sheet (D2) ------------ */
+.ym-shortcuts-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 14, 30, 0.5);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  animation: ym-search-overlay-in var(--ym-dur) var(--ym-ease-out);
+}
+.ym-shortcuts-modal {
+  width: min(420px, 100%);
+  background: var(--ym-bg);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-lg);
+  box-shadow: var(--ym-shadow-popover);
+  overflow: hidden;
+  transform-origin: center;
+  animation: ym-shortcuts-modal-in var(--ym-dur) var(--ym-ease-out);
+}
+.ym-shortcuts-modal:focus { outline: none; }
+.ym-shortcuts-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ym-line);
+}
+.ym-shortcuts-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 560;
+  letter-spacing: -0.011em;
+  color: var(--ym-ink);
+}
+.ym-shortcuts-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.ym-shortcuts-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 8px;
+  border-radius: var(--ym-radius);
+  font-size: 14px;
+  color: var(--ym-prose-text);
+}
+.ym-shortcuts-keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+.ym-shortcuts-keygroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ym-shortcuts-then {
+  font-size: 11px;
+  color: var(--ym-muted);
+  padding: 0 2px;
+}
+.ym-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  font-size: 11.5px;
+  font-weight: 510;
+  font-family: inherit;
+  color: var(--ym-ink);
+  background: var(--ym-bg-subtle);
+  border: 1px solid var(--ym-line);
+  border-radius: var(--ym-radius-sm);
+}
+@keyframes ym-shortcuts-modal-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-shortcuts-overlay { animation: ym-search-overlay-in var(--ym-dur-fast) ease; }
+  .ym-shortcuts-modal { animation: ym-search-overlay-in var(--ym-dur-fast) ease; }
+}
+
+@keyframes ym-search-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ym-search-modal-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-search-overlay,
+  .ym-search-modal {
+    animation: ym-search-overlay-in var(--ym-dur-fast) ease;
+  }
+  .ym-search-modal { transform: none; }
+}
+
+/* ============================================================
+   Block C — continuity & motion
+   ============================================================ */
+
+/* ---------- C1: cross-page article fade-up ----------------
+   Replays on every client navigation because PageTransition keys this
+   element on the pathname (it remounts). Transform/opacity only, ease-out,
+   one --ym-dur. Sidebar + top bar live outside it, so they stay static. */
+.ym-page-enter {
+  /* `backwards` (not `both`) + no `will-change`: the entrance holds its
+     from-state before it starts, then reverts to a fully static element once
+     finished — so it creates NO lingering stacking context or containing block.
+     That's what lets the in-flow click-to-zoom image (ZoomImage.tsx) paint above
+     the body-portal overlay; a persistent will-change/transform here would trap
+     it. */
+  animation: ym-page-enter var(--ym-dur) var(--ym-ease-out) backwards;
+}
+@keyframes ym-page-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Instant: no transform, content simply present. */
+  .ym-page-enter {
+    animation: none;
+    will-change: auto;
+  }
+}
+
+/* ---------- C3: scroll-progress line ----------------------
+   2px accent bar pinned to the bottom edge of the top bar. The inner bar is
+   scaled on the X axis (transform only) by the client component; the track is
+   transparent and hidden when there's nothing to scroll. */
+.ym-scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px; /* sit on the hairline so it reads as one continuous edge */
+  height: 2px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity var(--ym-dur) var(--ym-ease-out);
+}
+.ym-scroll-progress[data-visible='false'] { opacity: 0; }
+.ym-scroll-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--ym-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  /* Smooth the per-frame steps slightly so fast scrolls don't look jittery. */
+  transition: transform 80ms linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Still show the bar (it reflects position, not decoration), but track the
+     scroll instantly with no smoothing transition. */
+  .ym-scroll-progress { transition: none; }
+  .ym-scroll-progress-bar { transition: none; }
+}

@@ -1,0 +1,211 @@
+---
+title: "Goals"
+description: "Set objectives with key results, track progress through the season, and review how they turned out."
+icon: "bullseye"
+---
+
+Goals turn season ambitions into something you can track. Each goal holds a set of
+**key results** — measurable outcomes with a start, current, and target value — so
+progress stays visible all season, not just judged at the end.
+
+**For:** coaches and athletes · **Where:** Web app
+
+<Info>The goal **categories** and the methodology completeness rules (for example, a
+minimum number of key results) are **configured per team**, so they may differ from this
+guide. The six states, the key-result fields, and the rest of the mechanics work the same
+way everywhere.</Info>
+
+<Frame caption="A goal at a glance — a title and description, its attributes, and key results.">
+  <img src="/images/goals/goal-hero.png" alt="A filled goal showing its title, description, attributes row, and a table of key results." />
+</Frame>
+{/* NOTE(yarmill): rendered from the live Goals UI (yarmill-design pipeline) with clean sample data on the demo — a filled goal as the page lead. */}
+
+## Where to find Goals
+
+Open **Goals** from the main menu. As an **athlete**, you'll see your own goals straight
+away. As a **coach**, pick a **group** and then an athlete to work with their goals — or
+open your own Goals to set objectives for yourself, useful for your own coaching or
+development.
+
+Goals are grouped by season into **Current season** and **Past season**, each with a
+count, so older objectives stay out of the way without being lost.
+
+## Create a goal
+
+A goal is a single objective ("Lift 150 kg on bench press," "Reach the World
+Championship final"). You'll give it a name and some context, then break it into key
+results.
+
+<Frame caption="The parts of a goal: a title and description, its attributes, and a table of key results.">
+  <img src="/images/goals/goal-anatomy.png" alt="A goal made up of a title and description, a row of attributes (state, season, priority, supervisors, category), and a key results table with start, current, target values and a target date." />
+</Frame>
+{/* NOTE(yarmill): rendered from the live Goals UI (yarmill-design pipeline) with clean sample data on the demo — the anatomy of a goal. */}
+
+<Steps>
+  <Step title="Open Goals and pick the person">
+    Select the athlete whose goal you're creating — or yourself, as a coach.
+  </Step>
+  <Step title="Add a new goal">
+    Select **+** at the top of the goals list. A **New goal** appears, ready to edit.
+  </Step>
+  <Step title="Fill in the goal">
+    Give it a title and description, then set its attributes (see below) and add key
+    results. There's no Save button — changes apply immediately and are logged under
+    **Activity**.
+  </Step>
+</Steps>
+
+<Frame caption="A new goal opens ready to edit: a placeholder title, a Describe it field, and buttons for its attributes.">
+  <img src="/images/goals/new-goal.png" alt="A new, empty goal with placeholder title, a Describe it field, and buttons to set state, season, priority, supervisors, and category." />
+</Frame>
+{/* NOTE(yarmill): rendered from the live Goals UI (yarmill-design pipeline) with clean sample data on the demo — the "New goal" screen (English UI). */}
+
+### Goal fields
+
+<ParamField path="Title" required>
+  The objective, in a few words — for example, "Lift 150 kg on bench press."
+</ParamField>
+
+<ParamField path="Description">
+  Free-text context: what success looks like and by when.
+</ParamField>
+
+<ParamField path="State" default="Not started">
+  The goal's status: **Not started**, **On track**, **Off track**, **Completed**,
+  **Canceled**, or **Failed**.
+</ParamField>
+
+<ParamField path="Season" default="Current season">
+  The season the goal belongs to. Goals are grouped by season in the list.
+</ParamField>
+
+<ParamField path="Priority" default="Low">
+  **Low**, **Medium**, or **High** — set from the **!** button.
+</ParamField>
+
+<ParamField path="Supervisors">
+  The coaches who follow the goal. Use **Add supervisors** to pick them from a searchable
+  list.
+</ParamField>
+
+<ParamField path="Category">
+  A two-level label — a category and its subcategory (for example, *Fitness → Strength*).
+  The available categories are **configured for your team**.
+</ParamField>
+
+<Frame caption="The category menu: a top-level category and its subcategory.">
+  <img src="/images/goals/category-picker.png" alt="The category menu open, showing top-level categories such as Performance, Fitness, Personal, Technical, Health, and Conditions, each with a submenu." />
+</Frame>
+{/* NOTE(yarmill): rendered from the live Goals UI (yarmill-design pipeline) with clean sample data on the demo — the category menu. */}
+
+## Add key results
+
+A **key result** is a measurable outcome that tells you whether the goal is being met.
+Add as many as the goal needs — each row in the table is one outcome.
+
+There are no sub-steps or milestones — key results are the only way to break a goal down.
+
+<Steps>
+  <Step title="Name the key result">
+    Type into the inline **Name the key result** row at the bottom of the table to add a row.
+  </Step>
+  <Step title="Enter the values">
+    Fill in **Start value**, **Current value**, and **Target value**.
+  </Step>
+  <Step title="Set a target date">
+    Select **Set date** and choose when the key result should be reached.
+  </Step>
+</Steps>
+
+### Key result fields
+
+<ParamField path="Name" required>
+  The measurable outcome — for example, "Train at least 3× per week."
+</ParamField>
+
+<ParamField path="Start value">
+  Where the athlete began. Free text — a number (`0`) or a phrase (`unknown`).
+</ParamField>
+
+<ParamField path="Current value">
+  Where the athlete is now. Updated **manually** as progress is made.
+</ParamField>
+
+<ParamField path="Target value">
+  The value that counts as success — for example, `140kg` or `3`.
+</ParamField>
+
+<ParamField path="Target date">
+  When the key result should be reached.
+</ParamField>
+
+<ParamField path="State">
+  The key result's status — the same six states as the goal.
+</ParamField>
+
+## Track progress
+
+Values are updated **manually**, so keep them current as the athlete progresses — the
+conversations around a goal are only as good as its latest numbers. Update the **current
+value** of each key result, and move the goal's **state** as the picture changes. The
+goal's progress fraction counts achieved key results against the total.
+
+Every change — a new value, a state change, a moved target date, a rename — is recorded
+automatically under **Activity**, with who made it and when.
+
+To remove a goal, use the **trash icon** at the top right of the goal.
+
+## Comments and final evaluations
+
+Use **Activity** to leave a comment at any time. Comments are plain text, timestamped,
+and a good way for an athlete and coach to talk through progress in context.
+
+When a goal wraps up, add a **final evaluation** — a short closing reflection on how it
+went. Both the athlete and a coach can add their own.
+
+<Tip>Goals are at their best in pre- and post-season conversations: set them together at
+the start of the season, and evaluate them together at the end.</Tip>
+
+## Check a goal against your methodology
+
+The check icon at the top right opens **Document check** — a methodology check from
+[Yollanda](/en/platform/yollanda). It flags what's still missing (red) or recommended
+(amber) on the goal, with green checks for what's done, and links to **Open methodology**,
+your team's methodology document.
+
+<Info>What counts as required or recommended — such as a minimum number of key results —
+comes from your team's configured methodology and differs between teams.</Info>
+
+<Frame caption="Document check flags what's required (red) or recommended (amber), with green checks for what's done.">
+  <img src="/images/goals/document-check.png" alt="The Document check panel listing items to complete on a goal — fill the title, add a supervisor, choose a category, add key results — marked as required or recommended, with a link to open the methodology." />
+</Frame>
+{/* NOTE(yarmill): rendered from the live Goals UI (yarmill-design pipeline) with clean sample data on the demo — the Document check panel. */}
+
+## See a whole group's goals
+
+As a coach, select **Entire Group** to see the whole squad on one screen. Every athlete
+is a row — each goal drawn as a rounded pill colored by its state, followed by a small
+circle per key result. Athletes with no goals still appear as a labeled row. Hover a goal
+for a quick summary, or select it to open the full view — a fast way to scan a squad
+before a planning meeting or review.
+
+<Frame caption="The Entire Group overview — every athlete on one row, each goal a colored pill with its key results beside it.">
+  <img src="/images/goals/group-overview.png" alt="The Goals module showing Entire Group selected: one row per athlete, each goal drawn as a rounded pill colored by state (on track, completed, off track, not started) followed by smaller circles for each key result." />
+</Frame>
+{/* NOTE(yarmill): rendered full-window from the live Goals "Entire Group" view (yarmill-design pipeline), mirroring the real layout — goal-state pills + key-result circles — with demo data. */}
+
+## What athletes see
+
+Athletes open Goals to manage **only their own** goals — there's no group switcher and no
+Entire Group overview, just their own season buckets. An athlete can view and edit their
+own goals, including key results and attributes, leave comments, and add a final
+evaluation — and they can do this even on a goal a coach created for them.
+
+## How it connects
+
+- Goals are scoped to a **season** — the structure they live in comes from
+  [Plan](/en/plan/plan) and the [Season Calendar](/en/plan/season-calendar).
+- **Document check** is a [Yollanda](/en/platform/yollanda) surface, checking each goal
+  against your team's methodology.
+- Goals and their final evaluations are the spine of pre- and post-season review
+  conversations.
