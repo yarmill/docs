@@ -135,8 +135,13 @@ export function CopyPage() {
         ) : (
           <Copy className="ym-split-icon" aria-hidden />
         )}
-        <span aria-live="polite">{copied ? 'Copied' : 'Copy page'}</span>
+        <span>{copied ? 'Copied' : 'Copy page'}</span>
       </button>
+      {/* Dedicated polite live region: announces the copy result to screen
+          readers without re-announcing the visible label on every render. */}
+      <span className="sr-only" role="status" aria-live="polite">
+        {copied ? 'Page copied to clipboard' : ''}
+      </span>
       <button
         type="button"
         className="ym-split-chevron"

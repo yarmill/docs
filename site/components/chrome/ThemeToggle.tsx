@@ -14,6 +14,10 @@ import { useEffect, useState } from 'react';
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  // Canonical next-themes hydration gate: the resolved theme is only known on
+  // the client, so we flip `mounted` once after hydration. This is a deliberate
+  // one-shot state set in an effect (no render-time equivalent exists).
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   const isDark = resolvedTheme === 'dark';

@@ -47,9 +47,15 @@ function NavGroupBlock({ group, pathname }: { group: NavGroup; pathname: string 
   const [open, setOpen] = useState(containsActive);
   const contentId = `grp-${group.label.replace(/\s+/g, '-')}`;
 
-  useEffect(() => {
+  // Re-open the group when navigation moves the active page into it, without an
+  // effect: adjust state during render keyed on the previous `containsActive`
+  // value (React's "storing information from previous renders" pattern). The
+  // user can still collapse it again afterwards.
+  const [prevContains, setPrevContains] = useState(containsActive);
+  if (containsActive !== prevContains) {
+    setPrevContains(containsActive);
     if (containsActive) setOpen(true);
-  }, [containsActive]);
+  }
 
   return (
     <div className="ym-nav-group" data-open={open}>

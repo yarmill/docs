@@ -38,6 +38,18 @@ export function Tabs({
       return typeof title === 'string' ? title : `Tab ${i + 1}`;
     });
 
+  // Stable, content-derived keys (de-duplicated for repeated titles) so React
+  // reconciles by identity rather than by array position.
+  const keys = (() => {
+    const seen = new Map<string, number>();
+    return titles.map((title) => {
+      const base = title.trim() || 'tab';
+      const n = seen.get(base) ?? 0;
+      seen.set(base, n + 1);
+      return n === 0 ? base : `${base}-${n}`;
+    });
+  })();
+
   const [active, setActive] = useState(0);
   const baseId = useId();
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -58,7 +70,7 @@ export function Tabs({
           const selected = i === active;
           return (
             <button
-              key={i}
+              key={keys[i]}
               ref={(el) => {
                 tabRefs.current[i] = el;
               }}
@@ -79,7 +91,7 @@ export function Tabs({
       </div>
       {tabs.map((tab, i) => (
         <div
-          key={i}
+          key={keys[i]}
           role="tabpanel"
           id={`${baseId}-panel-${i}`}
           aria-labelledby={`${baseId}-tab-${i}`}

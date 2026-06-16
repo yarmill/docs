@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * Code-block enhancer (no fumadocs, no `pre` override in the MDX map).
@@ -87,31 +87,32 @@ function decorate(root: ParentNode) {
   });
 }
 
-let installed = false;
-
 export function CodeBlockEnhancer() {
+  // A per-instance ref guard ensures this effect wires up at most one observer
+  // even if the effect runs twice (React StrictMode double-invokes effects in
+  // dev) or the component remounts. There's no module-global state, so a fresh
+  // mount always sets up cleanly. Decoration itself is idempotent — it keys off
+  // the `data-ym-enhanced` attribute on each figure, so double-runs are harmless.
+  const observerRef = useRef<MutationObserver | null>(null);
+
   useEffect(() => {
-    // Idempotent across multiple mounts on the same page.
-    if (installed) {
-      decorate(document);
-      return;
-    }
-    installed = true;
     decorate(document);
 
-    const obs = new MutationObserver((records) => {
-      for (const r of records) {
-        if (r.addedNodes.length) {
-          decorate(document);
-          break;
+    if (!observerRef.current) {
+      observerRef.current = new MutationObserver((records) => {
+        for (const r of records) {
+          if (r.addedNodes.length) {
+            decorate(document);
+            break;
+          }
         }
-      }
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
+      });
+      observerRef.current.observe(document.body, { childList: true, subtree: true });
+    }
 
     return () => {
-      obs.disconnect();
-      installed = false;
+      observerRef.current?.disconnect();
+      observerRef.current = null;
     };
   }, []);
 

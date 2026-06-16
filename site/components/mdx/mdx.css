@@ -452,8 +452,49 @@
   font-size: 15px;
   color: var(--ym-muted);
 }
+
+/* Entry headline — the bold title under the date, with a hover-reveal permalink. */
+.ym-update-title {
+  position: relative;
+  margin: 0 0 14px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  line-height: 1.25;
+  scroll-margin-top: 96px;
+}
+.ym-update-anchor {
+  position: absolute;
+  left: -0.85em;
+  color: var(--ym-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.ym-update:hover .ym-update-anchor,
+.ym-update-title:focus-within .ym-update-anchor { opacity: 0.5; }
+.ym-update-anchor:hover { opacity: 1 !important; color: var(--ym-accent); }
+
 .ym-update-body > :first-child { margin-top: 0; }
 .ym-update-body > :last-child { margin-bottom: 0; }
+
+/* Compact "Improvements" / "Fixes" sub-sections inside an entry (Linear-style:
+   muted, smaller heading + tight bullet list of one-line tweaks). */
+.ym-update-body h3 {
+  margin: 22px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ym-muted);
+}
+.ym-update-body h3 + ul {
+  margin-top: 0;
+}
+.ym-update-body h3 + ul li {
+  font-size: 14.5px;
+  margin: 4px 0;
+}
 
 /* ============================================================
    9. Columns

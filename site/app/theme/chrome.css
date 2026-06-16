@@ -7,6 +7,188 @@
    faster exits, transform/opacity only, reduced-motion fallbacks).
    ============================================================ */
 
+/* ---------- Smooth anchor scrolling ------------------------
+   TOC / in-page anchor clicks glide to the heading (which carries
+   scroll-margin-top: 88px so it clears the sticky top bar). Honoured only when
+   the user hasn't asked for reduced motion. */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- Skip to content (a11y) -------------------------
+   First focusable element on the page: off-screen until keyboard focus, then
+   slides into the top-left over the chrome and links to the article (#nd-page). */
+.ym-skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: var(--ym-radius);
+  background: var(--ym-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 510;
+  text-decoration: none;
+  box-shadow: var(--ym-shadow-popover);
+  /* Hidden off-screen until focused (kept focusable, unlike display:none). */
+  transform: translateY(-150%);
+  opacity: 0;
+  transition: transform var(--ym-dur) var(--ym-ease-out), opacity var(--ym-dur) var(--ym-ease-out);
+}
+.ym-skip-link:focus-visible {
+  transform: translateY(0);
+  opacity: 1;
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-skip-link { transition: none; }
+}
+
+/* ---------- 404 / empty state ------------------------------
+   Rendered inside the shell (TopBar in header, this centred block in main).
+   On-brand, calm: oversized muted "404", short message, primary search button +
+   secondary link, and a short list of popular pages. */
+.ym-notfound {
+  max-width: 520px;
+  margin: 0 auto;
+  padding-block: clamp(64px, 14vh, 140px) 64px;
+  text-align: center;
+}
+.ym-notfound-code {
+  font-size: clamp(72px, 14vw, 120px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ym-line);
+  margin: 0;
+}
+.ym-notfound-title {
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  color: var(--ym-ink);
+  margin: 16px 0 0;
+}
+.ym-notfound-message {
+  font-size: var(--ym-body-size);
+  line-height: var(--ym-body-lh);
+  color: var(--ym-muted);
+  margin: 8px 0 0;
+}
+.ym-notfound-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 28px;
+}
+.ym-notfound-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding-inline: 16px;
+  border-radius: var(--ym-radius);
+  font-size: 14px;
+  font-weight: 510;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color var(--ym-dur-fast) ease,
+    border-color var(--ym-dur-fast) ease,
+    color var(--ym-dur-fast) ease;
+}
+.ym-notfound-btn-icon { width: 16px; height: 16px; }
+.ym-notfound-btn-primary {
+  background: var(--ym-accent);
+  color: #fff;
+}
+.ym-notfound-btn-secondary {
+  background: var(--ym-bg);
+  border-color: var(--ym-line);
+  color: var(--ym-ink);
+}
+.ym-notfound-kbd {
+  font-size: 11px;
+  font-weight: 510;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: var(--ym-radius-sm);
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-notfound-btn-primary:hover { background: var(--ym-accent-hover, var(--ym-accent)); }
+  .ym-notfound-btn-secondary:hover {
+    background: var(--ym-bg-hover);
+    color: var(--ym-ink);
+  }
+}
+
+.ym-notfound-popular {
+  margin-top: 40px;
+  text-align: left;
+}
+.ym-notfound-popular-label {
+  font-size: 12px;
+  font-weight: 560;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ym-muted);
+  margin: 0 0 8px;
+}
+.ym-notfound-popular-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ym-notfound-popular-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--ym-radius);
+  color: var(--ym-ink);
+  font-size: 14px;
+  font-weight: 450;
+  text-decoration: none;
+  transition: background-color var(--ym-dur-fast) ease;
+}
+.ym-notfound-popular-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--ym-muted);
+  flex: none;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--ym-dur-fast) ease, transform var(--ym-dur-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-notfound-popular-link:hover {
+    background: var(--ym-bg-hover);
+  }
+  .ym-notfound-popular-link:hover .ym-notfound-popular-icon {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-notfound-popular-icon { transition: none; }
+}
+
 /* ---------- Layout (Linear: fixed sidebar + offset main) ---
    DOM: .ym-shell > [ .ym-sidebar (fixed 280) , .ym-main (offset 280) ].
    .ym-main holds the sticky top bar and a centred 1024px content wrapper;

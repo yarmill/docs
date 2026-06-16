@@ -12,16 +12,21 @@ import {
   type ReactNode,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import MiniSearch, { type SearchResult } from 'minisearch';
+import type MiniSearch from 'minisearch';
+import type { SearchResult } from 'minisearch';
 import { Search as SearchIcon, CornerDownLeft } from 'lucide-react';
-import searchDocs from '@/lib/search-index.json';
 
 /**
  * ⌘K command palette — a Linear-style centered modal in Yarmill's brand.
- * Reads the prebuilt JSON index (`lib/search-index.json`, produced by
- * scripts/build-search-index.mjs) into MiniSearch, builds a highlighted body
- * snippet from MiniSearch match data, and navigates to the selected page on
- * Enter. Opens via ⌘K / Ctrl+K and the sidebar search button (SearchContext).
+ *
+ * The search index (`public/search-index.json`, ~78 KB, produced by
+ * scripts/build-search-index.mjs) and the MiniSearch library are both loaded
+ * LAZILY on the first time the palette opens — `fetch()` for the JSON plus a
+ * dynamic `import('minisearch')` — so neither ships in the initial client
+ * bundle. The loaded index is cached at module scope, so reopening is instant.
+ * It builds a highlighted body snippet from MiniSearch match data and navigates
+ * to the selected page on Enter. Opens via ⌘K / Ctrl+K and the sidebar search
+ * button (SearchContext).
  *
  * A11y: dialog role + aria-modal, labelled input, focus trap, body scroll
  * lock, focus restored to the trigger on close. Open animation is fade +
@@ -57,6 +62,36 @@ export function useSearch(): SearchCtx {
 
 const MAX_RESULTS = 8;
 const SNIPPET_RADIUS = 60; // chars of context on each side of the first match
+
+// Lazily build the MiniSearch index on first palette open, then cache the
+// promise at module scope so subsequent opens reuse it (no refetch, no rebuild).
+let indexPromise: Promise<MiniSearch<SearchDoc>> | null = null;
+
+function loadIndex(): Promise<MiniSearch<SearchDoc>> {
+  if (!indexPromise) {
+    indexPromise = (async () => {
+      const [{ default: MiniSearchCtor }, docs] = await Promise.all([
+        import('minisearch'),
+        fetch('/search-index.json').then((r) => {
+          if (!r.ok) throw new Error(`search index ${r.status}`);
+          return r.json() as Promise<SearchDoc[]>;
+        }),
+      ]);
+      const ms = new MiniSearchCtor<SearchDoc>({
+        fields: ['title', 'headings', 'text', 'group'],
+        storeFields: ['url', 'title', 'group', 'headings', 'text'],
+        searchOptions: { boost: { title: 3, headings: 2 }, prefix: true, fuzzy: 0.2 },
+      });
+      ms.addAll(docs);
+      return ms;
+    })();
+    // Allow a retry if the load fails (e.g. transient network).
+    indexPromise.catch(() => {
+      indexPromise = null;
+    });
+  }
+  return indexPromise;
+}
 
 export function SearchProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -155,18 +190,28 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
   const modalRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  const mini = useMemo(() => {
-    const ms = new MiniSearch<SearchDoc>({
-      fields: ['title', 'headings', 'text', 'group'],
-      storeFields: ['url', 'title', 'group', 'headings', 'text'],
-      searchOptions: { boost: { title: 3, headings: 2 }, prefix: true, fuzzy: 0.2 },
-    });
-    ms.addAll(searchDocs as unknown as SearchDoc[]);
-    return ms;
+  // The index is loaded lazily (see loadIndex) the first time the dialog mounts.
+  const [mini, setMini] = useState<MiniSearch<SearchDoc> | null>(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let alive = true;
+    loadIndex()
+      .then((ms) => {
+        if (alive) setMini(ms);
+      })
+      .catch(() => {
+        /* leave mini null; the empty state covers it */
+      })
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
+    return () => {
+      alive = false;
+    };
   }, []);
 
   const hits = useMemo<Hit[]>(() => {
-    if (!query.trim()) return [];
+    if (!mini || !query.trim()) return [];
     const raw = mini.search(query).slice(0, MAX_RESULTS) as (SearchResult & SearchDoc)[];
     return raw.map((r) => {
       const terms = r.terms ?? [];
@@ -185,8 +230,13 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
     });
   }, [query, mini]);
 
-  // Reset selection whenever the result set changes.
-  useEffect(() => setActive(0), [query]);
+  // Reset selection whenever the query changes — done during render (keyed on
+  // the previous query) rather than in an effect, so there's no extra commit.
+  const [prevQuery, setPrevQuery] = useState(query);
+  if (query !== prevQuery) {
+    setPrevQuery(query);
+    setActive(0);
+  }
 
   // Autofocus the input on open.
   useEffect(() => {
@@ -239,7 +289,10 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
     }
   }
 
-  const showEmpty = query.trim().length > 0 && hits.length === 0;
+  // While the index is still loading, a typed query shows a "Searching…" hint
+  // rather than a false "No results".
+  const isSearching = query.trim().length > 0 && loading && !mini;
+  const showEmpty = query.trim().length > 0 && !isSearching && hits.length === 0;
 
   return (
     <div className="ym-search-overlay" onClick={onClose} role="presentation">
@@ -317,6 +370,12 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
               </li>
             ))}
           </ul>
+        ) : null}
+
+        {isSearching ? (
+          <div className="ym-search-empty" role="status">
+            Searching…
+          </div>
         ) : null}
 
         {showEmpty ? (
