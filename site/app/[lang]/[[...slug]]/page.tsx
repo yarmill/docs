@@ -28,7 +28,7 @@ export default async function DocPage(props: PageProps) {
 
       <div className="ym-content">
         <div className="ym-content-row">
-          <article id="nd-page" data-full={isWide || undefined}>
+          <article id="ym-page" data-full={isWide || undefined}>
             <PageTransition>
               {page.frontmatter.title ? <h1>{page.frontmatter.title}</h1> : null}
               {page.frontmatter.description ? (

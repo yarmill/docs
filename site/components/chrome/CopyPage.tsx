@@ -26,7 +26,7 @@ function rawUrl(): string {
 
 function getDomText(): string {
   const article =
-    document.querySelector('#nd-page') ??
+    document.querySelector('#ym-page') ??
     document.querySelector('article') ??
     document.querySelector('main');
   return (article?.textContent ?? '').replace(/\n{3,}/g, '\n\n').trim();

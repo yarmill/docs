@@ -21,7 +21,7 @@ import { Heading } from '@/components/mdx/Heading';
 /**
  * Base `<a>` override: root-relative and hash links route through next/link
  * (client navigation); external links open in a new tab. Styling is handled by
- * the `#nd-page` prose rules in chrome.css.
+ * the `#ym-page` prose rules in chrome.css.
  */
 function MdxLink({ href = '', ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) {
   const internal = href.startsWith('/') || href.startsWith('#');

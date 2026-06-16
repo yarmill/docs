@@ -20,7 +20,7 @@
    Absolutely positioned so it reserves no space (zero layout shift);
    clicking copies the deep link and shows a brief "Copied" toast.
    ============================================================ */
-.ym-shell #nd-page .ym-heading {
+.ym-shell #ym-page .ym-heading {
   position: relative;
 }
 .ym-heading-anchor {
@@ -282,10 +282,10 @@
   color: var(--ym-muted);
 }
 /* The description usually renders as a <p>, which the prose rule
-   (`#nd-page :where(p, li)`, specificity 1,0,1) would otherwise pull to 15px and
+   (`#ym-page :where(p, li)`, specificity 1,0,1) would otherwise pull to 15px and
    the darker prose-text colour. Re-assert the card's lighter 14px text on the
-   inner element with enough specificity (#nd-page + class + element = 1,1,1). */
-.ym-shell #nd-page .ym-card-body :where(p, li) {
+   inner element with enough specificity (#ym-page + class + element = 1,1,1). */
+.ym-shell #ym-page .ym-card-body :where(p, li) {
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
@@ -790,7 +790,7 @@
 
 /* ============================================================
    11. Prose element details
-   Scoped to #nd-page .prose so id-specificity (1,0,2) beats any
+   Scoped to #ym-page .prose so id-specificity (1,0,2) beats any
    leftover preset rules without !important. Base p/li/h1–h3 and
    prose-link colour live in chrome.css (tokens) — NOT re-styled
    here. This section owns the elements chrome.css doesn't cover:
@@ -798,20 +798,20 @@
    ============================================================ */
 
 /* ---- Block rhythm: ~16px between top-level prose blocks ---- */
-.ym-shell #nd-page .prose > * {
+.ym-shell #ym-page .prose > * {
   margin-top: 16px;
   margin-bottom: 0;
 }
-.ym-shell #nd-page .prose > :first-child { margin-top: 0; }
+.ym-shell #ym-page .prose > :first-child { margin-top: 0; }
 /* Headings keep their generous top margins from chrome.css. */
-.ym-shell #nd-page .prose > :where(h2) { margin-top: 56px; }
-.ym-shell #nd-page .prose > :where(h3) { margin-top: 32px; }
+.ym-shell #ym-page .prose > :where(h2) { margin-top: 56px; }
+.ym-shell #ym-page .prose > :where(h3) { margin-top: 32px; }
 
 /* Rich blocks (media + components) breathe more than flowing text — Linear
    keeps paragraphs tight (~16) but floats images/components with more room.
    margin-block (not just top) so they get space AFTER as well, collapsing
    cleanly with neighbouring margins. */
-.ym-shell #nd-page .prose > :where(
+.ym-shell #ym-page .prose > :where(
   .ym-callout,
   .ym-steps,
   .ym-cardgroup,
@@ -826,18 +826,18 @@
   margin-bottom: 24px;
 }
 /* Images/screenshots get the most air. */
-.ym-shell #nd-page .prose > :where(figure.ym-frame, p > img) {
+.ym-shell #ym-page .prose > :where(figure.ym-frame, p > img) {
   margin-top: 28px;
   margin-bottom: 28px;
 }
 /* But a heading right after a rich block still wins its big top gap. */
-.ym-shell #nd-page .prose > :where(h2) { margin-top: 56px; }
-.ym-shell #nd-page .prose > :where(h3) { margin-top: 32px; }
+.ym-shell #ym-page .prose > :where(h2) { margin-top: 56px; }
+.ym-shell #ym-page .prose > :where(h3) { margin-top: 32px; }
 
 /* ---- Inline code (not inside a <pre>) ----
    Scoped to authored prose so component-owned code (ParamField name / Default
    value) keeps its own type styling and never picks up the inline-code chip. */
-.ym-shell #nd-page .prose :not(pre):not(.ym-paramfield-default) > code:not(.ym-paramfield-name) {
+.ym-shell #ym-page .prose :not(pre):not(.ym-paramfield-default) > code:not(.ym-paramfield-name) {
   font-family: var(--ym-font-mono, ui-monospace, "JetBrains Mono", "SF Mono",
     Menlo, Consolas, monospace);
   font-size: 13.5px;
@@ -852,12 +852,12 @@
 }
 
 /* ---- Code block (rehype-pretty-code: figure > pre > code) ---- */
-.ym-shell #nd-page figure[data-rehype-pretty-code-figure] {
+.ym-shell #ym-page figure[data-rehype-pretty-code-figure] {
   position: relative;
   margin: 16px 0;
 }
 /* Optional title/filename strip (rehype emits [data-rehype-pretty-code-title]). */
-.ym-shell #nd-page [data-rehype-pretty-code-title] {
+.ym-shell #ym-page [data-rehype-pretty-code-title] {
   display: flex;
   align-items: center;
   font-family: var(--ym-font-mono, ui-monospace, "SF Mono", Menlo, monospace);
@@ -869,12 +869,12 @@
   border-bottom: 0;
   border-radius: var(--ym-radius) var(--ym-radius) 0 0;
 }
-.ym-shell #nd-page [data-rehype-pretty-code-title] + pre {
+.ym-shell #ym-page [data-rehype-pretty-code-title] + pre {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-.ym-shell #nd-page figure[data-rehype-pretty-code-figure] > pre,
-.ym-shell #nd-page pre {
+.ym-shell #ym-page figure[data-rehype-pretty-code-figure] > pre,
+.ym-shell #ym-page pre {
   margin: 0;
   overflow-x: auto;
   padding: 16px;
@@ -883,7 +883,7 @@
   border-radius: var(--ym-radius);
   box-shadow: var(--ym-shadow-card);
 }
-.ym-shell #nd-page pre > code {
+.ym-shell #ym-page pre > code {
   display: block;
   font-family: var(--ym-font-mono, ui-monospace, "JetBrains Mono", "SF Mono",
     Menlo, Consolas, monospace);
@@ -897,14 +897,14 @@
   width: fit-content;
   min-width: 100%;
 }
-.ym-shell #nd-page pre code [data-line] { display: block; }
+.ym-shell #ym-page pre code [data-line] { display: block; }
 
 /* ---- Language label (rehype-pretty-code sets data-language on the figure) --
    A small uppercase muted tag in the top-right of the block. It sits to the
    LEFT of the copy button (which is 8px from the right, ~28px tall) so the two
    never overlap. Hidden for plaintext/unknown fences. Pointer-events:none so it
    never steals the copy click. */
-.ym-shell #nd-page figure[data-rehype-pretty-code-figure][data-language]::after {
+.ym-shell #ym-page figure[data-rehype-pretty-code-figure][data-language]::after {
   content: attr(data-language);
   position: absolute;
   top: 14px;
@@ -922,28 +922,28 @@
   opacity: 0;
   transition: opacity var(--ym-dur) var(--ym-ease-out);
 }
-.ym-shell #nd-page figure.ym-code:hover[data-language]::after,
-.ym-shell #nd-page figure.ym-code:focus-within[data-language]::after {
+.ym-shell #ym-page figure.ym-code:hover[data-language]::after,
+.ym-shell #ym-page figure.ym-code:focus-within[data-language]::after {
   opacity: 1;
 }
 @media (hover: none) {
-  .ym-shell #nd-page figure[data-rehype-pretty-code-figure][data-language]::after {
+  .ym-shell #ym-page figure[data-rehype-pretty-code-figure][data-language]::after {
     opacity: 1;
   }
 }
 /* Plaintext / unknown languages carry no useful label — hide it. */
-.ym-shell #nd-page figure[data-language='plaintext']::after,
-.ym-shell #nd-page figure[data-language='text']::after,
-.ym-shell #nd-page figure[data-language='']::after {
+.ym-shell #ym-page figure[data-language='plaintext']::after,
+.ym-shell #ym-page figure[data-language='text']::after,
+.ym-shell #ym-page figure[data-language='']::after {
   content: none;
 }
 /* When a title strip is present the copy button drops to top:44px; keep the
    language label aligned with it (CodeBlock.tsx adds .ym-code--titled). */
-.ym-shell #nd-page figure.ym-code--titled[data-language]::after {
+.ym-shell #ym-page figure.ym-code--titled[data-language]::after {
   top: 50px;
 }
 @media (prefers-reduced-motion: reduce) {
-  .ym-shell #nd-page figure[data-rehype-pretty-code-figure][data-language]::after {
+  .ym-shell #ym-page figure[data-rehype-pretty-code-figure][data-language]::after {
     transition: opacity var(--ym-dur-fast) linear;
   }
 }
@@ -953,14 +953,14 @@
    .ym-line--highlighted (see lib/mdx.ts). A subtle accent-tinted band with a
    2px accent left border. The negative margin + matching padding lets the band
    bleed to the block's padding edges while the border sits flush left. */
-.ym-shell #nd-page pre code [data-highlighted-line] {
+.ym-shell #ym-page pre code [data-highlighted-line] {
   margin-inline: -16px;
   padding-inline: 13px 16px;
   border-left: 2px solid var(--ym-accent);
   background: color-mix(in srgb, var(--ym-accent) 9%, transparent);
 }
 /* Highlighted words/chars — a soft accent chip, kept readable. */
-.ym-shell #nd-page pre code [data-highlighted-chars] {
+.ym-shell #ym-page pre code [data-highlighted-chars] {
   padding: 1px 4px;
   border-radius: var(--ym-radius-sm);
   background: color-mix(in srgb, var(--ym-accent) 14%, transparent);
@@ -969,22 +969,22 @@
 
 /* Shiki dual-theme: each token carries --shiki-light/--shiki-dark inline.
    keepBackground:false means we own the surface; we map the FG var per theme. */
-.ym-shell #nd-page pre code,
-.ym-shell #nd-page pre code span {
+.ym-shell #ym-page pre code,
+.ym-shell #ym-page pre code span {
   color: var(--shiki-light);
 }
-.dark .ym-shell #nd-page pre code,
-.dark .ym-shell #nd-page pre code span {
+.dark .ym-shell #ym-page pre code,
+.dark .ym-shell #ym-page pre code span {
   color: var(--shiki-dark);
 }
 
 /* Thin scrollbar inside code blocks only (Emil: don't restyle page scrollbars). */
-.ym-shell #nd-page pre {
+.ym-shell #ym-page pre {
   scrollbar-width: thin;
   scrollbar-color: var(--ym-line) transparent;
 }
-.ym-shell #nd-page pre::-webkit-scrollbar { height: 8px; }
-.ym-shell #nd-page pre::-webkit-scrollbar-thumb {
+.ym-shell #ym-page pre::-webkit-scrollbar { height: 8px; }
+.ym-shell #ym-page pre::-webkit-scrollbar-thumb {
   background: var(--ym-line);
   border-radius: 999px;
 }
@@ -1015,7 +1015,7 @@
     border-color var(--ym-dur-fast) ease;
 }
 /* A title strip pushes the button down so it doesn't overlap the filename. */
-.ym-shell #nd-page [data-rehype-pretty-code-title] + pre .ym-code-copy,
+.ym-shell #ym-page [data-rehype-pretty-code-title] + pre .ym-code-copy,
 .ym-code.ym-code--titled .ym-code-copy { top: 44px; }
 
 /* Reveal on hover/focus of the figure; always visible on touch. */
@@ -1066,33 +1066,33 @@
 }
 
 /* ---- Lists ---- */
-.ym-shell #nd-page .prose :where(ul, ol) {
+.ym-shell #ym-page .prose :where(ul, ol) {
   padding-left: 24px;
   margin: 16px 0;
 }
-.ym-shell #nd-page .prose ul { list-style: disc; }
-.ym-shell #nd-page .prose ol { list-style: decimal; }
-.ym-shell #nd-page .prose li { margin-top: 8px; }
-.ym-shell #nd-page .prose li:first-child { margin-top: 0; }
-.ym-shell #nd-page .prose li::marker { color: var(--ym-faint); }
-.ym-shell #nd-page .prose ol li::marker { color: var(--ym-muted); }
+.ym-shell #ym-page .prose ul { list-style: disc; }
+.ym-shell #ym-page .prose ol { list-style: decimal; }
+.ym-shell #ym-page .prose li { margin-top: 8px; }
+.ym-shell #ym-page .prose li:first-child { margin-top: 0; }
+.ym-shell #ym-page .prose li::marker { color: var(--ym-faint); }
+.ym-shell #ym-page .prose ol li::marker { color: var(--ym-muted); }
 /* Nested lists tighten and shed the block-rhythm margins. */
-.ym-shell #nd-page .prose li > :where(ul, ol) { margin: 6px 0 0; }
-.ym-shell #nd-page .prose li > p { margin: 0; }
+.ym-shell #ym-page .prose li > :where(ul, ol) { margin: 6px 0 0; }
+.ym-shell #ym-page .prose li > p { margin: 0; }
 
 /* ---- Blockquote ---- */
-.ym-shell #nd-page .prose blockquote {
+.ym-shell #ym-page .prose blockquote {
   margin: 16px 0;
   padding-left: 16px;
   border-left: 2px solid var(--ym-line);
   color: var(--ym-muted);
   font-style: italic;
 }
-.ym-shell #nd-page .prose blockquote > :first-child { margin-top: 0; }
-.ym-shell #nd-page .prose blockquote > :last-child { margin-bottom: 0; }
+.ym-shell #ym-page .prose blockquote > :first-child { margin-top: 0; }
+.ym-shell #ym-page .prose blockquote > :last-child { margin-bottom: 0; }
 
 /* ---- Horizontal rule ---- */
-.ym-shell #nd-page .prose hr {
+.ym-shell #ym-page .prose hr {
   height: 1px;
   border: 0;
   background: var(--ym-line);
@@ -1100,7 +1100,7 @@
 }
 
 /* ---- Tables (remark-gfm) ---- */
-.ym-shell #nd-page .prose table {
+.ym-shell #ym-page .prose table {
   display: block;
   width: 100%;
   margin: 16px 0;
@@ -1109,24 +1109,24 @@
   font-size: 14px;
   line-height: 1.5;
 }
-.ym-shell #nd-page .prose thead { background: var(--ym-bg-subtle); }
-.ym-shell #nd-page .prose th {
+.ym-shell #ym-page .prose thead { background: var(--ym-bg-subtle); }
+.ym-shell #ym-page .prose th {
   text-align: left;
   font-weight: 590;
   color: var(--ym-ink);
 }
-.ym-shell #nd-page .prose th,
-.ym-shell #nd-page .prose td {
+.ym-shell #ym-page .prose th,
+.ym-shell #ym-page .prose td {
   padding: 9px 12px;
   border-bottom: 1px solid var(--ym-line);
   vertical-align: top;
 }
-.ym-shell #nd-page .prose thead th { border-bottom-color: var(--ym-line); }
-.ym-shell #nd-page .prose tbody tr:last-child td { border-bottom: 0; }
-.ym-shell #nd-page .prose td { color: var(--ym-prose-text); }
+.ym-shell #ym-page .prose thead th { border-bottom-color: var(--ym-line); }
+.ym-shell #ym-page .prose tbody tr:last-child td { border-bottom: 0; }
+.ym-shell #ym-page .prose td { color: var(--ym-prose-text); }
 
 /* ---- Bare images (product screenshots use <Frame> instead) ---- */
-.ym-shell #nd-page .prose :not(.ym-frame-media) > img {
+.ym-shell #ym-page .prose :not(.ym-frame-media) > img {
   max-width: 100%;
   height: auto;
   border-radius: var(--ym-radius);

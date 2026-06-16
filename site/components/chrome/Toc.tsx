@@ -8,7 +8,7 @@ const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 /**
- * "On this page" right rail (id `#nd-toc`, consumed by chrome.css).
+ * "On this page" right rail (id `#ym-toc`, consumed by chrome.css).
  *
  * Renders the collected h2/h3 headings as anchor links over a single continuous
  * 2px track (the list's `::before`). A single 2px accent indicator
@@ -87,10 +87,10 @@ export function Toc({ items }: { items: TocItem[] }) {
     indicator.dataset.visible = 'true';
   }, [activeId, items]);
 
-  if (items.length === 0) return <div id="nd-toc" aria-hidden />;
+  if (items.length === 0) return <div id="ym-toc" aria-hidden />;
 
   return (
-    <div id="nd-toc">
+    <div id="ym-toc">
       <nav aria-label="On this page">
         <div className="ym-toc-list" ref={listRef}>
           <span ref={indicatorRef} className="ym-toc-indicator" aria-hidden />

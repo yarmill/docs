@@ -15,7 +15,7 @@
 
 /* ---------- Skip to content (a11y) -------------------------
    First focusable element on the page: off-screen until keyboard focus, then
-   slides into the top-left over the chrome and links to the article (#nd-page). */
+   slides into the top-left over the chrome and links to the article (#ym-page). */
 .ym-skip-link {
   position: fixed;
   top: 12px;
@@ -218,7 +218,7 @@
 }
 
 /* The reading column fills the remaining width (derived, not capped). */
-.ym-shell #nd-page {
+.ym-shell #ym-page {
   flex: 1 1 auto;
   min-width: 0;
   padding-block: 48px 64px;
@@ -228,17 +228,17 @@
 .ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-wide); }
 
 /* ---------- Reading typography (Linear scale in Inter) -----
-   Scoped to #nd-page so the id specificity (1,0,1 for `#id el`) beats
+   Scoped to #ym-page so the id specificity (1,0,1 for `#id el`) beats
    Fumadocs' `.prose :where(el)` preset (0,1,1) without !important. The
-   article container is #nd-page; its prose lives in a `.prose` child. */
-.ym-shell #nd-page :where(p, li) {
+   article container is #ym-page; its prose lives in a `.prose` child. */
+.ym-shell #ym-page :where(p, li) {
   font-size: var(--ym-body-size);
   line-height: var(--ym-body-lh);
   font-weight: 400;
   letter-spacing: var(--ym-body-ls);
   color: var(--ym-prose-text);
 }
-.ym-shell #nd-page h1 {
+.ym-shell #ym-page h1 {
   font-size: var(--ym-h1-size);
   line-height: var(--ym-h1-lh);
   font-weight: var(--ym-h1-w);
@@ -246,7 +246,7 @@
   color: var(--ym-ink);
   margin-top: 0;
 }
-.ym-shell #nd-page h2 {
+.ym-shell #ym-page h2 {
   font-size: var(--ym-h2-size);
   line-height: var(--ym-h2-lh);
   font-weight: var(--ym-h2-w);
@@ -255,7 +255,7 @@
   margin-top: 56px;
   margin-bottom: 12px;
 }
-.ym-shell #nd-page h3 {
+.ym-shell #ym-page h3 {
   font-size: var(--ym-h3-size);
   line-height: var(--ym-h3-lh);
   font-weight: var(--ym-h3-w);
@@ -268,7 +268,7 @@
    before the body for breathing room (Linear). */
 /* NB: the title/lead/prose are nested inside the .ym-page-enter transition
    wrapper, so these use descendant (not direct-child) selectors. */
-.ym-shell #nd-page p.ym-lead {
+.ym-shell #ym-page p.ym-lead {
   font-size: var(--ym-body-size);
   line-height: var(--ym-body-lh);
   font-weight: 400;
@@ -279,16 +279,16 @@
 }
 /* First content block after the lead keeps the breathing room (the prose
    first-child reset would otherwise collapse it against the lead). */
-.ym-shell #nd-page .ym-lead + .prose {
+.ym-shell #ym-page .ym-lead + .prose {
   margin-top: 36px;
 }
 /* Anchor jumps (TOC clicks) land below the sticky 64px top bar, not under it —
    so clicking any heading, including the last, scrolls it into clear view. */
-.ym-shell #nd-page :is(h1, h2, h3, h4) {
+.ym-shell #ym-page :is(h1, h2, h3, h4) {
   scroll-margin-top: 88px;
 }
 /* Inline prose links: underlined, inherit text colour, hover → accent. */
-.ym-shell #nd-page .prose a:not(.not-prose):not([class*='ym-']) {
+.ym-shell #ym-page .prose a:not(.not-prose):not([class*='ym-']) {
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -298,7 +298,7 @@
     text-decoration-color var(--ym-dur-fast) ease;
 }
 @media (hover: hover) and (pointer: fine) {
-  .ym-shell #nd-page .prose a:not(.not-prose):not([class*='ym-']):hover {
+  .ym-shell #ym-page .prose a:not(.not-prose):not([class*='ym-']):hover {
     color: var(--ym-accent);
     text-decoration-color: var(--ym-accent);
   }
@@ -754,7 +754,7 @@
    bar (`.ym-toc-indicator`) is absolutely positioned inside the list and
    SLIDES (transform translateY + height) to the active item's box. No
    per-item borders anywhere. */
-.ym-shell #nd-toc {
+.ym-shell #ym-toc {
   flex: 0 0 var(--ym-toc-w);
   width: var(--ym-toc-w);
   display: flex;
@@ -803,7 +803,7 @@
 }
 .ym-toc-indicator[data-visible='true'] { opacity: 1; }
 /* TOC links — no borders; muted → ink active; nested h3 indented. */
-.ym-shell #nd-toc a {
+.ym-shell #ym-toc a {
   display: block;
   margin-bottom: 8px;
   font-size: 13px;
@@ -814,10 +814,10 @@
   font-variant-numeric: tabular-nums;
   transition: color var(--ym-dur-fast) ease;
 }
-.ym-shell #nd-toc a[data-depth='3'] { padding-inline-start: 12px; }
-.ym-shell #nd-toc a[data-active='true'] { color: var(--ym-ink); }
+.ym-shell #ym-toc a[data-depth='3'] { padding-inline-start: 12px; }
+.ym-shell #ym-toc a[data-active='true'] { color: var(--ym-ink); }
 @media (hover: hover) and (pointer: fine) {
-  .ym-shell #nd-toc a:hover { color: var(--ym-ink); }
+  .ym-shell #ym-toc a:hover { color: var(--ym-ink); }
 }
 
 /* Reduced motion — the indicator snaps, no transform/height tween. */
@@ -832,7 +832,7 @@
 
 /* ≤1024px — hide the right TOC; the article fills the wrapper. */
 @media (max-width: 1024px) {
-  .ym-shell #nd-toc { display: none !important; }
+  .ym-shell #ym-toc { display: none !important; }
 }
 
 /* ≤768px — sidebar becomes a slide-in drawer behind a hamburger. */

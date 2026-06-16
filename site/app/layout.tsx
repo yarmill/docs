@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="min-h-screen">
         {/* First focusable element: jumps keyboard users past the chrome to the
             article. Visually hidden until focused (styled in chrome.css). */}
-        <a href="#nd-page" className="ym-skip-link">
+        <a href="#ym-page" className="ym-skip-link">
           Skip to content
         </a>
         <ThemeProvider>{children}</ThemeProvider>

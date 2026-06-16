@@ -155,13 +155,13 @@ function escapeRe(s: string): string {
 
 /**
  * Read the current page's section headings straight from the rendered article
- * (`#nd-page :is(h2,h3)[id]`) — simplest and always correct for the page in view.
+ * (`#ym-page :is(h2,h3)[id]`) — simplest and always correct for the page in view.
  * The leading H1 is the page title (no id from rehype-slug on the synthetic
  * title), so this naturally yields just the in-page sections.
  */
 function readPageSections(): SectionItem[] {
   if (typeof document === 'undefined') return [];
-  const nodes = document.querySelectorAll<HTMLHeadingElement>('#nd-page :is(h2, h3)[id]');
+  const nodes = document.querySelectorAll<HTMLHeadingElement>('#ym-page :is(h2, h3)[id]');
   const out: SectionItem[] = [];
   nodes.forEach((el) => {
     const text = el.textContent?.trim();
