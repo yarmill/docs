@@ -1,20 +1,40 @@
 'use client';
 
 import Link from 'next/link';
-import { History, LifeBuoy } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { BookOpen, Code2, GraduationCap, History, LifeBuoy, type LucideIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
-import type { NavTree as NavTreeData } from '@/lib/nav';
+import type { Space } from '@/lib/nav';
 import { NavTree } from './NavTree';
 import { useSidebar } from './SidebarContext';
 import { SearchTrigger } from './Search';
 
+const SPACE_ICONS: Record<string, LucideIcon> = {
+  'book-open': BookOpen,
+  'graduation-cap': GraduationCap,
+  code: Code2,
+  history: History,
+};
+
+/** Active space = the non-Docs space whose URL prefix matches; else Docs. */
+function activeSpaceFor(spaces: Space[], pathname: string): Space {
+  const match = spaces.find(
+    (s) => s.id !== 'docs' && (pathname === s.basePath || pathname.startsWith(s.basePath + '/')),
+  );
+  return match ?? spaces[0];
+}
+
 /**
- * Left sidebar (280px, full height). Desktop: static column. Mobile (≤768px):
- * slide-in drawer driven by SidebarContext `open`, with a dimmed overlay,
- * body-scroll-lock, focus trap and ESC-to-close.
+ * Left sidebar (280px, full height) with Linear-style "spaces". The header title
+ * and nav reflect the active space (derived from the URL); the footer pins the
+ * spaces as switchers — clicking one navigates into it, swapping the header +
+ * nav. Desktop: static column. Mobile (≤768px): slide-in drawer (overlay,
+ * scroll-lock, focus trap, ESC-to-close).
  */
-export function Sidebar({ tree }: { tree: NavTreeData }) {
+export function Sidebar({ spaces }: { spaces: Space[] }) {
   const { open, setOpen } = useSidebar();
+  const pathname = usePathname();
+  const active = activeSpaceFor(spaces, pathname);
   const asideRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -78,36 +98,52 @@ export function Sidebar({ tree }: { tree: NavTreeData }) {
         aria-label="Sidebar"
       >
         <div className="ym-sidebar-top">
-          <Link href="/en" className="ym-sidebar-brand" aria-label="Yarmill docs — home">
+          <Link
+            href={active.entryUrl}
+            className="ym-sidebar-brand"
+            aria-label={`Yarmill ${active.label} — home`}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/yarmill-icon-blue.png"
               alt="Yarmill"
               className="ym-sidebar-symbol ym-symbol-light"
-              height={22}
+              height={24}
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/yarmill-icon-white.png"
               alt="Yarmill"
               className="ym-sidebar-symbol ym-symbol-dark"
-              height={22}
+              height={24}
             />
             <span className="ym-sidebar-divider" aria-hidden />
-            <span className="ym-sidebar-docs">Docs</span>
+            <span className="ym-sidebar-docs">{active.label}</span>
           </Link>
           <SearchTrigger className="ym-icon-btn ym-sidebar-search-btn" />
         </div>
 
         <div className="ym-sidebar-scroll">
-          <NavTree tree={tree} />
+          <NavTree tree={{ groups: active.groups }} />
         </div>
 
         <div className="ym-sidebar-footer">
-          <Link href="/en/changelog/changelog" className="ym-footer-link">
-            <History className="ym-footer-icon" aria-hidden />
-            <span>Changelog</span>
-          </Link>
+          {spaces.map((space) => {
+            const SpaceIcon = SPACE_ICONS[space.icon] ?? BookOpen;
+            return (
+              <Link
+                key={space.id}
+                href={space.entryUrl}
+                className="ym-footer-link"
+                data-active={space.id === active.id}
+                aria-current={space.id === active.id ? 'true' : undefined}
+                onClick={() => setOpen(false)}
+              >
+                <SpaceIcon className="ym-footer-icon" aria-hidden />
+                <span>{space.label}</span>
+              </Link>
+            );
+          })}
           <a href="mailto:support@yarmill.com" className="ym-footer-link">
             <LifeBuoy className="ym-footer-icon" aria-hidden />
             <span>Contact support</span>

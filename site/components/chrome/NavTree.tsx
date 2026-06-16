@@ -16,6 +16,19 @@ import { useSidebar } from './SidebarContext';
  */
 export function NavTree({ tree }: { tree: NavTreeData }) {
   const pathname = usePathname();
+  // A single-group space (Tutorials / API Docs / Changelog) renders its pages
+  // flat — no redundant collapsible section header repeating the space name.
+  if (tree.groups.length === 1) {
+    return (
+      <nav className="ym-nav" aria-label="Documentation">
+        <ul className="ym-nav-list">
+          {tree.groups[0].pages.map((page) => (
+            <NavLink key={page.url} page={page} pathname={pathname} />
+          ))}
+        </ul>
+      </nav>
+    );
+  }
   return (
     <nav className="ym-nav" aria-label="Documentation">
       {tree.groups.map((group) => (

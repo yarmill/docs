@@ -379,6 +379,10 @@
     color: var(--ym-ink);
   }
 }
+/* Active space switcher — brand accent (color-only, like the nav). */
+.ym-footer-link[data-active='true'] {
+  color: var(--ym-accent);
+}
 .ym-footer-icon { width: 16px; height: 16px; flex: none; }
 
 /* ---------- Top bar (sticky inside main) ------------------ */

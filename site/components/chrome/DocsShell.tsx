@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import type { NavTree as NavTreeData } from '@/lib/nav';
+import type { Space } from '@/lib/nav';
 import { SidebarProvider } from './SidebarContext';
 import { SearchProvider } from './Search';
 import { Sidebar } from './Sidebar';
@@ -14,17 +14,17 @@ import { CodeBlockEnhancer } from '@/components/mdx/CodeBlock';
  * supplies the `header` (TopBar), `main` (article) and `toc` areas as children.
  */
 export function DocsShell({
-  tree,
+  spaces,
   children,
 }: {
-  tree: NavTreeData;
+  spaces: Space[];
   children: ReactNode;
 }) {
   return (
     <SearchProvider>
       <SidebarProvider>
         <div id="nd-docs-layout" className="ym-shell">
-          <Sidebar tree={tree} />
+          <Sidebar spaces={spaces} />
           {children}
         </div>
         {/* Global: adds copy buttons to every code block, on any page. */}
