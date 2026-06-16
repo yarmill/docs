@@ -190,13 +190,16 @@
   width: 22px;
   height: 22px;
   border-radius: 999px;
-  /* V1 shape (filled circle + connector) with V6's soft indigo-tint colour. */
-  background: var(--ym-accent-subtle);
+  /* V1 shape (filled circle + connector) with V6's soft indigo-tint colour.
+     The tint is translucent in dark mode, so layer it over an opaque page-bg
+     fill — otherwise the connector line shows through the badge. */
+  background-color: var(--ym-bg);
+  background-image: linear-gradient(var(--ym-accent-subtle), var(--ym-accent-subtle));
   color: var(--ym-accent-subtle-fg);
   font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  /* Ring in the page colour so the connector line doesn't run through it. */
+  /* Ring in the page colour so the connector line doesn't run up to it. */
   box-shadow: 0 0 0 4px var(--ym-bg);
 }
 .ym-step-title {
