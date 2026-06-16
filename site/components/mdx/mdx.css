@@ -525,6 +525,33 @@
 .ym-shell #nd-page .prose > :where(h2) { margin-top: 56px; }
 .ym-shell #nd-page .prose > :where(h3) { margin-top: 32px; }
 
+/* Rich blocks (media + components) breathe more than flowing text — Linear
+   keeps paragraphs tight (~16) but floats images/components with more room.
+   margin-block (not just top) so they get space AFTER as well, collapsing
+   cleanly with neighbouring margins. */
+.ym-shell #nd-page .prose > :where(
+  .ym-callout,
+  .ym-steps,
+  .ym-cardgroup,
+  .ym-columns,
+  .ym-tabs,
+  .ym-accordion-group,
+  .ym-update,
+  table,
+  figure[data-rehype-pretty-code-figure]
+) {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+/* Images/screenshots get the most air. */
+.ym-shell #nd-page .prose > :where(figure.ym-frame, p > img) {
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+/* But a heading right after a rich block still wins its big top gap. */
+.ym-shell #nd-page .prose > :where(h2) { margin-top: 56px; }
+.ym-shell #nd-page .prose > :where(h3) { margin-top: 32px; }
+
 /* ---- Inline code (not inside a <pre>) ----
    Scoped to authored prose so component-owned code (ParamField name / Default
    value) keeps its own type styling and never picks up the inline-code chip. */
