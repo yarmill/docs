@@ -472,6 +472,36 @@ html {
   display: flex;
   flex-direction: column;
   gap: 1px;
+  /* Host for the shared sliding active-indicator (positioned absolutely). */
+  position: relative;
+}
+
+/* Shared sliding active marker (NavTree.tsx): a 2.5px accent bar at the left of
+   the active page link. JS sets transform: translateY() + height to the active
+   link's box; it SLIDES between siblings (ease-out ~180ms), echoing the TOC
+   rail. Hidden until first placed (then fades in — no slide from off-screen). */
+.ym-nav-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.5px;
+  height: 0;
+  border-radius: 2px;
+  background: var(--ym-accent);
+  transform: translateY(0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--ym-dur) var(--ym-ease-out),
+    height var(--ym-dur) var(--ym-ease-out),
+    opacity var(--ym-dur-fast) ease;
+}
+.ym-nav-indicator[data-visible='true'] { opacity: 1; }
+/* Reduced motion — the marker snaps to position, only the fade remains. */
+@media (prefers-reduced-motion: reduce) {
+  .ym-nav-indicator {
+    transition: opacity var(--ym-dur-fast) linear !important;
+  }
 }
 /* Child links sit indented under their section label. */
 .ym-nav-group .ym-nav-list { padding-left: 8px; }
@@ -797,6 +827,9 @@ html {
   font-size: 13px;
   line-height: 19.5px;
   color: var(--ym-muted);
+  /* Tabular figures so a number in a heading can't reflow the rail (and the
+     sliding indicator/track stay aligned regardless of digit width). */
+  font-variant-numeric: tabular-nums;
   transition: color var(--ym-dur-fast) ease;
 }
 .ym-shell #nd-toc a[data-depth='3'] { padding-inline-start: 12px; }

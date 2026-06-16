@@ -33,6 +33,18 @@ function decorate(root: ParentNode) {
     const pre = figure.querySelector('pre');
     if (!pre) return;
 
+    // rehype-pretty-code puts data-language on the <pre>; lift it to the
+    // <figure> so the CSS language label (attr(data-language) on the figure,
+    // see mdx.css) can render it in the block's top-right corner.
+    const lang = pre.getAttribute('data-language');
+    if (lang) figure.setAttribute('data-language', lang);
+
+    // Mark titled figures so the copy button + language label drop below the
+    // filename strip (mdx.css handles the offset).
+    if (figure.querySelector('[data-rehype-pretty-code-title]')) {
+      figure.classList.add('ym-code--titled');
+    }
+
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'ym-code-copy';

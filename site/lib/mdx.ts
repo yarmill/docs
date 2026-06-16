@@ -35,8 +35,30 @@ export async function renderMDX(
           [
             rehypePrettyCode,
             {
+              // Dual theme — emits --shiki-light/--shiki-dark per token; the
+              // surface is ours (keepBackground:false). See mdx.css.
               theme: { light: 'github-light', dark: 'github-dark' },
               keepBackground: false,
+              // Give bare ``` fences a language so highlighting still runs;
+              // block-only, so plain inline `code` is left as-is (no Shiki
+              // wrapping that would break the inline-code chip styling).
+              defaultLang: { block: 'plaintext' },
+              // Line + word highlighting via meta strings, e.g. ```ts {1,3-4}
+              // or `code`{:ts}. rehype-pretty-code sets data-highlighted-line /
+              // data-highlighted-chars; we add stable class hooks too so the
+              // styling in mdx.css never depends on plugin internals.
+              onVisitHighlightedLine(node: { properties: { className?: string[] } }) {
+                node.properties.className = [
+                  ...(node.properties.className ?? []),
+                  'ym-line--highlighted',
+                ];
+              },
+              onVisitHighlightedChars(node: { properties: { className?: string[] } }) {
+                node.properties.className = [
+                  ...(node.properties.className ?? []),
+                  'ym-chars--highlighted',
+                ];
+              },
             },
           ],
           rehypeCollectToc(toc),

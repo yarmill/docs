@@ -15,6 +15,136 @@
 }
 
 /* ============================================================
+   0. Heading permalink anchor (Heading.tsx — h2/h3)
+   A hover/focus-revealed "#"-style link to the LEFT of the heading.
+   Absolutely positioned so it reserves no space (zero layout shift);
+   clicking copies the deep link and shows a brief "Copied" toast.
+   ============================================================ */
+.ym-shell #nd-page .ym-heading {
+  position: relative;
+}
+.ym-heading-anchor {
+  position: absolute;
+  top: 0;
+  /* Sit in the left gutter; the icon is ~22px, leave a little gap. */
+  left: -1.55em;
+  display: inline-flex;
+  align-items: center;
+  height: 1em;
+  /* Vertically centre on the heading's first line box. */
+  margin-top: 0.18em;
+  color: var(--ym-faint);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateX(2px);
+  transition:
+    opacity var(--ym-dur) var(--ym-ease-out),
+    transform var(--ym-dur) var(--ym-ease-out),
+    color var(--ym-dur-fast) ease;
+}
+.ym-heading:hover .ym-heading-anchor,
+.ym-heading:focus-within .ym-heading-anchor {
+  opacity: 1;
+  transform: translateX(0);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ym-heading-anchor:hover { color: var(--ym-accent); }
+}
+.ym-heading-anchor:focus-visible {
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+  border-radius: var(--ym-radius-sm);
+  opacity: 1;
+  transform: translateX(0);
+}
+.ym-heading-anchor[data-copied] { color: var(--ym-tip); opacity: 1; }
+
+/* Icon: link glyph crossfades to a check on copy. */
+.ym-heading-anchor-icon {
+  position: relative;
+  display: inline-flex;
+  width: 15px;
+  height: 15px;
+}
+.ym-heading-anchor-icon svg {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity var(--ym-dur-fast) var(--ym-ease-out),
+    transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-heading-anchor-check { opacity: 0; transform: scale(0.7); }
+.ym-heading-anchor[data-copied] .ym-heading-anchor-link {
+  opacity: 0;
+  transform: scale(0.7);
+}
+.ym-heading-anchor[data-copied] .ym-heading-anchor-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* "Copied" toast — a tiny pill above the anchor; absolutely positioned so it
+   never shifts layout. Visible only while data-copied is set. */
+.ym-heading-anchor-toast {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(3px);
+  padding: 3px 7px;
+  border-radius: var(--ym-radius-sm);
+  font-size: 11px;
+  font-weight: 510;
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ym-accent-on);
+  background: var(--ym-ink);
+  box-shadow: var(--ym-shadow-card);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--ym-dur-fast) var(--ym-ease-out),
+    transform var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-heading-anchor[data-copied] .ym-heading-anchor-toast {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* On narrow gutters (no room to the left) tuck the anchor inline-trailing so it
+   never collides with the content edge. */
+@media (max-width: 1100px) {
+  .ym-heading-anchor {
+    left: auto;
+    margin-inline-start: 6px;
+    position: static;
+    height: auto;
+    margin-top: 0;
+    vertical-align: middle;
+  }
+  .ym-heading-anchor-toast { left: 0; transform: translateY(3px); }
+  .ym-heading-anchor[data-copied] .ym-heading-anchor-toast { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ym-heading-anchor,
+  .ym-heading-anchor-icon svg {
+    transition: opacity var(--ym-dur-fast) linear !important;
+    transform: none !important;
+  }
+  .ym-heading:hover .ym-heading-anchor,
+  .ym-heading:focus-within .ym-heading-anchor { transform: none; }
+  /* Keep the centring transform; just drop the slide-in tween. */
+  .ym-heading-anchor-toast {
+    transition: opacity var(--ym-dur-fast) linear !important;
+    transform: translateX(-50%) !important;
+  }
+  .ym-heading-anchor[data-copied] .ym-heading-anchor-toast {
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* ============================================================
    1. Callouts
    ============================================================ */
 .ym-callout {
@@ -657,6 +787,74 @@
   min-width: 100%;
 }
 .ym-shell #nd-page pre code [data-line] { display: block; }
+
+/* ---- Language label (rehype-pretty-code sets data-language on the figure) --
+   A small uppercase muted tag in the top-right of the block. It sits to the
+   LEFT of the copy button (which is 8px from the right, ~28px tall) so the two
+   never overlap. Hidden for plaintext/unknown fences. Pointer-events:none so it
+   never steals the copy click. */
+.ym-shell #nd-page figure[data-rehype-pretty-code-figure][data-language]::after {
+  content: attr(data-language);
+  position: absolute;
+  top: 14px;
+  /* Clears the copy button (8px gutter + ~70px pill) so they never overlap. */
+  right: 86px;
+  font-family: var(--ym-font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ym-faint);
+  pointer-events: none;
+  /* Fades in with the copy button on hover/focus, like Linear. */
+  opacity: 0;
+  transition: opacity var(--ym-dur) var(--ym-ease-out);
+}
+.ym-shell #nd-page figure.ym-code:hover[data-language]::after,
+.ym-shell #nd-page figure.ym-code:focus-within[data-language]::after {
+  opacity: 1;
+}
+@media (hover: none) {
+  .ym-shell #nd-page figure[data-rehype-pretty-code-figure][data-language]::after {
+    opacity: 1;
+  }
+}
+/* Plaintext / unknown languages carry no useful label — hide it. */
+.ym-shell #nd-page figure[data-language='plaintext']::after,
+.ym-shell #nd-page figure[data-language='text']::after,
+.ym-shell #nd-page figure[data-language='']::after {
+  content: none;
+}
+/* When a title strip is present the copy button drops to top:44px; keep the
+   language label aligned with it (CodeBlock.tsx adds .ym-code--titled). */
+.ym-shell #nd-page figure.ym-code--titled[data-language]::after {
+  top: 50px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-shell #nd-page figure[data-rehype-pretty-code-figure][data-language]::after {
+    transition: opacity var(--ym-dur-fast) linear;
+  }
+}
+
+/* ---- Line highlighting (meta string e.g. ```ts {1,3-4}) ----
+   rehype-pretty-code marks lines with [data-highlighted-line]; we also add
+   .ym-line--highlighted (see lib/mdx.ts). A subtle accent-tinted band with a
+   2px accent left border. The negative margin + matching padding lets the band
+   bleed to the block's padding edges while the border sits flush left. */
+.ym-shell #nd-page pre code [data-highlighted-line] {
+  margin-inline: -16px;
+  padding-inline: 13px 16px;
+  border-left: 2px solid var(--ym-accent);
+  background: color-mix(in srgb, var(--ym-accent) 9%, transparent);
+}
+/* Highlighted words/chars — a soft accent chip, kept readable. */
+.ym-shell #nd-page pre code [data-highlighted-chars] {
+  padding: 1px 4px;
+  border-radius: var(--ym-radius-sm);
+  background: color-mix(in srgb, var(--ym-accent) 14%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ym-accent) 22%, transparent);
+}
 
 /* Shiki dual-theme: each token carries --shiki-light/--shiki-dark inline.
    keepBackground:false means we own the surface; we map the FG var per theme. */

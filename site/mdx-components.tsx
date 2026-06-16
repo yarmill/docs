@@ -16,6 +16,7 @@ import { Tabs, Tab } from '@/components/mdx/Tabs';
 import { Accordion, AccordionGroup } from '@/components/mdx/Accordion';
 import { PageMeta } from '@/components/mdx/PageMeta';
 import { TutorialMeta } from '@/components/mdx/TutorialMeta';
+import { Heading } from '@/components/mdx/Heading';
 
 /**
  * Base `<a>` override: root-relative and hash links route through next/link
@@ -30,6 +31,11 @@ function MdxLink({ href = '', ...props }: AnchorHTMLAttributes<HTMLAnchorElement
 
 const baseComponents: MDXComponents = {
   a: MdxLink,
+  // In-article headings get a hover-reveal permalink (copies the deep link with
+  // a "Copied" confirmation). rehype-slug has already set the id, which the
+  // override preserves along with scroll-margin-top from chrome.css.
+  h2: (props) => <Heading as="h2" {...props} />,
+  h3: (props) => <Heading as="h3" {...props} />,
 };
 
 const customComponents = {
