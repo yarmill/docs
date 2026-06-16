@@ -170,42 +170,43 @@
 }
 .ym-step {
   position: relative;
-  padding-left: 30px;
-  padding-bottom: 24px;
+  padding-left: 28px;
+  padding-bottom: 20px;
   border-left: 1px solid var(--ym-line);
 }
 .ym-step:last-child {
-  padding-bottom: 4px;
+  padding-bottom: 2px;
   border-left-color: transparent;
 }
 .ym-step::before {
   counter-increment: ym-step;
   content: counter(ym-step);
   position: absolute;
-  left: -13px;
-  top: -2px;
+  left: -11px;
+  top: -1px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   border-radius: 999px;
-  background: var(--ym-accent);
-  color: var(--ym-accent-on);
-  font-size: 12.5px;
+  /* V1 shape (filled circle + connector) with V6's soft indigo-tint colour. */
+  background: var(--ym-accent-subtle);
+  color: var(--ym-accent-subtle-fg);
+  font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  /* Ring in the page colour so the connector line doesn't run through it. */
   box-shadow: 0 0 0 4px var(--ym-bg);
 }
 .ym-step-title {
-  margin-bottom: 4px;
-  padding-top: 1px;
-  font-size: 16px;
+  margin-bottom: 3px;
+  font-size: 15px;
   font-weight: 590;
   letter-spacing: -0.006em;
   color: var(--ym-ink);
 }
-.ym-step-body { color: var(--ym-ink); }
+.ym-step-body { color: var(--ym-prose-text); }
 .ym-step-body > :first-child { margin-top: 0; }
 .ym-step-body > :last-child { margin-bottom: 0; }
 
