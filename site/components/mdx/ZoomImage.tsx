@@ -71,14 +71,6 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     // guarantees the image's z-index resolves at the root, above the overlay —
     // regardless of entrance timing or tab-throttled animation clocks.
     const enter = img.closest('.ym-page-enter') as HTMLElement | null;
-    const prevEnter = enter
-      ? {
-          animation: enter.style.animation,
-          transform: enter.style.transform,
-          opacity: enter.style.opacity,
-          willChange: enter.style.willChange,
-        }
-      : null;
     if (enter) {
       enter.style.animation = 'none';
       enter.style.transform = 'none';
@@ -127,12 +119,12 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       document.body.style.overflow = prevOverflow;
       document.body.style.paddingRight = prevPad;
       if (frame) frame.style.overflow = prevFrameOverflow;
-      if (enter && prevEnter) {
-        enter.style.animation = prevEnter.animation;
-        enter.style.transform = prevEnter.transform;
-        enter.style.opacity = prevEnter.opacity;
-        enter.style.willChange = prevEnter.willChange;
-      }
+      // Leave .ym-page-enter neutralised (static at its resting state) — do NOT
+      // restore the CSS `animation`. Re-applying the keyframe name would RESTART
+      // the entrance animation, flashing the whole content (text + image) on
+      // close. The entrance already played for this page instance, and the
+      // wrapper remounts fresh on the next navigation, so leaving it static here
+      // is correct.
       img.style.position = '';
       img.style.zIndex = '';
       img.style.cursor = '';
