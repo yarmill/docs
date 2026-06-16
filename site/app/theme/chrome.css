@@ -263,14 +263,23 @@
   margin-top: 32px;
 }
 /* Lead/description paragraph under H1 — normal body text (same size/colour as
-   the prose body; not an oversized subtitle). */
-.ym-shell #nd-page > p.ym-lead {
+   the prose body; not an oversized subtitle). Generous gap below the title and
+   before the body for breathing room (Linear). */
+/* NB: the title/lead/prose are nested inside the .ym-page-enter transition
+   wrapper, so these use descendant (not direct-child) selectors. */
+.ym-shell #nd-page p.ym-lead {
   font-size: var(--ym-body-size);
   line-height: var(--ym-body-lh);
   font-weight: 400;
   letter-spacing: var(--ym-body-ls);
   color: var(--ym-prose-text);
-  margin-top: 12px;
+  margin-top: 20px;
+  margin-bottom: 28px;
+}
+/* First content block after the lead keeps the breathing room (the prose
+   first-child reset would otherwise collapse it against the lead). */
+.ym-shell #nd-page .ym-lead + .prose {
+  margin-top: 28px;
 }
 /* Anchor jumps (TOC clicks) land below the sticky 64px top bar, not under it —
    so clicking any heading, including the last, scrolls it into clear view. */
@@ -471,8 +480,9 @@
 
 /* Active page link = colour only (Linear): brand-accent text, no background and
    no indicator bar. (Styled on `.ym-nav-link[data-active]` below.) */
-/* Child links sit indented under their section label. */
-.ym-nav-group .ym-nav-list { padding-left: 8px; }
+/* Child links share the section label's left padding, so a child's ICON aligns
+   with the parent label's TEXT (Linear). No extra indent. */
+.ym-nav-group .ym-nav-list { padding-left: 0; }
 .ym-nav-list--nested {
   margin-left: 12px;
   padding-left: 8px;

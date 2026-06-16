@@ -4,27 +4,30 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 /**
- * Linear-style click-to-zoom for a single image (reverse-engineered from
- * linear.app/docs). Clicking the in-page image opens a body portal: a
- * page-COLOURED overlay fades in (not a dark scrim) and a fixed-position clone
- * GROWS — via a transform FLIP — from the image's exact on-page box to a
- * centred, viewport-fitted size (~0.4s ease-out). Clicking anywhere, Esc,
- * scrolling, or resizing reverses it back into the page. Body is scroll-locked
- * while open. Reduced motion → instant.
+ * Linear-style click-to-zoom (medium-zoom behaviour) for a single image.
  *
- * Implementation notes (robustness):
- * - The start rect is measured at CLICK time (the original is still visible),
- *   not inside the effect — so React StrictMode's double-effect can't measure a
- *   hidden element and break the FLIP.
- * - Animations use the Web Animations API and are cancelled in the effect
- *   cleanup, so StrictMode's mount→unmount→mount sequence converges cleanly.
+ * Clicking opens a body portal — a page-COLOURED overlay fades in and a
+ * fixed-position clone of the image GROWS (transform FLIP) from the image's
+ * exact on-page box to a centred, viewport-fitted size. Clicking / Esc /
+ * scrolling / resizing reverses it. Body is scroll-locked (with scrollbar-width
+ * compensation so the page doesn't shift). Reduced motion / hidden tab → instant.
+ *
+ * No-flash contract:
+ * - The original image is hidden for the ENTIRE open→zoomed→close lifetime, so a
+ *   duplicate is never visible behind the clone (no "original showing through").
+ * - At the exact end of the close, the original is revealed AND the clone is
+ *   hidden in the SAME synchronous tick (atomic swap), before React unmounts —
+ *   so there's no gap and no snap-back. The clone is held at its shrunk end via
+ *   fill:'forwards', which equals the original's box exactly.
+ *
+ * The clone lives in a portal (not the article) because an ancestor of the
+ * article has `will-change: transform`, which would trap a `position: fixed`
+ * descendant in its containing block.
  */
-const MARGIN = 0.05; // viewport margin around the zoomed image
-// Emil Kowalski's rules: enter/exit both ease-out; exit faster than entrance;
-// keep under 300ms; the paired clone + overlay share duration + easing.
+const MARGIN = 0.05;
 const OPEN_MS = 300;
 const CLOSE_MS = 240;
-const EASE = 'cubic-bezier(0, 0, 0.2, 1)';
+const EASE = 'cubic-bezier(0, 0, 0.2, 1)'; // ease-out (Emil: enter + exit)
 const IDENTITY = 'translate(0px, 0px) scale(1)';
 
 function fitRect(natW: number, natH: number) {
@@ -63,9 +66,6 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     setOpen(true);
   }, []);
 
-  // FLIP open via WAAPI. The resting end-state is set inline (below), so the
-  // entrance animation needs no fill; animations are tracked and cancelled on
-  // cleanup.
   useEffect(() => {
     if (!open) return;
     const orig = imgRef.current;
@@ -81,18 +81,23 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     clone.style.height = `${target.height}px`;
     clone.style.transformOrigin = 'top left';
 
+    // Hide the original for the whole lifetime (visibility keeps its layout box,
+    // so measurements stay valid). Lock scroll, compensating for the scrollbar
+    // so the page (and the original's box) doesn't shift horizontally.
     orig.style.visibility = 'hidden';
+    const sbw = window.innerWidth - document.documentElement.clientWidth;
     const prevOverflow = document.body.style.overflow;
+    const prevPad = document.body.style.paddingRight;
     document.body.style.overflow = 'hidden';
+    if (sbw > 0) document.body.style.paddingRight = `${sbw}px`;
 
     anims.current.forEach((a) => a.cancel());
     anims.current = [];
 
-    // Set the correct RESTING end-state inline first (image large + overlay
-    // visible). The FLIP is then layered on only as an entrance, and only when
-    // the tab is visible — so the zoom is correct even if the animation engine
-    // never ticks (e.g. background tab), with no `fill` needed.
+    // Resting end-state inline (large + visible), so it's correct even if the
+    // animation never ticks (hidden tab); the FLIP is layered on as an entrance.
     clone.style.transform = IDENTITY;
+    clone.style.opacity = '1';
     overlay.style.opacity = '1';
 
     if (!prefersReduced() && !document.hidden) {
@@ -113,6 +118,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       anims.current.forEach((a) => a.cancel());
       anims.current = [];
       document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPad;
       orig.style.visibility = '';
     };
   }, [open]);
@@ -126,20 +132,14 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       return;
     }
 
-    // Reveal the original NOW — it stays fully covered by the shrinking clone
-    // for the whole close, so when the clone unmounts there is no swap and thus
-    // no flash. (The clone is held at its shrunk end-state via fill:'forwards'.)
-    orig.style.visibility = '';
-
     const first = orig.getBoundingClientRect();
     const tLeft = parseFloat(clone.style.left) || 0;
     const tTop = parseFloat(clone.style.top) || 0;
     const tWidth = clone.offsetWidth || first.width;
     const to = `translate(${first.left - tLeft}px, ${first.top - tTop}px) scale(${first.width / tWidth})`;
-    const fromTransform = getComputedStyle(clone).transform;
-    const from = fromTransform === 'none' ? IDENTITY : fromTransform;
+    const computed = getComputedStyle(clone).transform;
+    const from = computed === 'none' ? IDENTITY : computed;
 
-    // Stop the open animations so they don't fight the close.
     anims.current.forEach((a) => a.cancel());
     anims.current = [];
 
@@ -147,11 +147,15 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     const finish = () => {
       if (done) return;
       done = true;
+      // Atomic swap: reveal the original AND hide the clone in the same tick,
+      // then unmount. No gap, no duplicate.
+      orig.style.visibility = '';
+      clone.style.opacity = '0';
       setOpen(false);
     };
-    // Paired (Emil): clone + overlay share duration + easing. fill 'forwards'
-    // holds the shrunk end-state until unmount, so the clone never snaps back to
-    // full size for a frame (the blink).
+
+    // Paired (Emil): clone + overlay share duration + easing; fill:'forwards'
+    // holds the shrunk end-state (== original's box) until the atomic swap.
     const a = clone.animate([{ transform: from }, { transform: to }], {
       duration: CLOSE_MS,
       easing: EASE,
@@ -164,10 +168,9 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     });
     a.onfinish = finish;
     a.oncancel = finish;
-    window.setTimeout(finish, CLOSE_MS + 80); // safety net
+    window.setTimeout(finish, CLOSE_MS + 80);
   }, []);
 
-  // Close on Esc / scroll-intent / resize while open.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
