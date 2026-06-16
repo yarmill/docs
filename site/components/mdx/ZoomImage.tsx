@@ -20,8 +20,10 @@ import { createPortal } from 'react-dom';
  *   cleanup, so StrictMode's mount→unmount→mount sequence converges cleanly.
  */
 const MARGIN = 0.05; // viewport margin around the zoomed image
-const OPEN_MS = 400;
-const CLOSE_MS = 300;
+// Emil Kowalski's rules: enter/exit both ease-out; exit faster than entrance;
+// keep under 300ms; the paired clone + overlay share duration + easing.
+const OPEN_MS = 300;
+const CLOSE_MS = 240;
 const EASE = 'cubic-bezier(0, 0, 0.2, 1)';
 const IDENTITY = 'translate(0px, 0px) scale(1)';
 
@@ -61,8 +63,9 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     setOpen(true);
   }, []);
 
-  // FLIP open via WAAPI. Animations are tracked and cancelled on cleanup so the
-  // StrictMode double-invoke (dev) converges; fill:'both' holds the end state.
+  // FLIP open via WAAPI. The resting end-state is set inline (below), so the
+  // entrance animation needs no fill; animations are tracked and cancelled on
+  // cleanup.
   useEffect(() => {
     if (!open) return;
     const orig = imgRef.current;
@@ -100,8 +103,8 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
           easing: EASE,
         }),
         overlay.animate([{ opacity: 0 }, { opacity: 1 }], {
-          duration: 300,
-          easing: 'ease',
+          duration: OPEN_MS,
+          easing: EASE,
         }),
       ];
     }
@@ -139,17 +142,24 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     const finish = () => {
       if (done) return;
       done = true;
+      // Reveal the original BEFORE unmounting the clone: the clone is held
+      // shrunk over the original's box (fill 'forwards'), so showing the
+      // original first means there's no empty frame at handoff — no "blink".
+      orig.style.visibility = '';
       setOpen(false);
     };
+    // Paired (Emil): clone + overlay share duration + easing. fill 'forwards'
+    // holds the shrunk end-state until unmount, so the clone never snaps back to
+    // full size for a frame (the blink).
     const a = clone.animate([{ transform: from }, { transform: to }], {
       duration: CLOSE_MS,
       easing: EASE,
-      fill: 'both',
+      fill: 'forwards',
     });
     overlay.animate([{ opacity: getComputedStyle(overlay).opacity }, { opacity: 0 }], {
-      duration: 250,
-      easing: 'ease',
-      fill: 'both',
+      duration: CLOSE_MS,
+      easing: EASE,
+      fill: 'forwards',
     });
     a.onfinish = finish;
     a.oncancel = finish;
