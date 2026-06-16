@@ -4,58 +4,46 @@ description: "Track who was at training, and report participation over the seaso
 icon: "user-check"
 ---
 
-Attendance is a coach-side register of who actually showed up to training, totalled into
-**present / missed / %** numbers you can report. It's built for groups whose athletes don't
-keep their own diary — sport schools and youth squads — and it doubles as the source for
-participation reporting to schools and national agencies.
+Track who showed up to training, and report participation over the season.
 
-**For:** coaches · **Where:** Web app
+import { PageMeta } from "/snippets/page-meta.jsx";
 
-<Info>Attendance is an **optional module, enabled per team** — aimed at groups that don't
-self-log. The morning register, the state set, and the season percentages are the same
-everywhere; whether the module appears at all is configured for your instance.</Info>
+<PageMeta audience="Coaches" where="Web app" />
+
+{/* TODO(yarmill): hero visual — Attendance Week grid with the Entire Group row and per-athlete present/missed/% totals */}
+
+<Info>Attendance is an **optional module, enabled per team** — aimed at groups that don't self-log. Whether it appears at all is configured for your instance.</Info>
+
+Attendance is a coach-side register of who actually showed up, totalled into **present / missed / %** numbers you can report. It's built for groups whose athletes don't keep their own diary — sport schools and youth squads — and it doubles as the source for participation reporting to schools and national agencies. The morning register, the state set, and the season percentages are the same everywhere.
 
 ## Take attendance
 
-Open **Attendance** in the **Week** view. The grid has an **Entire Group** summary row at the
-top and one row per athlete, with a column for each day **Mon–Sun** and totals on the right.
+Open **Attendance** in the **Week** view. The grid has an **Entire Group** summary row at the top and one row per athlete, with a column for each day **Mon–Sun** and totals on the right.
 
-Each day column has an **Edit** link beneath its date. Select it to put that day into edit
-mode — every athlete's cell shows four state buttons:
+Each day column has an **Edit** link beneath its date. Select it to put that day into edit mode — every athlete's cell shows four state buttons:
 
 <ParamField path="Present">A green circle-check — the athlete was at training.</ParamField>
 <ParamField path="Free">A coffee cup — a rest day or day off. This is the default state.</ParamField>
 <ParamField path="Excused">A circle-minus — a notified, agreed absence.</ParamField>
 <ParamField path="Not excused">A circle-cross — an unexplained no-show.</ParamField>
 
-To set the **whole group** at once, use the buttons on the **Entire Group** row — pressing
-**Present** there marks everyone present for that day, then you adjust the exceptions. Select
-**Close** on the column header when you're done.
+**Set the whole group at once** with the buttons on the **Entire Group** row — pressing **Present** there marks everyone present for that day, then you adjust the exceptions. Select **Close** on the column header when you're done.
 
-The right-hand columns keep a running **Total present**, **Total missed**, and attendance
-**%** for each athlete and for the group.
+The right-hand columns keep a running **Total present**, **Total missed**, and attendance **%** for each athlete and for the group.
 
 ## See the season picture
 
-Switch the view from **Week** to **Season** for the long run: the columns become the months
-**Jan–Dec** with the same **present / missed / %** totals, and a year selector replaces the
-week navigator. This is the view you read at period or season end to see each athlete's
-participation rate.
+Switch from **Week** to **Season** for the long run: the columns become the months **Jan–Dec** with the same **present / missed / %** totals, and a year selector replaces the week navigator. Read this at period or season end to see each athlete's participation rate.
 
 ## Fill Reality from attendance
 
-For groups where one coach logs everything, **Copy plan** (top right) writes the planned week
-into **Reality** — but only for the athletes marked **present** that day. The session shows up
-in their diaries without anyone self-logging.
+For groups where one coach logs everything, **Copy plan** (top right) writes the planned week into **Reality** — but only for athletes marked **present** that day. The session shows up in their diaries without anyone self-logging.
 
-<Warning>Attendance-based copy writes a whole day into athletes' diaries. Don't use it for
-athletes who keep their own [Reality](/en/reality/training-log) — it would overwrite their
-entries.</Warning>
+<Warning>Attendance-based copy writes a whole day into athletes' diaries. Don't use it for athletes who keep their own [Reality](/en/reality/training-log) — it would overwrite their entries.</Warning>
 
 ## Export participation
 
-The **export** control (top right) downloads the register for handing to a school or agency —
-as a **PDF**, or as a **monthly Excel (XLSX)** file.
+The **export** control (top right) downloads the register for handing to a school or agency — as a **PDF**, or as a **monthly Excel (XLSX)** file.
 
 ## How it connects
 

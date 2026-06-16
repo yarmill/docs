@@ -4,26 +4,24 @@ description: "Build the season top-down, plan the week in detail, and publish to
 icon: "clipboard"
 ---
 
-The Plan is where you decide what training should happen — from the shape of the whole
-season down to Tuesday morning's session — and publish it to your athletes when it's ready.
-You build it top-down: the same season is available at four zoom levels, so you can set
-season-level intentions and then descend to day-by-day detail without leaving the module.
+Decide what training should happen — from the whole season down to Tuesday morning — and publish it to your athletes when it's ready.
 
-**For:** coaches · **Where:** Web app
+import { PageMeta } from "/snippets/page-meta.jsx";
 
-<Info>Yarmill is configured for each team, so the training phases on the text side and the
-data rows on the numbers side may differ from this guide — those labels are set up for your
-instance. The mechanics — the four views, the group sandbox, and Copy plan — work the same
-way everywhere.</Info>
+<PageMeta audience="Coaches" where="Web app" />
 
-{/* TODO(yarmill): add screenshot — Week view (full-window): left day cards with phase text, right data grid with Total column, the Copy plan button and the date-range pill. See spec §13 shot 1. */}
+{/* TODO(yarmill): hero visual — Week view: left day cards with phase text, right data grid with Total column, plus the Copy plan button. */}
+
+<Info>Yarmill is configured per team. The training phases and data rows may differ from this guide, but the mechanics — four views, group sandbox, and Copy plan — work the same everywhere.</Info>
+
+You build the Plan top-down: the same season is available at four zoom levels, so you can set season-level intentions and then descend to day-by-day detail without leaving the module.
 
 ## The four views
 
-Plan gives you the same season at four zoom levels, switched at the top of the page. Each
-day's plan has two sides: a **text side** in your own words (the configured training phases,
-such as *daily goal*, *morning*, *afternoon*) and a **data side** of numbers (minutes, km,
-reps, intensity zones, and so on). Some data rows are auto-calculated and locked.
+The same season, at four zoom levels, switched at the top of the page. Each day's plan has two sides:
+
+- **Text side** — the configured training phases in your own words, such as *daily goal*, *morning*, *afternoon*.
+- **Data side** — numbers: minutes, km, reps, intensity zones, and so on. Some rows are auto-calculated and locked.
 
 <ParamField path="Week">
   The working view: stacked day cards on the left, each split into the configured training
@@ -55,8 +53,7 @@ reps, intensity zones, and so on). Some data rows are auto-calculated and locked
 
 ## Your sandbox, and publishing
 
-Planning on the **Entire Group** is your private sandbox — athletes see nothing until you
-publish. That's deliberate: sketch freely, then release the week when it's ready.
+**Planning on the Entire Group is your private sandbox** — athletes see nothing until you publish. Sketch freely, then release the week when it's ready.
 
 <Steps>
   <Step title="Plan the week on the group">
@@ -104,23 +101,20 @@ only their copy — and is visible to them immediately, no publishing needed.</T
 
 ## Individualize after publishing
 
-Select a single athlete in the left list and edit their week — tailor load, swap activities,
-adjust days. Only their plan changes, and the change is visible to them immediately, with no
-publishing step. From an individual you can also copy a plan back up to the group, or across
-to specific teammates, with **Copy plan**.
+**Select a single athlete in the left list and edit their week** — tailor load, swap activities, adjust days. Only their plan changes, and it's visible to them immediately, with no publishing step.
+
+From an individual you can also copy a plan back up to the group, or across to specific teammates, with **Copy plan**.
 
 ## Events from the Season Calendar
 
-Camps, races, and testing days planned in the [Season Calendar](/en/plan/season-calendar)
-appear automatically in the Plan views on their dates, so each week always carries its context.
+**Camps, races, and testing days** planned in the [Season Calendar](/en/plan/season-calendar) appear automatically in the Plan views on their dates, so each week always carries its context.
 
 <Warning>Calendar events are locked here — they show as chips on their day but can't be edited
 in Plan. Change them in the [Season Calendar](/en/plan/season-calendar).</Warning>
 
 ## Print and export
 
-Use the export control next to **Copy plan** to print or export the plan — handy for the camp
-noticeboard. {/* TODO(yarmill): verify the export options (left/right side, columns vs vertical, font size, PDF settings) in the export menu. */}
+**Use the export control next to Copy plan** to print or export the plan — handy for the camp noticeboard. {/* TODO(yarmill): verify the export options (left/right side, columns vs vertical, font size, PDF settings) in the export menu. */}
 
 ## How it connects
 

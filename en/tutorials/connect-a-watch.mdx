@@ -1,0 +1,90 @@
+---
+title: "Connect a watch and read recovery"
+description: "Pair a device once, let it sync overnight, and read recovery and sleep the next morning."
+icon: "stopwatch"
+---
+
+Pair your device once, sleep with it on, and your recovery and sleep are waiting in Yarmill the next morning — no logging required.
+
+import { TutorialMeta } from "/snippets/tutorial-meta.jsx";
+
+<TutorialMeta audience="Athletes & coaches" time="5 min" modules={["Devices & integrations","Analytics"]} />
+
+{/* TODO(yarmill): hero visual — Settings → Applications & devices with a provider freshly connected, plus the recovery block it produces. See specs/_yarmill-visuals-skill-brief.md */}
+
+## Before you start
+
+<Info>
+You'll need an account with the device provider you want to connect (for example a Garmin
+Connect, Oura, or WHOOP account) and permission to grant Yarmill access to it. Each athlete
+connects their own devices on their own Settings page — coaches read the imported data
+downstream rather than managing connections. The connectors available to you are
+**configured per team**, so your list may differ from the examples here. See
+[Devices & integrations](/en/platform/integrations) for the full picture.
+</Info>
+
+## What you'll do
+
+You'll connect one device, confirm its data is flowing, check your heart-rate zones, and read your recovery the next morning. By the end you'll have:
+
+- a device connected on your **Settings → Applications & devices** page;
+- activities (and sleep, if you wear it at night) landing automatically under the day in your [Training Log](/en/reality/training-log);
+- your heart-rate zones set in Yarmill, so time-in-zone is computed consistently;
+- recovery and sleep showing up in [Analytics](/en/analytics/analytics) the next morning.
+
+## Steps
+
+<Steps>
+  <Step title="Open Applications & devices">
+    Go to **Settings → Personal** and find the **Applications & devices** section. It lists
+    one row per service, each with a short description and a **Connect** / **Disconnect**
+    button.{/* TODO(yarmill): step visual — Settings → Personal with the Applications & devices list */}
+  </Step>
+  <Step title="Connect your provider">
+    Find your provider in the list and select **Connect**, then confirm the connection in the
+    provider's own account when prompted. A connector you've already linked shows
+    **Disconnect** instead, so you can see at a glance what's active.
+
+    <Info>**Apple Health connects from the iPhone**, not the web — the web can't grant the
+    permission. In the Yarmill iOS app, tap your avatar → **Connected Devices & Apps**. The
+    exact consent screen and return flow depend on the provider and are configured per
+    team.{/* TODO(yarmill): verify the per-provider OAuth/consent return flow for the team's enabled connectors */}</Info>
+  </Step>
+  <Step title="Confirm data is flowing">
+    Imported data arrives **from the next sync** — the first one typically lands overnight, so
+    if you've just connected, an empty day is expected rather than a problem. From then on,
+    recorded activities (and sleep, if you wear the device at night) appear automatically under
+    the right day in your [Training Log](/en/reality/training-log), below the day's entry.
+
+    For **Garmin**, enable both activity *and* sleep in Garmin Connect so both flow in.
+    {/* TODO(yarmill): step visual — Training Log day showing an imported activity below the diary entry */}
+  </Step>
+  <Step title="Check your heart-rate zones">
+    On the same **Settings → Personal** page, open the **Heart Rate Zones** section and confirm
+    your zones. Yarmill computes time-in-zone with its own algorithm from the raw device data,
+    independent of watch brand — so set your bands (**Z0–Z5**) here, scoped **per discipline**
+    and with **validity dates**, rather than relying on the watch.{/* TODO(yarmill): step visual — Heart Rate Zones section with per-discipline bands */}
+  </Step>
+  <Step title="Read recovery and sleep the next morning">
+    Open [Analytics](/en/analytics/analytics) and find the **Recovery indicators** report —
+    recovery metrics from your connected device over the selected period (for example resting
+    heart rate, HRV, sleep duration, or a device readiness score), each typically shown with a
+    7-day rolling average. This needs a device you sleep with; without one the report is empty.
+    Your recovery also feeds the **Team daily readiness** board.{/* TODO(yarmill): step visual — Recovery indicators report populated after an overnight sync */}
+  </Step>
+</Steps>
+
+## You're done
+
+<Check>Your recovery and sleep now populate automatically and feed the readiness board — one fewer thing to log, and one more signal in your morning picture.</Check>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Read team readiness" href="/en/tutorials/read-readiness" icon="gauge-high">See recovery on the morning board.</Card>
+  <Card title="Log a training session" href="/en/tutorials/log-a-session" icon="pen-to-square">The other half of the daily loop.</Card>
+</CardGroup>
+
+## Reference
+
+- [Devices & integrations](/en/platform/integrations) · [Analytics](/en/analytics/analytics) · [Athlete profile](/en/platform/athlete-profile)

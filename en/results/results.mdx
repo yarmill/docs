@@ -4,37 +4,27 @@ description: "Record competition results and test outcomes, and track them over 
 icon: "trophy"
 ---
 
-Results answers the closing question of the training loop — did the work produce the effect?
-It keeps the outcomes — races, matches, and structured tests — in a configurable table per
-athlete, so performance over a season is data, not memory.
+Record races, matches, and structured tests in a configurable per-athlete table, so performance over a season is data, not memory.
 
-**For:** coaches and athletes · **Where:** Web app
+import { PageMeta } from "/snippets/page-meta.jsx";
 
-<Info>Results tables are **configured per team and sport**. Which columns exist, the fields
-on the form, their types, and the dropdown values are all set for your sport — the columns
-shown below are one team's example, not universal. Some sports **import results
-automatically** from a federation database (for example IBU or FIS) instead of entering races
-by hand; see [Automatic import](#automatic-import-federation-databases).</Info>
+<PageMeta audience="Coaches & athletes" where="Web app" />
 
-{/* TODO(yarmill): add screenshot — Results table "Races results", filled (light), Kroczek Tomiš; callouts: New result button, column funnels, a row's edit/delete icons. */}
+{/* TODO(yarmill): hero visual — filled "Races results" table with New result button and column funnels */}
+
+Results answers the closing question of the training loop: did the work produce the effect?
+
+<Info>Results tables are **configured per team and sport** — columns, form fields, types, and dropdown values are all set for your sport, so the examples below are one team's setup, not universal.</Info>
 
 ## The results table
 
-Results is a **per-athlete** module: pick an athlete from the group panel first, and their
-table loads. The page shows a configured title (for this team, **"Races results"**), a **New
-result** button top-right, and a table filling the page — one row per result.
+**Pick an athlete first.** Results is a per-athlete module — choose someone from the group panel and their table loads, one row per result, under a configured title (for this team, **"Races results"**). A **New result** button sits top-right.
 
-For a biathlon team, the configured columns are **Date · Location · Weather · Discipline ·
-Rank · Note**. A filled row reads, for example: **24/06/2025 · Zermatt · ☀️ sunny ·
-Slopestyle · 1. · Top** — where the **Weather** value comes from a dropdown and renders with
-an emoji. Your sport's columns will differ.
+**Columns are configured per sport.** For a biathlon team they are **Date · Location · Weather · Discipline · Rank · Note**. A filled row reads, for example: **24/06/2025 · Zermatt · ☀️ sunny · Slopestyle · 1. · Top** — where **Weather** comes from a dropdown and renders with an emoji. Your sport's columns will differ.
 
-Each row carries inline **edit** (pencil) and **delete** (trash) icons at its right end. There
-is no separate detail view — editing opens the same form as **New result**, populated with the
-row's values.
+**Edit inline.** Each row carries **edit** (pencil) and **delete** (trash) icons at its right end. There's no separate detail view — editing opens the same form as **New result**, populated with the row's values.
 
-Before any results exist for an athlete, the table reads **"No records"** rather than showing
-an empty grid.
+Before any results exist, the table reads **"No records"** rather than showing an empty grid.
 
 ## Record a result
 
@@ -77,33 +67,21 @@ an empty grid.
   </Step>
 </Steps>
 
-{/* TODO(yarmill): add screenshot — New result full-screen form; callouts: required Date, Optional fields, Save result button. */}
-
-To edit a result later, select the row's **edit** (pencil) icon — the same form reopens
-populated — adjust the fields, and **Save result** again. To remove one, use the row's
-**delete** (trash) icon.
+To edit later, select the row's **edit** (pencil) icon, adjust the fields, and **Save result** again. To remove one, use the **delete** (trash) icon.
 
 ## Find results fast
 
-Every column header carries a **funnel** icon. Selecting it opens a popover that combines
-sorting and a filter for that column:
+**Every column header carries a funnel icon.** Selecting it opens a popover combining sort and filter for that column:
 
-- **Sort** at the top — **Ascending** or **Descending**.
-- A **filter** below, matched to the column type. For the **Date** column, the options are
-  **This week · Last week · This month · Last month · Exact date · Range**.
+- **Sort** — **Ascending** or **Descending**.
+- A **filter** matched to the column type. For **Date**, the options are **This week · Last week · This month · Last month · Exact date · Range**.
 - **Clear** and **Apply** at the bottom.
 
-Use the **Discipline** funnel to compare an athlete's sprint results, or the **Date** funnel
-to scope a season block — without scrolling the whole table.
-
-{/* TODO(yarmill): add screenshot — Date column funnel popover open (sort + filter + Clear/Apply). */}
+Use the **Discipline** funnel to compare sprint results, or the **Date** funnel to scope a season block — without scrolling the whole table.
 
 ## Automatic import (federation databases)
 
-Some sports don't enter races by hand at all. Where a federation publishes results in a public
-database — **IBU SIWIDATA** for biathlon, **FIS** for skiing and snowboard, and others —
-results can flow into the table automatically. The coach then reviews the table rather than
-re-keying races.
+**Some sports don't enter races by hand at all.** Where a federation publishes results in a public database — **IBU SIWIDATA** for biathlon, **FIS** for skiing and snowboard, and others — results flow into the table automatically, and the coach reviews rather than re-keys.
 
 <Info>Automatic import is **configured per sport** and depends on two things: the connection
 set up under [Integrations](/en/platform/integrations) (which requires a license agreement
@@ -114,10 +92,7 @@ on their [Athlete profile](/en/platform/athlete-profile).</Info>
 
 ## Testing & Diagnostics
 
-Teams that run structured testing — strength, lactate, body composition, or sport-specific
-protocols — record it in the same kind of configurable form, a sibling tabular module
-alongside Results. Each test feeds its reports in [Analytics](/en/analytics/analytics). If your
-team uses them, you'll find them next to your results tables.
+Teams that run structured testing — strength, lactate, body composition, or sport-specific protocols — record it in the same kind of configurable form, a sibling tabular module alongside Results. Each test feeds its reports in [Analytics](/en/analytics/analytics).
 
 {/* TODO(yarmill): this instance has no Testing & Diagnostics forms configured — verify the module name, route, selection UI, and field layout on an instance that has them. */}
 

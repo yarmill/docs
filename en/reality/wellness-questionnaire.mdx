@@ -4,22 +4,21 @@ description: "A short daily self-report — sleep, stress, mood, soreness, fatig
 icon: "heart-pulse"
 ---
 
-The wellness questionnaire is a one-minute morning self-report from each athlete — how they
-slept and feel, plus a note to the coach. On its own each entry is small; across a squad and
-across weeks it becomes the team's readiness picture, turning subjective state into trended
-data before the numbers from devices catch up.
+A one-minute morning self-report — how you slept and feel, plus a note to the coach.
 
-**For:** athletes (fill in), coaches (review) · **Where:** Web app and mobile
+import { PageMeta } from "/snippets/page-meta.jsx";
 
-<Info>The dimensions and their scales are **configured per team**. The example below is one
-instance's set — **Sleep**, **Stress**, **Mood**, **Soreness**, and **Fatigue**, plus a
-free-text note. The number of items, the scale length, and the wording of each label vary
-from team to team.</Info>
+<PageMeta audience="Athletes & coaches" where="Web & mobile" />
+
+{/* TODO(yarmill): hero visual — wellness wizard, the Sleep step with tappable options */}
+
+<Info>The dimensions and their scales are **configured per team** — the number of items, the scale length, and each label vary. The example below is one instance's set: **Sleep**, **Stress**, **Mood**, **Soreness**, **Fatigue**, plus a free-text note.</Info>
+
+On its own each entry is small. Across a squad and across weeks it becomes the team's readiness picture, turning subjective state into trended data before the numbers from devices catch up.
 
 ## Fill it in
 
-Athletes step through the questionnaire as a short wizard — **one question per step**, with
-large tappable options and **Back** / **Continue** to move between them.
+Athletes step through the questionnaire as a short wizard — **one question per step**, with large tappable options and **Back** / **Continue** to move between them.
 
 <Steps>
   <Step title="Open the questionnaire">
@@ -45,29 +44,19 @@ large tappable options and **Back** / **Continue** to move between them.
   </Step>
 </Steps>
 
-{/* TODO(yarmill): add screenshot of the wellness input-form wizard (Sleep step) */}
-
-<Tip>Fill it in each morning, before training. Readiness data is only useful before the
-session — filled in after, it's just history.</Tip>
+<Tip>Fill it in each morning, before training. Readiness data is only useful before the session — filled in after, it's just history.</Tip>
 
 ## One record per day
 
-There's a single record per day per athlete. Re-opening the same day edits that record rather
-than adding a second one.
+There's a single record per day per athlete. Re-opening the same day edits that record rather than adding a second one.
 
-Each record is kept in a per-athlete table — one row per day, with a column for each dimension
-(in this instance **Date · Sleep · Stress · Mood · Soreness · Fatigue · Notes**) and every
-header filterable. From the table you can **edit** or **delete** any day's record.
+Each record is kept in a per-athlete table — one row per day, with a column for each dimension (here **Date · Sleep · Stress · Mood · Soreness · Fatigue · Notes**) and every header filterable. From the table you can **edit** or **delete** any day's record.
 
 ## For coaches
 
-Select an athlete from the group panel to read their records. A coach can also fill a record
-**on an athlete's behalf** — **New record** opens the same wizard — and edit or delete any row
-from the athlete's table.
+Select an athlete from the group panel to read their records. A coach can also fill a record **on an athlete's behalf** — **New record** opens the same wizard — and edit or delete any row from the athlete's table.
 
-For the group view, head to [Analytics](/en/analytics/analytics): the **Wellness** analysis
-trends each metric over four weeks, and **Team daily readiness** combines the day's self-report
-with device recovery data and medical status for the morning overview.
+For the group view, head to [Analytics](/en/analytics/analytics): the **Wellness** analysis trends each metric over four weeks, and **Team daily readiness** combines the day's self-report with device recovery data and medical status for the morning overview.
 
 ## How it connects
 

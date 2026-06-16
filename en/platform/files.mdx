@@ -4,27 +4,25 @@ description: "Every attachment from Plan and Reality in one filterable place."
 icon: "paperclip"
 ---
 
-Files pulls every attachment a team creates — videos, images, documents — into one
-filterable overview, so "that prone-shooting video from camp" is findable months later
-without remembering which day it was attached to.
+Every attachment from Plan and Reality, in one filterable place.
 
-**For:** coaches and athletes · **Where:** Web app
+import { PageMeta } from "/snippets/page-meta.jsx";
 
-<Info>Files is a **lens over existing attachments**, not a separate store. Every file in
-the overview belongs to a day in [Plan](/en/plan/plan) or the
-[Training Log](/en/reality/training-log) — there's no way to add a file that isn't
-attached to a day.</Info>
+<PageMeta audience="Coaches & athletes" where="Web app" />
 
-{/* TODO(yarmill): add screenshot — Files overview (filled), National Team, "Files • 48" with the count line, column funnels, and the + Add file button. */}
+{/* TODO(yarmill): hero visual — Files overview with the count line and column funnels */}
+
+<Info>Files is a **lens over existing attachments**, not a separate store. Every file
+belongs to a day in [Plan](/en/plan/plan) or the [Training Log](/en/reality/training-log) —
+there's no way to add a file that isn't attached to a day.</Info>
+
+Files pulls every video, image, and document a team creates into one overview, so "that prone-shooting video from camp" is findable months later without remembering which day it was attached to.
 
 ## Find a file
 
-Open **Files** for the overview. The header shows **Files • N** — the total file count —
-with a breakdown underneath as **N videos · N images · N others**. Pick **Entire Group**
-or an individual athlete from the group panel on the left to set what you're looking at.
+Open **Files** for the overview. The header shows **Files • N** — the total count — with a breakdown underneath as **N videos · N images · N others**. Pick **Entire Group** or an individual athlete from the group panel on the left to set what you're looking at.
 
-Below the header sits a single filterable table. Each column header carries a **funnel**
-icon — select it to narrow the rows by that column:
+Below the header sits a single filterable table. Each column header carries a **funnel** icon — select it to narrow the rows by that column:
 
 <ParamField path="Type">
   The file kind — **video**, **image**, or **other** (documents and anything that isn't a
@@ -48,22 +46,15 @@ icon — select it to narrow the rows by that column:
   The date of the file's day in the log.
 </ParamField>
 
-When there are no files — or active filters exclude everything — the table shows
-**No records**. The counts in the header always reflect the full set, not the filtered
-view.
+When there are no files — or active filters exclude everything — the table shows **No records**. The header counts always reflect the full set, not the filtered view.
 
 ## Why tags, not folders
 
-Files deliberately has **no folder hierarchy**. Folders force one home per file; **tags**
-let the same race clip be both *technique* and *prone shooting* at once. Tag consistently
-and filtering does the rest — open the **Tags** funnel, narrow to *prone shooting*, and
-the whole set surfaces together regardless of which day each clip lives on.
+Files deliberately has **no folder hierarchy**. Folders force one home per file; **tags** let the same race clip be both *technique* and *prone shooting* at once. Tag consistently and filtering does the rest — open the **Tags** funnel, narrow to *prone shooting*, and the whole set surfaces together regardless of which day each clip lives on.
 
 ## Add a file
 
-Most files arrive as attachments you make directly on a day in the
-[Training Log](/en/reality/training-log) or [Plan](/en/plan/plan). You can also add one
-from here — and this entry point can attach **one file to several athletes at once**.
+Most files arrive as attachments you make directly on a day in the [Training Log](/en/reality/training-log) or [Plan](/en/plan/plan). You can also add one from here — and this entry point can attach **one file to several athletes at once**.
 
 Select **+ Add file** (top right) to open the **Adding file** modal:
 

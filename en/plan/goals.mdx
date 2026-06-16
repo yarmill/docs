@@ -4,37 +4,30 @@ description: "Set objectives with key results, track progress through the season
 icon: "bullseye"
 ---
 
-Goals turn season ambitions into something you can track. Each goal holds a set of
-**key results** — measurable outcomes with a start, current, and target value — so
-progress stays visible all season, not just judged at the end.
+Turn season ambitions into something you can track all the way through, not just judge at the end.
 
-**For:** coaches and athletes · **Where:** Web app
+import { PageMeta } from "/snippets/page-meta.jsx";
 
-<Info>The goal **categories** and the methodology completeness rules (for example, a
-minimum number of key results) are **configured per team**, so they may differ from this
-guide. The six states, the key-result fields, and the rest of the mechanics work the same
-way everywhere.</Info>
+<PageMeta audience="Coaches & athletes" where="Web app" />
 
 <Frame caption="A goal at a glance — a title and description, its attributes, and key results.">
   <img src="/images/goals/goal-hero.png" alt="A filled goal showing its title, description, attributes row, and a table of key results." />
 </Frame>
 {/* NOTE(yarmill): rendered from the live Goals UI (yarmill-design pipeline) with clean sample data on the demo — a filled goal as the page lead. */}
 
+<Info>The goal **categories** and methodology completeness rules are **configured per team**, so they may differ from this guide. The six states, the key-result fields, and the rest of the mechanics work the same everywhere.</Info>
+
+Each goal holds a set of **key results** — measurable outcomes with a start, current, and target value — so progress stays visible season-long.
+
 ## Where to find Goals
 
-Open **Goals** from the main menu. As an **athlete**, you'll see your own goals straight
-away. As a **coach**, pick a **group** and then an athlete to work with their goals — or
-open your own Goals to set objectives for yourself, useful for your own coaching or
-development.
+**Open Goals from the main menu.** As an **athlete**, you'll see your own goals straight away. As a **coach**, pick a **group** and then an athlete to work with their goals — or open your own Goals to set objectives for yourself.
 
-Goals are grouped by season into **Current season** and **Past season**, each with a
-count, so older objectives stay out of the way without being lost.
+Goals are grouped by season into **Current season** and **Past season**, each with a count, so older objectives stay out of the way without being lost.
 
 ## Create a goal
 
-A goal is a single objective ("Lift 150 kg on bench press," "Reach the World
-Championship final"). You'll give it a name and some context, then break it into key
-results.
+A goal is a single objective ("Lift 150 kg on bench press," "Reach the World Championship final"). Give it a name and some context, then break it into key results.
 
 <Frame caption="The parts of a goal: a title and description, its attributes, and a table of key results.">
   <img src="/images/goals/goal-anatomy.png" alt="A goal made up of a title and description, a row of attributes (state, season, priority, supervisors, category), and a key results table with start, current, target values and a target date." />
@@ -100,10 +93,9 @@ results.
 
 ## Add key results
 
-A **key result** is a measurable outcome that tells you whether the goal is being met.
-Add as many as the goal needs — each row in the table is one outcome.
+**A key result is a measurable outcome** that tells you whether the goal is being met. Add as many as the goal needs — each row in the table is one outcome.
 
-There are no sub-steps or milestones — key results are the only way to break a goal down.
+There are no sub-steps or milestones; key results are the only way to break a goal down.
 
 <Steps>
   <Step title="Name the key result">
@@ -145,33 +137,24 @@ There are no sub-steps or milestones — key results are the only way to break a
 
 ## Track progress
 
-Values are updated **manually**, so keep them current as the athlete progresses — the
-conversations around a goal are only as good as its latest numbers. Update the **current
-value** of each key result, and move the goal's **state** as the picture changes. The
-goal's progress fraction counts achieved key results against the total.
+**Values are updated manually**, so keep them current as the athlete progresses — the conversations around a goal are only as good as its latest numbers. Update each key result's **current value**, and move the goal's **state** as the picture changes. The progress fraction counts achieved key results against the total.
 
-Every change — a new value, a state change, a moved target date, a rename — is recorded
-automatically under **Activity**, with who made it and when.
+**Every change is logged automatically** — a new value, a state change, a moved target date, a rename — under **Activity**, with who made it and when.
 
-To remove a goal, use the **trash icon** at the top right of the goal.
+To remove a goal, use the **trash icon** at the top right.
 
 ## Comments and final evaluations
 
-Use **Activity** to leave a comment at any time. Comments are plain text, timestamped,
-and a good way for an athlete and coach to talk through progress in context.
+**Use Activity to leave a comment at any time.** Comments are plain text, timestamped, and a good way for an athlete and coach to talk through progress in context.
 
-When a goal wraps up, add a **final evaluation** — a short closing reflection on how it
-went. Both the athlete and a coach can add their own.
+When a goal wraps up, add a **final evaluation** — a short closing reflection on how it went. Both the athlete and a coach can add their own.
 
 <Tip>Goals are at their best in pre- and post-season conversations: set them together at
 the start of the season, and evaluate them together at the end.</Tip>
 
 ## Check a goal against your methodology
 
-The check icon at the top right opens **Document check** — a methodology check from
-[Yollanda](/en/platform/yollanda). It flags what's still missing (red) or recommended
-(amber) on the goal, with green checks for what's done, and links to **Open methodology**,
-your team's methodology document.
+**The check icon at the top right opens Document check** — a methodology check from [Yollanda](/en/platform/yollanda). It flags what's still missing (red) or recommended (amber), with green checks for what's done, and links to **Open methodology**, your team's methodology document.
 
 <Info>What counts as required or recommended — such as a minimum number of key results —
 comes from your team's configured methodology and differs between teams.</Info>
@@ -183,11 +166,9 @@ comes from your team's configured methodology and differs between teams.</Info>
 
 ## See a whole group's goals
 
-As a coach, select **Entire Group** to see the whole squad on one screen. Every athlete
-is a row — each goal drawn as a rounded pill colored by its state, followed by a small
-circle per key result. Athletes with no goals still appear as a labeled row. Hover a goal
-for a quick summary, or select it to open the full view — a fast way to scan a squad
-before a planning meeting or review.
+**As a coach, select Entire Group** to see the whole squad on one screen. Every athlete is a row — each goal a rounded pill colored by its state, followed by a small circle per key result. Athletes with no goals still appear as a labeled row.
+
+Hover a goal for a quick summary, or select it to open the full view — a fast way to scan a squad before a planning meeting or review.
 
 <Frame caption="The Entire Group overview — every athlete on one row, each goal a colored pill with its key results beside it.">
   <img src="/images/goals/group-overview.png" alt="The Goals module showing Entire Group selected: one row per athlete, each goal drawn as a rounded pill colored by state (on track, completed, off track, not started) followed by smaller circles for each key result." />
@@ -196,10 +177,7 @@ before a planning meeting or review.
 
 ## What athletes see
 
-Athletes open Goals to manage **only their own** goals — there's no group switcher and no
-Entire Group overview, just their own season buckets. An athlete can view and edit their
-own goals, including key results and attributes, leave comments, and add a final
-evaluation — and they can do this even on a goal a coach created for them.
+**Athletes manage only their own goals** — there's no group switcher and no Entire Group overview, just their own season buckets. An athlete can view and edit their goals (including key results and attributes), leave comments, and add a final evaluation — even on a goal a coach created for them.
 
 ## How it connects
 
