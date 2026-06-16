@@ -1,28 +1,12 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 /**
- * Card grid. Responsive auto-fit by default: it fits as many ~272px cards as the
- * width allows and collapses empty tracks, so every row reads full-width at any
- * size (Linear). This is deliberately NOT driven by a fixed column count —
- * partly for the responsive feel, partly because the MDX pipeline drops numeric
- * expression attributes (`cols={3}` arrives as undefined), which would silently
- * fall back. An explicit `cols` (e.g. the string `cols="3"`) is still honored.
+ * Card grid wrapper. The layout is fully responsive — the grid fits as many
+ * ~244px cards as the width allows and reflows (auto-fill, see .ym-cardgroup in
+ * mdx.css) — so it is NOT column-count driven and takes no props beyond
+ * children. Any `cols={n}` authored in MDX is simply ignored (the MDX pipeline
+ * drops numeric expression attributes anyway).
  */
-export function CardGroup({
-  cols,
-  children,
-}: {
-  cols?: number | string;
-  children?: ReactNode;
-}) {
-  const hasCols = cols !== undefined && cols !== '';
-  return (
-    <div
-      className="ym-cardgroup"
-      data-cols={hasCols ? cols : 'auto'}
-      style={hasCols ? ({ '--ym-cols': Number(cols) } as CSSProperties) : undefined}
-    >
-      {children}
-    </div>
-  );
+export function CardGroup({ children }: { children?: ReactNode }) {
+  return <div className="ym-cardgroup">{children}</div>;
 }
