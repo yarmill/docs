@@ -117,10 +117,6 @@ function buildNavTree(): NavTree {
 
 const NAV_TREE: NavTree = buildNavTree();
 
-export function getNavTree(): NavTree {
-  return NAV_TREE;
-}
-
 /** Flat, ordered list of pages (for prev/next), derived from the nav tree. */
 export function getFlatPages(): NavPage[] {
   return NAV_TREE.groups.flatMap((g) => g.pages);

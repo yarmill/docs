@@ -5,11 +5,8 @@
    indigo + violet-cooled neutrals, Inter). Values come straight
    from the Yarmill design system (yarmill-design skill).
 
-   Two layers:
-   1. Fumadocs `--color-fd-*` are remapped so every built-in
-      primitive (search, sidebar, TOC, menus) inherits the brand.
-   2. `--ym-*` is the stable contract the chrome + MDX components
-      build against. Do not rename these without updating consumers.
+   `--ym-*` is the stable contract the chrome, MDX components and
+   CSS build against. Do not rename these without updating consumers.
    ============================================================ */
 
 :root {
@@ -71,35 +68,14 @@
   --ym-content-max: 1024px;
   --ym-prose-max: 650px;
 
-  /* ============================================================
-     Fumadocs token remap (LIGHT)
-     ============================================================ */
-  --color-fd-background: var(--ym-bg);
-  --color-fd-foreground: var(--ym-ink);
-  --color-fd-muted: var(--ym-bg-subtle);
-  --color-fd-muted-foreground: var(--ym-muted);
-  --color-fd-popover: var(--ym-bg);
-  --color-fd-popover-foreground: var(--ym-ink);
-  --color-fd-card: var(--ym-bg);
-  --color-fd-card-foreground: var(--ym-ink);
-  --color-fd-border: var(--ym-line);
-  --color-fd-primary: var(--ym-accent);
-  --color-fd-primary-foreground: var(--ym-accent-on);
-  --color-fd-secondary: var(--ym-bg-hover);
-  --color-fd-secondary-foreground: var(--ym-ink);
-  --color-fd-accent: var(--ym-bg-hover);          /* neutral hover */
-  --color-fd-accent-foreground: var(--ym-ink);
-  --color-fd-ring: var(--ym-accent);
-
   /* Inter everywhere */
   --ym-font-sans: 'Inter', 'Inter Variable', ui-sans-serif, system-ui,
     -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --fd-font-sans: var(--ym-font-sans);
 }
 
 /* ============================================================
    DARK THEME — Yarmill violet-cooled neutrals on #151525
-   Fumadocs toggles the `.dark` class on <html>.
+   next-themes toggles the `.dark` class on <html> (class strategy).
    ============================================================ */
 .dark {
   --ym-ink: #fcfbfb;          /* Neutral-2 */
@@ -133,23 +109,6 @@
     0 0 0 1px rgba(0, 0, 0, 0.6),
     0 8px 24px rgba(0, 0, 0, 0.5);
   --ym-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
-
-  --color-fd-background: var(--ym-bg);
-  --color-fd-foreground: var(--ym-ink);
-  --color-fd-muted: var(--ym-bg-subtle);
-  --color-fd-muted-foreground: var(--ym-muted);
-  --color-fd-popover: var(--ym-bg-subtle);
-  --color-fd-popover-foreground: var(--ym-ink);
-  --color-fd-card: var(--ym-bg-subtle);
-  --color-fd-card-foreground: var(--ym-ink);
-  --color-fd-border: var(--ym-line);
-  --color-fd-primary: var(--ym-accent);
-  --color-fd-primary-foreground: var(--ym-accent-on);
-  --color-fd-secondary: var(--ym-bg-hover);
-  --color-fd-secondary-foreground: var(--ym-ink);
-  --color-fd-accent: var(--ym-bg-hover);
-  --color-fd-accent-foreground: var(--ym-ink);
-  --color-fd-ring: var(--ym-accent);
 }
 
 /* ============================================================

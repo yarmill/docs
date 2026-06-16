@@ -69,26 +69,13 @@ const ICONS: Record<string, LucideIcon> = {
 const DEFAULT_ICON: LucideIcon = FileText;
 
 /**
- * Resolve a Font Awesome icon name to a rendered lucide node.
- *
- * Wired into `loader({ icon })` in `lib/source.ts` so page-tree icons render as
- * real glyphs. Also exported for the MDX `<Card>` component to import, keeping a
+ * Render a Font Awesome icon name as a lucide node. Used by the sidebar
+ * `NavTree` (frontmatter `icon:`) and the MDX `<Card icon="…">`, keeping a
  * single source of truth for icon mapping across sidebar and content.
  *
- * Returns `undefined` for an empty/missing name so callers can decide whether to
- * render nothing (e.g. the loader, where a missing frontmatter icon means "no
- * icon"). `<Icon>` opts into the `FileText` fallback for unknown-but-present
- * names.
- */
-export function getIcon(name?: string): ReactNode {
-  if (!name) return undefined;
-  const Component = ICONS[name] ?? DEFAULT_ICON;
-  return createElement(Component);
-}
-
-/**
- * Convenience component. Unlike `getIcon`, an unknown-but-present `name` always
- * renders the `FileText` fallback; a missing `name` renders nothing.
+ * A missing/empty `name` renders nothing; an unknown-but-present `name` falls
+ * back to the `FileText` glyph so a link always gets a sensible icon instead of
+ * stray text.
  */
 export function Icon({
   name,
