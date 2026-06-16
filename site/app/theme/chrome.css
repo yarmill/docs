@@ -7,18 +7,11 @@
    faster exits, transform/opacity only, reduced-motion fallbacks).
    ============================================================ */
 
-/* ---------- Smooth anchor scrolling ------------------------
-   TOC / in-page anchor clicks glide to the heading (which carries
-   scroll-margin-top: 88px so it clears the sticky top bar). Honoured only when
-   the user hasn't asked for reduced motion. */
-html {
-  scroll-behavior: smooth;
-}
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
+/* ---------- Anchor scrolling -------------------------------
+   NOTE: smooth scrolling is done per-click in JS (TOC + heading anchors), NOT
+   via a global `html { scroll-behavior: smooth }` — that would also animate
+   Next's scroll-to-top on every route change (landing low, then gliding up).
+   Headings carry scroll-margin-top: 88px so they clear the sticky top bar. */
 
 /* ---------- Skip to content (a11y) -------------------------
    First focusable element on the page: off-screen until keyboard focus, then

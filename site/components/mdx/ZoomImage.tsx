@@ -126,6 +126,11 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       return;
     }
 
+    // Reveal the original NOW — it stays fully covered by the shrinking clone
+    // for the whole close, so when the clone unmounts there is no swap and thus
+    // no flash. (The clone is held at its shrunk end-state via fill:'forwards'.)
+    orig.style.visibility = '';
+
     const first = orig.getBoundingClientRect();
     const tLeft = parseFloat(clone.style.left) || 0;
     const tTop = parseFloat(clone.style.top) || 0;
@@ -142,10 +147,6 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     const finish = () => {
       if (done) return;
       done = true;
-      // Reveal the original BEFORE unmounting the clone: the clone is held
-      // shrunk over the original's box (fill 'forwards'), so showing the
-      // original first means there's no empty frame at handoff — no "blink".
-      orig.style.visibility = '';
       setOpen(false);
     };
     // Paired (Emil): clone + overlay share duration + easing. fill 'forwards'

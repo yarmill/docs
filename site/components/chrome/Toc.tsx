@@ -105,6 +105,14 @@ export function Toc({ items }: { items: TocItem[] }) {
               href={`#${item.id}`}
               data-active={item.id === activeId}
               data-depth={item.depth}
+              onClick={(e) => {
+                const target = document.getElementById(item.id);
+                if (!target) return;
+                e.preventDefault();
+                const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+                history.replaceState(null, '', `#${item.id}`);
+              }}
             >
               {item.text}
             </a>
