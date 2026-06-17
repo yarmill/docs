@@ -16,8 +16,8 @@ Turn Yarmill's Linear engineering tracker into a customer-facing changelog that 
 **linear.app/changelog** in structure and voice. Output lands in
 `site/content/docs/changelog/changelog.mdx` (the React docs site's Changelog space).
 
-**Full rationale & decisions:** `specs/_changelog-automation-architecture.md`. This file is
-the operational checklist; read the spec when a judgment call isn't covered here.
+**Full rationale & decisions:** `docs-guide/changelog/changelog-automation-architecture.md`.
+This file is the operational checklist; read the spec when a judgment call isn't covered here.
 
 ## Golden rules (read first)
 - **Nothing auto-publishes.** Every run ends in a **draft PR** for human review.
