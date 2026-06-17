@@ -23,8 +23,8 @@ sections; flat feature-named IA. **All shipped in `site/content/docs/`:**
   `site/components/mdx/TutorialMeta.tsx` (For / time / module-chip pills) with visual TODO placeholders:
   plan-first-week · set-season-goals · log-a-session · read-readiness · connect-a-watch. Tutorials appear as
   a sidebar "space". Validated: `tsc` + `eslint` clean.
-- 📄 **Tutorials + Use-cases proposal** — `specs/_round-two-tutorials-usecases-proposal.md`; **Visuals-skill
-  brief** — `specs/_yarmill-visuals-skill-brief.md` (what the yarmill-visuals skill must produce for tutorials).
+- 📄 **Tutorials + Use-cases proposal** — (folded into `docs-guide/writing-instructions.md` §5); **Visuals-skill
+  brief** — `docs-guide/visuals/yarmill-visuals-brief.md` (what the yarmill-visuals skill must produce for tutorials).
 - ⬜ NEXT (deferred by design): **Use cases** (role stories) — hold until tutorials get visuals & prove the
   template. Then the screenshot/visuals skill session → render the queued tutorial + module visuals (TODO
   placeholders mark every slot). One open `TODO(yarmill): verify` in log-a-session (Import-plan entry point).
@@ -40,11 +40,11 @@ separate focused session — see its TODO in `~/.claude/skills/yarmill-screensho
 ## The verification loop (per module)
 1. Explore live in the browser — **tab 1 = coach "Bart"**, **tab 2 = athlete "Simpson Lisa"**
    (National Team / biathlon demo). Click through the spec's §14 `TODO(verify)` items.
-2. Spawn a `general-purpose` subagent to edit `specs/<module>.md` in place: move resolved items
+2. Spawn a `general-purpose` subagent to edit `docs-guide/module-notes/<module>.md` in place: move resolved items
    from §14 into the body as confirmed, upgrade §15 confidence, and rewrite §13 "Shot list" into
    an **executable visual-todo** (cols: Live nav · State · Crop type · Caption · Callouts ·
    Post-process · Priority).
-3. Keep `specs/_VISUAL-TODOS.md` as the master index of shots.
+3. Keep `docs-guide/visuals/_VISUAL-TODOS.md` as the master index of shots.
 
 ## Status
 - ✅ **Medical** — verified; page rewritten (`en/medical/medical-module.mdx`); images DONE
@@ -147,8 +147,8 @@ Cleanup still pending: stray "New event" 15/06/2026 on Lisa's Planner (manual 1-
   callouts; real-icon preview; design-token rounding; neighbour bleed; no over-zoom).
 
 ## Inputs / sources
-- Template: `specs/_TEMPLATE.md` · Gold standard: `specs/medical-module.md` · Review gate:
-  `specs/_REVIEW-CHECKLIST.md` · Master reference: `~/Downloads/Yarmill Reference for Guides and Docs.md`
+- Template: `docs-guide/module-notes/_TEMPLATE.md` · Gold standard: `docs-guide/module-notes/medical-module.md` · Review gate:
+  `docs-guide/module-notes/_REVIEW-CHECKLIST.md` · Master reference: `docs-guide/master-reference.md`
   · Project rules: `CLAUDE.md`.
 
 ## After verification

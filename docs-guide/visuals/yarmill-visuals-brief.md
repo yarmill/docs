@@ -93,6 +93,6 @@ should check these exist and say what's missing.
   step sequences, GIF/MP4) — this brief extends the latter for the docs-tutorial use case.
 - Style model: linear.app/docs (one hero per page; a tight sentence sets up each following visual).
 - Project rules: `CLAUDE.md` (screenshots § + image rules; mark mockups; alt text mandatory; build must
-  pass `npx tsc --noEmit` + `npm run lint`). Tutorials/use-cases plan: `specs/_round-two-tutorials-usecases-proposal.md`.
+  pass `npx tsc --noEmit` + `npm run lint`). Tutorials/use-cases content types: `docs-guide/writing-instructions.md` §5.
 - Starter tutorials these visuals will serve first: *Plan & publish your first week · Log a session ·
   Connect a watch & read recovery · Read team readiness · Set season goals.*

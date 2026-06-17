@@ -11,9 +11,12 @@ builds to a **fully static** site and is hosted on **Netlify**.
   - `site/components/` — the chrome (sidebar, TOC, search, …) and MDX components
     (`Card`, `Frame`, `Steps`, callouts, …).
   - `site/public/` — images, fonts, favicon, and the prebuilt search index.
+- **`docs-guide/`** — the **authoring knowledge base**: how to write Yarmill docs
+  (`writing-instructions.md`), the product facts (`master-reference.md`), and the working
+  notes from the docs build (`module-notes/`, `visuals/`, `changelog/`). Start here to add
+  or rewrite content; the `yarmill-docs` skill walks it.
 - **`internal/`** — Nunjucks/Jinja templates for Yollanda (Yarmill's AI).
   **Not** documentation; never edit it to satisfy a build.
-- **`specs/`** — internal planning / spec notes.
 
 ## Develop
 
