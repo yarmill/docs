@@ -2,11 +2,11 @@
 
 Paste-in brief for the session that prepares/refines the **`yarmill-visuals`** skill.
 Goal: make the skill able to produce every visual a Yarmill **docs tutorial** needs, so a
-later session can request them by shot list and drop them straight into Mintlify MDX.
+later session can request them by shot list and drop them straight into the React docs MDX (`site/content/docs/`).
 
 ## Who consumes the output
-The Yarmill docs (Mintlify, MDX + `docs.json`, Linear-style: one-line lead → hero → short
-scannable sections). We're adding **Tutorials** (task-based how-to journeys) and later
+The Yarmill docs (the React/Next.js site under `site/`, MDX, Linear-style: one-line lead → hero → short
+scannable sections; `cd site && npm run dev`). We're adding **Tutorials** (task-based how-to journeys) and later
 **Use cases** (role stories). Images are shown via `<Frame caption="…"><img src="…" alt="…"/></Frame>`,
 referenced root-relative (`/images/tutorials/<slug>/…`), displayed in a ~700px content
 column (so render at 2× for retina). The site has light **and** dark mode.
@@ -60,10 +60,10 @@ crop a callout; don't over-zoom.
 Each framed image is self-contained, so default to **one brand-neutral framing** that reads fine on
 both docs themes (GUI 2.0 dark screens stay dark; classic light screens stay light — the framing
 backdrop is the neutral constant). Only produce light+dark **pairs** for a screen if it genuinely
-looks wrong on one theme; if so, document the Mintlify swap technique.
+looks wrong on one theme; if so, document the light/dark image-swap technique.
 
 ## Output contract (what I need back to wire into MDX)
-- Files written to `images/tutorials/<slug>/` (and `images/use-cases/<slug>/`) with predictable names
+- Files written to `site/public/images/tutorials/<slug>/` (and `site/public/images/use-cases/<slug>/`) with predictable names
   (`hero.png`, `step-1.png`, `step-3.png`, `walkthrough.gif`, `walkthrough.mp4`, `thumb.png`).
 - PNG @2×, sRGB; GIF optimized; MP4 H.264 + poster.
 - For each artifact, return a **ready-to-paste `<Frame caption="…"><img alt="…"/></Frame>` snippet**
@@ -84,7 +84,7 @@ should check these exist and say what's missing.
 - [ ] Produce an **annotated step still** with each annotation primitive, callouts non-overlapping.
 - [ ] Produce a **GIF + MP4** walkthrough from a scripted cursor path, within the size/length budgets.
 - [ ] Produce a **landing thumbnail** at the fixed card aspect.
-- [ ] Run in **batch** from a shot list → a populated `images/tutorials/<slug>/` folder.
+- [ ] Run in **batch** from a shot list → a populated `site/public/images/tutorials/<slug>/` folder.
 - [ ] Return paste-ready `<Frame>` snippets + alt text for every artifact.
 - [ ] Re-run deterministically after a UI change.
 
@@ -93,6 +93,6 @@ should check these exist and say what's missing.
   step sequences, GIF/MP4) — this brief extends the latter for the docs-tutorial use case.
 - Style model: linear.app/docs (one hero per page; a tight sentence sets up each following visual).
 - Project rules: `CLAUDE.md` (screenshots § + image rules; mark mockups; alt text mandatory; build must
-  pass `mint broken-links`). Tutorials/use-cases plan: `specs/_round-two-tutorials-usecases-proposal.md`.
+  pass `npx tsc --noEmit` + `npm run lint`). Tutorials/use-cases plan: `specs/_round-two-tutorials-usecases-proposal.md`.
 - Starter tutorials these visuals will serve first: *Plan & publish your first week · Log a session ·
   Connect a watch & read recovery · Read team readiness · Set season goals.*

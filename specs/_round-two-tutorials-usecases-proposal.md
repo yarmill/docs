@@ -1,7 +1,7 @@
 # Round Two — Tutorials & Use Cases for Yarmill Docs
 
 A concrete, opinionated proposal for adding two new content types to the Yarmill
-Mintlify docs, modelled on Anthropic's **Tutorials** and **Use Cases** resources, adapted
+React docs site (`site/`), modelled on Anthropic's **Tutorials** and **Use Cases** resources, adapted
 to Yarmill's product, personas, and the existing Linear-style module pages.
 
 Status: proposal only. No docs pages were edited.
@@ -52,7 +52,7 @@ case). The structural takeaways:
 | Length | Short, single sitting | Longer, narrative, end-to-end |
 | Card metadata | Minimal | Rich (description, role, outcome) |
 | Cross-links | Sibling tutorials | Down into reference + relevant tutorials |
-| Mintlify analogue | `<Steps>` journey | annotated scenario + `<CardGroup>` to modules |
+| Component analogue | `<Steps>` journey | annotated scenario + `<CardGroup>` to modules |
 
 **Mapping to Yarmill's three layers:** module pages = **reference** (what each field
 does); tutorials = **how-to journeys** (do this end-to-end task); use cases = **role
@@ -107,8 +107,7 @@ icon: "calendar-week"          # Font Awesome
 
 Short 1–2 sentence promise: what you'll have built by the end.
 
-import { TutorialMeta } from "/snippets/tutorial-meta.jsx";
-
+{/* TutorialMeta and the other MDX components are global in the React site — no import needed */}
 <TutorialMeta audience="Coaches" time="6 min" modules={["Plan","Season Calendar"]} />
 
 <Frame caption="The finished week — sessions laid out across the microcycle, ready to publish.">
@@ -182,8 +181,7 @@ sidebarTitle: "National-team coach"
 icon: "flag"
 ---
 
-import { UseCaseMeta } from "/snippets/use-case-meta.jsx";
-
+{/* UseCaseMeta is a global MDX component in the React site — no import needed */}
 <UseCaseMeta role="National-team coach" outcome="Camp-ready squad, every camp"
   modules={["Plan","Medical","Analytics","Attendance"]} />
 
@@ -221,95 +219,64 @@ preserved — use cases narrate and point, they don't re-document fields.
 
 ---
 
-## 4. Information architecture (docs.json)
+## 4. Information architecture (`site/lib/nav.ts` + `site/content/docs/`)
 
-Add a new top-level **anchor** rather than burying these under Guides — it mirrors
-Anthropic's separation and keeps "reference vs journeys" legible in the nav.
+There's no central nav config file — nav order/grouping and the Linear-style sidebar
+**"spaces"** (the footer tab switcher) are defined in code in `site/lib/nav.ts`; pages live
+under `site/content/docs/**`. Each non-default space is a `SECTION_DEFS` entry matched to a
+content group — this keeps "reference vs journeys" legible without burying anything.
 
-Recommended: **one new anchor "Guides"** is already taken by the module reference. So
-rename the existing module anchor's role conceptually and add a sibling anchor:
+- **Module reference** stays the default "Docs" space (unchanged).
+- **Tutorials** is **already a space** (`SECTION_DEFS` id `tutorials`, icon `graduation-cap`,
+  content under `site/content/docs/tutorials/`) — the 5 starter tutorials + gallery index ship there.
+- **Use cases** is the one new space to add: register it in `SECTION_DEFS` and create
+  `site/content/docs/use-cases/` with the pages.
 
-- Keep current anchor **`Guides`** (`book-open-cover`) = module reference (unchanged).
-- Add anchor **`Tutorials`** (`graduation-cap`) with groups mirroring the catalogue
-  buckets: *Get going*, *Daily loop*, *Data & devices*, *Review*.
-- Add anchor **`Use cases`** (`users` / `flag`) with a single flat group *By role*.
-
-```jsonc
-{
-  "anchor": "Tutorials",
-  "icon": "graduation-cap",
-  "groups": [
-    { "group": "Get going", "pages": [
-        "en/tutorials/plan-first-week",
-        "en/tutorials/season-structure",
-        "en/tutorials/set-season-goals" ] },
-    { "group": "The daily loop", "pages": [
-        "en/tutorials/log-a-session",
-        "en/tutorials/wellness-setup",
-        "en/tutorials/track-attendance" ] },
-    { "group": "Data & devices", "pages": [
-        "en/tutorials/connect-a-watch",
-        "en/tutorials/import-results" ] },
-    { "group": "Read & review", "pages": [
-        "en/tutorials/read-readiness",
-        "en/tutorials/acwr-risk",
-        "en/tutorials/record-injury",
-        "en/tutorials/end-of-season-review" ] }
-  ]
-},
-{
-  "anchor": "Use cases",
-  "icon": "users",
-  "groups": [
-    { "group": "By role", "pages": [
-        "en/use-cases/national-team-coach",
-        "en/use-cases/youth-sport-school",
-        "en/use-cases/club-coach",
-        "en/use-cases/solo-athlete",
-        "en/use-cases/sc-staff",
-        "en/use-cases/team-doctor",
-        "en/use-cases/club-admin" ] }
-  ]
-}
+```ts
+// site/lib/nav.ts — SECTION_DEFS (the sidebar-footer spaces)
+{ id: 'tutorials', label: 'Tutorials', icon: 'graduation-cap', groupLabels: ['Tutorials'] }, // exists
+{ id: 'use-cases', label: 'Use cases', icon: 'users',          groupLabels: ['Use cases']  }, // ADD
 ```
 
-Files live under `en/tutorials/` and `en/use-cases/`. Images under
-`images/tutorials/<slug>/` and `images/use-cases/<slug>/`. Naming: tutorial slugs are
-verb-led (`plan-first-week`); use-case slugs are role nouns (`national-team-coach`).
+Content lives under `site/content/docs/tutorials/` and `site/content/docs/use-cases/`.
+Public images under `site/public/images/tutorials/<slug>/` and `…/use-cases/<slug>/`,
+referenced as `/images/…`. Naming: tutorial slugs are verb-led (`plan-first-week`);
+use-case slugs are role nouns (`national-team-coach`).
 
-If a separate anchor feels heavy this early, the fallback is **two new groups under the
-existing Guides anchor** ("Tutorials", "Use cases") placed above "Get started" — trivial
-to start, easy to promote to anchors later.
+The tutorial catalogue buckets (*Get going* / *Daily loop* / *Data & devices* / *Review*)
+can become sub-groups inside the Tutorials space as it grows; the starter set is small
+enough to sit in one flat group for now.
 
 ---
 
-## 5. Mintlify feasibility
+## 5. Feasibility (React docs site)
 
 **Trivial (no new tech):**
 - New `.mdx` pages, frontmatter, `<Steps>`, `<Frame>`, `<Card>/<CardGroup>`, `<Info>`,
-  `<Tip>`, `<Check>`, `<Columns>`, `<Tabs>`, `<Accordion>` — all already in use.
-- New anchors/groups in `docs.json` — pure config.
+  `<Tip>`, `<Check>`, `<Columns>`, `<Tabs>`, `<Accordion>` — all global MDX components in
+  `site/components/mdx/`, used with no imports.
+- A new space + group in `site/lib/nav.ts` — a small code change, not config.
 - Cross-links via root-relative `/en/…` paths.
 
-**Small custom work (one-time, mirrors existing `page-meta.jsx`):**
-- `snippets/tutorial-meta.jsx` — a pill row showing **For / Time / Modules** (clone of
-  `PageMeta`; add a clock pill and render `modules[]` as small pills). ~30 min.
-- `snippets/use-case-meta.jsx` — pill row showing **Role / Outcome / Modules**. Same
-  pattern.
-- Optional: a thumbnailed **gallery card** look for the landing index pages. Mintlify
-  `<Card>` with an `img` gets ~80% of the Anthropic card; a custom snippet only needed if
-  we want the description+tag chrome.
+**Small custom work (one-time, mirrors `site/components/mdx/PageMeta.tsx`):**
+- `TutorialMeta` (For / time / module pills) — **already built**
+  (`site/components/mdx/TutorialMeta.tsx`).
+- `site/components/mdx/UseCaseMeta.tsx` — a pill row showing **Role / Outcome / Modules**;
+  clone `PageMeta`, then register it in `site/mdx-components.tsx`. ~30 min.
+- Optional: a thumbnailed **gallery card** look for the landing index pages — a `<Card>`
+  with an image gets ~80% of the Anthropic card; only build a custom component if we want
+  the description + tag chrome.
 
-**Not natively available (don't block on it):**
+**Not built-in (don't block on it):**
 - True faceted **filtering** (Anthropic's Category/Product/Feature filters) is a custom
-  JS/React feature Mintlify doesn't ship. Skip for v1 — the grouped nav + landing
-  `<CardGroup>` pages cover discovery. Revisit only if the catalogue grows past ~25 items.
+  React feature. Skip for v1 — the grouped sidebar + landing `<CardGroup>` pages cover
+  discovery. Revisit only if the catalogue grows past ~25 items.
 - Video hosting/embeds: fine via standard embeds, but Yarmill's strength is rendered
-  screenshots (yarmill-design pipeline), so start image-led, add video later.
+  screenshots (yarmill-visuals pipeline), so start image-led, add video later.
 
-**Each new content type needs a landing/index page** (`en/tutorials/index.mdx`,
-`en/use-cases/index.mdx`) — a short intro + `<CardGroup>` gallery — set as the first page
-in its anchor.
+**Each new content type needs a landing/index page** (`site/content/docs/tutorials/index.mdx`
+already exists; add `site/content/docs/use-cases/index.mdx`) — a short intro + `<CardGroup>`
+gallery, set as the first page in its space.
 
 ---
 
@@ -411,13 +378,14 @@ the tutorial links, it doesn't restate — and anything unconfirmed gets a
 
 ## 8. Recommended sequencing
 
-1. Add `tutorial-meta.jsx` + `use-case-meta.jsx` snippets (clone `page-meta.jsx`).
-2. Create `en/tutorials/` + `en/use-cases/` dirs and the two index landing pages.
-3. Wire the two new anchors into `docs.json`.
-4. Write the 5 starter tutorials, then the 3 starter use cases (use cases link into the
-   tutorials, so tutorials first).
+1. Add `site/components/mdx/UseCaseMeta.tsx` (clone `PageMeta.tsx`) and register it in
+   `site/mdx-components.tsx`. (`TutorialMeta` already exists.)
+2. Create `site/content/docs/use-cases/` and its index landing page. (`tutorials/` exists.)
+3. Register the **Use cases** space in `site/lib/nav.ts` (`SECTION_DEFS`).
+4. Write the 3 starter use cases (the 5 tutorials already exist); use cases link into the
+   tutorials, so the tutorials being in place first is exactly the right order.
 5. Add "See it in action" up-links from the relevant module reference pages.
-6. `mint broken-links` must pass before commit.
+6. `npx tsc --noEmit` + `npm run lint` (and a clean `npm run build`) must pass before commit.
 
 All product claims to be checked against the Yarmill Master Reference; mark anything
 unverified with `{/* TODO(yarmill): verify … */}` per CLAUDE.md.
