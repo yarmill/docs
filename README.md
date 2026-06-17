@@ -1,44 +1,42 @@
-# Mintlify Starter Kit
+# Yarmill Docs
 
-Use the starter kit to get your docs deployed and ready to customize.
+The Yarmill documentation site — a React/Next.js app with a Linear-style UI that
+builds to a **fully static** site and is hosted on **Netlify**.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## Repository layout
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+- **`site/`** — the docs app (Next.js App Router, static export). All content and
+  UI live here.
+  - `site/content/docs/` — the documentation pages (`.mdx` + frontmatter).
+  - `site/components/` — the chrome (sidebar, TOC, search, …) and MDX components
+    (`Card`, `Frame`, `Steps`, callouts, …).
+  - `site/public/` — images, fonts, favicon, and the prebuilt search index.
+- **`internal/`** — Nunjucks/Jinja templates for Yollanda (Yarmill's AI).
+  **Not** documentation; never edit it to satisfy a build.
+- **`specs/`** — internal planning / spec notes.
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+## Develop
 
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
-
-```
-npm i -g mint
-```
-
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
-mint dev
+```bash
+cd site
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-View your local preview at `http://localhost:3000`.
+## Build (static export)
 
-## Publishing changes
+```bash
+cd site
+npm run build        # → site/out  (static HTML + assets, no server runtime)
+```
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+## Deploy
 
-## Need help?
+The build runs in **GitHub Actions**; Netlify only hosts the prebuilt `site/out`.
 
-### Troubleshooting
+- Push to `main` touching `site/**` → **production** deploy.
+- Pull request touching `site/**` → **preview** deploy (URL auto-commented on the PR).
+- Workflows: `.github/workflows/docs-site-ci.yml` and `docs-site-deploy.yml`.
+- Required repo secrets: `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID`.
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
-- [Mintlify community](https://mintlify.com/community)
+See `CLAUDE.md` for authoring conventions and writing standards.
