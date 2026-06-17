@@ -2,6 +2,35 @@
 
 > Read this first on resume. Everything is on disk; this file says where we are and what's next.
 
+## ⚠️ STACK: the docs are the React site under `site/` — NOT Mintlify
+The published docs are the **Next.js app under `site/`** (content `site/content/docs/**.mdx`, components
+`site/components/mdx/**`, run `cd site && npm run dev`, validate `npx tsc --noEmit` + `npm run lint`).
+The old Mintlify setup (`en/**`, `docs.json`, root `snippets/`, `mint dev`) was **removed** — never edit it.
+See memory `docs-stack-is-react-not-mintlify` and `react-docs-site`. Much of this file below is Mintlify-era
+history; treat paths like `en/**`/`docs.json` as their `site/content/docs/**` equivalents.
+
+## Round two — Linear-style refinement (implemented in the React site)
+Model = **linear.app/docs** (memory `linear-docs-style`): one-line lead → hero visual → short scannable
+sections; flat feature-named IA. **All shipped in `site/content/docs/`:**
+- ✅ **PageMeta** — `site/components/mdx/PageMeta.tsx` (global MDX component): two-pill `For`/`Where` row,
+  brand-indigo icon, themed from `--ym-*` tokens. On all 18 module + get-started pages. Replaced the old
+  `**For:** … · **Where:** …` line.
+- ✅ **Page-pattern rewrite** — every content page = one lead line → PageMeta → hero (`{/* TODO hero */}`
+  placeholder where no real image yet) → tight sections with bold lead-ins.
+- ✅ **IA / landing card-grid** — `site/content/docs/index.mdx`: Choose your path → Start with a tutorial →
+  Explore by module (Plan/Reality/Review/Platform).
+- ✅ **Tutorials** — `site/content/docs/tutorials/` = gallery `index.mdx` + 5 grounded tutorials using
+  `site/components/mdx/TutorialMeta.tsx` (For / time / module-chip pills) with visual TODO placeholders:
+  plan-first-week · set-season-goals · log-a-session · read-readiness · connect-a-watch. Tutorials appear as
+  a sidebar "space". Validated: `tsc` + `eslint` clean.
+- 📄 **Tutorials + Use-cases proposal** — `specs/_round-two-tutorials-usecases-proposal.md`; **Visuals-skill
+  brief** — `specs/_yarmill-visuals-skill-brief.md` (what the yarmill-visuals skill must produce for tutorials).
+- ⬜ NEXT (deferred by design): **Use cases** (role stories) — hold until tutorials get visuals & prove the
+  template. Then the screenshot/visuals skill session → render the queued tutorial + module visuals (TODO
+  placeholders mark every slot). One open `TODO(yarmill): verify` in log-a-session (Import-plan entry point).
+- NOTE 2026-06-17: a session re-did this round on the dead Mintlify mirror before realizing the React site
+  already had it at parity — no content lost; lesson saved to memory `docs-stack-is-react-not-mintlify`.
+
 ## Current phase
 **Live-verify the 13 module specs** against the running Yarmill app, and **build the
 `_VISUAL-TODOS.md` queue** (executable instructions for the *later, polished* screenshot skill).
