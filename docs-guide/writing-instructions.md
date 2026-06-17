@@ -495,7 +495,7 @@ them; don't hand-roll HTML:
 | Component | Use for |
 |---|---|
 | `<PageMeta audience where />` | The For/Where signpost under the lede (module/reference pages) |
-| `<TutorialMeta>` / `<UseCaseMeta>` | The meta row on tutorials / use cases (§5.1, §5.2) |
+| `<TutorialMeta>` | The meta row on tutorials (§5.1). `<UseCaseMeta>` is its use-case sibling — **build it first** (§5.2) |
 | `<Note>` / `<Info>` | Asides; the standard configurability caveat |
 | `<Tip>` | Recommended practice ("we recommend …") |
 | `<Warning>` | Destructive/data-affecting actions only |
