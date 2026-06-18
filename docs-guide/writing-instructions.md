@@ -580,6 +580,19 @@ content lives under `site/content/docs/` and URLs are `/en/…`. Target language
 - **RPE / sRPE** (Borg CR10, 0–10) · **TRIMP** · **ACWR** (acute:chronic workload
   ratio; <0.8 / 0.8–1.3 / >1.3 zones) — expand each abbreviation on first use per page.
 
+**Sports terminology — use the English term, not a literal translation of the Czech UI.**
+Yarmill is Czech-built, so several labels get mistranslated; titles and prose must use the
+established English sports-science wording:
+
+- **training session** — *not* "training unit" (a calque of *tréninková jednotka*).
+- **Season Calendar** — *not* "term calendar" / "deadline calendar" (*termínovka*).
+- **group** — the organizing unit of athletes; *not* "team" (also in the glossary above).
+- Correct as-is and preferred: **watch / wearable**, **recovery**, **readiness**, **training
+  volume**, **microcycle / mesocycle**, **resting heart rate (RHR)**, **heart rate variability
+  (HRV)**, **session RPE (sRPE)**.
+- When unsure, choose the standard English sports term over a word-for-word rendering of the
+  Czech label, and keep canonical EN module names (§9 glossary) consistent.
+
 **House style**
 
 - Sentence case for titles and headings.
