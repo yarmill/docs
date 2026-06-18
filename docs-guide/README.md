@@ -12,6 +12,7 @@ rewriting docs content, start here. (The docs site itself — the React/Next.js 
 | File | What it is |
 |---|---|
 | **[`how-to-generate-docs.md`](how-to-generate-docs.md)** | Plain-language quickstart: how to ask Claude Code to generate any docs content (module pages, tutorials, use cases, changelog, visuals). Start here. |
+| **[`tutorials-starter-topics.md`](tutorials-starter-topics.md)** | The first set of tutorials to write, chosen from real user-question demand — titles, roles, and which have a "just ask Yollanda" path. Topics only; write the pages with the `yarmill-docs` skill. |
 | **[`writing-instructions.md`](writing-instructions.md)** | The house guide: voice & tone, the configurability principle, content types (reference / tutorial / use case), the React output format (frontmatter, components, nav), and the pre-publish checklist. **Read this before drafting.** |
 | **[`master-reference.md`](master-reference.md)** | The Yarmill product facts — a **living document**. Tagged CORE / CONFIG / SPORT / ROADMAP. Order of truth: chat details > live product > this reference. Keep it current. |
 | **`module-notes/`** | Per-module live-verification notes (what each screen actually does), the page `_TEMPLATE.md`, the `_REVIEW-CHECKLIST.md`, and `_BUILD-STATUS.md` (the docs build progress / resume anchor). |
