@@ -41,18 +41,18 @@
 /* The list — one row per entry, hairline between rows.
    Scoped overrides beat the prose `ol/li` rules (decimal markers, padding,
    per-item margins) without !important. */
-.ym-shell #ym-page .prose .ym-cl-list {
+.ym-shell #ym-page .ym-cl-list {
   list-style: none;
   margin: 0;
   padding: 0;
   border-top: 1px solid var(--ym-line-subtle);
 }
-.ym-shell #ym-page .prose .ym-cl-row {
+.ym-shell #ym-page .ym-cl-row {
   margin: 0;
   padding: 0;
   border-bottom: 1px solid var(--ym-line-subtle);
 }
-.ym-shell #ym-page .prose .ym-cl-row::marker { content: none; }
+.ym-shell #ym-page .ym-cl-row::marker { content: none; }
 .ym-cl-row:last-child { border-bottom: 0; }
 
 .ym-cl-rowlink {
@@ -79,8 +79,8 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: var(--ym-faint);
-  /* Collapse the inherited 24px prose line-height + a tiny nudge so the date's
-     text top aligns with the title's first line (align-items: start). */
+  /* Line-height matches the title's first line + a tiny nudge so the date's text
+     top aligns with the title (align-items: start). */
   line-height: 20.925px;
   margin-top: -1.5px;
   white-space: nowrap;
@@ -91,7 +91,7 @@
 .ym-cl-body { min-width: 0; }
 /* Scoped to beat the prose `h2`/`p` element rules (chrome.css) without
    !important — the index title is an <h2>, the lede a <p>. */
-.ym-shell #ym-page .prose .ym-cl-title {
+.ym-shell #ym-page .ym-cl-title {
   margin: 0;
   font-size: 15.5px;
   font-weight: 600;
@@ -99,7 +99,7 @@
   line-height: 1.35;
   color: var(--ym-ink);
 }
-.ym-shell #ym-page .prose .ym-cl-lede {
+.ym-shell #ym-page .ym-cl-lede {
   margin: 3px 0 0;
   font-size: 14px;
   line-height: 1.45;
