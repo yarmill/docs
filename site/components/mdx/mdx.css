@@ -1180,6 +1180,15 @@
   width: 56px;
   height: 56px;
 }
+/* Dark mode: the two-tone art (dark-navy + lilac) loses its navy on the dark
+   surface, so sit it on a soft light chip — legible on both themes, and reads
+   as an intentional avatar tile. Light mode keeps the transparent, chip-less
+   look. */
+.dark .ym-row-illu {
+  background: #f1f0f8;
+  border-radius: var(--ym-radius);
+  overflow: hidden;
+}
 /* Whole illustration always visible (contain, never cropped). Scoped through
    `.prose` so it outranks the generic `.prose img { height: auto }` rule. */
 .ym-shell #ym-page .prose .ym-row-illu img {
