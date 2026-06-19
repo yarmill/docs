@@ -223,9 +223,18 @@
   min-width: 0;
   padding-block: 48px 64px;
 }
-/* Full-width pages (mode: wide) drop the TOC (see page.tsx) and widen the
-   wrapper so the content — e.g. the homepage card dashboard — uses the space. */
-.ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-wide); }
+/* Wide pages (mode: wide — homepage dashboard, changelog index) drop the TOC
+   (see page.tsx). They keep the standard centred content wrapper, but cap the
+   article to the wide measure and leave it LEFT-aligned so its left edge sits at
+   the same gutter as every other page — never centred in the main column. */
+.ym-shell #ym-page[data-full] { max-width: var(--ym-content-wide); }
+
+/* TOC hidden site-wide (SHOW_TOC=false in page.tsx): with no rail to constrain
+   it, cap a reading page to a comfortable measure, left-aligned, so prose lines
+   don't run the full content width. Flip SHOW_TOC to restore the rail. */
+.ym-content-row[data-toc='hidden'] #ym-page:not([data-full]) {
+  max-width: var(--ym-prose-max);
+}
 
 /* ---------- Reading typography (Linear scale in Inter) -----
    Scoped to #ym-page so the id specificity (1,0,1 for `#id el`) beats
@@ -408,6 +417,14 @@
   color: var(--ym-ink);
   letter-spacing: -0.011em;
 }
+
+/* Sidebar search trigger blends into the sidebar — no white fill or border —
+   and uses a slightly smaller glyph than the standard icon button. */
+.ym-sidebar-search-btn {
+  background: transparent;
+  border-color: transparent;
+}
+.ym-sidebar-search-btn svg { width: 14px; height: 14px; }
 
 /* Scrollable nav */
 .ym-sidebar-scroll {
@@ -653,16 +670,14 @@
 .ym-split-main {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   height: 32px;
-  padding-inline: 12px;
+  width: 32px;
   border: 1px solid var(--ym-line);
   border-right: none;
   border-radius: var(--ym-radius-pill) 0 0 var(--ym-radius-pill);
   background: var(--ym-bg);
   color: var(--ym-ink);
-  font-size: 13px;
-  font-weight: 510;
   cursor: pointer;
   transition: background-color var(--ym-dur-fast) ease;
 }
@@ -882,6 +897,8 @@
   .ym-footer-link,
   .ym-nav-group-label { min-height: 40px; }
   .ym-icon-btn { width: 40px; height: 40px; }
+  /* Match the CTA pill to the 40px icon buttons so the header cluster lines up. */
+  .ym-cta { height: 40px; }
 }
 
 /* Reduced motion — plain fades, no transforms. */

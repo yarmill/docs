@@ -12,6 +12,13 @@ interface PageProps {
   params: Promise<{ lang: string; slug?: string[] }>;
 }
 
+/**
+ * TOC ("On this page") is hidden site-wide for now — flip to `true` to bring the
+ * right-hand rail back. When hidden, reading pages are capped to a comfortable
+ * measure (see chrome.css `[data-toc='hidden']`) so prose doesn't run full width.
+ */
+const SHOW_TOC = false;
+
 export default async function DocPage(props: PageProps) {
   const { slug } = await props.params;
   const page = getPage(slug ?? []);
@@ -27,7 +34,7 @@ export default async function DocPage(props: PageProps) {
       <TopBar group={group} page={page.frontmatter.title} />
 
       <div className="ym-content">
-        <div className="ym-content-row">
+        <div className="ym-content-row" data-toc={SHOW_TOC ? undefined : 'hidden'}>
           <article id="ym-page" data-full={isWide || undefined}>
             <PageTransition>
               {page.frontmatter.title ? <h1>{page.frontmatter.title}</h1> : null}
@@ -39,9 +46,10 @@ export default async function DocPage(props: PageProps) {
             </PageTransition>
           </article>
 
-          {/* Wide pages (mode: wide — homepage dashboard, changelog) use the full
-              width and drop the right-hand TOC. */}
-          {!isWide && <Toc items={toc} />}
+          {/* Wide pages (mode: wide — homepage dashboard, changelog) always drop
+              the right-hand TOC; everything else is gated on SHOW_TOC (hidden
+              site-wide for now). */}
+          {SHOW_TOC && !isWide && <Toc items={toc} />}
         </div>
       </div>
     </div>

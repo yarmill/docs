@@ -170,8 +170,8 @@ export interface Space {
 /** Non-default spaces, matched by (overridden) group label, in footer order. */
 const SECTION_DEFS: { id: string; label: string; icon: string; groupLabels: string[] }[] = [
   { id: 'tutorials', label: 'Tutorials', icon: 'graduation-cap', groupLabels: ['Tutorials'] },
-  { id: 'api', label: 'API Docs', icon: 'code', groupLabels: ['API Docs'] },
   { id: 'changelog', label: 'Changelog', icon: 'history', groupLabels: ['Changelog'] },
+  { id: 'api', label: 'API Docs', icon: 'code', groupLabels: ['API Docs'] },
 ];
 
 function basePathOf(groups: NavGroup[]): string {

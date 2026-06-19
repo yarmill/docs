@@ -132,13 +132,18 @@ export function CopyPage() {
 
   return (
     <div className="ym-split" ref={rootRef}>
-      <button type="button" className="ym-split-main" onClick={() => run('copy')}>
+      <button
+        type="button"
+        className="ym-split-main"
+        onClick={() => run('copy')}
+        aria-label={copied ? 'Copied' : 'Copy page'}
+        title={copied ? 'Copied' : 'Copy page'}
+      >
         {copied ? (
           <Check className="ym-split-icon" aria-hidden />
         ) : (
           <Copy className="ym-split-icon" aria-hidden />
         )}
-        <span>{copied ? 'Copied' : 'Copy page'}</span>
       </button>
       {/* Dedicated polite live region: announces the copy result to screen
           readers without re-announcing the visible label on every render. */}
