@@ -223,19 +223,19 @@
   min-width: 0;
   padding-block: 48px 64px;
 }
-/* Wide pages (mode: wide — homepage dashboard, changelog index) drop the TOC
-   (see page.tsx). They keep the standard centred content wrapper, but cap the
-   article to the wide measure and leave it LEFT-aligned so its left edge sits at
-   the same gutter as every other page — never centred in the main column. */
-.ym-shell #ym-page[data-full] { max-width: var(--ym-content-wide); }
+/* Wide pages (mode: wide — homepage dashboard) drop the TOC (see page.tsx).
+   They keep the standard centred content wrapper, but cap the article to the
+   reading measure and leave it LEFT-aligned so its left edge sits at the same
+   gutter as every other page — never centred in the main column. */
+.ym-shell #ym-page[data-full] { max-width: var(--ym-read); }
 
 /* TOC hidden site-wide (SHOW_TOC=false in page.tsx): with no rail to constrain
-   it, cap a reading page to a comfortable measure, left-aligned, so prose lines
+   it, cap a reading page to the reading measure, left-aligned, so prose lines
    don't run the full content width. Flip SHOW_TOC to restore the rail. The
-   changelog index/entry pages keep their own widths (below), so exclude them. */
+   changelog index keeps its own (wider) width below, so exclude it. */
 .ym-content-row[data-toc='hidden']
   #ym-page:not([data-full]):not([data-changelog-index]):not([data-changelog-entry]) {
-  max-width: var(--ym-prose-max);
+  max-width: var(--ym-read);
 }
 
 /* Changelog entry pages drop the TOC but are a READING surface, so cap the
