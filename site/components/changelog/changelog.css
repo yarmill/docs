@@ -1,0 +1,226 @@
+/* ============================================================
+   Changelog — Attio-inspired year index + per-entry pages.
+   Index: a dense, scannable text list (date · title + lede · tags · →).
+   Entry: a focused reading page with a meta header above the body.
+   Stays within the Yarmill type system (Inter) + token palette.
+   ============================================================ */
+
+/* ---- shared: tag chip (dot + neutral label) ---- */
+.ym-cl-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  line-height: 1.2;
+  color: var(--ym-muted);
+  white-space: nowrap;
+}
+.ym-cl-tag-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--ym-faint);
+  flex: none;
+}
+.ym-cl-tag[data-tag='Yollanda']     .ym-cl-tag-dot { background: var(--ym-tag-yollanda); }
+.ym-cl-tag[data-tag='Analytics']    .ym-cl-tag-dot { background: var(--ym-tag-analytics); }
+.ym-cl-tag[data-tag='Integrations'] .ym-cl-tag-dot { background: var(--ym-tag-integrations); }
+.ym-cl-tag[data-tag='Medical']      .ym-cl-tag-dot { background: var(--ym-tag-medical); }
+.ym-cl-tag[data-tag='Planning']     .ym-cl-tag-dot { background: var(--ym-tag-planning); }
+.ym-cl-tag[data-tag='Platform']     .ym-cl-tag-dot { background: var(--ym-tag-platform); }
+
+/* ============================================================
+   Index
+   ============================================================ */
+/* Years live in the sidebar (a single-group space); the index is just the list,
+   filling the wide wrapper (capped to --ym-content-wide for readability). */
+.ym-cl {
+  margin-top: 24px;
+}
+
+/* The list — one row per entry, hairline between rows.
+   Scoped overrides beat the prose `ol/li` rules (decimal markers, padding,
+   per-item margins) without !important. */
+.ym-shell #ym-page .prose .ym-cl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--ym-line-subtle);
+}
+.ym-shell #ym-page .prose .ym-cl-row {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--ym-line-subtle);
+}
+.ym-shell #ym-page .prose .ym-cl-row::marker { content: none; }
+.ym-cl-row:last-child { border-bottom: 0; }
+
+.ym-cl-rowlink {
+  display: grid;
+  /* Fixed date + tags columns so dates and tag dots line up across every row. */
+  grid-template-columns: 78px minmax(0, 1fr) 164px 20px;
+  align-items: start;
+  column-gap: 20px;
+  padding: 18px 8px;
+  margin: 0 -8px;
+  border-radius: var(--ym-radius);
+  text-decoration: none;
+  color: inherit;
+  transition: background var(--ym-dur-fast) var(--ym-ease-out);
+}
+/* Soft hover: a light fill, and the date shifts to accent (the title stays ink). */
+.ym-cl-rowlink:hover { background: var(--ym-bg-subtle); }
+
+.ym-cl-date {
+  font-family: var(--ym-font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ym-faint);
+  /* Collapse the inherited 24px prose line-height + a tiny nudge so the date's
+     text top aligns with the title's first line (align-items: start). */
+  line-height: 20.925px;
+  margin-top: -1.5px;
+  white-space: nowrap;
+  transition: color var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-cl-rowlink:hover .ym-cl-date { color: var(--ym-accent); }
+
+.ym-cl-body { min-width: 0; }
+/* Scoped to beat the prose `h2`/`p` element rules (chrome.css) without
+   !important — the index title is an <h2>, the lede a <p>. */
+.ym-shell #ym-page .prose .ym-cl-title {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  line-height: 1.35;
+  color: var(--ym-ink);
+}
+.ym-shell #ym-page .prose .ym-cl-lede {
+  margin: 3px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ym-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 46em;
+  text-wrap: pretty;
+}
+
+.ym-cl-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding-top: 2px;
+}
+
+.ym-cl-chev {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1px;
+  color: var(--ym-faint);
+  transition: transform var(--ym-dur) var(--ym-ease-out),
+    color var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-cl-rowlink:hover .ym-cl-chev {
+  color: var(--ym-muted);
+  transform: translateX(2px);
+}
+
+/* ---- Index responsive: stack date / body / tags on narrow screens ---- */
+@media (max-width: 720px) {
+  .ym-cl-rowlink {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+    column-gap: 0;
+    padding: 16px 8px;
+  }
+  .ym-cl-date { order: -1; }
+  .ym-cl-tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+  .ym-cl-chev { display: none; }
+}
+
+/* ============================================================
+   Entry page header (rendered by the route, above the MDX body)
+   ============================================================ */
+/* Generous gap below the whole header so the body/hero has room to breathe. */
+.ym-cl-entry-head {
+  margin-bottom: 48px;
+}
+
+.ym-cl-entry-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0;
+}
+/* Date pill — neutral grey (same as the tag pills), calendar glyph + mono date. */
+.ym-cl-entry-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: var(--ym-radius);
+  background: var(--ym-bg-hover);
+  color: var(--ym-prose-text);
+  font-family: var(--ym-font-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px; /* match the tag pills so both pills are the same height */
+}
+.ym-cl-entry-date svg { flex: none; color: var(--ym-faint); }
+
+/* Tag pills — soft neutral fill + the tag's colour dot. */
+.ym-cl-entry-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ym-cl-entry-tags .ym-cl-tag {
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: var(--ym-radius);
+  background: var(--ym-bg-hover);
+  color: var(--ym-prose-text);
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.ym-shell #ym-page .ym-cl-entry-title {
+  margin: 28px 0 0;
+  /* match the docs h1 scale (tokens.css) */
+  font-size: var(--ym-h1-size);
+  line-height: var(--ym-h1-lh);
+  letter-spacing: var(--ym-h1-ls);
+  font-weight: var(--ym-h1-w);
+  color: var(--ym-ink);
+}
+/* The lede reads as the first body paragraph — same type as the prose body
+   (chrome.css `#ym-page p`), just spaced below the title. */
+.ym-shell #ym-page .ym-cl-entry-lede {
+  margin: 24px 0 0;
+  text-wrap: pretty;
+}
+
+/* Looser block rhythm in the entry body — more air between paragraphs than the
+   default docs prose (16px), so a changelog post reads relaxed, not dense. */
+.ym-shell #ym-page[data-changelog-entry] .prose > * {
+  margin-top: 22px;
+}
+.ym-shell #ym-page[data-changelog-entry] .prose > :first-child {
+  margin-top: 0;
+}
+

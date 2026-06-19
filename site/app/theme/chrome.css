@@ -227,6 +227,14 @@
    wrapper so the content — e.g. the homepage card dashboard — uses the space. */
 .ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-wide); }
 
+/* Changelog entry pages drop the TOC but are a READING surface, so cap the
+   column to the reading measure (it would otherwise fill ~976px). */
+.ym-shell #ym-page[data-changelog-entry] { max-width: var(--ym-read); }
+/* The changelog year index also drops the TOC; cap it (a touch wider than the
+   reading column, for the list's columns) and leave it LEFT-aligned at the
+   content gutter so its left edge matches the entry pages — not centered. */
+.ym-shell #ym-page[data-changelog-index] { max-width: var(--ym-content-wide); }
+
 /* ---------- Reading typography (Linear scale in Inter) -----
    Scoped to #ym-page so the id specificity (1,0,1 for `#id el`) beats
    Fumadocs' `.prose :where(el)` preset (0,1,1) without !important. The
@@ -541,6 +549,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* Count badge (e.g. changelog year → entry count), rendered as "[n]". */
+.ym-nav-count {
+  flex: none;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ym-faint);
+}
+.ym-nav-count::before { content: '['; }
+.ym-nav-count::after { content: ']'; }
+.ym-nav-link[data-active='true'] .ym-nav-count { color: var(--ym-muted); }
 .ym-nav-folder-trigger { width: 100%; }
 .ym-nav-folder-chevron {
   width: 14px;

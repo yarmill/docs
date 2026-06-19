@@ -83,7 +83,7 @@ function NavList({
   hidden = false,
 }: {
   id?: string;
-  pages: { title: string; url: string; icon?: string }[];
+  pages: { title: string; url: string; icon?: string; count?: number }[];
   pathname: string;
   hidden?: boolean;
 }) {
@@ -100,7 +100,7 @@ function NavLink({
   page,
   pathname,
 }: {
-  page: { title: string; url: string; icon?: string };
+  page: { title: string; url: string; icon?: string; count?: number };
   pathname: string;
 }) {
   const { setOpen } = useSidebar();
@@ -140,6 +140,9 @@ function NavLink({
           </span>
         ) : null}
         <span className="ym-nav-label">{page.title}</span>
+        {typeof page.count === 'number' ? (
+          <span className="ym-nav-count">{page.count}</span>
+        ) : null}
       </Link>
     </li>
   );

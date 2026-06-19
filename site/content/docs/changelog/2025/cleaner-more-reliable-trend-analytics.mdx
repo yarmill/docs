@@ -1,0 +1,29 @@
+---
+title: "Cleaner, more reliable trend analytics"
+description: "Trend reports handle empty visuals cleanly, and dates in analytics now link straight to that day in reality."
+date: "2025-08-26"
+tags: ["Analytics"]
+---
+
+{/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+<Frame>
+  <img src="/images/changelog/_placeholder.svg" alt="A Yarmill trend report rendering cleanly when some visuals have no data." />
+</Frame>
+
+Trend reports are only useful if you can trust what's on the chart. When a visual had no data behind it, it could still draw odd axes and stray gridlines, and labels would show variable placeholders that read as noise.
+
+Now [analytics](/en/analytics/analytics) handles empty visuals cleanly. Charts with no data render with sensible axis ranges instead of stray marks, and labels built from variables stay hidden when those variables have nothing to show, so a report reads clearly even when part of it is empty.
+
+## Jump from any date straight to that day
+
+Dates in analytics are now links. Click a date anywhere in a report and you land on that day in [reality](/en/reality/training-log), so you can go from a number in a trend straight to the session behind it without hunting for it.
+
+### Improvements
+
+- Refined the export icon and added clearer "from" and "to" icons to the date picker, so range pickers read at a glance.
+- Plus a range of smaller polish across the app.
+
+### Fixes
+
+- **Analytics** — Empty visuals in trend reports no longer draw misleading Y-axes, and weekly dashboards that loaded by email but not in-app now open correctly when you click through.
+- Plus a number of smaller fixes and performance improvements.

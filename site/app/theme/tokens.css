@@ -35,6 +35,17 @@
   --ym-accent-subtle-fg: #3b02d6;  /* text on subtle accent */
   --ym-accent-ring: rgba(81, 63, 248, 0.4);
 
+  /* Yollanda accent (Blush) — her brand colour, never indigo. */
+  --ym-blush: #fc7b9b;
+
+  /* Changelog tag tints (dot only; labels stay neutral). One soft hue per area. */
+  --ym-tag-yollanda: #f9a3ba;     /* Soft blush */
+  --ym-tag-analytics: #9b92f6;    /* Soft indigo */
+  --ym-tag-integrations: #6fc9da; /* Soft cyan */
+  --ym-tag-medical: #6cc59b;      /* Soft green */
+  --ym-tag-planning: #f2c45f;     /* Soft amber */
+  --ym-tag-platform: #b0afc1;     /* Soft slate */
+
   /* status (callouts) */
   --ym-info: #513ff8;     --ym-info-bg: #f5f4ff;     --ym-info-line: #e3e0fe;
   --ym-tip: #328052;      --ym-tip-bg: #eff5f2;      --ym-tip-line: #d2ead9;
@@ -71,12 +82,20 @@
   --ym-toc-w: 250px;
   --ym-topbar-h: 64px;
   --ym-content-max: 1024px;
-  --ym-content-wide: 1024px; /* mode: wide — matches Linear's docs content width */
+  --ym-content-wide: 768px;  /* mode: wide (homepage, changelog index) — capped for readability */
   --ym-prose-max: 650px;
 
   /* Inter everywhere */
   --ym-font-sans: 'Inter', 'Inter Variable', ui-sans-serif, system-ui,
     -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* Monospace — self-hosted JetBrains Mono (loaded in layout.tsx), with a
+     platform-mono fallback. Used for code blocks + the changelog tabular dates. */
+  --ym-font-mono: var(--ym-font-jetbrains), ui-monospace, 'SF Mono',
+    'Cascadia Code', Menlo, Consolas, monospace;
+
+  /* Reading measure — caps the changelog entry (a prose detail page) to a tight,
+     comfortable ~60–70 chars per line. */
+  --ym-read: 608px;
 }
 
 /* ============================================================
@@ -108,6 +127,14 @@
   --ym-accent-subtle: rgba(158, 147, 251, 0.14);
   --ym-accent-subtle-fg: #c3bcfd;
   --ym-accent-ring: rgba(158, 147, 251, 0.5);
+
+  /* Changelog tag tints — lifted for contrast on the dark surface. */
+  --ym-tag-yollanda: #fc7b9b;
+  --ym-tag-analytics: #9e93fb;    /* Brand-56 (dark accent) */
+  --ym-tag-integrations: #22d3ee;
+  --ym-tag-medical: #4ec08c;
+  --ym-tag-planning: #f5c451;
+  --ym-tag-platform: #a3a2b5;
 
   --ym-info: #9e93fb;   --ym-info-bg: rgba(158,147,251,0.10);  --ym-info-line: #2f2e45;
   --ym-tip: #95ccad;    --ym-tip-bg: rgba(50,128,82,0.14);     --ym-tip-line: #2f2e45;

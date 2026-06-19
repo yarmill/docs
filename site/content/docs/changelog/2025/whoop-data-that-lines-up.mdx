@@ -1,0 +1,20 @@
+---
+title: "WHOOP data that lines up"
+description: "Now an approved WHOOP application — recovery, sleep and workout numbers read correctly in the diary."
+date: "2025-09-12"
+tags: ["Integrations"]
+---
+
+{/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+<Frame>
+  <img src="/images/changelog/_placeholder.svg" alt="WHOOP recovery and workout metrics shown in the Yarmill training diary." />
+</Frame>
+
+Yarmill is now an approved WHOOP application, and this release makes the data it brings in trustworthy. If an athlete wears a WHOOP band, their recovery, sleep and workout numbers now read correctly in the left side of the [training log](/en/reality/training-log).
+
+We fixed the things that quietly made the numbers wrong: sleep and workout start times were off by two hours, recovery wasn't showing at all, distance and average heart rate were missing from the workout overview, and some Sundays had no health data. Where a chart genuinely has no data behind it, we now leave it out rather than showing an empty frame.
+
+### Fixes
+
+- **WHOOP** — Sleep and recovery metrics are no longer duplicated into a single box in the diary's left side.
+- Plus a number of smaller fixes and performance improvements.

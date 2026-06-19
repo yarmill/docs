@@ -1,0 +1,38 @@
+---
+title: "VALD Performance integration"
+description: "Pull VALD ForceDecks, ForceFrame, NordBord and DynaMo testing into Yarmill, beside the rest of an athlete's data."
+date: "2026-05-29"
+tags: ["Integrations", "Analytics"]
+---
+
+{/* NOTE(yarmill): placeholder hero — real visual generated later via yarmill-visuals. */}
+<Frame>
+  <img src="/images/changelog/_placeholder.svg" alt="VALD Performance test data shown in a Yarmill report." />
+</Frame>
+
+Bring your VALD Performance testing into Yarmill. The integration pulls results from VALD's
+devices — **ForceDecks**, **ForceFrame**, **NordBord** and **DynaMo** — so the jump,
+strength and dynamometry tests your staff already run sit alongside the rest of an
+athlete's data in the [reports](/en/platform/integrations).
+
+This is built for the testing you do all season. Track countermovement jump (CMJ) trends
+through the year, run your pre-season testing battery and compare it against last season,
+and keep an eye on left/right asymmetries or strength deficits as they develop.
+
+<Info>
+  VALD Performance is connected per team. Each federation or club needs a custom setup on
+  our side before data flows — get in touch to enable it for your instance.
+</Info>
+
+## Yollanda fits how each athlete trains
+
+[Yollanda](/en/platform/yollanda) now reads each user's own settings before she answers.
+She respects the heart-rate zones you've configured and the devices an athlete has
+connected, so her analysis of load and recovery lines up with how that person actually
+trains — not a generic default.
+
+### Fixes
+
+- **Athlete profiles** — Filtering in the Reporting view no longer surfaces records that shouldn't match, so a filtered list now shows exactly what you asked for.
+- **Yollanda** — Her chat no longer hangs while loading Tabular data, she now validates the links she generates so they always point to the right module, and she reads WHOOP heart-rate data correctly. Logging of Yollanda interactions in Analytics is also working again after it had quietly stopped.
+- Plus a number of smaller fixes and performance improvements.
