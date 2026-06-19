@@ -231,8 +231,10 @@
 
 /* TOC hidden site-wide (SHOW_TOC=false in page.tsx): with no rail to constrain
    it, cap a reading page to a comfortable measure, left-aligned, so prose lines
-   don't run the full content width. Flip SHOW_TOC to restore the rail. */
-.ym-content-row[data-toc='hidden'] #ym-page:not([data-full]) {
+   don't run the full content width. Flip SHOW_TOC to restore the rail. The
+   changelog index/entry pages keep their own widths (below), so exclude them. */
+.ym-content-row[data-toc='hidden']
+  #ym-page:not([data-full]):not([data-changelog-index]):not([data-changelog-entry]) {
   max-width: var(--ym-prose-max);
 }
 
