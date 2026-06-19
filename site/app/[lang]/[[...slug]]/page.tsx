@@ -9,6 +9,7 @@ import { Toc } from '@/components/chrome/Toc';
 import { PrevNext } from '@/components/chrome/PrevNext';
 import { PageTransition } from '@/components/chrome/PageTransition';
 import { ChangelogEntryHeader } from '@/components/changelog/ChangelogEntryHeader';
+import { ChangelogIndex } from '@/components/changelog/ChangelogIndex';
 
 interface PageProps {
   params: Promise<{ lang: string; slug?: string[] }>;
@@ -60,7 +61,13 @@ export default async function DocPage(props: PageProps) {
                   ) : null}
                 </>
               )}
-              <div className="prose">{content}</div>
+              {clIndex ? (
+                // The year is derived from the URL here (reliable), rather than
+                // passed as an MDX prop on the index page.
+                <ChangelogIndex year={clYear ?? undefined} />
+              ) : (
+                <div className="prose">{content}</div>
+              )}
               {clEntry || clIndex ? null : <PrevNext prev={prev} next={next} />}
             </PageTransition>
           </article>

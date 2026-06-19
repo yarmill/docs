@@ -18,7 +18,6 @@ import { Accordion, AccordionGroup } from '@/components/mdx/Accordion';
 import { PageMeta } from '@/components/mdx/PageMeta';
 import { TutorialMeta } from '@/components/mdx/TutorialMeta';
 import { Heading } from '@/components/mdx/Heading';
-import { ChangelogIndex } from '@/components/changelog/ChangelogIndex';
 
 /**
  * Base `<a>` override: root-relative and hash links route through next/link
@@ -60,7 +59,6 @@ const customComponents = {
   AccordionGroup,
   PageMeta,
   TutorialMeta,
-  ChangelogIndex,
 } as const;
 
 /**
