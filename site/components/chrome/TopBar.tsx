@@ -17,7 +17,15 @@ const APP_URL = 'https://yarmill.com/en/sign-in';
  * Breadcrumb parts are resolved server-side (from lib/nav) and passed in, so
  * the bar needs no nav context.
  */
-export function TopBar({ group, page }: { group?: string; page?: string }) {
+export function TopBar({
+  group,
+  parent,
+  page,
+}: {
+  group?: string;
+  parent?: string;
+  page?: string;
+}) {
   const { open, setOpen } = useSidebar();
 
   return (
@@ -38,6 +46,14 @@ export function TopBar({ group, page }: { group?: string; page?: string }) {
         {group ? (
           <>
             <span className="ym-crumb-muted">{group}</span>
+            <span className="ym-crumb-sep" aria-hidden>
+              /
+            </span>
+          </>
+        ) : null}
+        {parent ? (
+          <>
+            <span className="ym-crumb-muted">{parent}</span>
             <span className="ym-crumb-sep" aria-hidden>
               /
             </span>

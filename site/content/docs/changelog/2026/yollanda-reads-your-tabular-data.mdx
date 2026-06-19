@@ -1,0 +1,40 @@
+---
+title: "Yollanda reads your Tabular data"
+description: "Yollanda now answers from the numbers you type into Tabular — sessions, results, body composition and more."
+date: "2026-06-16"
+tags: ["Yollanda", "Analytics"]
+---
+
+{/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+<Frame>
+  <img src="/images/changelog/_placeholder.svg" alt="Yollanda referencing an athlete's Tabular data in her answer." />
+</Frame>
+
+Much of what a coach tracks lives in Tabular — training entries, results, body composition, the day-to-day numbers you type in by hand. Until now [Yollanda](/en/platform/yollanda) couldn't see any of it, so questions about those figures came back thin.
+
+Now she reads your Tabular data, and this is live across every instance. Ask about an athlete's recent sessions, a results table, or a metric you log there, and Yollanda answers from the actual numbers instead of guessing around them.
+
+<Info>
+  Yollanda's Tabular access is on for every instance. The exact tables she can read still depend on how your Tabular is configured.
+</Info>
+
+## Snappier answers
+
+Yollanda now caches the work behind repeated questions, so common asks come back faster and cost less to run. Her chat also recovers on its own when a response stalls mid-stream, instead of hanging until you give up and reload.
+
+### Improvements
+
+- **Wellness questionnaire** — The [questionnaire](/en/reality/wellness-questionnaire) reads more clearly: mood now uses expression icons, soreness and fatigue carry descriptive labels, questions sit grouped under their topics, and the Tabular overview shows both the number and its meaning.
+- **Reporting** — Data from the Athlete profiles, Medical, and OKR modules now flows into reporting, so those areas can be analysed alongside the rest of an athlete's record.
+- **Biathlon** — Shooting visuals that trend over time (item time, time to first shot) now include the hold, bringing them in line with the rest of the framework's shooting charts.
+- **Body composition** — The Tanita report gained labelled Y-axes and now uses the standard framework visuals, matching the InBody report it sits beside.
+- Plus a range of smaller improvements across the app.
+
+### Fixes
+
+- **WHOOP** — Data processing errors that left some athletes with missing or stalled WHOOP data are resolved, and the affected gaps have been backfilled.
+- **Apple Watch** — Training duration and the time counted in heart-rate zones now agree, so a session's summary no longer shows a shorter span than the workout actually ran.
+- **Yollanda** — Output failures that occasionally broke an answer are fixed.
+- **Medical** — The group overview no longer drops an athlete whose account wasn't tied to a specific instance.
+- **Analytics** — The status dot in the analytical-framework view now sits at the position its value implies, so a reading just inside or outside the norm reads correctly at a glance.
+- Plus a number of smaller fixes and performance improvements.
