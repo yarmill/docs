@@ -486,6 +486,19 @@
   }
 }
 .ym-nav-group-name { flex: 1; min-width: 0; }
+
+/* Linear-style section numbering (Docs space): a monospace, lighter-than-title
+   index — `0.0` for a group, `1.3` for its pages — in a fixed column so the
+   numbers line up vertically down the sidebar. */
+.ym-nav-num {
+  flex: none;
+  min-width: 26px;
+  font-family: var(--ym-font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--ym-faint);
+}
 .ym-nav-group-chevron {
   width: 14px;
   height: 14px;
