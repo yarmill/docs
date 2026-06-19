@@ -185,19 +185,33 @@ function basePathOf(groups: NavGroup[]): string {
   return '/' + url.split('/').slice(1, 3).join('/');
 }
 
+/**
+ * A space's landing page is the content page living at its base path (e.g.
+ * `/en/tutorials` for the Tutorials space) — so the footer switcher + header
+ * title open the space home, even when that index page is intentionally absent
+ * from the sidebar list (mirroring the Docs home). Falls back to the first nav
+ * page when no such landing exists (e.g. API → introduction).
+ */
+function spaceEntryUrl(basePath: string, fallback: string): string {
+  const parts = basePath.split('/').filter(Boolean);
+  if (parts[0] === 'en') parts.shift();
+  return getPage(parts)?.url ?? fallback;
+}
+
 function buildSpaces(): Space[] {
   const claimed = new Set(SECTION_DEFS.flatMap((s) => s.groupLabels));
   const docsGroups = NAV_TREE.groups.filter((g) => !claimed.has(g.label));
 
   const sections: Space[] = SECTION_DEFS.map((def) => {
     const groups = NAV_TREE.groups.filter((g) => def.groupLabels.includes(g.label));
+    const basePath = basePathOf(groups);
     return {
       id: def.id,
       label: def.label,
       icon: def.icon,
       groups,
-      entryUrl: groups[0]?.pages[0]?.url ?? '/en',
-      basePath: basePathOf(groups),
+      entryUrl: spaceEntryUrl(basePath, groups[0]?.pages[0]?.url ?? '/en'),
+      basePath,
     };
   }).filter((s) => s.groups.length > 0);
 

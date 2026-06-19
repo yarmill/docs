@@ -1131,3 +1131,99 @@
   height: auto;
   border-radius: var(--ym-radius);
 }
+
+/* ============================================================
+   RowList / Row — single-column link list (home + directory pages)
+   The changelog-index row pattern, with a leading illustration slot:
+     [ illustration ]  [ title + description ]  [ → ]
+   Stacked, hairline dividers, soft hover fill, arrow nudge.
+   ============================================================ */
+.ym-shell #ym-page .ym-rows {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--ym-line-subtle);
+}
+.ym-shell #ym-page .ym-row {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--ym-line-subtle);
+}
+.ym-shell #ym-page .ym-row::marker { content: none; }
+/* The list renders inside `.prose`, whose `ul/li` rules (disc bullets, marker
+   colour, per-item margin) outrank the `.ym-rows` selectors above. Re-assert
+   with a `.prose`-scoped selector that wins on specificity. */
+.ym-shell #ym-page .prose .ym-rows { list-style: none; }
+.ym-shell #ym-page .prose .ym-row { margin: 0; }
+.ym-shell #ym-page .prose .ym-row::marker { content: none; }
+
+.ym-row-link {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 20px;
+  align-items: center;
+  column-gap: 24px;
+  padding: 14px 8px;
+  margin: 0 -8px;
+  border-radius: var(--ym-radius);
+  text-decoration: none;
+  color: inherit;
+  transition: background var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-row-link:hover { background: var(--ym-bg-subtle); }
+
+/* Illustration — a borderless, transparent slot holding the row's art (a
+   playful animal placeholder for now); pass `art`/`illustration` per row. */
+.ym-row-illu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+}
+/* Whole illustration always visible (contain, never cropped). Scoped through
+   `.prose` so it outranks the generic `.prose img { height: auto }` rule. */
+.ym-shell #ym-page .prose .ym-row-illu img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.ym-row-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.ym-shell #ym-page .ym-row-title {
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  line-height: 1.35;
+  color: var(--ym-ink);
+}
+.ym-shell #ym-page .ym-row-desc {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ym-muted);
+  text-wrap: pretty;
+}
+
+.ym-row-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ym-faint);
+  transition: transform var(--ym-dur) var(--ym-ease-out),
+    color var(--ym-dur-fast) var(--ym-ease-out);
+}
+.ym-row-arrow svg { width: 16px; height: 16px; }
+.ym-row-link:hover .ym-row-arrow {
+  color: var(--ym-muted);
+  transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ym-row-link:hover .ym-row-arrow { transform: none; }
+}
