@@ -1,0 +1,36 @@
+---
+title: "Yollanda reads your wearable data"
+description: "Yollanda now reads watch and health data — whole activities, HRV, resting heart rate and sleep."
+date: "2025-10-30"
+tags: ["Yollanda", "Integrations"]
+---
+
+{/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+<Frame>
+  <img src="/images/changelog/_placeholder.svg" alt="Yollanda reasoning over an athlete's workout and recovery data from a wearable." />
+</Frame>
+
+Until now, [Yollanda](/en/platform/yollanda) reasoned over what was logged in the training diary. The data flowing in from athletes' watches and bands sat outside her reach, so questions about a recorded session or last night's recovery went unanswered.
+
+Now Yollanda reads that data too. She picks up whole activities synced from a watch, with their sport, duration and heart-rate zones, and she pulls in health metrics like HRV, resting heart rate and sleep. Ask how an athlete recovered after a hard block or how their sleep tracked through a camp, and her answer draws on the same numbers their device recorded.
+
+Yollanda treats wearable data and diary entries as two separate sources of the "same" measurement, so she won't double-count a session that exists in both places. She also knows which provider each athlete is connected to, so she can tell whose numbers come from where.
+
+## A coach view over Oura data
+
+Athletes on Oura now feed a dedicated coach report. See sleep and recovery trends from the ring across your group in one place, alongside the rest of an athlete's data.
+
+### Improvements
+
+- **Yollanda** — Tables and charts in her chat now render in a monospace layout, so columns line up and data is easier to read at a glance.
+- **Biochemistry** — Positive changes between two CASRI lab measurements now carry a `+` sign, matching the `-` already shown for decreases, so the direction of every change reads clearly.
+- **Race analysis** — In swimming you can now compare across different disciplines, for example a relay leg against a solo race, instead of being limited to matching events.
+- Plus a range of smaller improvements across the app.
+
+### Fixes
+
+- **Daily readiness** — WHOOP Recovery no longer appears for athletes who don't have a WHOOP connected, so the team readiness view only shows data that actually exists.
+- **Yollanda** — Links she generates now work reliably, including links with underscores, and her analysis no longer stalls intermittently.
+- **Rich text** — Notes no longer show stray HTML characters or an extra blank line, and bullet formatting renders correctly.
+- **Files** — A file uploaded on the left side now appears immediately, without needing a page refresh.
+- Plus a number of smaller fixes and performance improvements.

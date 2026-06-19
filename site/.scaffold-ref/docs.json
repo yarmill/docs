@@ -120,7 +120,7 @@
             "groups": [
               {
                 "group": "Changelog",
-                "pages": ["en/changelog/changelog"]
+                "pages": ["en/changelog/index", "en/changelog/2025/index"]
               }
             ]
           }

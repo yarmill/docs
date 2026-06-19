@@ -1,0 +1,42 @@
+---
+title: "FIS competition analytics for freestyle skiing"
+description: "Freestyle skiing gets biathlon-grade competition analytics, built straight from FIS data."
+date: "2025-11-21"
+tags: ["Analytics"]
+---
+
+{/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+<Frame>
+  <img src="/images/changelog/_placeholder.svg" alt="Freestyle skiing competition results charted from FIS data in Yarmill." />
+</Frame>
+
+Freestyle skiing now gets the same competition analytics that biathlon teams already rely on, built straight from FIS data. Until now this depth of race analysis only existed for the biathlon reports.
+
+Now you get a starter package of three reports for Big Air, Slopestyle and Halfpipe. Track one athlete's results across the season, see a full team or group overview at a glance, and break results down by age and discipline against the wider field. It is the read you need for post-season review and pre-season planning, sitting next to the rest of an athlete's [analytics](/en/analytics/analytics).
+
+<Info>
+  The freestyle FIS analytics package is set up per team. Each federation or club needs its FIS data connected on our side before the reports populate — get in touch to enable it for your instance.
+</Info>
+
+## Trick recording for freestyle skiing
+
+Trick parsing now works on freestyle ski instances the same way it has on snowboard, adapted to how skiers log spins — left and right rotation rather than frontside and backside. Record a run and the trick analysis reads it correctly, so your jump and rotation breakdowns line up with how athletes actually write them down.
+
+### Improvements
+
+- **Trend analytics** — More squads moved from the old general analytics to the newer trend analytics view, and the trend charts picked up grid lines and other small refinements that make them easier to read.
+- **Load analysis** — Training-load calculations can now draw TRIMP from the right-side power data instead of only from a watch, so teams testing that way get a load figure that matches their setup.
+- **Athlete profiles** — Number inputs in stepped forms now match the design, with shorter whole-number and decimal fields and a progress bar across the top so athletes can see how far through a form they are.
+- **Yollanda** — Her "what Yollanda can do" overview now mentions that she reads connected [watches and health data](/en/platform/yollanda), so it is clearer what you can ask her about.
+- Plus a range of smaller improvements across the app.
+
+### Fixes
+
+- **Team daily readiness** — The report no longer swaps soreness and fatigue, so the [readiness](/en/reality/wellness-questionnaire) view attributes each athlete's worst scores to the right measure.
+- **Medical module** — Read and write permissions now apply correctly at the group level in the [medical module](/en/medical/medical-module), so a coach given read-only access to a group sees exactly that.
+- **OKRs** — Fixed missing translations, the first item in the goals export ("Export goals") not being clickable, and long names in the team overview overflowing instead of stacking.
+- **Analytics** — Restored a broken analytics view for an affected athlete, and corrected RTC evaluation totals that disagreed between the Season and Trend views.
+- **Athlete profiles** — Links inside rich-text fields no longer jump you back to the top of the page, and the Continue button no longer escapes its bar on iPad.
+- **Yollanda** — She wraps generated code reliably and escapes dots in dates, so answers stop failing on those edge cases.
+- **Integrations** — Motocross activities from Garmin now sync through, and a video-processing job that had stalled is running again.
+- Plus a number of smaller fixes and performance improvements.

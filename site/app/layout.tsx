@@ -14,12 +14,20 @@ const inter = localFont({
   display: 'swap',
 });
 
+// Self-hosted JetBrains Mono (variable) — the monospace for code blocks and the
+// changelog's tabular dates. Exposed as a CSS variable consumed by --ym-font-mono.
+const jetbrainsMono = localFont({
+  src: [{ path: '../public/fonts/JetBrainsMono.woff2', weight: '100 800', style: 'normal' }],
+  variable: '--ym-font-jetbrains',
+  display: 'swap',
+});
+
 // Root layout: font shell + theme provider (next-themes, class strategy, light
 // default). `suppressHydrationWarning` is required by next-themes (it writes the
 // theme class onto <html> before React hydrates).
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
+    <html lang="en" className={`${inter.className} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen">
         {/* First focusable element: jumps keyboard users past the chrome to the
             article. Visually hidden until focused (styled in chrome.css). */}

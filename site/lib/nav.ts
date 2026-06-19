@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { getAllPages, getPage, pageTitle, type PageRecord } from './content';
+import { changelogIndexYear, countForYear } from './changelog';
 
 /**
  * Navigation tree (no Fumadocs). Order + grouping come from the Mintlify
@@ -20,6 +21,8 @@ export interface NavPage {
   title: string;
   url: string;
   icon?: string;
+  /** Optional count badge (e.g. changelog year → number of entries). */
+  count?: number;
 }
 
 export interface NavGroup {
@@ -60,10 +63,12 @@ function toNavPage(ref: string): NavPage | null {
   if (!slugs) return null;
   const page = getPage(slugs);
   if (!page) return null;
+  const year = changelogIndexYear(page.url);
   return {
     title: pageTitle(page),
     url: page.url,
     icon: page.frontmatter.icon,
+    count: year != null ? countForYear(year) : undefined,
   };
 }
 

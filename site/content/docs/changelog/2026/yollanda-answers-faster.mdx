@@ -1,0 +1,30 @@
+---
+title: "Yollanda answers faster"
+description: "Yollanda loads a whole group's data in one pass, so questions about a training group come back noticeably faster."
+date: "2026-02-26"
+tags: ["Yollanda"]
+---
+
+{/* NOTE(yarmill): placeholder hero — real visual later via yarmill-visuals. */}
+<Frame>
+  <img src="/images/changelog/_placeholder.svg" alt="Yollanda answering a question across a group of athletes." />
+</Frame>
+
+Pulling together everything Yollanda needs to answer — diary entries, workouts and recovery data — used to be done one athlete at a time. For a single athlete that was fine, but the moment you asked about a group, the wait added up.
+
+Now [Yollanda](/en/platform/yollanda) loads that data for everyone in a group in one pass instead of athlete by athlete. Questions return noticeably faster, especially when you ask about a whole training group, and her answers draw on the latest diary data even right after a fresh sync.
+
+### Improvements
+
+- **Yollanda** — Group questions are quicker to answer, and she now pulls in the most recently synced diary data so her reasoning reflects what an athlete logged today.
+- Plus a range of smaller improvements across the app.
+
+### Fixes
+
+- **Yollanda** — When a model occasionally returned raw code instead of an answer, Yollanda now catches it and falls back cleanly, so you get a proper response rather than a broken reply.
+- **WHOOP** — Restored WHOOP data processing after it stalled, and reprocessed the backlog so missing days show up again in athletes' data.
+- **Daily readiness** — Corrected a mix-up that showed fatigue and soreness values swapped in the report, and the report no longer pulls in data a user shouldn't have access to.
+- **Plan** — Copying a plan no longer deletes an attachment when you skip a conflict or merge, so files stay intact through a copy.
+- **Biathlon** — Polished the race-analysis visuals so the charts read more clearly.
+- **Medical** — Fixed layout glitches in the Medical module on mobile.
+- Plus a number of smaller fixes and performance improvements.

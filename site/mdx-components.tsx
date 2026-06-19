@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { AnchorHTMLAttributes } from 'react';
 
 import './components/mdx/mdx.css';
+import './components/changelog/changelog.css';
 
 import { Card } from '@/components/mdx/Card';
 import { CardGroup } from '@/components/mdx/CardGroup';
