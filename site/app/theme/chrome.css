@@ -270,10 +270,10 @@
 .ym-shell #ym-page h1 .ym-h1-num {
   font-family: var(--ym-font-mono);
   font-weight: 400;
-  font-size: 0.72em;
+  font-size: var(--ym-h1-size);
   letter-spacing: -0.02em;
   color: var(--ym-faint);
-  margin-right: 0.5em;
+  margin-right: 0.4em;
 }
 .ym-shell #ym-page h2 {
   font-size: var(--ym-h2-size);
