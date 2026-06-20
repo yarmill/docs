@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getAllPages, getPage } from '@/lib/content';
-import { getGroupLabel, getPrevNext } from '@/lib/nav';
+import { getGroupLabel, getPrevNext, getPageNumber } from '@/lib/nav';
 import { renderMDX } from '@/lib/mdx';
 import { isChangelogEntryUrl, getEntryByUrl, changelogIndexYear } from '@/lib/changelog';
 import { TopBar } from '@/components/chrome/TopBar';
@@ -44,6 +44,9 @@ export default async function DocPage(props: PageProps) {
   const topbarParent = clEntry ? String(clEntry.year) : undefined;
   const topbarPage = clYear != null ? String(clYear) : page.frontmatter.title;
   const { prev, next } = clEntry || clIndex ? { prev: undefined, next: undefined } : getPrevNext(page.url);
+  // Linear-style section number (e.g. "1.3"), shown before the page title to
+  // match the Docs sidebar. Undefined for pages outside the numbered Docs space.
+  const pageNumber = getPageNumber(page.url);
 
   return (
     <div className="ym-main" data-full={isWide || undefined}>
@@ -62,7 +65,12 @@ export default async function DocPage(props: PageProps) {
                 <ChangelogEntryHeader entry={clEntry} />
               ) : (
                 <>
-                  {page.frontmatter.title ? <h1>{page.frontmatter.title}</h1> : null}
+                  {page.frontmatter.title ? (
+                    <h1>
+                      {pageNumber ? <span className="ym-h1-num" aria-hidden>{pageNumber}</span> : null}
+                      {page.frontmatter.title}
+                    </h1>
+                  ) : null}
                   {page.frontmatter.description ? (
                     <p className="ym-lead">{page.frontmatter.description}</p>
                   ) : null}

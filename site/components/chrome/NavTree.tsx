@@ -5,7 +5,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { NavGroup, NavTree as NavTreeData } from '@/lib/nav';
-import { Icon } from '@/lib/icons';
 import { useSidebar } from './SidebarContext';
 
 /**
@@ -161,11 +160,6 @@ function NavLink({
       >
         {number ? (
           <span className="ym-nav-num" aria-hidden>{number}</span>
-        ) : null}
-        {page.icon ? (
-          <span className="ym-nav-icon" aria-hidden>
-            <Icon name={page.icon} />
-          </span>
         ) : null}
         <span className="ym-nav-label">{page.title}</span>
         {typeof page.count === 'number' ? (

@@ -231,3 +231,19 @@ const SPACES: Space[] = buildSpaces();
 export function getSpaces(): Space[] {
   return SPACES;
 }
+
+/**
+ * Linear-style section number for a page, matching the Docs sidebar numbering:
+ * `<groupIndex>.<pageIndex+1>` (e.g. `1.3` for Goals). Only the multi-group Docs
+ * space is numbered; pages outside it (home, tutorials, changelog, api) return
+ * undefined.
+ */
+const DOCS_SPACE = SPACES.find((s) => s.id === 'docs');
+export function getPageNumber(url: string): string | undefined {
+  if (!DOCS_SPACE) return undefined;
+  for (let gi = 0; gi < DOCS_SPACE.groups.length; gi++) {
+    const pi = DOCS_SPACE.groups[gi].pages.findIndex((p) => p.url === url);
+    if (pi !== -1) return `${gi}.${pi + 1}`;
+  }
+  return undefined;
+}

@@ -265,6 +265,16 @@
   color: var(--ym-ink);
   margin-top: 0;
 }
+/* Section number before the page title (Docs space) — monospace + lighter,
+   matching the sidebar numbering. */
+.ym-shell #ym-page h1 .ym-h1-num {
+  font-family: var(--ym-font-mono);
+  font-weight: 400;
+  font-size: 0.72em;
+  letter-spacing: -0.02em;
+  color: var(--ym-faint);
+  margin-right: 0.5em;
+}
 .ym-shell #ym-page h2 {
   font-size: var(--ym-h2-size);
   line-height: var(--ym-h2-lh);
@@ -498,6 +508,16 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
   color: var(--ym-faint);
+  /* The smaller mono digits optically ride high against the 14px sans title;
+     nudge them onto the title's baseline. */
+  position: relative;
+  top: 0.5px;
+}
+/* Selected page / active section darkens the number too (stays lighter than the
+   ink title). */
+.ym-nav-link[data-active='true'] .ym-nav-num,
+.ym-nav-group[data-active-section='true'] > .ym-nav-group-label .ym-nav-num {
+  color: var(--ym-muted);
 }
 .ym-nav-group-chevron {
   width: 14px;
