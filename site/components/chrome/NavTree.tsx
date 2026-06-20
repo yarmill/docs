@@ -75,8 +75,10 @@ function NavGroupBlock({
         aria-controls={contentId}
         onClick={() => setOpen((v) => !v)}
       >
-        <span className="ym-nav-num" aria-hidden>{`${groupIndex}.0`}</span>
-        <span className="ym-nav-group-name">{group.label}</span>
+        <span className="ym-nav-rowtext">
+          <span className="ym-nav-num" aria-hidden>{`${groupIndex}.0`}</span>
+          <span className="ym-nav-group-name">{group.label}</span>
+        </span>
         <ChevronDown className="ym-nav-group-chevron" aria-hidden />
       </button>
       <NavList
@@ -158,10 +160,12 @@ function NavLink({
         onFocus={prefetchIntent}
         onClick={() => setOpen(false)}
       >
-        {number ? (
-          <span className="ym-nav-num" aria-hidden>{number}</span>
-        ) : null}
-        <span className="ym-nav-label">{page.title}</span>
+        <span className="ym-nav-rowtext">
+          {number ? (
+            <span className="ym-nav-num" aria-hidden>{number}</span>
+          ) : null}
+          <span className="ym-nav-label">{page.title}</span>
+        </span>
         {typeof page.count === 'number' ? (
           <span className="ym-nav-count">{page.count}</span>
         ) : null}
