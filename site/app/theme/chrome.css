@@ -545,7 +545,17 @@
    no indicator bar. (Styled on `.ym-nav-link[data-active]` below.) */
 /* Child links share the section label's left padding, so a child's ICON aligns
    with the parent label's TEXT (Linear). No extra indent. */
-.ym-nav-group .ym-nav-list { padding-left: 0; }
+/* Three-tier spacing rhythm so the hierarchy is scannable:
+   sub-items are TIGHT (1px between), the cluster has generous breathing room
+   before the first and after the last child (12px — `.ym-nav` adds 4px below,
+   so margin-bottom 8px lands the same 12px), and that "around" gap is larger
+   than the 4px between top-level items. */
+.ym-nav-group .ym-nav-list {
+  padding-left: 0;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  gap: 1px;
+}
 .ym-nav-list--nested {
   margin-left: 12px;
   padding-left: 8px;
