@@ -175,8 +175,8 @@ export interface Space {
 /** Non-default spaces, matched by (overridden) group label, in footer order. */
 const SECTION_DEFS: { id: string; label: string; icon: string; groupLabels: string[] }[] = [
   { id: 'tutorials', label: 'Tutorials', icon: 'graduation-cap', groupLabels: ['Tutorials'] },
-  { id: 'api', label: 'API Docs', icon: 'code', groupLabels: ['API Docs'] },
   { id: 'changelog', label: 'Changelog', icon: 'history', groupLabels: ['Changelog'] },
+  { id: 'api', label: 'API Docs', icon: 'code', groupLabels: ['API Docs'] },
 ];
 
 function basePathOf(groups: NavGroup[]): string {
@@ -185,19 +185,37 @@ function basePathOf(groups: NavGroup[]): string {
   return '/' + url.split('/').slice(1, 3).join('/');
 }
 
+/**
+ * A space's landing page is the content page living at its base path (e.g.
+ * `/en/tutorials` for the Tutorials space) — so the footer switcher + header
+ * title open the space home, even when that index page is intentionally absent
+ * from the sidebar list (mirroring the Docs home). Falls back to the first nav
+ * page when no such landing exists (e.g. API → introduction).
+ */
+function spaceEntryUrl(basePath: string, fallback: string): string {
+  const parts = basePath.split('/').filter(Boolean);
+  if (parts[0] === 'en') parts.shift();
+  // Guard the empty case: getPage([]) resolves to the home page, which would
+  // wrongly point a mis-derived section base path at /en. A space landing
+  // always has at least one slug.
+  if (parts.length === 0) return fallback;
+  return getPage(parts)?.url ?? fallback;
+}
+
 function buildSpaces(): Space[] {
   const claimed = new Set(SECTION_DEFS.flatMap((s) => s.groupLabels));
   const docsGroups = NAV_TREE.groups.filter((g) => !claimed.has(g.label));
 
   const sections: Space[] = SECTION_DEFS.map((def) => {
     const groups = NAV_TREE.groups.filter((g) => def.groupLabels.includes(g.label));
+    const basePath = basePathOf(groups);
     return {
       id: def.id,
       label: def.label,
       icon: def.icon,
       groups,
-      entryUrl: groups[0]?.pages[0]?.url ?? '/en',
-      basePath: basePathOf(groups),
+      entryUrl: spaceEntryUrl(basePath, groups[0]?.pages[0]?.url ?? '/en'),
+      basePath,
     };
   }).filter((s) => s.groups.length > 0);
 
@@ -216,4 +234,20 @@ const SPACES: Space[] = buildSpaces();
 
 export function getSpaces(): Space[] {
   return SPACES;
+}
+
+/**
+ * Linear-style section number for a page, matching the Docs sidebar numbering:
+ * `<groupIndex>.<pageIndex+1>` (e.g. `1.3` for Goals). Only the multi-group Docs
+ * space is numbered; pages outside it (home, tutorials, changelog, api) return
+ * undefined.
+ */
+const DOCS_SPACE = SPACES.find((s) => s.id === 'docs');
+export function getPageNumber(url: string): string | undefined {
+  if (!DOCS_SPACE) return undefined;
+  for (let gi = 0; gi < DOCS_SPACE.groups.length; gi++) {
+    const pi = DOCS_SPACE.groups[gi].pages.findIndex((p) => p.url === url);
+    if (pi !== -1) return `${gi}.${pi + 1}`;
+  }
+  return undefined;
 }

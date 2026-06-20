@@ -24,7 +24,6 @@
               {
                 "group": "Get started",
                 "pages": [
-                  "en/index",
                   "en/get-started/concepts",
                   "en/get-started/for-coaches",
                   "en/get-started/for-athletes",
@@ -87,7 +86,6 @@
               {
                 "group": "Tutorials",
                 "pages": [
-                  "en/tutorials/index",
                   "en/tutorials/plan-first-week",
                   "en/tutorials/set-season-goals",
                   "en/tutorials/log-a-session",

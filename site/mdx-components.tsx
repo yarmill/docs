@@ -7,6 +7,7 @@ import './components/changelog/changelog.css';
 
 import { Card } from '@/components/mdx/Card';
 import { CardGroup } from '@/components/mdx/CardGroup';
+import { RowList, Row } from '@/components/mdx/RowList';
 import { Columns } from '@/components/mdx/Columns';
 import { Steps, Step } from '@/components/mdx/Steps';
 import { Info, Tip, Warning, Note, Check } from '@/components/mdx/Callouts';
@@ -42,6 +43,8 @@ const baseComponents: MDXComponents = {
 const customComponents = {
   Card,
   CardGroup,
+  RowList,
+  Row,
   Columns,
   Steps,
   Step,

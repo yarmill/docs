@@ -5,7 +5,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { NavGroup, NavTree as NavTreeData } from '@/lib/nav';
-import { Icon } from '@/lib/icons';
 import { useSidebar } from './SidebarContext';
 
 /**
@@ -29,8 +28,8 @@ export function NavTree({ tree }: { tree: NavTreeData }) {
   }
   return (
     <nav className="ym-nav" aria-label="Documentation">
-      {tree.groups.map((group) => (
-        <NavGroupBlock key={group.label} group={group} pathname={pathname} />
+      {tree.groups.map((group, i) => (
+        <NavGroupBlock key={group.label} group={group} groupIndex={i} pathname={pathname} />
       ))}
     </nav>
   );
@@ -40,7 +39,15 @@ function groupContains(group: NavGroup, pathname: string): boolean {
   return group.pages.some((p) => p.url === pathname);
 }
 
-function NavGroupBlock({ group, pathname }: { group: NavGroup; pathname: string }) {
+function NavGroupBlock({
+  group,
+  groupIndex,
+  pathname,
+}: {
+  group: NavGroup;
+  groupIndex: number;
+  pathname: string;
+}) {
   const containsActive = groupContains(group, pathname);
   const [open, setOpen] = useState(containsActive);
   const contentId = `grp-${group.label.replace(/\s+/g, '-')}`;
@@ -68,10 +75,19 @@ function NavGroupBlock({ group, pathname }: { group: NavGroup; pathname: string 
         aria-controls={contentId}
         onClick={() => setOpen((v) => !v)}
       >
-        <span className="ym-nav-group-name">{group.label}</span>
+        <span className="ym-nav-rowtext">
+          <span className="ym-nav-num" aria-hidden>{`${groupIndex}.0`}</span>
+          <span className="ym-nav-group-name">{group.label}</span>
+        </span>
         <ChevronDown className="ym-nav-group-chevron" aria-hidden />
       </button>
-      <NavList id={contentId} pages={group.pages} pathname={pathname} hidden={!open} />
+      <NavList
+        id={contentId}
+        pages={group.pages}
+        pathname={pathname}
+        groupIndex={groupIndex}
+        hidden={!open}
+      />
     </div>
   );
 }
@@ -80,17 +96,25 @@ function NavList({
   id,
   pages,
   pathname,
+  groupIndex,
   hidden = false,
 }: {
   id?: string;
   pages: { title: string; url: string; icon?: string; count?: number }[];
   pathname: string;
+  /** When set, pages are numbered `<groupIndex>.<n>` (Linear-style, Docs space). */
+  groupIndex?: number;
   hidden?: boolean;
 }) {
   return (
     <ul id={id} className="ym-nav-list" hidden={hidden}>
-      {pages.map((page) => (
-        <NavLink key={page.url} page={page} pathname={pathname} />
+      {pages.map((page, i) => (
+        <NavLink
+          key={page.url}
+          page={page}
+          pathname={pathname}
+          number={groupIndex === undefined ? undefined : `${groupIndex}.${i + 1}`}
+        />
       ))}
     </ul>
   );
@@ -99,9 +123,11 @@ function NavList({
 function NavLink({
   page,
   pathname,
+  number,
 }: {
   page: { title: string; url: string; icon?: string; count?: number };
   pathname: string;
+  number?: string;
 }) {
   const { setOpen } = useSidebar();
   const router = useRouter();
@@ -134,12 +160,12 @@ function NavLink({
         onFocus={prefetchIntent}
         onClick={() => setOpen(false)}
       >
-        {page.icon ? (
-          <span className="ym-nav-icon" aria-hidden>
-            <Icon name={page.icon} />
-          </span>
-        ) : null}
-        <span className="ym-nav-label">{page.title}</span>
+        <span className="ym-nav-rowtext">
+          {number ? (
+            <span className="ym-nav-num" aria-hidden>{number}</span>
+          ) : null}
+          <span className="ym-nav-label">{page.title}</span>
+        </span>
         {typeof page.count === 'number' ? (
           <span className="ym-nav-count">{page.count}</span>
         ) : null}

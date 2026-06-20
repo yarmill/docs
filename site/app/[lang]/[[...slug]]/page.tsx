@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getAllPages, getPage } from '@/lib/content';
-import { getGroupLabel, getPrevNext } from '@/lib/nav';
+import { getGroupLabel, getPrevNext, getPageNumber } from '@/lib/nav';
 import { renderMDX } from '@/lib/mdx';
 import { isChangelogEntryUrl, getEntryByUrl, changelogIndexYear } from '@/lib/changelog';
 import { TopBar } from '@/components/chrome/TopBar';
@@ -14,6 +14,13 @@ import { ChangelogIndex } from '@/components/changelog/ChangelogIndex';
 interface PageProps {
   params: Promise<{ lang: string; slug?: string[] }>;
 }
+
+/**
+ * TOC ("On this page") is hidden site-wide for now — flip to `true` to bring the
+ * right-hand rail back. When hidden, reading pages are capped to a comfortable
+ * measure (see chrome.css `[data-toc='hidden']`) so prose doesn't run full width.
+ */
+const SHOW_TOC = false;
 
 export default async function DocPage(props: PageProps) {
   const { slug } = await props.params;
@@ -37,13 +44,16 @@ export default async function DocPage(props: PageProps) {
   const topbarParent = clEntry ? String(clEntry.year) : undefined;
   const topbarPage = clYear != null ? String(clYear) : page.frontmatter.title;
   const { prev, next } = clEntry || clIndex ? { prev: undefined, next: undefined } : getPrevNext(page.url);
+  // Linear-style section number (e.g. "1.3"), shown before the page title to
+  // match the Docs sidebar. Undefined for pages outside the numbered Docs space.
+  const pageNumber = getPageNumber(page.url);
 
   return (
     <div className="ym-main" data-full={isWide || undefined}>
       <TopBar group={group} parent={topbarParent} page={topbarPage} />
 
       <div className="ym-content">
-        <div className="ym-content-row">
+        <div className="ym-content-row" data-toc={SHOW_TOC ? undefined : 'hidden'}>
           <article
             id="ym-page"
             data-full={isWide || undefined}
@@ -55,7 +65,12 @@ export default async function DocPage(props: PageProps) {
                 <ChangelogEntryHeader entry={clEntry} />
               ) : (
                 <>
-                  {page.frontmatter.title ? <h1>{page.frontmatter.title}</h1> : null}
+                  {page.frontmatter.title ? (
+                    <h1>
+                      {pageNumber ? <span className="ym-h1-num" aria-hidden>{pageNumber}</span> : null}
+                      {page.frontmatter.title}
+                    </h1>
+                  ) : null}
                   {page.frontmatter.description ? (
                     <p className="ym-lead">{page.frontmatter.description}</p>
                   ) : null}
@@ -72,9 +87,10 @@ export default async function DocPage(props: PageProps) {
             </PageTransition>
           </article>
 
-          {/* The homepage dashboard (mode: wide), changelog entry pages, and the
-              changelog year index all drop the right-hand TOC. */}
-          {!isWide && !clEntry && !clIndex && <Toc items={toc} />}
+          {/* Wide pages (mode: wide — homepage dashboard), changelog entry pages,
+              and the changelog year index always drop the right-hand TOC; every
+              other page is gated on SHOW_TOC (hidden site-wide for now). */}
+          {SHOW_TOC && !isWide && !clEntry && !clIndex && <Toc items={toc} />}
         </div>
       </div>
     </div>

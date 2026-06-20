@@ -223,9 +223,20 @@
   min-width: 0;
   padding-block: 48px 64px;
 }
-/* Full-width pages (mode: wide) drop the TOC (see page.tsx) and widen the
-   wrapper so the content — e.g. the homepage card dashboard — uses the space. */
-.ym-main[data-full='true'] .ym-content { max-width: var(--ym-content-wide); }
+/* Wide pages (mode: wide — homepage dashboard) drop the TOC (see page.tsx).
+   They keep the standard centred content wrapper, but cap the article to the
+   reading measure and leave it LEFT-aligned so its left edge sits at the same
+   gutter as every other page — never centred in the main column. */
+.ym-shell #ym-page[data-full] { max-width: var(--ym-read); }
+
+/* TOC hidden site-wide (SHOW_TOC=false in page.tsx): with no rail to constrain
+   it, cap a reading page to the reading measure, left-aligned, so prose lines
+   don't run the full content width. Flip SHOW_TOC to restore the rail. The
+   changelog index keeps its own (wider) width below, so exclude it. */
+.ym-content-row[data-toc='hidden']
+  #ym-page:not([data-full]):not([data-changelog-index]):not([data-changelog-entry]) {
+  max-width: var(--ym-read);
+}
 
 /* Changelog entry pages drop the TOC but are a READING surface, so cap the
    column to the reading measure (it would otherwise fill ~976px). */
@@ -253,6 +264,16 @@
   letter-spacing: var(--ym-h1-ls);
   color: var(--ym-ink);
   margin-top: 0;
+}
+/* Section number before the page title (Docs space) — monospace + lighter,
+   matching the sidebar numbering. */
+.ym-shell #ym-page h1 .ym-h1-num {
+  font-family: var(--ym-font-mono);
+  font-weight: 400;
+  font-size: 0.85em;
+  letter-spacing: -0.02em;
+  color: var(--ym-faint);
+  margin-right: 0.4em;
 }
 .ym-shell #ym-page h2 {
   font-size: var(--ym-h2-size);
@@ -417,6 +438,14 @@
   letter-spacing: -0.011em;
 }
 
+/* Sidebar search trigger blends into the sidebar — no white fill or border —
+   and uses a slightly smaller glyph than the standard icon button. */
+.ym-sidebar-search-btn {
+  background: transparent;
+  border-color: transparent;
+}
+.ym-sidebar-search-btn svg { width: 14px; height: 14px; }
+
 /* Scrollable nav */
 .ym-sidebar-scroll {
   flex: 1;
@@ -466,7 +495,34 @@
     color: var(--ym-ink);
   }
 }
-.ym-nav-group-name { flex: 1; min-width: 0; }
+/* Linear-style section numbering (Docs space): a monospace, lighter-than-title
+   index — `0.0` for a group, `1.3` for its pages. The number + title share one
+   inline context (`.ym-nav-rowtext`) so their baselines align naturally, and
+   the fixed-width number means every title — top-level and sub-item — starts at
+   the same x, lined up down the sidebar. */
+.ym-nav-rowtext {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ym-nav-num {
+  display: inline-block;
+  width: 27px;
+  margin-right: 6px;
+  font-family: var(--ym-font-mono);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--ym-faint);
+}
+/* Selected page / active section darkens the number too (stays lighter than the
+   ink title). */
+.ym-nav-link[data-active='true'] .ym-nav-num,
+.ym-nav-group[data-active-section='true'] > .ym-nav-group-label .ym-nav-num {
+  color: var(--ym-muted);
+}
 .ym-nav-group-chevron {
   width: 14px;
   height: 14px;
@@ -491,9 +547,19 @@
 
 /* Active page link = colour only (Linear): brand-accent text, no background and
    no indicator bar. (Styled on `.ym-nav-link[data-active]` below.) */
-/* Child links share the section label's left padding, so a child's ICON aligns
-   with the parent label's TEXT (Linear). No extra indent. */
-.ym-nav-group .ym-nav-list { padding-left: 0; }
+/* Child links share the section label's left padding (no extra indent); the
+   fixed-width number column keeps every title aligned. */
+/* Three-tier spacing rhythm so the hierarchy is scannable:
+   sub-items are TIGHT (1px between), the cluster has generous breathing room
+   before the first and after the last child (12px — `.ym-nav` adds 4px below,
+   so margin-bottom 8px lands the same 12px), and that "around" gap is larger
+   than the 4px between top-level items. */
+.ym-nav-group .ym-nav-list {
+  padding-left: 0;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  gap: 1px;
+}
 .ym-nav-list--nested {
   margin-left: 12px;
   padding-left: 8px;
@@ -530,24 +596,11 @@
   color: var(--ym-ink);
   font-weight: 590;
 }
-.ym-nav-icon {
-  display: inline-flex;
-  flex: none;
-  color: var(--ym-faint);
-}
-.ym-nav-icon svg { width: 16px; height: 16px; }
-.ym-nav-link[data-active='true'] .ym-nav-icon { color: var(--ym-ink); }
 /* The parent section of the active page also reads as selected — dark ink +
    heavier weight (Linear) — so the open section is visually anchored. */
 .ym-nav-group[data-active-section='true'] > .ym-nav-group-label {
   color: var(--ym-ink);
   font-weight: 590;
-}
-.ym-nav-label {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 /* Count badge (e.g. changelog year → entry count), rendered as "[n]". */
 .ym-nav-count {
@@ -671,16 +724,14 @@
 .ym-split-main {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   height: 32px;
-  padding-inline: 12px;
+  width: 32px;
   border: 1px solid var(--ym-line);
   border-right: none;
   border-radius: var(--ym-radius-pill) 0 0 var(--ym-radius-pill);
   background: var(--ym-bg);
   color: var(--ym-ink);
-  font-size: 13px;
-  font-weight: 510;
   cursor: pointer;
   transition: background-color var(--ym-dur-fast) ease;
 }
@@ -900,6 +951,8 @@
   .ym-footer-link,
   .ym-nav-group-label { min-height: 40px; }
   .ym-icon-btn { width: 40px; height: 40px; }
+  /* Match the CTA pill to the 40px icon buttons so the header cluster lines up. */
+  .ym-cta { height: 40px; }
 }
 
 /* Reduced motion — plain fades, no transforms. */
