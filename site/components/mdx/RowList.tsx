@@ -39,7 +39,7 @@ export function Row({
       <span className="ym-row-illu" aria-hidden="true">
         {illustration ?? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={art ?? DEFAULT_ART} alt="" className="ym-row-illu-img" />
+          <img src={art ?? DEFAULT_ART} alt="" />
         )}
       </span>
       <span className="ym-row-body">

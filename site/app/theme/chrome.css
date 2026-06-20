@@ -495,14 +495,11 @@
     color: var(--ym-ink);
   }
 }
-.ym-nav-group-name { flex: 1; min-width: 0; }
-
 /* Linear-style section numbering (Docs space): a monospace, lighter-than-title
-   index — `0.0` for a group, `1.3` for its pages — in a fixed column so the
-   numbers line up vertically down the sidebar. */
-/* Number + title share one inline context so their baselines align naturally
-   (flex centering made the smaller mono digits ride high). The fixed-width
-   number means every title — top-level and sub-item — starts at the same x. */
+   index — `0.0` for a group, `1.3` for its pages. The number + title share one
+   inline context (`.ym-nav-rowtext`) so their baselines align naturally, and
+   the fixed-width number means every title — top-level and sub-item — starts at
+   the same x, lined up down the sidebar. */
 .ym-nav-rowtext {
   flex: 1;
   min-width: 0;
@@ -550,8 +547,8 @@
 
 /* Active page link = colour only (Linear): brand-accent text, no background and
    no indicator bar. (Styled on `.ym-nav-link[data-active]` below.) */
-/* Child links share the section label's left padding, so a child's ICON aligns
-   with the parent label's TEXT (Linear). No extra indent. */
+/* Child links share the section label's left padding (no extra indent); the
+   fixed-width number column keeps every title aligned. */
 /* Three-tier spacing rhythm so the hierarchy is scannable:
    sub-items are TIGHT (1px between), the cluster has generous breathing room
    before the first and after the last child (12px — `.ym-nav` adds 4px below,
@@ -599,24 +596,11 @@
   color: var(--ym-ink);
   font-weight: 590;
 }
-.ym-nav-icon {
-  display: inline-flex;
-  flex: none;
-  color: var(--ym-faint);
-}
-.ym-nav-icon svg { width: 16px; height: 16px; }
-.ym-nav-link[data-active='true'] .ym-nav-icon { color: var(--ym-ink); }
 /* The parent section of the active page also reads as selected — dark ink +
    heavier weight (Linear) — so the open section is visually anchored. */
 .ym-nav-group[data-active-section='true'] > .ym-nav-group-label {
   color: var(--ym-ink);
   font-weight: 590;
-}
-.ym-nav-label {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 /* Count badge (e.g. changelog year → entry count), rendered as "[n]". */
 .ym-nav-count {

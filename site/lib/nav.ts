@@ -195,6 +195,10 @@ function basePathOf(groups: NavGroup[]): string {
 function spaceEntryUrl(basePath: string, fallback: string): string {
   const parts = basePath.split('/').filter(Boolean);
   if (parts[0] === 'en') parts.shift();
+  // Guard the empty case: getPage([]) resolves to the home page, which would
+  // wrongly point a mis-derived section base path at /en. A space landing
+  // always has at least one slug.
+  if (parts.length === 0) return fallback;
   return getPage(parts)?.url ?? fallback;
 }
 
