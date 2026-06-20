@@ -512,10 +512,10 @@
 }
 .ym-nav-num {
   display: inline-block;
-  width: 22px;
+  width: 27px;
   margin-right: 6px;
   font-family: var(--ym-font-mono);
-  font-size: 12px;
+  font-size: 14px;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
   color: var(--ym-faint);
