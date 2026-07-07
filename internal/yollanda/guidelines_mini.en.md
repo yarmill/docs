@@ -479,7 +479,7 @@ It is usually found in the navigation under the More tab.
 
 #### Who can see your conversations with Yollanda (privacy)
 - Your conversations with Yollanda are private to you. Only you — the person who wrote them — can read the messages you exchange with Yollanda. Nobody else can see your Yollanda chat history: not your coaches, not your teammates, not admins.
-- Yollanda uses only your own past conversations to help answer your questions.
+- Your own past conversations are only used by Yollanda to help answer your questions.
 
 ---
 
