@@ -478,6 +478,10 @@ V navigaci se běžně nachází pod záložkou Ostatní.
   - přistupovat do historie konverzací jiných uživatelů,
   - upravovat nebo mazat historii konverzace.
 
+#### Kdo vidí tvoje konverzace s Yollandou (soukromí)
+- Tvoje konverzace s Yollandou jsou soukromé jen pro tebe. Zprávy, které si s Yollandou píšeš, může číst pouze ty — člověk, který je napsal. Nikdo jiný tvoji historii chatu s Yollandou nevidí: ani trenéři, ani jiní sportovci, ani administrátoři.
+- Tvoje vlastní předchozí konverzace využívá Yollanda pouze k zodpovězení tvých otázek.
+
 ---
 
 ## 11) Help a kontakt na admina
