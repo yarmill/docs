@@ -187,9 +187,13 @@
 ## biathlon — ibu-id
 > Queued 2026-07-15 for the new `en/sport-specific/biathlon/ibu-id` page. The Yarmill shot can
 > reuse the customer screenshot supplied in chat (Biathlon Canada, athlete "Burke Gavin" —
-> anonymize/replace with sandbox data before publishing). The biathlonworld.com shots and the
-> flow video could NOT be captured from the docs environment (outbound network policy blocks
-> biathlonworld.com) — capture them from a normal machine or a session with open egress.
+> anonymize/replace with sandbox data before publishing). The biathlonworld.com flow was
+> live-verified in-browser 2026-07-15 (env network policy now allows the domain); **raw
+> reference captures** are committed in `docs-guide/visuals/reference/biathlon-ibu-id/`
+> (search page + Davidova profile, 1440×900). Note for capture: headless page screenshots have
+> no address bar — the URL-bar visual needs the framed-browser-chrome treatment from
+> `yarmill-screenshot` (Safari chrome shows the URL). Chromium quirk in the docs env: launch
+> with `--ssl-version-max=tls1.2` + `proxy: {server: process.env.HTTPS_PROXY}` or TLS resets.
 
 ### ibu-id — IBU ID field in Personal information   [corner-zoom+callouts]   ☐
 - Go to: `/evidence/basicGlobalEvidence?group=…&athlete=…` (top-nav **OTHER → Athlete
@@ -201,7 +205,7 @@
 - Post-process: corner-zoom; bleed left+bottom; fade; horizontal callout pills.
 - Lands in: images/biathlon/ibu-id-field.png  →  used by en/sport-specific/biathlon/ibu-id.mdx (hero)
 
-### ibu-id — biathlonworld.com athlete URL   [corner-zoom+callouts]   ☐ **BLOCKED: external site, egress-restricted env**
+### ibu-id — biathlonworld.com athlete URL   [corner-zoom+callouts]   ☐
 - Go to: `https://www.biathlonworld.com/athlete/davidova-marketa/BTCZE20301199701` (public web)
 - State: Marketa Davidova's IBU athlete profile loaded; browser address bar visible.
 - Capture: top of the page including the address bar with the full URL.
@@ -209,7 +213,7 @@
 - Post-process: corner-zoom on the address bar; fade; horizontal callout pill.
 - Lands in: images/biathlon/ibu-id-url.png  →  used by en/sport-specific/biathlon/ibu-id.mdx
 
-### ibu-id — lookup flow video (optional)   [motion]   ☐ **BLOCKED: external site, egress-restricted env**
+### ibu-id — lookup flow video (optional)   [motion]   ☐ (draft recording exists — see section note)
 - Go to: biathlonworld.com (public web)
 - State: record the full flow — home → **BIATHLETES** → search "Davidova" by name in the search
   field → profile → highlight the ID in the address bar → (cut) paste into Yarmill's IBU ID
