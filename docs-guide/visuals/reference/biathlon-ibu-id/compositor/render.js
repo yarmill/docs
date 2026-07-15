@@ -3,7 +3,7 @@ const path = require('path');
 
 (async () => {
   const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
-  const sizes = { field: 640, url: 830, search: 830 };
+  const sizes = { field: 640, url: 790, search: 790 };
   const page = await browser.newPage({ viewport: { width: 1400, height: 900 }, deviceScaleFactor: 2 });
   for (const name of process.argv.slice(2)) {
     await page.setViewportSize({ width: 1400, height: sizes[name] || 900 });

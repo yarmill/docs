@@ -205,7 +205,7 @@
 - Post-process: corner-zoom; bleed left+bottom; fade; horizontal callout pills.
 - Lands in: images/biathlon/ibu-id-field.png  →  used by en/sport-specific/biathlon/ibu-id.mdx (hero)
 
-### ibu-id — biathlonworld.com athlete URL   [full-window+callout]   ☑ (2026-07-15 — real capture framed in drawn browser chrome with the URL + ID highlighted; also produced a sibling search-page shot → images/biathlon/ibu-id-search.png, embedded in the page. Restyled same day from corner-zoom to **full-window** per Tomas — whole browser window, site top menu visible, no bleed. Compositor sources: `docs-guide/visuals/reference/biathlon-ibu-id/compositor/` — render via `node render.js field url search` with playwright + the raw captures one level up)
+### ibu-id — biathlonworld.com athlete URL   [full-window+callout]   ☑ (2026-07-15 — real capture framed in drawn browser chrome with the URL + ID highlighted; also produced a sibling search-page shot → images/biathlon/ibu-id-search.png, embedded in the page. Restyled same day per Tomas — final style is **bottom-docked window**: both top corners rounded and visible, site top menu in frame, bottom edge cut flush with the canvas (no bottom rounding) so the partially-captured page reads as continuing below. Compositor sources: `docs-guide/visuals/reference/biathlon-ibu-id/compositor/` — render via `node render.js field url search` with playwright + the raw captures one level up)
 - Go to: `https://www.biathlonworld.com/athlete/davidova-marketa/BTCZE20301199701` (public web)
 - State: Marketa Davidova's IBU athlete profile loaded; browser address bar visible.
 - Capture: top of the page including the address bar with the full URL.
