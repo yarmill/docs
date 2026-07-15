@@ -213,14 +213,14 @@
 - Post-process: corner-zoom on the address bar; fade; horizontal callout pill.
 - Lands in: images/biathlon/ibu-id-url.png  →  used by en/sport-specific/biathlon/ibu-id.mdx
 
-### ibu-id — lookup flow video (optional)   [motion]   ☐ draft DONE, polish pending
-- **Draft recorded 2026-07-15** → `docs-guide/visuals/reference/biathlon-ibu-id/ibu-lookup-with-urlbar.mp4`
-  (28 s, 1512×950, real Chrome UI): home → **BIATHLETES** → type "Davidova" in the search field →
-  profile → click the address bar (URL selects) → double-click the last segment (IBU ID selects).
+### ibu-id — lookup flow video   [motion]   ☑ (2026-07-15 — published cut embedded on the page)
+- **Published** → `images/biathlon/ibu-id-flow.mp4` (28 s, 1512×950, +faststart) + poster
+  `ibu-id-flow-poster.jpg`: home → **BIATHLETES** → type "Davidova" in the search field →
+  profile → click the address bar (URL selects) → double-click the last segment (IBU ID
+  selects) → cut-to-zoom on the selected ID. Cookie + notification banners suppressed in-flow.
 - How it was made: headed Chromium on Xvfb `:99`, recorded via ffmpeg x11grab; page driven by
-  Playwright, address-bar interaction via real X clicks (xdotool) — script:
-  `reference/biathlon-ibu-id/record-headed.js` (needs the env TLS quirk from the section note).
-  Known blemishes: the site's notification-permission bar reappears on the profile page; no zoom.
-- Remaining for a publishable version: trim/pace, crop or dismiss the notification bar, optional
-  end-zoom on the selection, then (cut) paste into Yarmill's IBU ID pencil editor.
-- Lands in: images/biathlon/ibu-id-flow.mp4  →  candidate embed for en/sport-specific/biathlon/ibu-id.mdx
+  Playwright, address-bar interaction via real X clicks (xdotool); trim + end-zoom in ffmpeg —
+  script + raw take: `reference/biathlon-ibu-id/record-headed.js`, `ibu-lookup-with-urlbar.mp4`
+  (needs the env TLS quirk from the section note).
+- Possible future extension: append the Yarmill half — pasting the ID into the card's pencil
+  editor — once a biathlon instance is walkable.

@@ -22,7 +22,16 @@ async function smoothMove(toX, toY, steps = 14) {
     args: ['--ssl-version-max=tls1.2', '--no-sandbox', `--window-position=0,0`, `--window-size=${W},${H}`, '--hide-crash-restore-bubble'],
     env: { ...process.env, DISPLAY },
   });
-  const page = await browser.newPage({ viewport: null });
+  const ctx = await browser.newContext({ viewport: null });
+  // auto-dismiss the site's "enable notifications" banner on every page
+  await ctx.addInitScript(() => {
+    setInterval(() => {
+      document.querySelectorAll('button').forEach((b) => {
+        if (/^skip$/i.test((b.textContent || '').trim())) b.click();
+      });
+    }, 250);
+  });
+  const page = await ctx.newPage();
 
   // chrome UI offset (tab strip + omnibox) for pointer coordinates
   const chromeOffset = await page.evaluate(() => window.outerHeight - window.innerHeight)
@@ -49,7 +58,13 @@ async function smoothMove(toX, toY, steps = 14) {
   const ff = spawn('ffmpeg', ['-y', '-f', 'x11grab', '-framerate', '30', '-video_size', `${W}x${H}`,
     '-draw_mouse', '1', '-i', DISPLAY, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'veryfast',
     'video/ibu-lookup-with-urlbar.mp4'], { stdio: 'ignore' });
-  await page.waitForTimeout(1800);
+  // wait until ffmpeg is actually writing frames before acting
+  const fs = require('fs');
+  for (let i = 0; i < 100; i++) {
+    try { if (fs.statSync('video/ibu-lookup-with-urlbar.mp4').size > 20000) break; } catch {}
+    await new Promise(r => setTimeout(r, 200));
+  }
+  await page.waitForTimeout(1200);
 
   // 1 — BIATHLETES in the menu
   const nav = 'a:has-text("BIATHLETES")';
@@ -89,7 +104,7 @@ async function smoothMove(toX, toY, steps = 14) {
   await smoothMove(555, 62);
   await new Promise(r => setTimeout(r, 400));
   execSync(`DISPLAY=${DISPLAY} xdotool click --repeat 2 --delay 130 1`);
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(4800);
 
   const finalUrl = page.url();
   ff.kill('SIGINT');

@@ -388,7 +388,8 @@
   background: var(--ym-bg-subtle);
   box-shadow: var(--ym-shadow-card);
 }
-.ym-frame-media img {
+.ym-frame-media img,
+.ym-frame-media video {
   display: block;
   width: 100%;
   height: auto;
@@ -430,6 +431,8 @@
 @media (hover: hover) and (pointer: fine) {
   .ym-frame-media:hover::after { opacity: 1; }
 }
+/* video frames play natively — no zoom affordance */
+.ym-frame-media:has(video)::after { display: none; }
 
 /* Open state — page-coloured full-screen canvas behind the enlarged image. */
 .ym-zoom-overlay {

@@ -13,6 +13,8 @@ function findImageProps(node: ReactNode): { src: string; alt: string } | null {
   let found: { src: string; alt: string } | null = null;
   Children.forEach(node, (child) => {
     if (found || !isValidElement(child)) return;
+    // <video> (and its <source> children) is rendered natively, not through ZoomImage
+    if (child.type === 'video') return;
     const el = child as ReactElement<{ src?: unknown; alt?: unknown; children?: ReactNode }>;
     if (typeof el.props.src === 'string' && el.props.src) {
       found = { src: el.props.src, alt: typeof el.props.alt === 'string' ? el.props.alt : '' };
