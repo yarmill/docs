@@ -266,7 +266,7 @@ Biathlon shooting is logged as **free-text "grammar"** in a dedicated left-side 
 **Per-line grammar (order):** intensity → position (P/S) → misses → first-shot time / total time → miss positions (clock) → optional shot-order mask. Everything after misses is optional; intensity and position carry down to following lines until changed.
 
 - **Intensity** (required; applies to all following lines until a new intensity): `i0` or `z0` = static shooting; intensity name, usually `i1`–`i5`; `competition` or `race` = race shooting. Put it on its own line to set context, or inline at the start of a line (e.g. `i1 P 0320`).
-- **Position** (required; applies until changed): `P` = prone, `S` = standing.
+- **Position** (required; applies until changed): `P` **or** `L` = prone (interchangeable — `L` as in *ležka*/*liegend*; confirmed in chat 2026-07-15), `S` = standing.
 - **Misses** (required): integer `0`–`5` per stage. **Batch entry** logs several stages at once as a digit string — `P 0320` = four prone stages with 0, 3, 2, 0 misses. **Relay**: `X+Y`, where X = missed shots and Y = spare rounds used (e.g. `0+2`).
 - **First-shot / total time** (optional): seconds separated by `/` — `14/29` = first shot 14 s, stage 29 s. Use `-` for an unknown value (`-/25`, `13/-`).
 - **Miss positions / shot-order mask** (optional): clock numbers `1`–`12` for where misses went, separated by `'`, `` ` ``, or `,` (e.g. `3' 11' 12'`). To record the full sequence, log all five shots with `x` = hit and a clock number = miss at that position (e.g. `x9xxx` = 2nd shot missed at 9 o'clock; `4x5xx` = 1st missed at 4, 3rd missed at 5).

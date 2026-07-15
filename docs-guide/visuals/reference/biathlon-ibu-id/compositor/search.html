@@ -1,13 +1,14 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><link rel="stylesheet" href="shared.css">
 <style>
-  html, body { width: 1400px; height: 800px; }
-  .window { width: 1240px; }
-  .crop { height: 560px; }
-  .shot { width: 1240px; margin-top: -120px; }
+  html, body { width: 1400px; height: 830px; }
+  /* full-window style: whole browser window visible, no bleed */
+  .window { left: 60px; top: 48px; bottom: auto; width: 1060px; }
+  .chrome { height: 72px; }
+  .shot { width: 1060px; }
 </style></head>
 <body>
-  <div class="window" id="win">
+  <div class="window">
     <div class="chrome">
       <div class="lights"><span class="r"></span><span class="y"></span><span class="g"></span></div>
       <div class="urlbar">
@@ -22,14 +23,14 @@
   <script>
     // Anchor on the top-right corner of the search input (raw ≈ 618, 585 in the
     // 1440×900 capture) so the leader crosses only the card's whitespace.
-    const S = 1240 / 1440, cropRect = document.getElementById('crop').getBoundingClientRect();
+    const S = 1060 / 1440, cropRect = document.getElementById('crop').getBoundingClientRect();
     const dotX = cropRect.left + 618 * S;
-    const dotY = cropRect.top + 585 * S - 120;      // minus the crop's top offset
-    const pillX = 1128, pillY = dotY - 36;
+    const dotY = cropRect.top + 585 * S;
+    const pillX = 1136, pillY = dotY - 36;
     document.body.insertAdjacentHTML('beforeend', `
       <div class="dot" style="left:${dotX - 6.5}px; top:${dotY - 6.5}px;"></div>
       <div class="leader" style="left:${dotX + 8}px; top:${dotY - 1}px; width:${pillX - dotX - 12}px;"></div>
-      <div class="callout" style="left:${pillX}px; top:${pillY}px;">
+      <div class="callout" style="left:${pillX}px; top:${pillY}px; max-width: 246px;">
         <div class="t">Search athlete</div><div class="s">results filter as you type</div>
       </div>`);
   </script>

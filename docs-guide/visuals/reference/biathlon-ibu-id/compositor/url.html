@@ -1,9 +1,12 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><link rel="stylesheet" href="shared.css">
 <style>
-  .window { width: 1240px; }
-  .crop { height: 640px; }
-  .shot { width: 1240px; }
+  html, body { width: 1400px; height: 830px; }
+  /* full-window style: whole browser window visible, no bleed */
+  .window { left: 60px; top: 48px; bottom: auto; width: 1060px; }
+  .chrome { height: 72px; }
+  .shot { width: 1060px; }
+  .urlbar { font-size: 15px; }
 </style></head>
 <body>
   <div class="window">
@@ -21,11 +24,11 @@
   <script>
     const r = document.getElementById('idchip').getBoundingClientRect();
     const dotX = r.right + 12, dotY = r.top + r.height / 2;
-    const pillX = 1150, pillY = dotY - 36;
+    const pillX = 1136, pillY = dotY - 36;
     document.body.insertAdjacentHTML('beforeend', `
       <div class="dot" style="left:${dotX - 6.5}px; top:${dotY - 6.5}px;"></div>
       <div class="leader" style="left:${dotX + 8}px; top:${dotY - 1}px; width:${pillX - dotX - 12}px;"></div>
-      <div class="callout" style="left:${pillX}px; top:${pillY}px; max-width: 236px;">
+      <div class="callout" style="left:${pillX}px; top:${pillY}px; max-width: 246px;">
         <div class="t">The IBU ID</div><div class="s">the part of the address after the last slash</div>
       </div>`);
   </script>
