@@ -195,7 +195,7 @@
 > `yarmill-screenshot` (Safari chrome shows the URL). Chromium quirk in the docs env: launch
 > with `--ssl-version-max=tls1.2` + `proxy: {server: process.env.HTTPS_PROXY}` or TLS resets.
 
-### ibu-id — IBU ID field in Personal information   [corner-zoom+callouts]   ☐
+### ibu-id — IBU ID field in Personal information   [corner-zoom+callouts]   ☑ (2026-07-15, as a design-style MOCKUP — replace with a live capture when a biathlon instance is walkable; example athlete Davidova + her public IBU ID)
 - Go to: `/evidence/basicGlobalEvidence?group=…&athlete=…` (top-nav **OTHER → Athlete
   profiles**) (role: coach) — a biathlon instance that configures the IBU ID field
 - State: an athlete's card with **Personal information** open and **IBU ID** filled
@@ -205,7 +205,7 @@
 - Post-process: corner-zoom; bleed left+bottom; fade; horizontal callout pills.
 - Lands in: images/biathlon/ibu-id-field.png  →  used by en/sport-specific/biathlon/ibu-id.mdx (hero)
 
-### ibu-id — biathlonworld.com athlete URL   [corner-zoom+callouts]   ☐
+### ibu-id — biathlonworld.com athlete URL   [corner-zoom+callouts]   ☑ (2026-07-15 — real capture framed in drawn browser chrome with the URL + ID highlighted; also produced a sibling search-page shot → images/biathlon/ibu-id-search.png, embedded in the page. Compositor sources: `docs-guide/visuals/reference/biathlon-ibu-id/compositor/` — render via `node render.js field url search` with playwright + the raw captures one level up)
 - Go to: `https://www.biathlonworld.com/athlete/davidova-marketa/BTCZE20301199701` (public web)
 - State: Marketa Davidova's IBU athlete profile loaded; browser address bar visible.
 - Capture: top of the page including the address bar with the full URL.

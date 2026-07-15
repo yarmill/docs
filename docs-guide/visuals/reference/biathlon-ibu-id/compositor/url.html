@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="shared.css">
+<style>
+  .window { width: 1240px; }
+  .crop { height: 640px; }
+  .shot { width: 1240px; }
+</style></head>
+<body>
+  <div class="window">
+    <div class="chrome">
+      <div class="lights"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+      <div class="urlbar">
+        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="#6f6e8c" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <span>biathlonworld.com/athlete/davidova-marketa/<span class="id" id="idchip">BTCZE20301199701</span></span>
+      </div>
+      <div style="width:60px"></div>
+    </div>
+    <div class="crop"><img class="shot" src="../04-profile.png"></div>
+  </div>
+
+  <script>
+    const r = document.getElementById('idchip').getBoundingClientRect();
+    const dotX = r.right + 12, dotY = r.top + r.height / 2;
+    const pillX = 1150, pillY = dotY - 36;
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="dot" style="left:${dotX - 6.5}px; top:${dotY - 6.5}px;"></div>
+      <div class="leader" style="left:${dotX + 8}px; top:${dotY - 1}px; width:${pillX - dotX - 12}px;"></div>
+      <div class="callout" style="left:${pillX}px; top:${pillY}px; max-width: 236px;">
+        <div class="t">The IBU ID</div><div class="s">the part of the address after the last slash</div>
+      </div>`);
+  </script>
+</body></html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="shared.css">
+<style>
+  html, body { width: 1400px; height: 800px; }
+  .window { width: 1240px; }
+  .crop { height: 560px; }
+  .shot { width: 1240px; margin-top: -120px; }
+</style></head>
+<body>
+  <div class="window" id="win">
+    <div class="chrome">
+      <div class="lights"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+      <div class="urlbar">
+        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="#6f6e8c" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <span>biathlonworld.com/athlete</span>
+      </div>
+      <div style="width:60px"></div>
+    </div>
+    <div class="crop" id="crop"><img class="shot" src="../03-search-davidova.png"></div>
+  </div>
+
+  <script>
+    // Anchor on the top-right corner of the search input (raw ≈ 618, 585 in the
+    // 1440×900 capture) so the leader crosses only the card's whitespace.
+    const S = 1240 / 1440, cropRect = document.getElementById('crop').getBoundingClientRect();
+    const dotX = cropRect.left + 618 * S;
+    const dotY = cropRect.top + 585 * S - 120;      // minus the crop's top offset
+    const pillX = 1128, pillY = dotY - 36;
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="dot" style="left:${dotX - 6.5}px; top:${dotY - 6.5}px;"></div>
+      <div class="leader" style="left:${dotX + 8}px; top:${dotY - 1}px; width:${pillX - dotX - 12}px;"></div>
+      <div class="callout" style="left:${pillX}px; top:${pillY}px;">
+        <div class="t">Search athlete</div><div class="s">results filter as you type</div>
+      </div>`);
+  </script>
+</body></html>
