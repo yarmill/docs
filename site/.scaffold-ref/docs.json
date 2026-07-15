@@ -73,7 +73,10 @@
                   {
                     "group": "Biathlon",
                     "icon": "person-rifle",
-                    "pages": ["en/sport-specific/biathlon/shooting"]
+                    "pages": [
+                      "en/sport-specific/biathlon/shooting",
+                      "en/sport-specific/biathlon/ibu-id"
+                    ]
                   }
                 ]
               }

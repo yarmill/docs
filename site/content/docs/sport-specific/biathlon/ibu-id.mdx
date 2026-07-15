@@ -1,0 +1,71 @@
+---
+title: "Set an athlete's IBU ID"
+description: "Link an athlete to their IBU race results by filling in their IBU ID on the athlete's card."
+sidebarTitle: "IBU ID"
+---
+
+Yarmill matches each biathlete to the IBU results database (SIWIDATA) through their **IBU ID**. Fill it in once on the athlete's card, and Yarmill can connect the athlete to their race results and stats.
+
+<PageMeta audience="Coaches" where="Web app" />
+
+<Info>Yarmill is configured for each team, so the exact fields you see may differ from this
+guide. The IBU ID field is part of the biathlon setup — if you don't see it in **Athlete
+profiles**, ask your administrator.</Info>
+
+<Frame caption="The IBU ID field in the athlete's Personal information.">
+  {/* TODO(yarmill): screenshot — Athlete profiles → Personal information with the IBU ID row (see visuals queue). */}
+</Frame>
+
+## What the IBU ID is
+
+Every athlete registered with the International Biathlon Union has a unique identifier — for
+example `BTCZE20301199701` for Marketa Davidova. Yarmill uses this ID to pair the athlete with
+their IBU race data, so imported results and race analyses always refer to the right person.
+Without it, the athlete's IBU results can't be linked to their Yarmill record.
+
+## Find the ID on biathlonworld.com
+
+The ID is public — it's the last part of the athlete's profile address on the IBU website.
+
+<Steps>
+  <Step title="Open biathlonworld.com">
+    Go to [biathlonworld.com](https://www.biathlonworld.com) and select **BIATHLETES** in the
+    menu.
+  </Step>
+  <Step title="Find the athlete">
+    Find the athlete — for example Marketa Davidova — and open their profile.
+    {/* TODO(yarmill): verify how athletes are found on the BIATHLETES page (search field vs. browsing) — page not reachable from the docs environment. */}
+  </Step>
+  <Step title="Copy the ID from the address bar">
+    In your browser's address bar, the IBU ID is the part of the address after the last slash.
+    Copy it.
+  </Step>
+</Steps>
+
+```text title="Where the ID sits in the address"
+https://www.biathlonworld.com/athlete/davidova-marketa/BTCZE20301199701
+                                                       ^^^^^^^^^^^^^^^^
+                                                       the IBU ID
+```
+
+## Enter the ID in Yarmill
+
+<Steps>
+  <Step title="Open the athlete's card">
+    In **Athlete profiles**, select the athlete from the group panel on the left.
+  </Step>
+  <Step title="Fill in the IBU ID">
+    In **Personal information**, select the pencil next to **IBU ID** and paste the copied ID.
+    {/* TODO(yarmill): confirm whether the IBU ID field is case-sensitive (profile URLs sometimes show the ID in lowercase). */}
+  </Step>
+</Steps>
+
+<Check>The ID appears on the athlete's card — the athlete is now linked to their IBU race
+data.</Check>
+
+<Tip>Set the ID for every athlete who races IBU events, ideally as part of setting up a new
+athlete's card — results can only connect for athletes whose ID is filled in.</Tip>
+
+Next: [Competition Results](/en/results/results) ·
+[Athlete profile](/en/platform/athlete-profile) ·
+[Logging shooting](/en/sport-specific/biathlon/shooting)
