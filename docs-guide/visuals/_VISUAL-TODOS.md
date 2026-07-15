@@ -211,7 +211,8 @@
 
 ### ibu-id — lookup flow video (optional)   [motion]   ☐ **BLOCKED: external site, egress-restricted env**
 - Go to: biathlonworld.com (public web)
-- State: record the full flow — home → **BIATHLETES** → find Davidova → profile → highlight the
-  ID in the address bar → (cut) paste into Yarmill's IBU ID pencil editor.
+- State: record the full flow — home → **BIATHLETES** → search "Davidova" by name in the search
+  field → profile → highlight the ID in the address bar → (cut) paste into Yarmill's IBU ID
+  pencil editor.
 - Capture: short MP4/GIF (~20 s) via the `yarmill-visuals` motion pipeline.
 - Lands in: images/biathlon/ibu-id-flow.mp4  →  candidate embed for en/sport-specific/biathlon/ibu-id.mdx

@@ -176,7 +176,8 @@ join up with the federation systems already in use.
 > is configured **inside the Personal information section** (after Status; in-place pencil), not
 > in a separate External IDs section — so instance config can add fields to Personal information
 > itself. The same card also shows a configured **Personal documents** section below Personal
-> information. Docs page: `en/sport-specific/biathlon/ibu-id`.
+> information. Any role can fill the IBU ID in — admin, coach, or the athlete on their own card
+> (per chat 2026-07-15). Docs page: `en/sport-specific/biathlon/ibu-id`.
 - Layout (reference): each configured section is expected to be a panel of fields, same
   **in-place pencil** edit pattern as Personal info. Sections, fields, labels, and types are all
   per-instance.
