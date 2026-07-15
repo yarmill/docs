@@ -195,7 +195,7 @@
 > `yarmill-screenshot` (Safari chrome shows the URL). Chromium quirk in the docs env: launch
 > with `--ssl-version-max=tls1.2` + `proxy: {server: process.env.HTTPS_PROXY}` or TLS resets.
 
-### ibu-id — IBU ID field in Personal information   [corner-zoom+callouts]   ☑ (2026-07-15, as a design-style MOCKUP — replace with a live capture when a biathlon instance is walkable; example athlete Davidova + her public IBU ID)
+### ibu-id — IBU ID field in Personal information   [corner-zoom+callouts]   ☐ (a design-style mockup was produced 2026-07-15 but removed from the page per Tomas — wait for a live capture from a biathlon instance; regenerate via the compositor if a mockup is ever wanted again)
 - Go to: `/evidence/basicGlobalEvidence?group=…&athlete=…` (top-nav **OTHER → Athlete
   profiles**) (role: coach) — a biathlon instance that configures the IBU ID field
 - State: an athlete's card with **Personal information** open and **IBU ID** filled
