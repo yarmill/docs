@@ -183,3 +183,44 @@
   (number + label)" → an option row · "Back / Continue (↵ Enter)" → bottom bar
 - Post-process: clean full-window new-GUI shot; light GUI 2.0 shell; traffic lights; no fade.
 - Lands in: images/wellness/input-wizard.png  →  used by en/reality/wellness-questionnaire.mdx
+
+## biathlon — ibu-id
+> Queued 2026-07-15 for the new `en/sport-specific/biathlon/ibu-id` page. The Yarmill shot can
+> reuse the customer screenshot supplied in chat (Biathlon Canada, athlete "Burke Gavin" —
+> anonymize/replace with sandbox data before publishing). The biathlonworld.com flow was
+> live-verified in-browser 2026-07-15 (env network policy now allows the domain); **raw
+> reference captures** are committed in `docs-guide/visuals/reference/biathlon-ibu-id/`
+> (search page + Davidova profile, 1440×900). Note for capture: headless page screenshots have
+> no address bar — the URL-bar visual needs the framed-browser-chrome treatment from
+> `yarmill-screenshot` (Safari chrome shows the URL). Chromium quirk in the docs env: launch
+> with `--ssl-version-max=tls1.2` + `proxy: {server: process.env.HTTPS_PROXY}` or TLS resets.
+
+### ibu-id — IBU ID field in Personal information   [corner-zoom+callouts]   ☐ (a design-style mockup was produced 2026-07-15 but removed from the page per Tomas — wait for a live capture from a biathlon instance; regenerate via the compositor if a mockup is ever wanted again)
+- Go to: `/evidence/basicGlobalEvidence?group=…&athlete=…` (top-nav **OTHER → Athlete
+  profiles**) (role: coach) — a biathlon instance that configures the IBU ID field
+- State: an athlete's card with **Personal information** open and **IBU ID** filled
+  (e.g. `BTCZE20301199701`); sandbox athlete, no real personal data visible.
+- Capture: the lower part of the Personal information panel around the IBU ID row + pencil.
+- Callouts: "IBU ID" → the row · "edit in place" → the pencil
+- Post-process: corner-zoom; bleed left+bottom; fade; horizontal callout pills.
+- Lands in: images/biathlon/ibu-id-field.png  →  used by en/sport-specific/biathlon/ibu-id.mdx (hero)
+
+### ibu-id — biathlonworld.com athlete URL   [full-window+callout]   ☑ (2026-07-15 — real capture framed in drawn browser chrome with the URL + ID highlighted; also produced a sibling search-page shot → images/biathlon/ibu-id-search.png, embedded in the page. Restyled same day per Tomas — final style is **bottom-docked window**: both top corners rounded and visible, site top menu in frame, bottom edge cut flush with the canvas (no bottom rounding) so the partially-captured page reads as continuing below. Compositor sources: `docs-guide/visuals/reference/biathlon-ibu-id/compositor/` — render via `node render.js field url search` with playwright + the raw captures one level up)
+- Go to: `https://www.biathlonworld.com/athlete/davidova-marketa/BTCZE20301199701` (public web)
+- State: Marketa Davidova's IBU athlete profile loaded; browser address bar visible.
+- Capture: top of the page including the address bar with the full URL.
+- Callouts: "the IBU ID — the part after the last slash" → the `BTCZE20301199701` URL segment
+- Post-process: corner-zoom on the address bar; fade; horizontal callout pill.
+- Lands in: images/biathlon/ibu-id-url.png  →  used by en/sport-specific/biathlon/ibu-id.mdx
+
+### ibu-id — lookup flow video   [motion]   ☑ (2026-07-15 — published cut embedded on the page)
+- **Published** → `images/biathlon/ibu-id-flow.mp4` (28 s, 1512×950, +faststart) + poster
+  `ibu-id-flow-poster.jpg`: home → **BIATHLETES** → type "Davidova" in the search field →
+  profile → click the address bar (URL selects) → double-click the last segment (IBU ID
+  selects) → cut-to-zoom on the selected ID. Cookie + notification banners suppressed in-flow.
+- How it was made: headed Chromium on Xvfb `:99`, recorded via ffmpeg x11grab; page driven by
+  Playwright, address-bar interaction via real X clicks (xdotool); trim + end-zoom in ffmpeg —
+  script + raw take: `reference/biathlon-ibu-id/record-headed.js`, `ibu-lookup-with-urlbar.mp4`
+  (needs the env TLS quirk from the section note).
+- Possible future extension: append the Yarmill half — pasting the ID into the card's pencil
+  editor — once a biathlon instance is walkable.

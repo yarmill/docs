@@ -1,0 +1,65 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="shared.css">
+<style>
+  html, body { width: 1400px; height: 640px; }
+  .window { width: 1150px; left: -40px; bottom: -60px; background: #f2f2f5; padding: 30px 38px 56px; }
+  .card {
+    background: #fff; border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(31,30,49,.06);
+    padding: 6px 42px 8px;
+  }
+  .sechead {
+    display: flex; align-items: center; gap: 14px;
+    padding: 24px 0 18px; font-size: 19px; font-weight: 650; color: #1f1e31;
+  }
+  .sechead svg { width: 24px; height: 24px; stroke: #1f1e31; }
+  .row {
+    display: flex; align-items: center;
+    padding: 27px 0; border-top: 1px solid #ececf0;
+    font-size: 16.5px;
+  }
+  .row .label { width: 240px; color: #1f1e31; font-weight: 600; }
+  .row .value { flex: 1; color: #2f2e45; font-weight: 450; }
+  .row .pencil { width: 20px; height: 20px; stroke: #a3a2b5; }
+</style></head>
+<body>
+  <div class="window">
+    <div class="card">
+      <div class="sechead">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="10" r="3.1"/><path d="M6.2 19a7.4 7.4 0 0 1 11.6 0"/></svg>
+        Personal information
+      </div>
+      <div class="row"><div class="label">First name</div><div class="value">Marketa</div><svg class="pencil" id="fn-pencil" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14.5 7.5l3 3"/></svg></div>
+      <div class="row"><div class="label">Last name</div><div class="value">Davidova</div><svg class="pencil" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14.5 7.5l3 3"/></svg></div>
+      <div class="row"><div class="label">Status</div><div class="value">Active</div></div>
+      <div class="row" id="ibu-row"><div class="label">IBU ID</div><div class="value" id="ibu-value">BTCZE20301199701</div><svg class="pencil" id="ibu-pencil" viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14.5 7.5l3 3"/></svg></div>
+    </div>
+  </div>
+
+  <script>
+    function callout(target, pillX, pillY, title, sub, dotDx = 12) {
+      const r = target.getBoundingClientRect();
+      const dotX = r.left + (target.id === 'ibu-value' ? Math.min(r.width, 260) : r.width) + dotDx;
+      const dotY = r.top + r.height / 2;
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.style.cssText = `left:${dotX - 6.5}px; top:${dotY - 6.5}px;`;
+      const leader = document.createElement('div');
+      leader.className = 'leader';
+      leader.style.cssText = `left:${dotX + 8}px; top:${dotY - 1}px; width:${pillX - dotX - 12}px;`;
+      const pill = document.createElement('div');
+      pill.className = 'callout';
+      pill.style.cssText = `left:${pillX}px; top:${pillY}px;`;
+      pill.innerHTML = `<div class="t">${title}</div><div class="s">${sub}</div>`;
+      document.body.append(dot, leader, pill);
+    }
+    // text width of the ID value ≈ 165px — put the dot right after the text
+    const v = document.getElementById('ibu-value');
+    const span = document.createElement('span'); span.textContent = v.textContent;
+    v.textContent = ''; v.appendChild(span);
+    const ibuRowY = document.getElementById('ibu-row').getBoundingClientRect();
+    callout(span, 1108, ibuRowY.top + ibuRowY.height / 2 - 52, 'IBU ID', 'the athlete’s identifier in the IBU database');
+    const fp = document.getElementById('fn-pencil').getBoundingClientRect();
+    callout(document.getElementById('fn-pencil'), 1108, fp.top + fp.height / 2 - 36, 'Edit in place', 'coach, admin, or the athlete themselves');
+  </script>
+</body></html>

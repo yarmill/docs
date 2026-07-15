@@ -171,6 +171,13 @@ join up with the federation systems already in use.
 > external-ID (IBU ID) sections were present. Everything below is **reference-only**; the
 > additional-section UI (panels vs tabs vs accordion), external-ID behaviour, and non-text field
 > types could NOT be observed and remain `[CONFIG]` / `TODO(verify)`. Do not assert as observed.
+>
+> **Update 2026-07-15 (customer screenshot, Biathlon Canada):** the **IBU ID** external-ID field
+> is configured **inside the Personal information section** (after Status; in-place pencil), not
+> in a separate External IDs section — so instance config can add fields to Personal information
+> itself. The same card also shows a configured **Personal documents** section below Personal
+> information. Any role can fill the IBU ID in — admin, coach, or the athlete on their own card
+> (per chat 2026-07-15). Docs page: `en/sport-specific/biathlon/ibu-id`.
 - Layout (reference): each configured section is expected to be a panel of fields, same
   **in-place pencil** edit pattern as Personal info. Sections, fields, labels, and types are all
   per-instance.
