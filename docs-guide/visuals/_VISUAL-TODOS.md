@@ -213,10 +213,14 @@
 - Post-process: corner-zoom on the address bar; fade; horizontal callout pill.
 - Lands in: images/biathlon/ibu-id-url.png  →  used by en/sport-specific/biathlon/ibu-id.mdx
 
-### ibu-id — lookup flow video (optional)   [motion]   ☐ (draft recording exists — see section note)
-- Go to: biathlonworld.com (public web)
-- State: record the full flow — home → **BIATHLETES** → search "Davidova" by name in the search
-  field → profile → highlight the ID in the address bar → (cut) paste into Yarmill's IBU ID
-  pencil editor.
-- Capture: short MP4/GIF (~20 s) via the `yarmill-visuals` motion pipeline.
+### ibu-id — lookup flow video (optional)   [motion]   ☐ draft DONE, polish pending
+- **Draft recorded 2026-07-15** → `docs-guide/visuals/reference/biathlon-ibu-id/ibu-lookup-with-urlbar.mp4`
+  (28 s, 1512×950, real Chrome UI): home → **BIATHLETES** → type "Davidova" in the search field →
+  profile → click the address bar (URL selects) → double-click the last segment (IBU ID selects).
+- How it was made: headed Chromium on Xvfb `:99`, recorded via ffmpeg x11grab; page driven by
+  Playwright, address-bar interaction via real X clicks (xdotool) — script:
+  `reference/biathlon-ibu-id/record-headed.js` (needs the env TLS quirk from the section note).
+  Known blemishes: the site's notification-permission bar reappears on the profile page; no zoom.
+- Remaining for a publishable version: trim/pace, crop or dismiss the notification bar, optional
+  end-zoom on the selection, then (cut) paste into Yarmill's IBU ID pencil editor.
 - Lands in: images/biathlon/ibu-id-flow.mp4  →  candidate embed for en/sport-specific/biathlon/ibu-id.mdx
