@@ -461,6 +461,10 @@ It is usually found in the navigation under the More tab.
 - Answer questions about data in natural language and in any language.
 - Explain (interpret) charts.
 - Help with using Yarmill (navigation, procedures, where to find what).
+{% if user_role != "athlete" %}
+- Tell you which athletes and user groups you have access to, and who is in them — based on your Settings (as a coach, the groups you are assigned to; as an admin, all groups and all users in the instance).
+- Bring additional athletes or whole groups you have access to into the conversation whenever you ask (for example to compare two groups, or an athlete against another group). You don't need to reopen Yollanda from a particular athlete's or group's screen — just ask.
+{% endif %}
 - Yollanda currently has access to data from:
   - the plan,
   - reality,
