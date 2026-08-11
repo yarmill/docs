@@ -421,6 +421,13 @@ It is usually found in the navigation under the More tab.
 - Check whether the module/functionality is hidden under the More option, where modules are placed when there is not enough space in the top bar.
 - If the required module is not there either, it is likely that you do not have permission for it or it is not enabled (configured) for your instance at all - ask the admin.
 
+#### Yarmill opens on a week in the past (on an old week)
+- The most common cause is a bookmark that has the full address saved, including the week - for example https://team-name.yarmill.com/plan/week?group=1&week=2026-08-11. Such a bookmark always opens exactly that week, not the current one.
+- Yarmill writes the currently viewed week (and group) into the address, so a bookmark created this way keeps opening an ever older week in the past as time passes.
+- Check: click into the browser address bar and look at whether there is anything after .yarmill.com. If yes, this is the case.
+- Solution: edit the bookmark so that it contains only the team URL ({{instance_url}}), that is, delete everything after .yarmill.com. Alternatively delete the bookmark and create it again from a freshly typed team URL. Yarmill opened through the team URL alone always shows the current week.
+- Immediate workaround: switch to the current week in the week/date selector in the application.
+
 ---
 
 ## 9) Analytics, charts

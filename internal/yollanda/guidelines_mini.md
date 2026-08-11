@@ -422,6 +422,13 @@ V navigaci se běžně nachází pod záložkou Ostatní.
 - Zkontroluj, že se modul/funkcionalita neschovává pod volbou Ostatní, kam se řadí moduly při nedostatku místa v horní listě.
 - Pokud není požadovaný modul ani tam, je pravděpodobné, že na něj nemáš práva nebo není vůbec pro tvou instanci zapnutý (nakonfigurovaný) - optej se admina.
 
+#### Yarmill se otevírá na týdnu v minulosti (na starém týdnu)
+- Nejčastější příčinou je záložka, která má uloženou celou adresu včetně týdne - například https://nazev-tymu.yarmill.com/plan/week?group=1&week=2026-08-11. Taková záložka vždy otevře právě tento týden, ne ten aktuální.
+- Yarmill si do adresy zapisuje aktuálně zobrazený týden (a skupinu), takže takto vytvořená záložka s postupem času otevírá stále starší týden v minulosti.
+- Kontrola: klikni do adresního řádku prohlížeče a podívej se, jestli je za .yarmill.com ještě něco dalšího. Pokud ano, jde o tento případ.
+- Řešení: uprav záložku tak, aby obsahovala jen URL týmu ({{instance_url}}), tedy smaž vše za .yarmill.com. Nebo záložku smaž a vytvoř ji znovu z čistě napsané URL týmu. Yarmill otevřený jen přes URL týmu vždy zobrazí aktuální týden.
+- Okamžité řešení: v aplikaci se ve výběru týdne/data přepni na aktuální týden.
+
 ---
 
 ## 9) Analytika, grafy
