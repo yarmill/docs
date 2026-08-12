@@ -24,12 +24,14 @@ Authentication applies to **every** endpoint, including [Ping](/en/api-reference
 
 ## Get a token
 
-Tokens are issued by Yarmill. Contact Yarmill support to have one created for your integration, and ask for a **test token** as well — you can develop and verify the whole flow against a test token before any production data moves.
+Tokens are issued manually by Yarmill support — there's no self-service endpoint, so request one before you start building. Email [support@yarmill.com](mailto:support@yarmill.com) and ask for:
 
-{/* TODO(yarmill): confirm the exact way a partner obtains and renews a token. Integration
-    briefs describe tokens as "provided via the Yarmill Auth API", but that service isn't part
-    of the Ingest OpenAPI spec. Document the actual request (endpoint, credentials, response)
-    or state plainly that tokens are issued manually by support. */}
+- a **test token**, to develop and verify the whole flow before any production data moves, and
+- a **production token**, for the live integration.
+
+Ask for both at once. They're separate tokens, and having the test one first means you never point development traffic at production.
+
+Renewal works the same way: contact support rather than looking for an endpoint to call.
 
 ## Store it so it can be rotated
 
