@@ -134,4 +134,6 @@ That means the pair has to be **stable over the record's lifetime**. If your exp
 
 `200 OK` means the payload was accepted for processing. It does not mean the values were checked for plausibility — the service doesn't validate data quality.
 
-For the full status code list, see [Error handling](/en/api-reference/introduction#error-handling). For what to do when a request fails, see [Send data reliably](/en/api-reference/sending-data).
+There is **no response body**. Yarmill doesn't return an id for the record it just created, which is why `originId` matters: it's the only handle you have on that record afterwards. Store it on your side and send it again to update or delete.
+
+For the full status code list, see [Responses and error handling](/en/api-reference/introduction#responses-and-error-handling). For what to do when a request fails, see [Send data reliably](/en/api-reference/sending-data).

@@ -43,25 +43,24 @@ All request and response bodies are JSON. Set the `Content-Type` header on every
 Content-Type: application/json
 ```
 
-## Error handling
+## Responses and error handling
 
-The service uses standard HTTP status codes.
+**The status code is the whole response.** The service returns no body — no created record id, no echo of what you sent, no structured error object. Read the status code and nothing else.
 
 | Code | Meaning |
 |---|---|
 | `200 OK` | The request was accepted. |
-| `400 Bad Request` | The request was invalid. The response carries an error message describing what failed. |
+| `400 Bad Request` | The request was invalid. |
 | `401 Unauthorized` | The token is missing or invalid. |
-| `403 Forbidden` | The token is valid, but not permitted for this operation. The response carries an error message. |
+| `403 Forbidden` | The token is valid, but not permitted for this operation. |
 | `500 Internal Server Error` | The service hit a problem that stopped it completing an otherwise valid request. |
 
-A `401` response carries no JSON body, so authenticate on the status code rather than on
-response content. Treat `500` as retryable and `400`/`403` as a bug in your client — see
-[Send data reliably](/en/api-reference/sending-data).
+Two consequences worth designing around:
 
-{/* TODO(yarmill): verify the success response body for /api/data/upload and /api/data/files —
-    the OpenAPI spec documents `200 OK` with no schema. Does the service return the created
-    record's Yarmill id, an accepted/rejected flag, or an empty body? */}
+- **Don't parse response bodies.** Branch on the status code. Where a body does appear it's plain text, not JSON — `/api/ping` answers a bad token with `Invalid token` — and it isn't a contract to rely on.
+- **Yarmill won't hand you an id.** Because a successful upload returns nothing, your own `originId` is the only link between a record in your system and the same record in Yarmill. Send one, and keep it stable. See [Upload data](/en/api-reference/upload-data).
+
+Treat `500` as retryable and `400`/`403` as a bug in your client — see [Send data reliably](/en/api-reference/sending-data).
 
 ## Next steps
 
