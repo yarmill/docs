@@ -224,3 +224,24 @@
   (needs the env TLS quirk from the section note).
 - Possible future extension: append the Yarmill half — pasting the ID into the card's pencil
   editor — once a biathlon instance is walkable.
+
+### api-reference — how Yarmill identifies a record   [schematic]   ☐
+- Not a screenshot: a hand-authored schematic (biathlon shooting-syntax style) showing the
+  composite key — a source row (`originId: 12345`) plus its `originType: lactateTest` combining
+  into the identity Yarmill matches on, and a second row with the same `originId` under a
+  different `originType` resolving to a *different* record.
+- Why schematic, not a capture: this is structure, not a screen — nothing in the product UI
+  shows it, and a diagram won't drift as the service ships.
+- Labels: "your system's id" → originId · "the data type" → originType · "same id, different
+  type = different record" → the contrasting pair.
+- Lands in: images/api-reference/record-identity.png  →  used by
+  en/api-reference/upload-data.mdx (in "How Yarmill identifies a record")
+
+### api-reference — the two-step file flow   [schematic]   ☐ (blocked)
+- A three-box flow: your system → **ms-filestorage** (upload the file, receive the descriptor)
+  → **ingest `/api/data/files`** (register the descriptor + source object). Emphasis that the
+  file stream never touches the Ingest API.
+- **Blocked** on the same gap as the page itself: step 1's endpoint/auth is undocumented, so the
+  first box can't be labelled accurately yet. Draw it once that's confirmed.
+- Lands in: images/api-reference/file-flow.png  →  used by
+  en/api-reference/register-a-file.mdx (hero)

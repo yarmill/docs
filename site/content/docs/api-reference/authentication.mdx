@@ -1,0 +1,52 @@
+---
+title: "Authentication"
+description: "Authenticate every Ingest API request with an AppToken, and store it so it can be rotated."
+---
+
+Every Ingest API request carries an **AppToken** in the `Authorization` header. The token identifies which system the data came from, so Yarmill can attribute what you send.
+
+<PageMeta audience="Developers integrating an external system" where="JSON HTTPS API" />
+
+## Send the token
+
+```text
+Authorization: AppToken application_token_for_yarmill_access
+```
+
+The scheme name `AppToken` is part of the header value — it is not `Bearer`. A request with a missing or malformed token is rejected with `401 Unauthorized`.
+
+Authentication applies to **every** endpoint, including [Ping](/en/api-reference/ping). There is no unauthenticated health check.
+
+<Warning>
+  The AppToken authorizes writes into your Yarmill instance. Never use it in client-side code,
+  a mobile app, or anywhere an end user could read it. It belongs in server-to-server calls only.
+</Warning>
+
+## Get a token
+
+Tokens are issued by Yarmill. Contact Yarmill support to have one created for your integration, and ask for a **test token** as well — you can develop and verify the whole flow against a test token before any production data moves.
+
+{/* TODO(yarmill): confirm the exact way a partner obtains and renews a token. Integration
+    briefs describe tokens as "provided via the Yarmill Auth API", but that service isn't part
+    of the Ingest OpenAPI spec. Document the actual request (endpoint, credentials, response)
+    or state plainly that tokens are issued manually by support. */}
+
+## Store it so it can be rotated
+
+A token is long-lived but **not permanent**, and either side can invalidate it:
+
+- **You can revoke it at any time** — for example if it leaks, or when the integration is decommissioned.
+- **Yarmill revokes it only in response to a security incident.**
+
+Because of that, keep the token in configuration or a secret store, **not in your application code**. Rotating a token should be a config change, not a release.
+
+<Tip>
+  We recommend treating a `401` on a previously working integration as "the token changed",
+  not as a bug: alert someone, stop retrying, and fetch the current token from your
+  configuration rather than re-deploying.
+</Tip>
+
+## Related
+
+- [Introduction](/en/api-reference/introduction) — base URL, content type, and the full error list.
+- [Send data reliably](/en/api-reference/sending-data) — how to handle failures once you're authenticated.

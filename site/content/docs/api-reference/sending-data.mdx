@@ -1,0 +1,71 @@
+---
+title: "Send data reliably"
+description: "Design your integration so Yarmill and your source system stay consistent — granularity, retries, dates, and schema changes."
+sidebarTitle: "Send data reliably"
+---
+
+Getting a single request right is easy. Keeping Yarmill and your own database saying the same thing, months in, is the actual work. These are the practices we ask integration partners to build in from the start.
+
+<PageMeta audience="Developers integrating an external system" where="JSON HTTPS API" />
+
+## Deliver every event
+
+Your side owns delivery. The service confirms what it receives, but it can't know about an event that never arrived — so a request you drop is a permanent difference between your database and Yarmill.
+
+Treat each change in your source system as an event that must reach the API eventually: queue it, and only mark it done once you have a success response.
+
+## Send one record per request, at a fixed granularity
+
+Decide what "one record" means for your integration, and don't change it later. A good granularity is the smallest thing a user would edit on its own — for example one athlete's one measurement of one type, with one operation.
+
+That choice is what makes near-real-time updates possible: a new measurement, an edit, or a deletion each become a single small request, rather than a re-export of everything.
+
+<Tip>
+  We recommend sending each record as soon as it's captured, rather than batching into a nightly
+  job. Coaches act on data the day it appears, and a daily batch means a day of decisions made on
+  data Yarmill doesn't have yet.
+</Tip>
+
+## Retry failures, with a gap
+
+The API can be briefly unavailable, and `500 Internal Server Error` means the service hit a problem on an otherwise valid request. Both are worth retrying.
+
+<Steps>
+  <Step title="Distinguish retryable from permanent">
+    Retry `500` and network or timeout errors. Do **not** blindly retry `400` or `403` — those
+    mean the request itself is wrong, and it will be just as wrong the second time.
+  </Step>
+  <Step title="Wait between attempts">
+    Leave a gap and increase it with each attempt rather than retrying immediately in a tight
+    loop. Retrying hard against a struggling service delays its recovery.
+  </Step>
+  <Step title="Keep the record queued until it succeeds">
+    A retry that exhausts its attempts should leave the event in your queue and raise an alert —
+    not discard it silently.
+  </Step>
+</Steps>
+
+Because retries mean the same record can be sent more than once, send a stable `originId` on every payload. With an identifier, a duplicate delivery updates the existing record; without one, it creates a second copy.
+
+## Use ISO 8601 for dates
+
+Send every date and timestamp as ISO 8601 — `YYYY-MM-DDTHH:mm:ss.sssZ`. Local-format dates and naive timestamps are the most common cause of data that arrives intact but reads wrong, and a training record on the wrong day is worse than one that failed to send.
+
+## Keep a type's structure stable
+
+Yarmill interprets `data` according to its `originType`, so every record of a given type needs the same shape. Two consequences:
+
+- **Adding a new kind of record** means a new `originType`, not a reshaped existing one.
+- **Changing the structure of an existing type** has to be agreed with Yarmill *before* you start sending the new shape, so the downstream mapping can be updated first.
+
+<Warning>
+  Shipping a structural change without telling Yarmill will not usually fail loudly. The requests
+  are accepted — the service doesn't validate data quality — and the damage shows up later as
+  missing or misplaced values in the product.
+</Warning>
+
+## Related
+
+- [Upload data](/en/api-reference/upload-data) — the payload and every field.
+- [Authentication](/en/api-reference/authentication) — token storage and rotation.
+- [Ping](/en/api-reference/ping) — a cheap connectivity and token check for your monitoring.

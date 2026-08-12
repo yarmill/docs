@@ -1,35 +1,81 @@
 ---
-title: 'Introduction'
-description: 'Yarmill provides an JSON-based HTTP API to allow you to programatically ingest and manage data.'
+title: "Introduction"
+description: "Send data into Yarmill from an external system over a JSON HTTPS API."
+icon: "code"
 ---
 
-This documentation will provide you everything you need in order to get started, including code examples and information on authentication and error handling.
+The Yarmill Ingest API accepts data from a system outside Yarmill — a laboratory, a testing device, a federation database — and writes it into your instance. You send JSON over HTTPS with a token, and the service answers every request.
+
+<PageMeta audience="Developers integrating an external system" where="JSON HTTPS API" />
 
 ## Base URL
-The base URL for the API is `https://ingest.ms.yarmill.com`.
 
-## Authentication
-
-All requests to the API must include an AppToken in the `Authorization` header. The AppToken can be obtained from Yarmill support.
-
-<Warning>
-  Your Yarmill AppToken should never be used client side or exposed to your end users.
-</Warning>
-
-```shellscript
-Authorization: AppToken application_token_for_yarmill_access
+```text
+https://ingest.ms.yarmill.com
 ```
 
-## Content Type
+We keep endpoint paths stable so a working integration doesn't break when the service changes. Even so, treat the base URL as **configuration** in your client rather than a hard-coded constant, so it can be pointed elsewhere without a new release.
 
-All request and response bodies are in JSON format. Ensure that the `Content-Type` header is set to `application/json`.
+The full interactive reference — every endpoint, schema, and the current error list — is published as OpenAPI at [ingest.ms.yarmill.com/swagger](https://ingest.ms.yarmill.com/swagger/index.html). That spec is generated from the service itself, so it is the authority when it disagrees with this page.
 
-## Error Handling
+## What the service does
 
-The API uses standard HTTP status codes to indicate the success or failure of an API request. Common status codes include:
+- **Accepts create, update, and delete** for any record you can identify uniquely from your side. See [Upload data](/en/api-reference/upload-data).
+- **Accepts historical data.** There is no cut-off date; you can backfill as far back as your records go.
+- **Confirms every request.** You always get a response telling you whether the data was accepted or rejected.
+- **Checks your token** on every endpoint, which is how the service knows where the data came from.
 
-- `200 OK`: The request was successful.
-- `400 Bad Request`: The request was invalid.
-- `401 Unauthorized`: The request requires user authentication.
-- `403 Forbidden`: The server understood the request but refuses to authorize it.
-- `500 Internal Server Error`: The server encountered an unexpected condition that prevented it from fulfilling the request.
+## What the service doesn't do
+
+- **It doesn't judge data quality.** A `200 OK` means the payload was received and accepted for processing — not that the numbers in it are sensible. Validating that a measurement is plausible stays your responsibility.
+
+<Info>
+  What Yarmill *does* with the data once it lands — which module it appears in, how it's
+  labelled, which roles can see it — depends on how your instance is configured. Agree the
+  `originType` values and their downstream mapping with Yarmill before you start sending.
+</Info>
+
+## Content type
+
+All request and response bodies are JSON. Set the `Content-Type` header on every request:
+
+```text
+Content-Type: application/json
+```
+
+## Error handling
+
+The service uses standard HTTP status codes.
+
+| Code | Meaning |
+|---|---|
+| `200 OK` | The request was accepted. |
+| `400 Bad Request` | The request was invalid. The response carries an error message describing what failed. |
+| `401 Unauthorized` | The token is missing or invalid. |
+| `403 Forbidden` | The token is valid, but not permitted for this operation. The response carries an error message. |
+| `500 Internal Server Error` | The service hit a problem that stopped it completing an otherwise valid request. |
+
+A `401` response carries no JSON body, so authenticate on the status code rather than on
+response content. Treat `500` as retryable and `400`/`403` as a bug in your client — see
+[Send data reliably](/en/api-reference/sending-data).
+
+{/* TODO(yarmill): verify the success response body for /api/data/upload and /api/data/files —
+    the OpenAPI spec documents `200 OK` with no schema. Does the service return the created
+    record's Yarmill id, an accepted/rejected flag, or an empty body? */}
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" href="/en/api-reference/authentication">
+    Get a token, send it, and store it so it can be rotated.
+  </Card>
+  <Card title="Upload data" href="/en/api-reference/upload-data">
+    The main endpoint and every field in its payload.
+  </Card>
+  <Card title="Send data reliably" href="/en/api-reference/sending-data">
+    Granularity, retries, dates, and keeping both sides consistent.
+  </Card>
+  <Card title="Register a file" href="/en/api-reference/register-a-file">
+    Attach a file that's already in Yarmill's file storage.
+  </Card>
+</CardGroup>
