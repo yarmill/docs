@@ -27,7 +27,7 @@ The full interactive reference — every endpoint, schema, and the current error
 
 ## What the service doesn't do
 
-- **It doesn't judge data quality.** A `200 OK` means the payload was received and accepted for processing — not that the numbers in it are sensible. Validating that a measurement is plausible stays your responsibility.
+**It doesn't judge data quality.** A `200 OK` means the payload was received and accepted for processing — not that the numbers in it are sensible. Validating that a measurement is plausible stays your responsibility.
 
 <Info>
   What Yarmill *does* with the data once it lands — which module it appears in, how it's
@@ -64,17 +64,17 @@ Treat `500` as retryable and `400`/`403` as a bug in your client — see [Send d
 
 ## Next steps
 
-<CardGroup cols={2}>
-  <Card title="Authentication" href="/en/api-reference/authentication">
-    Get a token, send it, and store it so it can be rotated.
-  </Card>
-  <Card title="Upload data" href="/en/api-reference/upload-data">
+<RowList>
+  <Row title="Authentication" art="/illustrations/doodle-11.svg" href="/en/api-reference/authentication">
+    Request a token, send it, and store it so it can be rotated.
+  </Row>
+  <Row title="Upload data" art="/illustrations/doodle-12.svg" href="/en/api-reference/upload-data">
     The main endpoint and every field in its payload.
-  </Card>
-  <Card title="Send data reliably" href="/en/api-reference/sending-data">
+  </Row>
+  <Row title="Send data reliably" art="/illustrations/doodle-14.svg" href="/en/api-reference/sending-data">
     Granularity, retries, dates, and keeping both sides consistent.
-  </Card>
-  <Card title="Register a file" href="/en/api-reference/register-a-file">
+  </Row>
+  <Row title="Register a file" art="/illustrations/doodle-16.svg" href="/en/api-reference/register-a-file">
     Attach a file that's already in Yarmill's file storage.
-  </Card>
-</CardGroup>
+  </Row>
+</RowList>

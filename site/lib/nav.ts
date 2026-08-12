@@ -132,9 +132,24 @@ export interface PrevNext {
   next?: NavPage;
 }
 
-/** Resolve the previous/next page for a given url in the flat order. */
+/**
+ * Pages of the space that owns `url`, in sidebar order. Prev/next must not walk
+ * out of the current space — flattening the whole tree makes the last API page
+ * link "next" into the Changelog, and the first one link "previous" back into
+ * Tutorials, which reads as a broken trail. Falls back to the whole tree for a
+ * url no space claims (e.g. the home page).
+ */
+function spaceFlatPages(url: string): NavPage[] {
+  for (const space of SPACES) {
+    const pages = space.groups.flatMap((g) => g.pages);
+    if (pages.some((p) => p.url === url)) return pages;
+  }
+  return getFlatPages();
+}
+
+/** Resolve the previous/next page for a given url, within its own space. */
 export function getPrevNext(url: string): PrevNext {
-  const flat = getFlatPages();
+  const flat = spaceFlatPages(url);
   const i = flat.findIndex((p) => p.url === url);
   if (i === -1) return {};
   return {
@@ -237,17 +252,24 @@ export function getSpaces(): Space[] {
 }
 
 /**
- * Linear-style section number for a page, matching the Docs sidebar numbering:
- * `<groupIndex>.<pageIndex+1>` (e.g. `1.3` for Goals). Only the multi-group Docs
- * space is numbered; pages outside it (home, tutorials, changelog, api) return
- * undefined.
+ * Linear-style section number for a page, matching the sidebar numbering in
+ * `NavTree`: `<groupIndex+1>.<pageIndex+1>` (e.g. `1.3` for Goals). Both are
+ * 1-based, so the first group reads `1.0` and its first page `1.1` — keep the
+ * two in step, or the heading number and the sidebar disagree.
+ *
+ * Numbering follows the space the page lives in: the multi-group Docs space, and
+ * API Docs (Introduction + Endpoints). Single-group spaces (Tutorials,
+ * Changelog) render flat and unnumbered, as does the home page.
  */
-const DOCS_SPACE = SPACES.find((s) => s.id === 'docs');
+const NUMBERED_SPACE_IDS = ['docs', 'api'];
 export function getPageNumber(url: string): string | undefined {
-  if (!DOCS_SPACE) return undefined;
-  for (let gi = 0; gi < DOCS_SPACE.groups.length; gi++) {
-    const pi = DOCS_SPACE.groups[gi].pages.findIndex((p) => p.url === url);
-    if (pi !== -1) return `${gi}.${pi + 1}`;
+  for (const space of SPACES) {
+    if (!NUMBERED_SPACE_IDS.includes(space.id)) continue;
+    if (space.groups.length < 2) continue;
+    for (let gi = 0; gi < space.groups.length; gi++) {
+      const pi = space.groups[gi].pages.findIndex((p) => p.url === url);
+      if (pi !== -1) return `${gi + 1}.${pi + 1}`;
+    }
   }
   return undefined;
 }

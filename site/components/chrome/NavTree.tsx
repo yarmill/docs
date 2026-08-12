@@ -28,8 +28,9 @@ export function NavTree({ tree }: { tree: NavTreeData }) {
   }
   return (
     <nav className="ym-nav" aria-label="Documentation">
+      {/* Groups are numbered from 1, not 0 — the first section reads `1.0`. */}
       {tree.groups.map((group, i) => (
-        <NavGroupBlock key={group.label} group={group} groupIndex={i} pathname={pathname} />
+        <NavGroupBlock key={group.label} group={group} groupIndex={i + 1} pathname={pathname} />
       ))}
     </nav>
   );

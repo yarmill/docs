@@ -88,11 +88,10 @@ Sent this way the record lands in Yarmill, but nothing connects it back to the r
 <ParamField path="operationType" type="string">
   Which operation to perform on the record identified by `originId` + `originType`.
 
-  | Value | Operation |
-  |---|---|
-  | `C` | Create |
-  | `U` | Update |
-  | `D` | Delete |
+  Accepted values:
+  - `C` — create
+  - `U` — update
+  - `D` — delete
 
   When `originId` is present, the service can work out for itself whether a payload is a create
   or an update, so `operationType` is mainly how you make that explicit — and the only way to

@@ -60,7 +60,7 @@ Every request needs an [AppToken](/en/api-reference/authentication) and `Content
 <ParamField path="sourceType" type="integer" required>
   Which kind of Yarmill object this file is attached to, as a numeric reference type.
 
-  Accepted values: `1`, `10`, `20`, `30`, `40`, `50`, `60`, `70`, `80`, `90`.
+  Accepted values are the integers `1`, `10`, `20`, `30`, `40`, `50`, `60`, `70`, `80` and `90` — ask Yarmill which one matches the object you're attaching to.
 
   {/* TODO(yarmill): the OpenAPI spec exposes `ReferenceObjectType` as bare integers with no
       names, so there is no way to tell a reader which value means which object. Get the
@@ -84,25 +84,25 @@ Every request needs an [AppToken](/en/api-reference/authentication) and `Content
 
 ### File descriptor
 
-The object you pass as `file`:
+What file storage returns, and what you pass through as `file`. You shouldn't need to construct these yourself:
 
-<ParamField path="fileId" type="uuid">
+<ParamField path="file.fileId" type="uuid">
   The storage id of the uploaded file.
 </ParamField>
 
-<ParamField path="fileName" type="string">
+<ParamField path="file.fileName" type="string">
   The file's name, including its extension.
 </ParamField>
 
-<ParamField path="fileType" type="string">
-  The file's MIME type — for example `application/pdf`.
+<ParamField path="file.fileType" type="string">
+  The file's MIME type, such as `application/pdf`.
 </ParamField>
 
-<ParamField path="fileUrl" type="string">
+<ParamField path="file.fileUrl" type="string">
   Where the file is stored.
 </ParamField>
 
-<ParamField path="dateAdded" type="date-time">
+<ParamField path="file.dateAdded" type="date-time">
   When the file was stored, as an ISO 8601 timestamp.
 </ParamField>
 
