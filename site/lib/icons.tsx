@@ -6,6 +6,7 @@ import {
   CalendarDays,
   Clipboard,
   ClipboardList,
+  Code,
   FileText,
   Gauge,
   GraduationCap,
@@ -37,7 +38,7 @@ import {
  *
  * Keys grepped from `content/`:
  *   frontmatter `icon:` — book-open, briefcase-medical, bullseye, calendar,
- *     calendar-week, chart-line, clipboard, gauge-high, graduation-cap,
+ *     calendar-week, chart-line, clipboard, code, gauge-high, graduation-cap,
  *     heart-pulse, id-card, paperclip, pen-to-square, plug, stopwatch, trophy,
  *     user-check, wand-magic-sparkles
  *   `<Card icon="…">` adds — clipboard-list, gear, person-running
@@ -51,6 +52,7 @@ const ICONS: Record<string, LucideIcon> = {
   'chart-line': LineChart,
   clipboard: Clipboard,
   'clipboard-list': ClipboardList,
+  code: Code,
   gear: Settings,
   'gauge-high': Gauge,
   'graduation-cap': GraduationCap,

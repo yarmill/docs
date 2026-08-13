@@ -1,0 +1,43 @@
+---
+title: "Ping"
+description: "Check that the Ingest API is reachable and your token is still valid."
+sidebarTitle: "Ping"
+---
+
+A minimal endpoint for confirming two things at once: the service is up, and the token you're holding still works.
+
+<PageMeta audience="Developers integrating an external system" where="JSON HTTPS API" />
+
+```text
+POST https://ingest.ms.yarmill.com/api/ping
+```
+
+## Request
+
+Ping takes no payload, but it **is** authenticated — send your [AppToken](/en/api-reference/authentication) as on any other endpoint.
+
+Because it's a `POST` with no body, send an explicit zero content length. Without it the request is rejected at the web-server level with `411 Length Required`, before it reaches the API.
+
+```bash title="Ping with curl"
+curl -X POST https://ingest.ms.yarmill.com/api/ping \
+  -H "Authorization: AppToken application_token_for_yarmill_access" \
+  -H "Content-Length: 0"
+```
+
+## Responses
+
+| Code | Meaning |
+|---|---|
+| `200 OK` | The service is reachable and your token is valid. |
+| `401 Unauthorized` | The token is missing or invalid. The body is the plain text `Invalid token`. |
+
+<Tip>
+  Ping is a good monitoring check precisely because it validates the token as well as the
+  connection. An integration that ships data once a day otherwise discovers a revoked token a day
+  late — pinging on a schedule turns that into an alert you get immediately.
+</Tip>
+
+## Related
+
+- [Authentication](/en/api-reference/authentication) — what to do when a token stops working.
+- [Send data reliably](/en/api-reference/sending-data) — retries and failure handling.

@@ -1,0 +1,113 @@
+---
+title: "Register a file"
+description: "Attach a file to a Yarmill record by uploading it to file storage first, then registering its metadata."
+sidebarTitle: "Register a file"
+---
+
+Files take two steps. The Ingest API never receives the file itself — you upload it to Yarmill's file storage service, then tell ingest where it went and what it belongs to.
+
+<PageMeta audience="Developers integrating an external system" where="JSON HTTPS API" />
+
+```text
+POST https://ingest.ms.yarmill.com/api/data/files
+```
+
+Every request needs an [AppToken](/en/api-reference/authentication) and `Content-Type: application/json`.
+
+## How it works
+
+<Steps>
+  <Step title="Upload the file to file storage">
+    Send the file to Yarmill's file storage service. It responds with a file descriptor —
+    the id, name, type, URL, and timestamp of the stored file.
+  </Step>
+  <Step title="Register that descriptor with ingest">
+    POST the descriptor to `/api/data/files`, together with the source object the file belongs
+    to. Ingest stores the metadata and queues the downstream notification.
+  </Step>
+</Steps>
+
+{/* TODO(yarmill): document step 1. The OpenAPI spec describes the file-storage upload only as
+    "the filestorage service" returning a `FileSaveResult`, with no endpoint, method, or auth.
+    Needed: the upload URL, whether it takes the same AppToken, size/type limits, and the exact
+    response body. Until then this page can't be published as a complete flow. */}
+
+## Payload
+
+```json title="Register an uploaded file"
+{
+  "file": {
+    "fileId": "8f3bd0c4-1c2e-4a77-9a5e-2f1b6f0c9e11",
+    "fileName": "report.pdf",
+    "fileType": "application/pdf",
+    "fileUrl": "https://files.ms.yarmill.com/.../report.pdf",
+    "dateAdded": "2026-04-17T10:15:00Z"
+  },
+  "sourceType": 90,
+  "sourceCode": "external-record-id",
+  "sourceInstanceId": 123,
+  "sourceUserId": 456
+}
+```
+
+## Fields
+
+<ParamField path="file" type="object" required>
+  The file descriptor returned by the file storage upload — pass it through unchanged rather than
+  rebuilding it. See [File descriptor](#file-descriptor) for its contents.
+</ParamField>
+
+<ParamField path="sourceType" type="integer" required>
+  Which kind of Yarmill object this file is attached to, as a numeric reference type.
+
+  Accepted values are the integers `1`, `10`, `20`, `30`, `40`, `50`, `60`, `70`, `80` and `90` — ask Yarmill which one matches the object you're attaching to.
+
+  {/* TODO(yarmill): the OpenAPI spec exposes `ReferenceObjectType` as bare integers with no
+      names, so there is no way to tell a reader which value means which object. Get the
+      value → object mapping and replace this list with a table. */}
+</ParamField>
+
+<ParamField path="sourceCode" type="string" required>
+  Your identifier for the source object within its `sourceType` — the equivalent of `originId`
+  on [Upload data](/en/api-reference/upload-data).
+
+  Maximum 255 characters, and it can't be empty.
+</ParamField>
+
+<ParamField path="sourceInstanceId" type="integer">
+  The instance id of the source object in your system.
+</ParamField>
+
+<ParamField path="sourceUserId" type="integer">
+  The user id of the source object in your system.
+</ParamField>
+
+### File descriptor
+
+What file storage returns, and what you pass through as `file`. You shouldn't need to construct these yourself:
+
+<ParamField path="file.fileId" type="uuid">
+  The storage id of the uploaded file.
+</ParamField>
+
+<ParamField path="file.fileName" type="string">
+  The file's name, including its extension.
+</ParamField>
+
+<ParamField path="file.fileType" type="string">
+  The file's MIME type, such as `application/pdf`.
+</ParamField>
+
+<ParamField path="file.fileUrl" type="string">
+  Where the file is stored.
+</ParamField>
+
+<ParamField path="file.dateAdded" type="date-time">
+  When the file was stored, as an ISO 8601 timestamp.
+</ParamField>
+
+## Responses
+
+`200 OK` means the metadata was accepted and the downstream notification queued. There is no response body.
+
+For the full status code list, see [Responses and error handling](/en/api-reference/introduction#responses-and-error-handling).

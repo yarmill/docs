@@ -104,14 +104,18 @@
             "groups": [
               {
                 "group": "API Documentation",
-                "pages": ["en/api-reference/introduction"]
+                "pages": [
+                  "en/api-reference/introduction",
+                  "en/api-reference/authentication",
+                  "en/api-reference/sending-data"
+                ]
               },
               {
                 "group": "Endpoints",
-                "openapi": "en/api-reference/openapi.json",
                 "pages": [
-                  "POST /api/data/upload",
-                  "POST /api/ping"
+                  "en/api-reference/upload-data",
+                  "en/api-reference/register-a-file",
+                  "en/api-reference/ping"
                 ]
               }
             ]

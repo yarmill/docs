@@ -531,6 +531,15 @@
   line-height: 1.6;
   color: var(--ym-muted);
 }
+/* Block rhythm inside the body. The prose rhythm above is `.prose > *` — direct
+   children only — so blocks nested in a ParamField get no margin at all and a
+   multi-paragraph field description runs together as one wall of text. Give them
+   their own (slightly tighter) rhythm; id-scoped to match the prose rules. */
+.ym-shell #ym-page .ym-paramfield-body > * {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+.ym-shell #ym-page .ym-paramfield-body > :where(table) { margin-top: 12px; }
 .ym-paramfield-body > :first-child { margin-top: 0; }
 .ym-paramfield-body > :last-child { margin-bottom: 0; }
 
@@ -852,6 +861,19 @@
   padding: 1px 6px;
   /* Don't let a long token blow out the line box. */
   word-break: break-word;
+}
+
+/* Inside a table cell, never break a code chip across lines: the background and
+   border render per line-fragment, so a wrapped `200 OK` reads as two separate
+   chips and a status column looks broken. Status codes, field names, and enum
+   values are short by nature, and the table already scrolls horizontally
+   (`overflow-x: auto`), so keeping them on one line costs nothing.
+   Specificity note: the chip rule above is (1,4,2), so this one carries the same
+   two `:not()` guards plus `table` to land at (1,4,3) and win outright rather
+   than relying on source order. */
+.ym-shell #ym-page .prose table :is(td, th) > code:not(.ym-paramfield-name):not(.ym-paramfield-default) {
+  white-space: nowrap;
+  word-break: normal;
 }
 
 /* ---- Code block (rehype-pretty-code: figure > pre > code) ---- */

@@ -1,0 +1,138 @@
+---
+title: "Upload data"
+description: "POST a JSON payload to create, update, or delete a record in Yarmill."
+sidebarTitle: "Upload data"
+---
+
+This is the endpoint you'll use for almost everything: one request carries one record, tagged with a type you choose and an identifier from your own system.
+
+<PageMeta audience="Developers integrating an external system" where="JSON HTTPS API" />
+
+```text
+POST https://ingest.ms.yarmill.com/api/data/upload
+```
+
+Every request needs an [AppToken](/en/api-reference/authentication) and `Content-Type: application/json`.
+
+## The smallest useful payload
+
+Two fields are enough to get data in: what kind of record this is, and the record itself.
+
+```json title="Minimal payload"
+{
+  "originType": "lactateTest",
+  "data": {
+    "athleteId": "123334",
+    "testedAt": "2026-04-17T09:30:00.000Z",
+    "lactate": 4.1,
+    "heartRate": 172
+  }
+}
+```
+
+Sent this way the record lands in Yarmill, but nothing connects it back to the row in your database. Send `originId` too and you can update or delete it later.
+
+## The full payload
+
+```json title="Standard payload"
+{
+  "originId": "12345",
+  "originType": "lactateTest",
+  "operationType": "C",
+  "data": {
+    "athleteId": "123334",
+    "testedAt": "2026-04-17T09:30:00.000Z",
+    "lactate": 4.1,
+    "heartRate": 172
+  },
+  "metadata": {
+    "source": "lab",
+    "version": "1",
+    "device": "analyzer-2"
+  },
+  "tags": ["lactate", "endurance"]
+}
+```
+
+## Fields
+
+<ParamField path="originType" type="string" required>
+  The kind of record you're sending, used to categorize it in Yarmill. This is usually the name
+  of the entity in your own system.
+
+  **Every record of the same `originType` must have the same structure in `data`.** Yarmill
+  relies on that consistency to interpret the payload, so introduce a new type rather than
+  changing the shape of an existing one.
+
+  Example: `athleteMeasurement`, `lactateTest`
+</ParamField>
+
+<ParamField path="data" type="object | array" required>
+  The record itself — any valid JSON object, or an array of objects. Yarmill doesn't constrain
+  what's inside; the structure is whatever you and Yarmill agreed for this `originType`.
+
+  Use [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) for every date and timestamp
+  (`YYYY-MM-DDTHH:mm:ss.sssZ`) so values aren't read in the wrong timezone.
+</ParamField>
+
+<ParamField path="originId" type="string">
+  Your identifier for this record — unique **within your system**, not globally. It's what lets
+  a later request update or delete the same record.
+
+  Omit it and the record is still accepted, but Yarmill cannot map a future request onto it, so
+  re-sending the same record creates a duplicate rather than updating it.
+
+  Example: `2be7d766-8848-46c9-ba31-22f5fab4641b`
+</ParamField>
+
+<ParamField path="operationType" type="string">
+  Which operation to perform on the record identified by `originId` + `originType`.
+
+  Accepted values:
+  - `C` — create
+  - `U` — update
+  - `D` — delete
+
+  When `originId` is present, the service can work out for itself whether a payload is a create
+  or an update, so `operationType` is mainly how you make that explicit — and the only way to
+  express a delete.
+</ParamField>
+
+<ParamField path="metadata" type="object">
+  Free-form key-value pairs describing the payload rather than the record — where it came from,
+  which version of your exporter produced it, which device took the reading. Useful later for
+  understanding and sorting data.
+
+  **Values must be strings.** Send `"version": "1"`, not `"version": 1`.
+</ParamField>
+
+<ParamField path="tags" type="string[]">
+  An array of strings for categorizing and filtering the data once it's in Yarmill.
+
+  Example: `["lactate", "endurance"]`
+</ParamField>
+
+{/* TODO(yarmill): resolve a contradiction in the OpenAPI spec. Its endpoint description marks
+    `originType` and `data` as required, but the `DataRequestModel` schema declares no required
+    properties and marks all of them nullable. This page documents the description's intent —
+    confirm what the service actually enforces, and fix whichever side is wrong. */}
+
+## How Yarmill identifies a record
+
+`originId` and `originType` together form the identifying key. `originId` alone is not enough — the same `originId` under two different types is two different records.
+
+That means the pair has to be **stable over the record's lifetime**. If your export renumbers rows, or reuses an id after a delete, updates will land on the wrong record or create duplicates.
+
+<Tip>
+  Send the identifier your source system already treats as a primary key. A derived or
+  positional id — a row number, a hash of the values — changes when the data changes, which is
+  exactly when you need it to stay the same.
+</Tip>
+
+## Responses
+
+`200 OK` means the payload was accepted for processing. It does not mean the values were checked for plausibility — the service doesn't validate data quality.
+
+There is **no response body**. Yarmill doesn't return an id for the record it just created, which is why `originId` matters: it's the only handle you have on that record afterwards. Store it on your side and send it again to update or delete.
+
+For the full status code list, see [Responses and error handling](/en/api-reference/introduction#responses-and-error-handling). For what to do when a request fails, see [Send data reliably](/en/api-reference/sending-data).
