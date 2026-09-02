@@ -22,7 +22,7 @@ Each goal holds a set of **key results** — measurable outcomes with a start, c
 
 **Open Goals from the main menu.** As an **athlete**, you'll see your own goals straight away. As a **coach**, pick a **group** and then an athlete to work with their goals — or open your own Goals to set objectives for yourself.
 
-Goals are grouped by season into **Current season** and **Past season**, each with a count, so older objectives stay out of the way without being lost.
+Goals are grouped by season, each group with its own count: **Current season**, **Past season**, and **Other** — everything older than last season. Old objectives stay out of the way without being lost.
 
 ## Create a goal
 
@@ -110,6 +110,10 @@ There are no sub-steps or milestones; key results are the only way to break a go
 
 ### Key result fields
 
+<ParamField path="State">
+  The key result's status — the same six states as the goal. It's the table's first column.
+</ParamField>
+
 <ParamField path="Name" required>
   The measurable outcome — for example, "Train at least 3× per week."
 </ParamField>
@@ -130,10 +134,6 @@ There are no sub-steps or milestones; key results are the only way to break a go
   When the key result should be reached.
 </ParamField>
 
-<ParamField path="State">
-  The key result's status — the same six states as the goal.
-</ParamField>
-
 ## Track progress
 
 **Values are updated manually**, so keep them current as the athlete progresses — the conversations around a goal are only as good as its latest numbers. Update each key result's **current value**, and move the goal's **state** as the picture changes. The progress fraction counts achieved key results against the total.
@@ -147,6 +147,8 @@ To remove a goal, use the **trash icon** at the top right.
 **Use Activity to leave a comment at any time.** Comments are plain text, timestamped, and a good way for an athlete and coach to talk through progress in context.
 
 When a goal wraps up, add a **final evaluation** — a short closing reflection on how it went. Both the athlete and a coach can add their own.
+
+**A final evaluation can't be added until the goal reaches a final state** — **Completed**, **Canceled**, or **Failed**. While a goal is still Not started, On track, or Off track, there's nothing to write into: set the closing state first, then evaluate. Comments in **Activity**, by contrast, work at any point in the goal's life.
 
 <Tip>Goals are at their best in pre- and post-season conversations: set them together at
 the start of the season, and evaluate them together at the end.</Tip>
@@ -180,9 +182,11 @@ Hover a goal for a quick summary, or select it to open the full view — a fast 
 
 ## How it connects
 
-- Goals are scoped to a **season** — the structure they live in comes from
-  [Plan](/en/plan/plan) and the [Season Calendar](/en/plan/season-calendar).
-- **Document check** is a [Yollanda](/en/platform/yollanda) surface, checking each goal
-  against your team's methodology.
 - Goals and their final evaluations are the spine of pre- and post-season review
   conversations.
+- A goal carries **its own season** — that's what buckets the list. It isn't tied to a
+  [Season Calendar](/en/plan/season-calendar) event or a [Plan](/en/plan/plan) week, so a
+  goal can span whatever stretch of the season it needs to.
+- **Document check** measures a goal against your team's **methodology document** — the
+  reference that lives outside Yarmill and that **Open methodology** links to.
+{/* TODO(yarmill): verify the two replacement bullets before publishing (season independence; the methodology-document link). */}

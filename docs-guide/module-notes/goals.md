@@ -65,7 +65,8 @@ value it for retrospectives.
   glance). Can create, edit, and evaluate goals for the athletes they coach.
 - **Athlete:** sees and manages **only their own** goals. **No Group dropdown, no athlete
   list, and no Entire Group entry/overview** (the coach-only group/athlete switcher is absent);
-  the sidebar shows only the athlete's own season buckets (Current season / Past season).
+  the sidebar shows only the athlete's own season buckets (Current season / Past season /
+  Other).
   Athletes can **view AND edit their own goals — including a goal a coach created for them** —
   editing key results and attributes, adding comments, and adding their own final evaluation
   (confirmed athlete session 2026-06-15: Lisa edited "Improve start technique", a goal created
@@ -80,7 +81,7 @@ value it for retrospectives.
   - **State** — the goal's status. One of the **six states** (see below). Default **Not
     started**.
   - **Season** — the season the goal belongs to. Default **Current season**; drives the
-    list buckets (**Current season / Past season**).
+    list buckets (**Current season / Past season / Other**).
   - **Priority** — **Low | Medium | High** (default Low). Set via the **"!" icon button**,
     which opens a **DARK dropdown** with a search field; each level shows a small bar-count
     icon.
@@ -131,8 +132,10 @@ value it for retrospectives.
   The member list can include coaches as selectable entries (observed: "Simpson Bart",
   "Yarmill Hello" appear alongside athletes). Plus the coach's **own** Goals.
   **Sidebar (athlete):** their own goals only — no group/athlete switcher.
-- **Goals list:** bucketed by season — **Current season · Past season** (each with a count) —
-  so older objectives stay out of the way without being lost.
+- **Goals list:** bucketed by season — **Current season · Past season · Other** (each with a
+  count); **Other** holds everything older than last season — so old objectives stay out of
+  the way without being lost. (Corrected 09/2026 by product owner: the earlier
+  "Current/Past only" reading missed the **Other** bucket.)
 - **Two views:** the **per-athlete goals list + goal detail** (light) and the coach-only
   **Entire Group** overview (dark).
 - **Related modules:** Plan / Season Calendar (the season the goals sit in); Analytics
@@ -142,7 +145,7 @@ value it for retrospectives.
 
 ### 6.1 Goals list (per athlete / self) — LIGHT
 - Layout: module sidebar + a list of the person's goals, **grouped by season**
-  (Current season / Past season, each with a count).
+  (Current season / Past season / Other, each with a count; **Other** = older than last season).
 - Each goal row shows (confirmed): **title**, a **state dot**, a **season chip** (e.g.
   "2026"), a **progress fraction** (achieved ÷ total key results, e.g. `0/2`), and a
   **category chip** (e.g. "Strength"). **Priority is NOT shown** in the list row; **category
@@ -183,6 +186,8 @@ value it for retrospectives.
 - **Document check** — **checklist icon, top-right** → opens the **DARK Yollanda popover** (§6.4).
 - **Final evaluations** — its **own section** below the KR table (a text box, placeholder
   "Final evaluation", avatar dot + submit/▲ arrow); athlete and coach can each add one.
+  **Gated on a final state:** no final evaluation can be added until the goal is set to
+  **Completed / Canceled / Failed** (confirmed by product owner 09/2026).
   `TODO(verify)`: whether it locks after submission and whether each role posts only one.
 - **Activity** — chronological automatic change-log (who + when) + a **"Leave a comment"** box
   at the bottom (plain timestamped text).
@@ -326,7 +331,7 @@ add a **final evaluation** at the end.
   external URL (e.g. a Notion page).
 - **Universal (not configurable):** the **six states**, the **key-result fields**
   (start/current/target/date), the **manual** value updates, the season buckets (Current
-  season / Past season), and the coach-vs-athlete visibility model.
+  season / Past season / Other), and the coach-vs-athlete visibility model.
 - **Role variant:** athletes have **no** group selector / athlete list / Entire Group view.
 
 ## 11. Edge cases, limits, gotchas
@@ -342,7 +347,7 @@ add a **final evaluation** at the end.
 - `TODO(verify)`: maximum number of key results per goal (if any); whether a goal can have
   zero key results and still pass Document check (methodology-dependent).
 - `TODO(verify)`: what happens to a goal's bucket when its season passes (auto-moves to
-  "Past season"?).
+  "Past season", then to "Other" once it's older than last season?).
 
 ## 12. Cross-module integration & data flow
 - **← Plan / Season Calendar:** goals are scoped to a **season**; the season structure is
@@ -396,7 +401,8 @@ Still open (would need write actions or an athlete login to confirm):
 - **Routes** — detail `/okr/{goalUuid}?group=&athlete=&week=`; per-athlete list
   `/okr?group=&athlete=`; **Entire Group = `/okr?group={id}` with no athlete param** (no
   `/okr/group` sub-route) (§0, §6.6).
-- **Season buckets = Current season / Past season** (not Current/Last/Other) (§4, §5, §6.1, §10).
+- ~~**Season buckets = Current season / Past season** (not Current/Last/Other)~~ — **superseded
+  09/2026:** the buckets are **Current season / Past season / Other** (§4, §5, §6.1, §10).
 - **Auto-save** — no Save button; changes land in the Activity log with who+when (§6.2, §7).
 - **List row chrome** — title · state dot · season chip · progress fraction · category chip;
   **priority not shown, category is** (§6.1).
@@ -442,7 +448,7 @@ most goal-rich athlete — best subject for the Entire Group image; Simpson Lisa
 **Athlete-session verification (2026-06-15)** on we.yarmill.com (clean athlete session, role
 "Athlete", *Simpson Lisa* logged in — one login per browser) confirmed the **athlete view** of
 Goals (GUI 2.0, totem panel + Training Management sidebar): the module is scoped to **Lisa's own
-goals only** — her sidebar shows her season buckets (Current season / Past season) with **no
+goals only** — her sidebar shows her season buckets (Current season / Past season / Other) with **no
 Group dropdown and no Entire Group entry** (the coach-only group/athlete switcher is absent). She
 can **view AND edit her own goals, including the coach-created "Improve start technique"** (created
 by coach Bart Simpson per its Activity log) — editing its key results/attributes, adding comments,
