@@ -1,7 +1,8 @@
 # Seed plan: Goals — AFC Richmond
 
 The demo data to create in the **Goals** module for the AFC Richmond group before shooting the
-Goals page visuals. See [`../demo-cast.md`](../demo-cast.md) for the cast and the write-scope rule.
+Goals page visuals. See [`../demo-cast.md`](../demo-cast.md) for the cast and the write-scope rule: **Ted Lasso**
+is the coach (and the only supervisor), **Jamie Tartt** the athlete, **Rebecca Welton** the admin.
 
 Designed so the eight shots in the Goals shot list can all be taken from this one data set —
 including the three season buckets, every state colour in the Entire Group overview, a goal
@@ -20,7 +21,7 @@ The one athlete with data in all three buckets, so his list is the "Where to fin
 ### Current season
 
 **Turn into the team's playmaker** · On track · High · Performance → Attacking
-· supervisors: Ted Lasso, Roy Kent
+· supervisor: Ted Lasso
 > Stop being the guy who scores and start being the guy who makes it happen for everyone else.
 
 | State | Key result | Start | Current | Target | Target date |
@@ -30,7 +31,7 @@ The one athlete with data in all three buckets, so his list is the "Where to fin
 | Off track | Track-backs per 90 | 2 | 3 | 6 | 20 Dec 2026 |
 
 **Add strength without losing sharpness** · Off track · Medium · Fitness → Strength
-· supervisor: Coach Beard
+· supervisor: Ted Lasso
 > Heavier in the gym, same over 10 metres.
 
 | State | Key result | Start | Current | Target | Target date |
@@ -64,6 +65,9 @@ his body. Proud of this one."
 
 ## The rest of the squad
 
+Names below are the likely squad; **check the real member list first** and drop or swap anyone
+who isn't in the group. The point of each row is the *state* it contributes, not the name.
+
 | Athlete | Goal | State | Why it's in the set |
 |---|---|---|---|
 | **Sam Obisanya** | Grow into a leader on the pitch · Personal → Leadership · 2 KRs | On track | a second populated athlete for the overview |
@@ -71,15 +75,17 @@ his body. Proud of this one."
 | **Isaac McAdoo** | Cut the cards · Technical → Discipline · 2 KRs | **Failed** | a red pill in the overview |
 | **Colin Hughes** | Break into the starting XI · Performance → Selection · 2 KRs | Off track | an amber pill |
 | **Jan Maas** | Learn the new back-three shape · Technical → Positioning · 1 KR | **Canceled** | shape change dropped mid-season; the sixth state |
+| **Roy Kent** | Last the full ninety again · Fitness → Endurance · 2 KRs | On track | an athlete, not a coach — see the cast note |
 | **Zoreaux (Van Damme)** | — | — | deliberately empty: an athlete row with no pills |
 | **Bumbercatch** | — | — | deliberately empty |
 
 Between them the overview shows all six state colours in one frame.
 
-## Coach's own goals — Roy Kent
+## The coach's own goal — Ted Lasso
 
-**Get through a full season without being sent to the stands** · On track · Personal → Conduct
-· 1 KR — proves the "coaches can set goals for themselves" line without needing a second shot.
+**Sit down with every player, every week** · On track · Personal → Coaching · 1 KR
+(one-to-ones held this week: 0 → 8 → 11) — proves the "coaches can set goals for themselves"
+line without needing a second shot.
 
 ## Notes for seeding
 

@@ -11,16 +11,21 @@ its members named after the show's characters. Every new visual and every exampl
 uses this group, so the docs read as one coherent product tour instead of a pile of unrelated
 instances.
 
+Three named accounts do the work; the rest of the squad is scenery.
+
 | Role in the docs | Member | Used for |
 |---|---|---|
-| Head coach (primary login) | **Ted Lasso** | the coach's-eye view in most shots |
-| Assistant coaches | **Coach Beard**, **Roy Kent** | supervisors, second opinions, coach-own-goals |
-| Lead example athlete | **Jamie Tartt** | the athlete with the richest data; the athlete-view login |
-| Supporting athletes | **Sam Obisanya**, **Dani Rojas**, **Isaac McAdoo**, **Colin Hughes**, **Jan Maas** | group overviews, varied states |
-| Deliberately empty athletes | (two of the squad) | empty rows / empty states |
+| **Coach** (the primary login) | **Ted Lasso** | the coach's-eye view in most shots; the supervisor on goals |
+| **Athlete** (the athlete login) | **Jamie Tartt** | the athlete with the richest data, and every athlete-role screen |
+| **Admin** (occasional) | **Rebecca Welton** | the few shots that need an admin |
+| Supporting athletes | the rest of the squad — **Roy Kent**, Sam Obisanya, Dani Rojas, … | visible in group overviews and athlete lists; rarely the subject of a shot |
+
+**Roy Kent is an athlete here**, not a coach — the squad list is whatever the group actually
+contains, so check the member list before naming anyone in a caption.
 
 Keep a member's role stable across modules — if Jamie Tartt is the lead athlete in Goals, he's
-the lead athlete in Reality too.
+the lead athlete in Reality too. Ted Lasso is the only coach; don't invent a second one to fill
+a supervisor field.
 
 ## Data scope — hard rule
 
