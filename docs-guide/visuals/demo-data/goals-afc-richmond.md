@@ -8,11 +8,20 @@ Designed so the eight shots in the Goals shot list can all be taken from this on
 including the three season buckets, every state colour in the Entire Group overview, a goal
 closed with final evaluations, and a goal incomplete enough for Document check to flag it.
 
-**To confirm live before seeding:** the season labels the instance offers (does a season read
-`2026`, `2026/27`, …?), and how far back seasons go — the **Other** bucket needs a goal at least
-two seasons old. Category names are per-team `[CONFIG]`; the ones below assume the
-Performance / Fitness / Personal / Technical / Health / Conditions codelist and get swapped for
-whatever AFC Richmond actually has.
+**Seeded 2026-09-02** — this is now the live state of the group, not a proposal. What the
+instance actually offers, confirmed in the app:
+
+- **Seasons** are single years, **2020–2027**. So 2026 → *Current season*, 2025 → *Past season*,
+  2024 → *Other*.
+- **Squad** (six athletes): Bumbercatch Moe · Kent Roy · McAdoo Isaac · Obisanya Sam ·
+  Rojas Dani · Tartt Jamie. Plus **Lasso Ted** (coach) and **Welton Rebecca** (admin), who appear
+  in the sidebar but get no row in the Entire Group overview.
+- **Categories** `[CONFIG]`: Performance → Result · Fitness → Speed/Strength/Endurance ·
+  Personal → Education/Psyche/Communication · Technical → Coordination/Technique/Tactics ·
+  Health → Body composition/Nutrition/Recovery/Health condition · Conditions → Background/Equipment.
+
+The state spread below is deliberate: the 2026 goals cover **all six state colours** in a single
+Entire Group frame, and Bumbercatch Moe is left with no goals so the empty-row case is visible.
 
 ## Jamie Tartt — the lead athlete
 
@@ -65,19 +74,15 @@ his body. Proud of this one."
 
 ## The rest of the squad
 
-Names below are the likely squad; **check the real member list first** and drop or swap anyone
-who isn't in the group. The point of each row is the *state* it contributes, not the name.
+One goal each, chosen for the *state* it contributes to the group overview.
 
 | Athlete | Goal | State | Why it's in the set |
 |---|---|---|---|
-| **Sam Obisanya** | Grow into a leader on the pitch · Personal → Leadership · 2 KRs | On track | a second populated athlete for the overview |
-| **Dani Rojas** | Stay dangerous in the air · *no supervisor, no category, 1 KR* | Not started | the **Document check** shot — red "Add supervisor", amber "Add at least 3 key results" |
-| **Isaac McAdoo** | Cut the cards · Technical → Discipline · 2 KRs | **Failed** | a red pill in the overview |
-| **Colin Hughes** | Break into the starting XI · Performance → Selection · 2 KRs | Off track | an amber pill |
-| **Jan Maas** | Learn the new back-three shape · Technical → Positioning · 1 KR | **Canceled** | shape change dropped mid-season; the sixth state |
-| **Roy Kent** | Last the full ninety again · Fitness → Endurance · 2 KRs | On track | an athlete, not a coach — see the cast note |
-| **Zoreaux (Van Damme)** | — | — | deliberately empty: an athlete row with no pills |
-| **Bumbercatch** | — | — | deliberately empty |
+| **Obisanya Sam** | Grow into a leader on the pitch · Personal → Communication · 2 KRs | **Completed** | the green pill; targets already met this season |
+| **Rojas Dani** | Stay dangerous in the air · *no supervisor, no category, 1 KR* | Not started | the **Verification** shot — red "Add supervisor" and "Choose category", amber "Add at least 3 key results" |
+| **McAdoo Isaac** | Cut out the cards · Personal → Psyche · 2 KRs | **Failed** | the red pill |
+| **Kent Roy** | Last the full ninety again · Fitness → Endurance · 2 KRs | **Canceled** | an athlete, not a coach — see the cast note; the knee made the decision |
+| **Bumbercatch Moe** | — | — | deliberately empty: an athlete row with no pills |
 
 Between them the overview shows all six state colours in one frame.
 
@@ -92,9 +97,12 @@ line without needing a second shot.
 - There's no Save button — every field commits on edit and lands in **Activity**, so the seed
   pass writes the Activity history for free. Set states *last* on the closed goals, so
   "changed goal's state from On track to Completed" reads sensibly in the log.
-- Final evaluations only unlock once a goal is Completed / Canceled / Failed — so Jamie's
-  "Finish the season fit" must be set to **Completed** before its evaluations can be written.
-- Leave Dani Rojas's goal deliberately incomplete. If a seeding pass "tidies" it, the Document
-  check shot loses its red item.
+- Final evaluations unlock only once a goal is Completed / Canceled / Failed **and** you are the
+  athlete or one of its supervisors — so Jamie's "Finish the season fit" needs both Ted as
+  supervisor and the Completed state before an evaluation can be written.
+- Jamie's own evaluation on that goal is **still missing**: it needs his athlete session, since a
+  coach can't post as the athlete.
+- Leave Rojas Dani's goal deliberately incomplete. If a later pass "tidies" it, the Verification
+  shot loses its red items.
 - Keep values short — the key results table is narrow and long strings wrap badly in a
   screenshot.

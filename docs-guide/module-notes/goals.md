@@ -148,11 +148,14 @@ value it for retrospectives.
   (Current season / Past season / Other, each with a count; **Other** = older than last season).
 - Each goal row shows (confirmed): **title**, a **state dot**, a **season chip** (e.g.
   "2026"), a **progress fraction** (achieved ÷ total key results, e.g. `0/2`), and a
-  **category chip** (e.g. "Strength"). **Priority is NOT shown** in the list row; **category
-  IS**.
-- Controls: at the **top of the goals list**, a blue **+** (create a new goal) and a
-  **download/export icon** beside it; for a coach, the **group** + **athlete** selectors
-  above/within the sidebar; **Entire Group** entry.
+  **category chip** (e.g. "Strength"). **Priority IS shown**, as one to three exclamation marks
+  before the title (corrected 09/2026 — the earlier "priority not shown" was wrong). Chips that
+  don't fit collapse into a **`+N`** overflow chip, and a closed goal carrying a final evaluation
+  shows a **check badge** at the row's top right.
+- Controls: a **download/export icon** (`export-objectives`) at the top of the list; goals are
+  created from the **New goal** button in the floating **action bar** at the bottom of the goal
+  panel (keyboard **N**) — there is **no `+` at the top of the list** (corrected 09/2026). For a
+  coach, the **group** + **athlete** selectors in the sidebar, plus the **Entire Group** entry.
 - States:
   - **empty** — no goals yet for this person/season (`TODO(verify)`: exact empty copy).
   - **filled** — goals under their season headings.
@@ -178,9 +181,11 @@ value it for retrospectives.
     checkboxes) · who follow the goal`.
   - **Category** — `chip → DARK two-level dropdown (search) · category → subcategory ·
     per-team codelist` `[CONFIG]`.
-- **Top-right controls (confirmed):** a **trash icon** (delete the goal) and the **Document
-  check icon** (a checklist icon) which shows a **red dot badge** when something required is
-  missing.
+- **Action-bar controls (corrected 09/2026 — at the BOTTOM of the goal panel, in a floating
+  dark bar, not top-right):** **New goal** (`add-objective`, shortcut **N**), the **Verification**
+  checklist icon (`verification-button`, dot badge: **red** when a required item is missing,
+  **amber** when only recommended ones are), and a **trash icon** (`remove-objective`) which
+  opens a confirm dialog — *"Delete goal <title>?"* with **Yes, delete** / **Cancel**.
 - **Key results table** — one row per outcome; columns **STATE · KEY RESULT · START VALUE ·
   CURRENT VALUE · TARGET VALUE · TARGET DATE** (see §6.3). Add as many rows as needed.
 - **Document check** — **checklist icon, top-right** → opens the **DARK Yollanda popover** (§6.4).
@@ -212,10 +217,12 @@ value it for retrospectives.
   125 kg → 140 kg; "Sprint starts 3× per week" 0 → 2 → 3.
 - Note: **no sub-steps/milestones** — KRs are the only breakdown.
 
-### 6.4 Document check popover (Yollanda) — DARK
-- Opened from the **checklist icon, top-right** of the goal detail (red dot badge when a
-  required item is missing). **DARK popover** with a **Yollanda blush illustration** and a
-  persona quip ("I see big bad."); heading **DOCUMENT CHECK**.
+### 6.4 Verification popover — DARK  *(documented before as "Document check (Yollanda)" — renamed/corrected 09/2026)*
+- Opened from the **checklist icon in the action bar** at the bottom of the goal detail (dot
+  badge: red = a required item missing, amber = only recommended ones). **DARK popover**, heading
+  **Verification**, with a back arrow. **No Yollanda illustration, no persona quip, no Yollanda
+  branding of any kind** — verified 09/2026 on we.yarmill.com. Do not attribute this panel to
+  Yollanda in user docs.
 - Lists each methodology item with a status: **required (red)** · **recommended (amber)** ·
   **done (green check)**. Items observed (exact set, this goal):
   - ✅ Fill the title (done)
@@ -224,8 +231,9 @@ value it for retrospectives.
   - ✅ Add key results
   - 🟠 **Add at least 3 key results** (recommended — goal had 2 KRs; a per-team methodology rule)
   - ✅ Add description
-- Bottom: an **Open methodology ↗** button → the team's external methodology document
-  (per-team configured URL, e.g. a Notion page). `[CONFIG]`
+- Bottom: an **Open guidelines ↗** button → the team's external guidelines document (per-team
+  configured URL, e.g. a Notion page). `[CONFIG]` (The label is **Open guidelines**, not
+  "Open methodology" — corrected 09/2026.)
 - What counts as required vs recommended (e.g. "at least 3 key results") is
   **methodology/instance-specific**. `[CONFIG]`
 
@@ -484,3 +492,63 @@ Analytics · Attendance · Files · Other · Settings) but **with no group/athle
   | Document check | Document check (methodology check) |
   | Entire Group | Entire Group overview / a whole group's goals |
   | Totem panel | (internal only — not surfaced in user docs) |
+
+## 17. Live re-verification — 2026-09-02 (AFC Richmond, coach *Lasso Ted*)
+
+Driven headless against we.yarmill.com on the **AFC Richmond** demo group (see
+`docs-guide/visuals/demo-cast.md`), which was seeded for this pass. Everything below is
+first-hand from the running app and **supersedes** older statements in this file.
+
+**Corrected**
+- **Season buckets are three, not two:** **Current season · Past season · Other**, each with a
+  count. Observed with a 2026, a 2025 and a 2024 goal in one list — 2026 → Current, 2025 → Past,
+  2024 → Other.
+- **Verification, not "Document check".** The popover's heading is **Verification** and its
+  link is **Open guidelines**. There is **no Yollanda illustration, quip, or branding**.
+- **Create / delete / verify all live in a floating action bar at the bottom** of the goal
+  panel, not at the top right: **New goal** (shortcut **N**) · **Verification** · **trash**.
+- **Priority is shown in the list row** as `!` / `!!` / `!!!` before the title.
+- **Final evaluations are gated twice:** the form only renders for the **athlete and the goal's
+  supervisors** (a goal with no supervisor shows "Hang tight — you'll see the final evaluation
+  here once someone adds it." instead), and it stays **`data-disabled`** until the goal's state
+  is **Completed / Canceled / Failed**. Verified by stepping one goal Not started → On track →
+  Completed and watching the attribute flip. Posting one logs *"added the final evaluation"*.
+
+**Confirmed as already documented**
+- Six states, spelled **Canceled** (one "l").
+- Key-results columns and order: **State · Key result · Start value · Current value · Target
+  value · Target date**; typing into the trailing empty row adds a row and spawns a new empty one.
+- Auto-save with no Save button; every change lands in **Activity** with who + when.
+- Hovering a goal in **Entire Group** gives a summary — title, season, progress fraction,
+  category. Pills are links. The overview lists **athletes only** (the coach and admin appear in
+  the sidebar but get no row) and has a **year selector** top right.
+
+**Instance detail — the real category codelist** (AFC Richmond / we.yarmill.com) `[CONFIG]`
+
+| Category | Subcategories |
+|---|---|
+| Performance | Result |
+| Fitness | Speed · Strength · Endurance |
+| Personal | Education · Psyche · Communication |
+| Technical | Coordination · Technique · Tactics |
+| Health | Body composition · Nutrition · Recovery · Health condition |
+| Conditions | Background · Equipment |
+
+**Seasons offered:** single years **2020–2027**.
+
+**Also present, not yet in the user docs:** an **Enable focus mode** button and an
+**Export options** (download) button. Neither documented — decide whether they earn a mention.
+
+**Automation hooks** (stable `data-cy` values, for future screenshot/seed passes):
+`objective-title` · `objective-description` · `objective-status` · `objective-season` ·
+`objective-priority` · `objective-supervisors` · `objective-category` · `objective-list-item` ·
+`key-result-status` · `key-result-title` · `key-result-startValue` · `key-result-currentValue` ·
+`key-result-targetValue` · `key-result-targetDate` · `okr-comment-form` · `okr-evaluation-form` ·
+`activity-log-item` · `add-objective` · `verification-button` · `remove-objective` ·
+`export-objectives`. Editable cells are `contenteditable="plaintext-only"` divs with
+`role="textbox"`, not inputs.
+
+**Still open**
+- **What athletes see** — needs a Jamie Tartt session; not verified this pass.
+- Whether a final evaluation locks after posting, and whether each role can post only one.
+- Per-key-result delete affordance.
