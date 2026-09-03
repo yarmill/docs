@@ -536,8 +536,14 @@ first-hand from the running app and **supersedes** older statements in this file
 
 **Seasons offered:** single years **2020–2027**.
 
-**Also present, not yet in the user docs:** an **Enable focus mode** button and an
-**Export options** (download) button. Neither documented — decide whether they earn a mention.
+**Export options** (the download icon above the goals list) — a menu of four entries on this
+instance: *Export goals…* · *Export of the contract attachment…* · *Export for final
+evaluation…* · *Export UNIS…*. **Export goals** opens a dialog with a **Season** picker
+(e.g. "2026 (current season)") and **Export** / **Cancel**. The menu contents are
+per-team `[CONFIG]` — UNIS and the contract attachment are federation paperwork, not universal.
+Documented in the user docs as of 09/2026. `TODO(verify)`: what the other three actually produce.
+
+**Enable focus mode** (top bar) — deliberately **not** documented; product owner's call 09/2026.
 
 **Automation hooks** (stable `data-cy` values, for future screenshot/seed passes):
 `objective-title` · `objective-description` · `objective-status` · `objective-season` ·

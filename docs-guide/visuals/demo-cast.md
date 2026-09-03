@@ -51,3 +51,23 @@ bug). They are not the source of the screenshot.
 
 Anything that is *not* a real capture keeps its
 `{/* NOTE(yarmill): … mockup … */}` marker in the MDX.
+
+## How a figure is framed
+
+Set 2026-09 by the product owner, after a first pass got this wrong.
+
+**A figure is the app.** Either the **whole application window**, or a **zoom into the one
+region** the figure is about — and it bleeds to all four edges of the image. Do **not** cut a
+region out of the window and float it as a rounded card with a drop shadow on a backdrop: it
+reads as a drawing of the UI rather than a picture of it.
+
+**Callouts sit on the screenshot**, in the app's own empty space — not in a margin band beside
+it. Keep them off the content they point at: anchor the dot just *outside* the element (past the
+end of a line of text, not on top of the icon), so neither the dot nor its leader line covers
+what the label is naming.
+
+**Callout type is Inter**, matching the docs: **600** for the label, **450** for the sub-line.
+Never the browser's default bold (700) — Yarmill's type tops out at 590.
+
+Some figures need no callouts at all. If the screen already names the thing — season-bucket
+headers, a two-level menu — let the caption do the work.
