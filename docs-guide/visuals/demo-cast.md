@@ -66,8 +66,21 @@ it. Keep them off the content they point at: anchor the dot just *outside* the e
 end of a line of text, not on top of the icon), so neither the dot nor its leader line covers
 what the label is naming.
 
-**Callout type is Inter**, matching the docs: **600** for the label, **450** for the sub-line.
-Never the browser's default bold (700) — Yarmill's type tops out at 590.
+**Callout cards** follow the Figma annotation pattern: a small **chip** carrying the name
+(brand tint, Inter 600) over a line of **body text** (Inter 450) that wraps inside a ~470px
+card, with roomy padding (20px) and a soft shadow. Airy beats dense. Never the browser's
+default bold (700) — Yarmill's type tops out at 590. Don't colour-code the cards themselves:
+on a screen that already uses colour to mean something (Verification's red/amber/green, the
+state pills) coloured callouts fight the UI. Leave those screens un-annotated instead.
+
+**Bleed the crop to the frame.** `<Frame bleed="…">` takes the edges where the screenshot is a
+crop and the real screen continues — `top`/`right`/`bottom`/`left`, or `all`. Those edges lose
+the frame's inset so the image runs to the edge. A partial screenshot inset on all four sides
+reads as a cut-out pasted on a card. Keep the inset only on edges that are the window's own.
+
+**Size for a retina column.** The docs column is ~700px, so a figure wants **at least ~1400px**
+of source width. A narrow crop (a single column, a small popover) gets widened with
+surrounding context rather than upscaled.
 
 Some figures need no callouts at all. If the screen already names the thing — season-bucket
 headers, a two-level menu — let the caption do the work.

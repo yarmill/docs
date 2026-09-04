@@ -30,16 +30,24 @@ function findImageProps(node: ReactNode): { src: string; alt: string } | null {
 
 export function Frame({
   caption,
+  bleed,
   children,
 }: {
   caption?: ReactNode;
+  /**
+   * Edges where the screenshot is a crop and the real screen continues:
+   * "top" | "right" | "bottom" | "left" (space-separated), or "all".
+   * Those edges lose the frame's inset so the image runs to the edge instead
+   * of floating inset on all four sides.
+   */
+  bleed?: string;
   children?: ReactNode;
 }) {
   const image = findImageProps(children);
 
   return (
     <figure className="ym-frame">
-      <div className="ym-frame-media">
+      <div className="ym-frame-media" data-bleed={bleed}>
         {image ? <ZoomImage src={image.src} alt={image.alt} /> : children}
       </div>
       {caption ? <figcaption className="ym-frame-caption">{caption}</figcaption> : null}
