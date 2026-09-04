@@ -61,10 +61,14 @@ region** the figure is about — and it bleeds to all four edges of the image. D
 region out of the window and float it as a rounded card with a drop shadow on a backdrop: it
 reads as a drawing of the UI rather than a picture of it.
 
-**Callouts sit on the screenshot**, in the app's own empty space — not in a margin band beside
-it. Keep them off the content they point at: anchor the dot just *outside* the element (past the
-end of a line of text, not on top of the icon), so neither the dot nor its leader line covers
-what the label is naming.
+**Callouts sit off the app, in a transparent strip at the edge** of the figure — to the right
+of a tall screen, underneath a wide one. The strip has no background, so it merges into the
+docs frame instead of reading as a second panel, and the app itself stays unobscured. Anchor
+the dot just *outside* the element it names (past the end of a line of text, at the right edge
+of a table) and let the leader run out through empty space to the card; never put a dot on the
+icon or control being described.
+
+**Copy is sentence case** — "What the goal is", not "what the goal is" or "What The Goal Is".
 
 **Callout cards** follow the Figma annotation pattern: a small **chip** carrying the name
 (brand tint, Inter 600) over a line of **body text** (Inter 450) that wraps inside a ~470px
