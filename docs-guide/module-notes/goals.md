@@ -153,7 +153,7 @@ value it for retrospectives.
   don't fit collapse into a **`+N`** overflow chip, and a closed goal carrying a final evaluation
   shows a **check badge** at the row's top right.
 - Controls: a **download/export icon** (`export-objectives`) at the top of the list; goals are
-  created from the **New goal** button in the floating **action bar** at the bottom of the goal
+  created from the **New goal** button in the floating **tool bar** at the bottom of the goal
   panel (keyboard **N**) — there is **no `+` at the top of the list** (corrected 09/2026). For a
   coach, the **group** + **athlete** selectors in the sidebar, plus the **Entire Group** entry.
 - States:
@@ -181,7 +181,7 @@ value it for retrospectives.
     checkboxes) · who follow the goal`.
   - **Category** — `chip → DARK two-level dropdown (search) · category → subcategory ·
     per-team codelist` `[CONFIG]`.
-- **Action-bar controls (corrected 09/2026 — at the BOTTOM of the goal panel, in a floating
+- **Tool-bar controls (corrected 09/2026 — at the BOTTOM of the goal panel, in a floating
   dark bar, not top-right):** **New goal** (`add-objective`, shortcut **N**), the **Verification**
   checklist icon (`verification-button`, dot badge: **red** when a required item is missing,
   **amber** when only recommended ones are), and a **trash icon** (`remove-objective`) which
@@ -218,7 +218,7 @@ value it for retrospectives.
 - Note: **no sub-steps/milestones** — KRs are the only breakdown.
 
 ### 6.4 Verification popover — DARK  *(documented before as "Document check (Yollanda)" — renamed/corrected 09/2026)*
-- Opened from the **checklist icon in the action bar** at the bottom of the goal detail (dot
+- Opened from the **checklist icon in the tool bar** at the bottom of the goal detail (dot
   badge: red = a required item missing, amber = only recommended ones). **DARK popover**, heading
   **Verification**, with a back arrow. **No Yollanda illustration, no persona quip, no Yollanda
   branding of any kind** — verified 09/2026 on we.yarmill.com. Do not attribute this panel to
@@ -505,7 +505,7 @@ first-hand from the running app and **supersedes** older statements in this file
   2024 → Other.
 - **Verification, not "Document check".** The popover's heading is **Verification** and its
   link is **Open guidelines**. There is **no Yollanda illustration, quip, or branding**.
-- **Create / delete / verify all live in a floating action bar at the bottom** of the goal
+- **Create / delete / verify all live in a floating tool bar at the bottom** of the goal
   panel, not at the top right: **New goal** (shortcut **N**) · **Verification** · **trash**.
 - **Priority is shown in the list row** as `!` / `!!` / `!!!` before the title.
 - **Final evaluations are gated twice:** the form only renders for the **athlete and the goal's
