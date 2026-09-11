@@ -64,7 +64,10 @@ this file alone:
   Blush `#FC7B9B`, never indigo). **`yarmill-screenshot`** — one docs-ready framed screen.
   **`yarmill-visuals`** — annotated stills, step sequences, marketing/social, motion (the
   skill for tutorial/use-case visuals). Mark non-production images with `{/* NOTE(yarmill):
-  … mockup … */}`.
+  … mockup … */}`. **Cast + write scope for every visual:
+  [`docs-guide/visuals/demo-cast.md`](docs-guide/visuals/demo-cast.md)** — shoot the real UI on
+  the **AFC Richmond** demo group (Ted Lasso, Jamie Tartt, …) and **never write data outside
+  that group**.
 - **`anthropic-skills:yarmill-copy`** — marketing/brand copy (product docs are plainer).
 
 **Frontmatter minimum** (every page): `title` + `description`. Add `icon:` on module/landing

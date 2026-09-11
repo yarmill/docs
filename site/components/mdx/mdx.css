@@ -395,6 +395,37 @@
   height: auto;
   border-radius: var(--ym-radius);
 }
+/* ---- Cropped screenshots: bleed to the edge where the screen continues ----
+   A figure that shows only part of a screen shouldn't float inset on all four
+   sides — that reads as a cut-out pasted onto a card. On the edges named in
+   `bleed`, the inset goes and the image runs to the frame, so the crop reads
+   as "the screen carries on this way". The frame keeps its own rounded corner;
+   overflow: hidden trims the image to it. */
+.ym-frame-media[data-bleed~='top'] { padding-top: 0; }
+.ym-frame-media[data-bleed~='right'] { padding-right: 0; }
+.ym-frame-media[data-bleed~='bottom'] { padding-bottom: 0; }
+.ym-frame-media[data-bleed~='left'] { padding-left: 0; }
+.ym-frame-media[data-bleed='all'] { padding: 0; }
+
+.ym-frame-media[data-bleed~='top'] :is(img, video, .ym-zoom-trigger) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.ym-frame-media[data-bleed~='bottom'] :is(img, video, .ym-zoom-trigger) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.ym-frame-media[data-bleed~='left'] :is(img, video, .ym-zoom-trigger) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.ym-frame-media[data-bleed~='right'] :is(img, video, .ym-zoom-trigger) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.ym-frame-media[data-bleed='all'] :is(img, video, .ym-zoom-trigger) {
+  border-radius: 0;
+}
 /* ---- Click-to-zoom (Linear-style, ZoomImage.tsx) ----
    The in-page image IS the zoomed element — clicking transforms that same
    `<img>` to a centred, viewport-fitted size (no clone, so no swap and no

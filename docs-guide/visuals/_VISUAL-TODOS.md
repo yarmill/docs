@@ -9,8 +9,10 @@
 > **corner-zoom+callouts** (detail/"anatomy" — bleed left+bottom, fade, horizontal callout pills) ·
 > **modal/popover** (dark overlay, self-contained).
 >
-> Cast: biathlon **National Team**; **Simpson Lisa** as the example athlete (sandbox);
-> Cihlář Adam / Em Krystof / Pe Tomáš for data where noted.
+> Cast: **AFC Richmond** (Ted Lasso, Jamie Tartt, …) — see
+> [`demo-cast.md`](demo-cast.md); writes are allowed **only** in that group. Entries below
+> written before 2026-09 still name the old biathlon cast (**National Team** / **Simpson
+> Lisa** / Cihlář Adam / Em Krystof / Pe Tomáš); re-cast them to AFC Richmond when shooting.
 
 ---
 

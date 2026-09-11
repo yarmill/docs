@@ -292,6 +292,13 @@
   color: var(--ym-ink);
   margin-top: 32px;
 }
+/* Inline bold. Without this, `**bold**` inherits the browser default (700),
+   which is heavier than Yarmill's type ever goes — headings top out at 590.
+   Inter Variable renders 600 exactly. */
+.ym-shell strong,
+.ym-shell b {
+  font-weight: 600;
+}
 /* Lead/description paragraph under H1 — normal body text (same size/colour as
    the prose body; not an oversized subtitle). Generous gap below the title and
    before the body for breathing room (Linear). */
