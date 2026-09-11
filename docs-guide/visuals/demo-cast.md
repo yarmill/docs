@@ -84,6 +84,10 @@ icon or control being described.
 
 **Copy is sentence case** — "What the goal is", not "what the goal is" or "What The Goal Is".
 
+**Callout text is baked into the PNG, so a screen reader can't see it.** Whatever the callouts
+name, the figure's `alt` has to say too — otherwise the labelled parts exist only for sighted
+readers.
+
 **Callout cards** follow the Figma annotation pattern: a small **chip** carrying the name
 (brand tint, Inter 600) over a line of **body text** (Inter 450) that wraps inside a ~470px
 card, with roomy padding (20px) and a soft shadow. Airy beats dense. Never the browser's
