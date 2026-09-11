@@ -61,7 +61,21 @@ region** the figure is about — and it bleeds to all four edges of the image. D
 region out of the window and float it as a rounded card with a drop shadow on a backdrop: it
 reads as a drawing of the UI rather than a picture of it.
 
-**Callouts sit off the app, in a transparent strip at the edge** of the figure — to the right
+**A zoom is anchored to the window, never floating in the middle of it.** Pick one of nine
+positions — top-left · top · top-right · left · center · right · bottom-left · bottom ·
+bottom-right — and crop from that anchor, so the figure keeps the window's own edges (and the
+page background and rounded corners along them) on the sides it touches. A crop taken from the
+middle of the screen, cut on all four sides, leaves the reader with no idea where they are; it
+also produces ugly slivers of grey where a panel's rounded corner is sliced. Choose the anchor
+that best shows *where the thing lives*: the category menu sits left, the Verification popover
+bottom-right, the export menu top-left.
+
+**Not every figure needs callouts.** If the screen explains itself — a group overview whose
+colours are the point, a menu whose items are readable — leave it clean and let the caption
+carry it. Callouts are for naming parts that aren't self-evident.
+
+**Callout cards are Yarmill indigo with light text** (chip in a white tint, body at ~88%
+white), and they **sit off the app, in a transparent strip at the edge** of the figure — to the right
 of a tall screen, underneath a wide one. The strip has no background, so it merges into the
 docs frame instead of reading as a second panel, and the app itself stays unobscured. Anchor
 the dot just *outside* the element it names (past the end of a line of text, at the right edge

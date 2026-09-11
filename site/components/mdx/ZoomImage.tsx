@@ -84,10 +84,15 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     const r = img.getBoundingClientRect();
     const vw = window.innerWidth;
     const vh = window.innerHeight;
+    // Never enlarge past the file's own resolution. The cap has to count DEVICE
+    // pixels, not CSS pixels: on a 2x screen, showing a 3200px-wide image at
+    // 3200 CSS px means each image pixel is stretched over four device pixels,
+    // which is the blur. naturalWidth / (cssWidth * dpr) is the honest ceiling.
+    const dpr = window.devicePixelRatio || 1;
     const scale = Math.min(
       (vw - MARGIN * 2) / r.width,
       (vh - MARGIN * 2) / r.height,
-      (img.naturalWidth || r.width) / r.width,
+      (img.naturalWidth || r.width * dpr) / (r.width * dpr),
     );
     const tx = vw / 2 - (r.left + r.width / 2);
     const ty = vh / 2 - (r.top + r.height / 2);
@@ -100,15 +105,24 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     img.style.zIndex = '210'; // above the overlay (z-index 200)
     img.style.cursor = 'zoom-out';
     img.style.transformOrigin = 'center center';
-    img.style.willChange = 'transform';
     img.style.transform = target;
     overlay.style.opacity = '1';
 
     if (!prefersReduced() && !document.hidden) {
-      img.animate([{ transform: 'none' }, { transform: target }], {
+      // `will-change` only for the duration of the motion. WebKit rasterises a
+      // promoted layer once, at its pre-transform size, then stretches that
+      // texture — so leaving the hint on keeps the zoomed image blurry in Safari
+      // even after it settles. Dropping it on finish makes WebKit re-rasterise
+      // at the size actually on screen.
+      img.style.willChange = 'transform';
+      const anim = img.animate([{ transform: 'none' }, { transform: target }], {
         duration: DUR,
         easing: EASE,
       });
+      const settle = () => {
+        img.style.willChange = 'auto';
+      };
+      anim.finished.then(settle, settle);
       overlay.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: DUR,
         easing: EASE,
@@ -156,6 +170,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       setOpen(false);
     };
 
+    img.style.willChange = 'transform';
     const a = img.animate([{ transform: target }, { transform: 'none' }], {
       duration: DUR,
       easing: EASE,
