@@ -554,7 +554,19 @@ Documented in the user docs as of 09/2026. `TODO(verify)`: what the other three 
 `export-objectives`. Editable cells are `contenteditable="plaintext-only"` divs with
 `role="textbox"`, not inputs.
 
+**Athlete view — live-verified 2026-09-11 (Jamie Tartt's own session)**
+- Sidebar carries **only the module list** (Planning: Plan · Goals · Season calendar; Journal:
+  Reality · Attendance · Athlete profiles · Wellness questionnaire · Results). **No Group
+  dropdown, no athlete list, no Entire Group entry.**
+- Same three season buckets, same goal detail, same **tool bar** — New goal, Verification and
+  delete are all present and enabled for the athlete.
+- On a goal **the coach created**, every control is editable for the athlete: the title textarea
+  is neither readonly nor disabled, and the status / season / priority / supervisors / category
+  buttons and key-result cells are all live. **Export options** is available too.
+- The athlete **posted a final evaluation on a coach-created goal** ("Finish the season fit",
+  created by Ted Lasso) — so a closed goal can carry one from each, and the list row then shows
+  a check badge per evaluation.
+
 **Still open**
-- **What athletes see** — needs a Jamie Tartt session; not verified this pass.
 - Whether a final evaluation locks after posting, and whether each role can post only one.
 - Per-key-result delete affordance.
