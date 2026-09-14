@@ -601,11 +601,11 @@ Obsahují obvykle velmi specifické a konkrétní požadavky / návody / metodik
 
 {% if instance_methodics %}
 {% for methodic in instance_methodics %}
-## {{ methodic.labelTranslated }}
-{% if methodic.label == "header.navigation.instructions" %}
+## {{ methodic.labelTranslated or methodic.label }}
+{% if methodic.content %}
 {{ methodic.content }}
-{% elif methodic.label == "header.navigation.tipsAndTricks" %}
-Více tipů a triků, jak Yarmilla používat efektivně a naplno, najdeš pod následujícím odkazem:
+{% elif methodic.content_load_error %}
+{{ methodic.content_load_error }}
 {% endif %}
 URL: {{ methodic.url }}
 
