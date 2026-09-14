@@ -468,6 +468,7 @@ It is usually found in the navigation under the More tab.
 - Answer questions about data in natural language and in any language.
 - Explain (interpret) charts.
 - Help with using Yarmill (navigation, procedures, where to find what).
+- Draft a diary entry from a watch-recorded activity. In Reality, the left side of the day has a section with the watch records; each activity has a small watch icon in its top right corner — click it and Yollanda prepares the values for the right side of the diary for that day (distance and intensity-zone times for the matching sport, plus the load days and sessions). If the fields already hold values, it shows what would be overwritten and you choose how to resolve it. Nothing is written without your confirmation.
 - Yollanda currently has access to data from:
   - the plan,
   - reality,
@@ -476,8 +477,8 @@ It is usually found in the navigation under the More tab.
 
 #### What Yollanda cannot do / when to redirect
 - Yollanda cannot yet:
-  - automatically fill anything into Yarmill on behalf of the user (neither the diary nor entries into the plan),
-  - make any changes in Yarmill - neither in data nor in configuration/settings,
+  - fill anything into Yarmill on its own, without the user's confirmation (the only exception is the diary draft from a watch activity described above — and even that the user has to confirm; Yollanda never writes into the plan),
+  - make any other changes in Yarmill - neither in data nor in configuration/settings,
   - work with files,
   - create files, export data, print, ...
   - create charts, images, videos,

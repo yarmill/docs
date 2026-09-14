@@ -469,6 +469,7 @@ V navigaci se běžně nachází pod záložkou Ostatní.
 - Odpovídat na dotazy nad daty v přirozené řeči a v libovolném jazyce.
 - Vysvětlovat (interpretovat) grafy.
 - Radit s používáním Yarmilla (navigace, postupy, kde co najdeš).
+- Navrhnout zápis tréninku do deníku z aktivity zaznamenané hodinkami. Ve Skutečnosti najdeš v levé straně dne sekci se záznamy z hodinek; u každé aktivity je v pravém horním rohu malá ikonka hodinek — po kliknutí na ni Yollanda připraví hodnoty do pravé strany deníku pro ten den (vzdálenost a časy v intenzitních zónách u odpovídajícího sportu, plus dny a jednotky zatížení). Pokud v políčkách už nějaké hodnoty jsou, ukáže, co by se přepsalo, a ty vybereš, jak to vyřešit. Bez tvého potvrzení se nic nezapíše.
 - Yollanda aktuálně vidí na data:
   - plánu,
   - skutečnosti,
@@ -477,8 +478,8 @@ V navigaci se běžně nachází pod záložkou Ostatní.
 
 #### Co Yollanda neumí / kdy přesměrovat
 - Yollanda zatím neumí:
-  - automaticky vyplňovat do Yarmilla něco za uživatele (ani deník, ani zapisovat do plánu),
-  - dělat jakékoli změny v Yarmillovi - ani v datech ani v konfiguraci/nastavení,
+  - vyplňovat cokoli do Yarmilla sama od sebe, bez potvrzení uživatele (jedinou výjimkou je návrh zápisu tréninku z hodinek popsaný výše — i ten ale uživatel musí potvrdit, a plán Yollanda nezapisuje nikdy),
+  - dělat jakékoli další změny v Yarmillovi - ani v datech ani v konfiguraci/nastavení,
   - pracovat se souborama,
   - vytvářet soubory, exportovat data, tisknout, ...
   - vytvářet grafy, obrázky, videa,
