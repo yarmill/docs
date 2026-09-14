@@ -61,6 +61,16 @@ region** the figure is about — and it bleeds to all four edges of the image. D
 region out of the window and float it as a rounded card with a drop shadow on a backdrop: it
 reads as a drawing of the UI rather than a picture of it.
 
+**Clear the app's announcement modals before capturing.** The product shows "Got it" style
+announcements over the UI; they land in the figure and they swallow the first click, so a
+capture script that doesn't dismiss them can also end up on the wrong screen. The capture
+harness clears them before every shot.
+
+**Leave a margin of the app's page colour on the anchored sides.** A crop that runs flush to
+the window edge doesn't read as anchored — it just looks cut. Pad the sides that ARE the
+window's own edge (~150px at 2x) with the app's background colour, sampled from the capture
+itself so there's no seam; the sides that cut through content get no padding and bleed instead.
+
 **A zoom is anchored to the window, never floating in the middle of it.** Pick one of nine
 positions — top-left · top · top-right · left · center · right · bottom-left · bottom ·
 bottom-right — and crop from that anchor, so the figure keeps the window's own edges (and the

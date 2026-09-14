@@ -38,6 +38,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
   const imgRef = useRef<HTMLImageElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const targetTransform = useRef<string>('none');
+  const handedOff = useRef(false);
   const [open, setOpen] = useState(false);
 
   const handleOpen = useCallback(() => setOpen(true), []);
@@ -61,6 +62,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     // Let the enlarged image escape its frame's overflow clip.
     const frame = img.closest('.ym-frame-media') as HTMLElement | null;
     const prevFrameOverflow = frame?.style.overflow ?? '';
+    const prevFrameHeight = frame?.style.height ?? '';
     if (frame) frame.style.overflow = 'visible';
 
     // Neutralise the page-entrance wrapper's stacking context for the duration
@@ -108,25 +110,41 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     img.style.transform = target;
     overlay.style.opacity = '1';
 
+    // Once the motion is over, stop being a scaled layer and become a normally
+    // laid-out element of the same size. A transform: scale() is rasterised by
+    // the compositor from the element's UNTRANSFORMED box — WebKit generates
+    // that texture at 1x and stretches it, which is the blur in Safari — so the
+    // resting state is switched to explicit width/height with no transform, and
+    // the image rasterises natively at the size it is actually drawn. The frame
+    // keeps its measured height for the duration so nothing reflows behind the
+    // overlay when the image leaves the flow.
+    const settleAtFullSize = () => {
+      if (!open || handedOff.current) return;
+      const box = img.getBoundingClientRect(); // the transformed (visual) box
+      if (frame) frame.style.height = `${frame.getBoundingClientRect().height}px`;
+      img.style.willChange = 'auto';
+      img.style.transform = 'none';
+      img.style.position = 'fixed';
+      img.style.left = `${box.left}px`;
+      img.style.top = `${box.top}px`;
+      img.style.width = `${box.width}px`;
+      img.style.height = `${box.height}px`;
+      handedOff.current = true;
+    };
+
     if (!prefersReduced() && !document.hidden) {
-      // `will-change` only for the duration of the motion. WebKit rasterises a
-      // promoted layer once, at its pre-transform size, then stretches that
-      // texture — so leaving the hint on keeps the zoomed image blurry in Safari
-      // even after it settles. Dropping it on finish makes WebKit re-rasterise
-      // at the size actually on screen.
       img.style.willChange = 'transform';
       const anim = img.animate([{ transform: 'none' }, { transform: target }], {
         duration: DUR,
         easing: EASE,
       });
-      const settle = () => {
-        img.style.willChange = 'auto';
-      };
-      anim.finished.then(settle, settle);
+      anim.finished.then(settleAtFullSize, settleAtFullSize);
       overlay.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: DUR,
         easing: EASE,
       });
+    } else {
+      settleAtFullSize();
     }
 
     return () => {
@@ -139,12 +157,18 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       // close. The entrance already played for this page instance, and the
       // wrapper remounts fresh on the next navigation, so leaving it static here
       // is correct.
+      if (frame) frame.style.height = prevFrameHeight;
       img.style.position = '';
+      img.style.left = '';
+      img.style.top = '';
+      img.style.width = '';
+      img.style.height = '';
       img.style.zIndex = '';
       img.style.cursor = '';
       img.style.transformOrigin = '';
       img.style.willChange = '';
       img.style.transform = '';
+      handedOff.current = false;
     };
   }, [open]);
 
@@ -160,6 +184,19 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     }
 
     const target = targetTransform.current;
+    // If it settled at full size, return it to the in-flow + transformed state
+    // first. The two are geometrically identical, so the swap is invisible and
+    // the closing animation has something to reverse.
+    if (handedOff.current) {
+      img.style.position = 'relative';
+      img.style.left = '';
+      img.style.top = '';
+      img.style.width = '';
+      img.style.height = '';
+      img.style.transform = target;
+      handedOff.current = false;
+      void img.offsetHeight; // flush, so the animation starts from this state
+    }
     img.style.transform = 'none';
     overlay.style.opacity = '0';
 
