@@ -600,11 +600,11 @@ They usually contain very specific and concrete requirements / instructions / me
 
 {% if instance_methodics %}
 {% for methodic in instance_methodics %}
-## {{ methodic.labelTranslated }}
-{% if methodic.label == "header.navigation.instructions" %}
+## {{ methodic.labelTranslated or methodic.label }}
+{% if methodic.content %}
 {{ methodic.content }}
-{% elif methodic.label == "header.navigation.tipsAndTricks" %}
-More tips and tricks on how to use Yarmill effectively and to its full potential can be found at the following link:
+{% elif methodic.content_load_error %}
+{{ methodic.content_load_error }}
 {% endif %}
 URL: {{ methodic.url }}
 
