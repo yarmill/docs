@@ -67,9 +67,8 @@ capture script that doesn't dismiss them can also end up on the wrong screen. Th
 harness clears them before every shot.
 
 **The PNG carries the window; the docs frame carries the backdrop.** A figure is exported as
-the app window on **transparency** — its macOS-sized corner (20px at 2x ≈ 10 CSS px; bigger
-starts eating the UI), a 1.5px hairline, a layered shadow, and a **tight** transparent margin on the sides that are the window's own
-edge — **96px at 2x** (~48 CSS px), **176px** for the marketing lead. Keep it tight: the window
+the app window on **transparency** — its macOS corner, a hairline, a layered shadow, and a **tight** transparent margin on the
+sides that are the window's own edge — **96px at 2x** (~48 CSS px), **176px** for the marketing lead. Keep it tight: the window
 is the subject and the backdrop is a frame, not a mat. The colour behind it comes from CSS in
 `.ym-frame-media`, so one asset serves both themes and the treatment can be retuned without
 re-rendering anything:
@@ -79,6 +78,15 @@ re-rendering anything:
 | light | **Paper** — flat `#f1f1f4` |
 | dark | **Ink** — `#1f1e31` with an indigo glow |
 | the lead figure (`<Frame variant="marketing">`) | **Indigo** — `#5a49f9 → #3b02d6`, so the page's opening image doubles as the changelog/announcement shot |
+
+**The corner is sized against the rendered figure too** — `RADIUS_CSS` (11) × `k`, same as the
+type. A fixed 20px corner in a 3200px-wide image displayed in a 700px column arrives as ~4px
+and the window reads square.
+
+**The hairline belongs only to window edges**, never to a cut one — a hairline on a cut edge
+implies a border the screen doesn't have. The cut edges instead get a **soft falloff** (~26 CSS
+px, masked), so a cut reads as "the screen carries on" rather than as a hard stop. Keep it
+gentle enough that nothing at the edge is lost.
 
 **Round only the real corners.** A corner is rounded when both of its sides are the window's
 own edge; a side that cuts through content stays square and bleeds off the figure. That's what
