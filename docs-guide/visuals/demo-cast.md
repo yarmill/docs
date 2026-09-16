@@ -68,8 +68,9 @@ harness clears them before every shot.
 
 **The PNG carries the window; the docs frame carries the backdrop.** A figure is exported as
 the app window on **transparency** — its macOS-sized corner (20px at 2x ≈ 10 CSS px; bigger
-starts eating the UI), a 1.5px hairline, a layered shadow, and ~170px of transparent margin on
-the sides that are the window's own edge. The colour behind it comes from CSS in
+starts eating the UI), a 1.5px hairline, a layered shadow, and a **tight** transparent margin on the sides that are the window's own
+edge — **96px at 2x** (~48 CSS px), **176px** for the marketing lead. Keep it tight: the window
+is the subject and the backdrop is a frame, not a mat. The colour behind it comes from CSS in
 `.ym-frame-media`, so one asset serves both themes and the treatment can be retuned without
 re-rendering anything:
 
