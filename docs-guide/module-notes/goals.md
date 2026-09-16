@@ -13,18 +13,18 @@
   **OTHER** in the older top-menu UI). Always name the module, not the shell.
 - **UI shell:** **GUI 2.0** (totem panel + module sidebar). The **detail screens render
   LIGHT**; the **Entire Group overview renders DARK**; **most dropdowns / popovers render
-  DARK** (Priority picker, Category two-level picker, Document check popover) — but the
+  DARK** (Priority picker, Category two-level picker, Verification popover) — but the
   **Supervisors picker renders LIGHT**. So not *all* goal dropdowns are dark.
 - **Surfaces:** **web only** (incl. PWA). No native iOS / Android.
 - **Primary roles:** **coach** and **athlete** (no separate admin/staff role in this module).
 - **Config-dependence:** **medium** — the **goal categories** (two-level codelist) and the
-  **methodology completeness rules** (what Document check flags required vs recommended,
+  **guideline completeness rules** (what Verification flags required vs recommended,
   e.g. a minimum number of key results) are configured per team. The mechanics, the six
   states, and the key-result fields are universal.
 - **Explored:** 2026-06-14 · group *National Team* · athlete *Simpson Lisa* · by main agent.
   **Live-verified 2026-06-15** on we.yarmill.com (GUI 2.0, group *National Team*, athlete
   *Simpson Lisa*, coach login *Bart Simpson*): routes, shell grouping, list/detail layout,
-  attribute pickers, key-results table, Document check, and the Entire Group overview all
+  attribute pickers, key-results table, Verification, and the Entire Group overview all
   confirmed; remaining write-path / role-rights items still `TODO(verify)`.
 - **Render images now?** **YES (DONE)** — the six images already exist and are approved
   (see §13). New GUI; the overview is dark.
@@ -107,10 +107,10 @@ value it for retrospectives.
   "Final evaluation", an avatar dot on the left, and a submit/▲ arrow to post). The athlete
   and a coach can each add their own. Distinct from Activity comments. `TODO(verify)`: whether
   it locks after submission and whether each role can post only one.
-- **Document check:** a panel (checklist icon, top-right, with a red dot badge when a
-  required item is missing; **Yollanda** persona, **DARK popover**) that scores the goal
-  against the team's methodology — **required (red)**,
-  **recommended (amber)**, **done (green check)** — and links to **Open methodology**.
+- **Verification:** a DARK popover (checklist icon in the **tool bar**, dot badge red when a
+  required item is missing, amber when only recommended ones are) that scores the goal
+  against the team's guidelines — **required (red)**, **recommended (amber)**, **done (green
+  check)** — and links to **Open guidelines**. No Yollanda branding.
 - **Entire Group:** the coach-only grid of every athlete's goals as colored progress.
 - Czech UI note: the module label is **Cíle**; the demo runs the English UI.
 
@@ -189,7 +189,7 @@ value it for retrospectives.
   opens a confirm dialog — *"Delete goal <title>?"* with **Yes, delete** / **Cancel**.
 - **Key results table** — one row per outcome; columns **STATE · KEY RESULT · START VALUE ·
   CURRENT VALUE · TARGET VALUE · TARGET DATE** (see §6.3). Add as many rows as needed.
-- **Document check** — **checklist icon, top-right** → opens the **DARK Yollanda popover** (§6.4).
+- **Verification** — checklist icon in the **tool bar** → opens the DARK popover (§6.4).
 - **Final evaluations** — its **own section** below the KR table (a text box, placeholder
   "Final evaluation", avatar dot + submit/▲ arrow); athlete and coach can each add one.
   **Gated on a final state:** no final evaluation can be added until the goal is set to
@@ -283,8 +283,8 @@ value it for retrospectives.
   result"), enter start/current/target values, **Set date** for target date, set KR state.
 - **Track progress:** update **current value** manually; move the goal/KR **state** as the
   picture changes.
-- **Document check:** click the check icon → review required/recommended/done → optionally
-  **Open methodology**.
+- **Verification:** click the checklist icon in the tool bar → review required/recommended/done
+  → optionally **Open guidelines**.
 - **Comment:** leave plain timestamped text under **Activity**.
 - **Final evaluation:** add a closing written reflection when the goal wraps up (athlete
   and/or coach).
@@ -300,7 +300,7 @@ value it for retrospectives.
 final") → description (what success looks like, by when) → State *Not started* → Season
 *Current season* → Priority *High* → add **Supervisors** → Category *Performance → …* (DARK
 picker) → add key results (e.g. "Final-round qualification" with start/current/target +
-target date) → click **Document check** to confirm nothing required is missing.
+target date) → open **Verification** to confirm nothing required is missing.
 
 **Coach — mid-season check-in:** open the athlete's goal → read key-result current vs target
 values → move goal **state** to *On track* / *Off track* → leave an Activity comment for the
@@ -318,7 +318,7 @@ add a **final evaluation** at the end.
 
 ## 9. Use cases / scenarios
 - **Pre-season goal-setting meeting:** coach and athlete agree 2–3 goals with measurable key
-  results; Document check confirms each goal meets the team's methodology before they move on.
+  results; Verification confirms each goal meets the team's guidelines before they move on.
 - **Self-coaching / development goals:** a coach sets goals for themselves (own Goals) — for
   their coaching practice or personal development — held to the same structure.
 - **Mental-coaching retrospective:** at season end, athlete and coach each add a final
@@ -334,9 +334,9 @@ add a **final evaluation** at the end.
 - `[CONFIG]` **Goal categories** — the two-level category → subcategory codelist is
   configured per team (one instance: Performance, Fitness, Personal, Technical, Health,
   Conditions, each with subcategories). Treat the specific list as per-instance.
-- `[CONFIG]` **Methodology completeness rules** — what Document check flags as required vs
-  recommended (e.g. a minimum number of key results) comes from the team's methodology.
-- `[CONFIG]` **Methodology document URL** — the "Open methodology" link is a per-team
+- `[CONFIG]` **Guideline completeness rules** — what Verification flags as required vs
+  recommended (e.g. a minimum number of key results) comes from the team's guidelines.
+- `[CONFIG]` **Guidelines document URL** — the "Open guidelines" link is a per-team
   external URL (e.g. a Notion page).
 - **Universal (not configurable):** the **six states**, the **key-result fields**
   (start/current/target/date), the **manual** value updates, the season buckets (Current
@@ -354,7 +354,7 @@ add a **final evaluation** at the end.
   more key results.
 - Athletes see **only their own** goals; no cross-athlete visibility.
 - `TODO(verify)`: maximum number of key results per goal (if any); whether a goal can have
-  zero key results and still pass Document check (methodology-dependent).
+  zero key results and still pass Verification (guideline-dependent).
 - `TODO(verify)`: what happens to a goal's bucket when its season passes (auto-moves to
   "Past season", then to "Other" once it's older than last season?).
 
@@ -363,20 +363,26 @@ add a **final evaluation** at the end.
   the context the goals live in.
 - **→ Season review / retrospective:** goals + their final evaluations feed pre/post-season
   conversations and reviews (valued by mental coaches).
-- **Yollanda:** the **Document check** panel is a Yollanda persona surface (methodology
-  guidance). `TODO(verify)`: whether goal content is otherwise surfaced to Yollanda search.
+- **Yollanda:** **not** connected to Goals — Verification carries no Yollanda branding (verified
+  09/2026). `TODO(verify)`: whether goal content is surfaced to Yollanda chat/search.
 - `TODO(verify)`: whether goal/KR progress is pulled into any Analytics view, or whether the
   link is conversational only (the reference does not assert an Analytics graph for Goals).
 
 ## 13. Shot list (images for the docs page)
-| # | Screen / state | Sample data | Caption (draft) | Callouts | Supports doc section | Role | Render now? |
-|---|----------------|-------------|-----------------|----------|----------------------|------|-------------|
-| 1 | Goal detail — anatomy (LIGHT) | A goal: title + description, attributes row (State pill · Season · Priority · Add supervisors · Category), key results table (STATE · KEY RESULT · START/CURRENT/TARGET VALUE · TARGET DATE) | "The parts of a goal: a title and description, its attributes, and a table of key results." | Title+description · attributes row · key results table | What a goal is | coach/athlete | **DONE → /images/goals/goal-anatomy.png** |
-| 2 | New goal — empty (LIGHT) | New goal: placeholder title, "Describe it…", empty attribute buttons | "A new goal opens ready to edit: a placeholder title, a Describe it field, and buttons for its attributes." | placeholder title · Describe it · attribute buttons | Create a goal | coach/athlete | **DONE → /images/goals/new-goal.png** |
-| 3 | Category picker — two-level (DARK) | Category menu with search: Performance / Fitness ✓ / Personal / Technical / Health / Conditions, each with a submenu arrow | "The category menu: a top-level category and its subcategory." | search field · top category · subcategory submenu (▸) | Goal fields (Category) | coach/athlete | **DONE → /images/goals/category-picker.png** |
-| 4 | Document check popover (DARK, Yollanda) | DOCUMENT CHECK with Yollanda illustration; items: Fill the title ✅ / Add supervisor 🔴 / Choose category ✅ / Add key results ✅ / Add at least 3 key results 🟠 / Add description ✅; Open methodology ↗ | "Document check flags what's required (red) or recommended (amber), with green checks for what's done." | required (red) · recommended (amber) · done (green) · Open methodology | Check against methodology | coach/athlete | **DONE → /images/goals/document-check.png** |
-| 5 | Entire Group overview (DARK) | National Team, year 2026: one row per athlete (ALL group athletes shown; **Em Krystof is the most goal-rich athlete** — best subject for the image; Simpson Lisa has one goal; empty rows e.g. Cihlář Adam / Kožnar Fanoušek), goals as state-colored rounded pills + small KR circles | "The Entire Group overview — every athlete on one row, each goal a colored pill with its key results beside it." | state-colored pill · key-result circles · one row per athlete | See a whole group's goals | coach | **DONE → /images/goals/group-overview.png** |
-| 6 | Goal hero (LIGHT) | A filled goal — hero/lead image for the page top | "A goal at a glance." `TODO(verify)`: confirm intended use as page hero vs alt anatomy | (lead image — minimal callouts) | intro / page hero | coach/athlete | **DONE → /images/goals/goal-hero.png** |
+| # | Figure | Anchor | Callouts | Section | File |
+|---|--------|--------|----------|---------|------|
+| 1 | Goal hero — a filled goal, whole window, indigo "marketing" backdrop | center | — | page lead | `goal-hero.png` |
+| 2 | New goal — empty, ready to edit | right | title · describe · attributes · key results · tool bar | Create a goal | `new-goal.png` |
+| 3 | Category menu — two-level, in context | left | — | Goal fields | `category-picker.png` |
+| 4 | A closed goal — both final evaluations + Activity | bottom-right | final evaluation · activity | Comments and final evaluations | `final-evaluations.png` |
+| 5 | Verification popover, on the incomplete goal | bottom-right | — | Check a goal is properly set up | `verification.png` |
+| 6 | Export options menu, open | top-left | — | Export goals | `export-options.png` |
+| 7 | Entire Group overview — all six state colours + one empty row | top | — | See a whole group's goals | `group-overview.png` |
+| 8 | The module from an athlete's own session | left | — | What athletes see | `athlete-view.png` |
+
+All eight are real captures of we.yarmill.com on AFC Richmond (2026-09), composited per
+`docs-guide/visuals/demo-cast.md`. Retired: `goals-list.png` (the headers name themselves; the
+buckets are visible in #1 and #8) and `goal-anatomy.png` (duplicated #2 in the same section).
 
 ## 14. Open questions / TODO(verify)
 Still open (would need write actions or an athlete login to confirm):
@@ -385,7 +391,7 @@ Still open (would need write actions or an athlete login to confirm):
 - **Final evaluation:** does it lock after submission; can each role edit only their own.
 - **Per-key-result delete:** affordance not confirmed.
 - **Delete-goal confirmation:** the trash icon is confirmed; the confirmation dialog is not.
-- **KR limits:** max key results; zero-KR goal vs Document check pass.
+- **KR limits:** max key results; zero-KR goal vs Verification pass.
 - **Season roll-over:** does a goal auto-move buckets when its season ends.
 - **Analytics link:** is goal/KR progress pulled into any Analytics view, or conversational
   only.
@@ -420,8 +426,8 @@ Still open (would need write actions or an athlete login to confirm):
 - **KR table** — exact columns + inline bottom "Name the key result" add-row (§6.3).
 - **Final evaluations** — its own section below the KR table (text box + ▲ submit) (§6.2, §4).
 - **Delete goal** — trash icon top-right (§6.2, §7).
-- **Document check** — exact item set + required/recommended/done semantics + Open
-  methodology (§6.4).
+- **Verification** — exact item set + required/recommended/done semantics + Open
+  guidelines (§6.4).
 - *(from prior pass, unchanged)* six states · KR fields + manual updates · category two-level
   per-team codelist · Entire Group = state pills + KR circles · coach picks group→athlete,
   athletes see own only.
@@ -483,14 +489,15 @@ Analytics · Attendance · Files · Other · Settings) but **with no group/athle
   | (optional) What athletes see | §3 |
   | Why it matters / cross-links | §1, §12 |
 - **Cross-links (exact paths):** `/en/plan/plan`, `/en/plan/season-calendar` (the season a
-  goal belongs to); `/en/platform/yollanda` (Document check is a Yollanda surface);
+  goal belongs to); ~~`/en/platform/yollanda`~~ (dropped — Verification is **not** a Yollanda
+  surface, see §17);
   `/en/analytics/analytics` only if an Analytics linkage is confirmed (§14 — else omit).
 - **UI label → doc term:**
   | UI label | Doc term |
   |----------|----------|
   | Goals (Cíle) | Goals |
   | Supervisors | supervisors (the coaches who follow the goal) |
-  | Document check | Document check (methodology check) |
+  | Verification | Verification (guideline check) — *was documented as "Document check" before §17* |
   | Entire Group | Entire Group overview / a whole group's goals |
   | Totem panel | (internal only — not surfaced in user docs) |
 

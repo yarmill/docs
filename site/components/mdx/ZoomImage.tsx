@@ -40,6 +40,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
   const targetTransform = useRef<string>('none');
   const handedOff = useRef(false);
   const closing = useRef(false);
+  const entrance = useRef<Animation | null>(null);
   const originRect = useRef<DOMRect | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -122,9 +123,18 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     // keeps its measured height for the duration so nothing reflows behind the
     // overlay when the image leaves the flow.
     const settleAtFullSize = () => {
-      if (!open || handedOff.current) return;
+      // Never hand off once a close has begun: the entrance's `finished` would
+      // otherwise fire mid-close and pin the image at stale fixed coordinates.
+      if (closing.current || handedOff.current) return;
       const box = img.getBoundingClientRect(); // the transformed (visual) box
+      // The corner radius was being scaled along with everything else while
+      // transformed; keep that apparent size, or the corner snaps at hand-off.
+      const cs = getComputedStyle(img);
+      const r = (v: string) => `${parseFloat(v) * scale}px`;
       if (frame) frame.style.height = `${frame.getBoundingClientRect().height}px`;
+      img.style.borderRadius =
+        `${r(cs.borderTopLeftRadius)} ${r(cs.borderTopRightRadius)} ` +
+        `${r(cs.borderBottomRightRadius)} ${r(cs.borderBottomLeftRadius)}`;
       img.style.willChange = 'auto';
       img.style.transform = 'none';
       img.style.position = 'fixed';
@@ -141,7 +151,8 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
         duration: DUR,
         easing: EASE,
       });
-      anim.finished.then(settleAtFullSize, settleAtFullSize);
+      entrance.current = anim;
+      anim.finished.then(settleAtFullSize, () => {});
       overlay.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: DUR,
         easing: EASE,
@@ -166,6 +177,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       img.style.top = '';
       img.style.width = '';
       img.style.height = '';
+      img.style.borderRadius = '';
       img.style.zIndex = '';
       img.style.cursor = '';
       img.style.transformOrigin = '';
@@ -173,6 +185,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       img.style.transform = '';
       handedOff.current = false;
       closing.current = false;
+      entrance.current = null;
       originRect.current = null;
     };
   }, [open]);
@@ -186,6 +199,9 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     // what made closing-by-scroll stutter. One close per open.
     if (closing.current) return;
     closing.current = true;
+    // If we're still mid-entrance, stop it — its finished handler must not run.
+    entrance.current?.cancel();
+    entrance.current = null;
 
     const img = imgRef.current;
     const overlay = overlayRef.current;
