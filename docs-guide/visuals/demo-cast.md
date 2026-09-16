@@ -84,9 +84,9 @@ type. A fixed 20px corner in a 3200px-wide image displayed in a 700px column arr
 and the window reads square.
 
 **The hairline belongs only to window edges**, never to a cut one — a hairline on a cut edge
-implies a border the screen doesn't have. The cut edges instead get a **soft falloff** (~26 CSS
-px, masked), so a cut reads as "the screen carries on" rather than as a hard stop. Keep it
-gentle enough that nothing at the edge is lost.
+implies a border the screen doesn't have. A cut edge gets nothing: it simply runs to the frame,
+and the bleed does the rest. (A soft falloff on cut edges was tried and rejected — it reads as
+the screenshot dissolving rather than continuing.)
 
 **Round only the real corners.** A corner is rounded when both of its sides are the window's
 own edge; a side that cuts through content stays square and bleeds off the figure. That's what
