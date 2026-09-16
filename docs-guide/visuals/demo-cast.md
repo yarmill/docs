@@ -105,10 +105,16 @@ annotation column's width is derived the same way, so it holds its apparent size
 figure.
 
 **Let the browser lay the cards out, then draw the leaders.** Estimating card heights is what
-makes them collide. Cards go in a real flex column; a second pass measures where they landed
-and draws each leader from its anchor — horizontally out of the window, down a rail of its own,
-then straight into the card's edge. One rail per callout means no leader crosses another or
-disappears behind a card.
+makes them collide. A second pass measures each card, then:
+
+1. **Place each card on its own anchor** — centred on it, then swept down to clear overlaps and
+   back up if the stack overruns the bottom. Cards end up as close to their anchors as they can
+   get, so most leaders are a single straight line.
+2. **Assign rails right-to-left going down the list** — the topmost callout takes the rail
+   nearest the cards, the bottom one the rail nearest the window. That ordering is what makes
+   the routing planar: a lower leader can never reach far enough right to meet a higher one's
+   rail, and its run into the card passes below their verticals. Assigning rails the obvious way
+   (left-to-right) looks fine with two callouts and crosses with four.
 
 **Callout cards are Yarmill indigo with light text** (chip in a white tint, body at ~88%
 white), and they **sit off the app, in a transparent strip at the edge** of the figure — to the right
