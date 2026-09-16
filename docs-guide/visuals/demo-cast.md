@@ -66,10 +66,22 @@ announcements over the UI; they land in the figure and they swallow the first cl
 capture script that doesn't dismiss them can also end up on the wrong screen. The capture
 harness clears them before every shot.
 
-**Leave a margin of the app's page colour on the anchored sides.** A crop that runs flush to
-the window edge doesn't read as anchored — it just looks cut. Pad the sides that ARE the
-window's own edge (~150px at 2x) with the app's background colour, sampled from the capture
-itself so there's no seam; the sides that cut through content get no padding and bleed instead.
+**The PNG carries the window; the docs frame carries the backdrop.** A figure is exported as
+the app window on **transparency** — its macOS-sized corner (20px at 2x ≈ 10 CSS px; bigger
+starts eating the UI), a 1.5px hairline, a layered shadow, and ~170px of transparent margin on
+the sides that are the window's own edge. The colour behind it comes from CSS in
+`.ym-frame-media`, so one asset serves both themes and the treatment can be retuned without
+re-rendering anything:
+
+| Where | Backdrop |
+|---|---|
+| light | **Paper** — flat `#f1f1f4` |
+| dark | **Ink** — `#1f1e31` with an indigo glow |
+| the lead figure (`<Frame variant="marketing">`) | **Indigo** — `#5a49f9 → #3b02d6`, so the page's opening image doubles as the changelog/announcement shot |
+
+**Round only the real corners.** A corner is rounded when both of its sides are the window's
+own edge; a side that cuts through content stays square and bleeds off the figure. That's what
+keeps an anchored crop reading as a crop rather than a floating card.
 
 **A zoom is anchored to the window, never floating in the middle of it.** Pick one of nine
 positions — top-left · top · top-right · left · center · right · bottom-left · bottom ·

@@ -388,6 +388,30 @@
   background: var(--ym-bg-subtle);
   box-shadow: var(--ym-shadow-card);
 }
+/* ---- The backdrop a product screenshot sits on ----
+   The PNG carries only the app window — its corner, hairline and shadow, on
+   transparency — so the colour behind it is ours to set here. That keeps one
+   asset per figure serving both themes, and lets the treatment be retuned
+   without re-rendering a single image.
+     light — "Paper": flat near-white, quiet enough to disappear
+     dark  — "Ink":   near-black with an indigo glow, so light UI lifts off it */
+.ym-frame-media:has(img) {
+  padding: 0;
+  background: #f1f1f4;
+  border-color: rgba(31, 30, 49, 0.08);
+}
+.dark .ym-frame-media:has(img) {
+  background:
+    radial-gradient(120% 90% at 30% 0%, #2e2a52 0%, #1f1e31 55%, #151420 100%),
+    #1f1e31;
+  border-color: rgba(255, 255, 255, 0.09);
+}
+/* The lead figure doubles as the announcement image: full brand indigo. */
+.ym-frame-media[data-variant='marketing'],
+.dark .ym-frame-media[data-variant='marketing'] {
+  background: linear-gradient(158deg, #5a49f9 0%, #3b02d6 100%);
+  border-color: rgba(255, 255, 255, 0.14);
+}
 .ym-frame-media img,
 .ym-frame-media video {
   display: block;

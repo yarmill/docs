@@ -31,6 +31,7 @@ function findImageProps(node: ReactNode): { src: string; alt: string } | null {
 export function Frame({
   caption,
   bleed,
+  variant,
   children,
 }: {
   caption?: ReactNode;
@@ -41,13 +42,18 @@ export function Frame({
    * of floating inset on all four sides.
    */
   bleed?: string;
+  /**
+   * "marketing" gives the lead figure the brand-indigo backdrop — the version
+   * of the image that also works for a changelog post or an announcement.
+   */
+  variant?: 'marketing';
   children?: ReactNode;
 }) {
   const image = findImageProps(children);
 
   return (
     <figure className="ym-frame">
-      <div className="ym-frame-media" data-bleed={bleed}>
+      <div className="ym-frame-media" data-bleed={bleed} data-variant={variant}>
         {image ? <ZoomImage src={image.src} alt={image.alt} /> : children}
       </div>
       {caption ? <figcaption className="ym-frame-caption">{caption}</figcaption> : null}
