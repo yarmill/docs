@@ -164,8 +164,9 @@ value it for retrospectives.
 - **Layout (confirmed, top→bottom):** large **title** → a **description** line under it → an
   **attributes row** → the **key results table** → a **Final evaluations** section → an
   **Activity** section.
-- **Title** — inline-editable; placeholder on a new goal. `field: text · required · who:
-  coach/athlete · auto-save`.
+- **Title** — inline-editable; placeholder on a new goal. `field: text · NOT required (the
+  form accepts an untitled goal; "Fill the title" is a Verification/methodology item, not a
+  field constraint — corrected 09/2026) · who: coach/athlete · auto-save`.
 - **Description** — free-text context ("Describe it…" placeholder). `field: textarea ·
   optional · auto-save`.
 - **Auto-save (confirmed):** there is **no explicit Save button** — changes apply immediately
@@ -204,8 +205,8 @@ value it for retrospectives.
   VALUE · TARGET DATE**.
 - One **row = one measurable outcome**:
   - **State** — `colored dot per row · same six states as the goal` (teal = on track).
-  - **Key result (name)** — `text · required · placeholder "Name the key result"`. E.g.
-    "Sprint starts 3× per week."
+  - **Key result (name)** — `text · NOT required · placeholder "Name the key result"`
+    (corrected 09/2026). E.g. "Sprint starts 3× per week."
   - **Start value** — `free text/number · where the athlete began (0 / "unknown")`.
   - **Current value** — `free text/number · updated MANUALLY as progress is made`.
   - **Target value** — `free text/number · what counts as success (140 kg / 3)`.

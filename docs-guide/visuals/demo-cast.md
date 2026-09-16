@@ -97,6 +97,19 @@ bottom-right, the export menu top-left.
 colours are the point, a menu whose items are readable — leave it clean and let the caption
 carry it. Callouts are for naming parts that aren't self-evident.
 
+**Size callout type against the RENDERED figure, not the raw pixels.** A figure ~2800px wide
+lands in a ~700px docs column, so anything drawn at "14px" arrives at about 5px and is
+unreadable. The compositor computes `k = figureWidth / 700` and expresses every callout
+dimension in the CSS pixels the reader will actually see (~12px body), multiplied by `k`. The
+annotation column's width is derived the same way, so it holds its apparent size on every
+figure.
+
+**Let the browser lay the cards out, then draw the leaders.** Estimating card heights is what
+makes them collide. Cards go in a real flex column; a second pass measures where they landed
+and draws each leader from its anchor — horizontally out of the window, down a rail of its own,
+then straight into the card's edge. One rail per callout means no leader crosses another or
+disappears behind a card.
+
 **Callout cards are Yarmill indigo with light text** (chip in a white tint, body at ~88%
 white), and they **sit off the app, in a transparent strip at the edge** of the figure — to the right
 of a tall screen, underneath a wide one. The strip has no background, so it merges into the
