@@ -53,8 +53,10 @@ crop a callout; don't over-zoom.
 - Prefer **real product screenshots, then prettify**, OR rebuild the screen from design-system HTML
   → headless Chrome PNG. Two source modes the skill must support: (a) rebuild-from-tokens,
   (b) annotate a real capture I provide.
-- Use realistic demo data (e.g. Pé Tomáš = device/sleep data; Em Krystof = wellness; Cihlář Adam =
-  reality log) so "populated" screens look real. Mark any non-production image as a mockup in a comment.
+- Use realistic demo data so "populated" screens look real — from the **AFC Richmond** demo group
+  (see [`demo-cast.md`](demo-cast.md)); the older biathlon examples (Pé Tomáš = device/sleep data;
+  Em Krystof = wellness; Cihlář Adam = reality log) are retired for new shots. Mark any
+  non-production image as a mockup in a comment.
 
 ## Light/dark handling (decide and document in the skill)
 Each framed image is self-contained, so default to **one brand-neutral framing** that reads fine on

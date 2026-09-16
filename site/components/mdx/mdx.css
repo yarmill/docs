@@ -388,12 +388,66 @@
   background: var(--ym-bg-subtle);
   box-shadow: var(--ym-shadow-card);
 }
+/* ---- The backdrop a product screenshot sits on ----
+   The PNG carries only the app window — its corner, hairline and shadow, on
+   transparency — so the colour behind it is ours to set here. That keeps one
+   asset per figure serving both themes, and lets the treatment be retuned
+   without re-rendering a single image.
+     light — "Paper": flat near-white, quiet enough to disappear
+     dark  — "Ink":   near-black with an indigo glow, so light UI lifts off it */
+.ym-frame-media:has(img) {
+  background: #f1f1f4;
+  border-color: rgba(31, 30, 49, 0.08);
+}
+.dark .ym-frame-media:has(img) {
+  background:
+    radial-gradient(120% 90% at 30% 0%, #2e2a52 0%, #1f1e31 55%, #151420 100%),
+    #1f1e31;
+  border-color: rgba(255, 255, 255, 0.09);
+}
+/* The lead figure doubles as the announcement image: full brand indigo. */
+.ym-frame-media[data-variant='marketing'],
+.dark .ym-frame-media[data-variant='marketing'] {
+  background: linear-gradient(158deg, #5a49f9 0%, #3b02d6 100%);
+  border-color: rgba(255, 255, 255, 0.14);
+}
 .ym-frame-media img,
 .ym-frame-media video {
   display: block;
   width: 100%;
   height: auto;
   border-radius: var(--ym-radius);
+}
+/* ---- Cropped screenshots: bleed to the edge where the screen continues ----
+   A figure that shows only part of a screen shouldn't float inset on all four
+   sides — that reads as a cut-out pasted onto a card. On the edges named in
+   `bleed`, the inset goes and the image runs to the frame, so the crop reads
+   as "the screen carries on this way". The frame keeps its own rounded corner;
+   overflow: hidden trims the image to it. */
+.ym-frame-media[data-bleed~='top'] { padding-top: 0; }
+.ym-frame-media[data-bleed~='right'] { padding-right: 0; }
+.ym-frame-media[data-bleed~='bottom'] { padding-bottom: 0; }
+.ym-frame-media[data-bleed~='left'] { padding-left: 0; }
+.ym-frame-media[data-bleed='all'] { padding: 0; }
+
+.ym-frame-media[data-bleed~='top'] :is(img, video, .ym-zoom-trigger) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.ym-frame-media[data-bleed~='bottom'] :is(img, video, .ym-zoom-trigger) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.ym-frame-media[data-bleed~='left'] :is(img, video, .ym-zoom-trigger) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.ym-frame-media[data-bleed~='right'] :is(img, video, .ym-zoom-trigger) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.ym-frame-media[data-bleed='all'] :is(img, video, .ym-zoom-trigger) {
+  border-radius: 0;
 }
 /* ---- Click-to-zoom (Linear-style, ZoomImage.tsx) ----
    The in-page image IS the zoomed element — clicking transforms that same

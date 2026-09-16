@@ -1,0 +1,158 @@
+# Demo cast & data scope for docs visuals
+
+The standing convention for every Yarmill docs screenshot, screencast, and worked example.
+Set 2026-09 by the product owner; supersedes the earlier biathlon *National Team /
+Simpson Lisa* cast used for the first module passes.
+
+## The group
+
+**AFC Richmond** on we.yarmill.com — a football (soccer) group named after *Ted Lasso*, with
+its members named after the show's characters. Every new visual and every example in the docs
+uses this group, so the docs read as one coherent product tour instead of a pile of unrelated
+instances.
+
+Three named accounts do the work; the rest of the squad is scenery.
+
+| Role in the docs | Member | Used for |
+|---|---|---|
+| **Coach** (the primary login) | **Ted Lasso** | the coach's-eye view in most shots; the supervisor on goals |
+| **Athlete** (the athlete login) | **Jamie Tartt** | the athlete with the richest data, and every athlete-role screen |
+| **Admin** (occasional) | **Rebecca Welton** | the few shots that need an admin |
+| Supporting athletes | the rest of the squad — **Roy Kent**, Sam Obisanya, Dani Rojas, … | visible in group overviews and athlete lists; rarely the subject of a shot |
+
+**Roy Kent is an athlete here**, not a coach — the squad list is whatever the group actually
+contains, so check the member list before naming anyone in a caption.
+
+Keep a member's role stable across modules — if Jamie Tartt is the lead athlete in Goals, he's
+the lead athlete in Reality too. Ted Lasso is the only coach; don't invent a second one to fill
+a supervisor field.
+
+## Data scope — hard rule
+
+**Writes are allowed only inside AFC Richmond.** Adding, editing, and deleting goals, plans,
+log entries, records, and member data is authorized for the AFC Richmond group and its members.
+
+**Never write to any other group, coach, or athlete on any instance** — not the biathlon
+National Team, not Simpson Lisa, not the accounts of real staff. Reading elsewhere to verify
+behaviour is fine; changing anything there needs explicit, per-case confirmation from the
+product owner.
+
+## Sourcing visuals
+
+**Capture the real UI, then annotate it.** Screenshots come from the live app driven in a
+logged-in session; the callout layer (labels, badges, spotlights, framing) is composited on
+top afterwards. Do not rebuild a screen as HTML and pass it off as a screenshot — a rebuild
+drifts from the shipped UI in exactly the details nobody wrote down, and it has to be rebuilt
+on every UI change instead of re-shot.
+
+Figma designs, where available, are a **secondary reference**: brand tokens and spacing for
+the annotation layer, and a cross-check when a live screen looks wrong (design intent vs. a
+bug). They are not the source of the screenshot.
+
+Anything that is *not* a real capture keeps its
+`{/* NOTE(yarmill): … mockup … */}` marker in the MDX.
+
+## How a figure is framed
+
+Set 2026-09 by the product owner, after a first pass got this wrong.
+
+**A figure is the app.** Either the **whole application window**, or a **zoom into the one
+region** the figure is about — and it bleeds to all four edges of the image. Do **not** cut a
+region out of the window and float it as a rounded card with a drop shadow on a backdrop: it
+reads as a drawing of the UI rather than a picture of it.
+
+**Clear the app's announcement modals before capturing.** The product shows "Got it" style
+announcements over the UI; they land in the figure and they swallow the first click, so a
+capture script that doesn't dismiss them can also end up on the wrong screen. The capture
+harness clears them before every shot.
+
+**The PNG carries the window; the docs frame carries the backdrop.** A figure is exported as
+the app window on **transparency** — its macOS corner, a hairline, a layered shadow, and a **tight** transparent margin on the
+sides that are the window's own edge — **96px at 2x** (~48 CSS px), **176px** for the marketing lead. Keep it tight: the window
+is the subject and the backdrop is a frame, not a mat. The colour behind it comes from CSS in
+`.ym-frame-media`, so one asset serves both themes and the treatment can be retuned without
+re-rendering anything:
+
+| Where | Backdrop |
+|---|---|
+| light | **Paper** — flat `#f1f1f4` |
+| dark | **Ink** — `#1f1e31` with an indigo glow |
+| the lead figure (`<Frame variant="marketing">`) | **Indigo** — `#5a49f9 → #3b02d6`, so the page's opening image doubles as the changelog/announcement shot |
+
+**The corner is sized against the rendered figure too** — `RADIUS_CSS` (11) × `k`, same as the
+type. A fixed 20px corner in a 3200px-wide image displayed in a 700px column arrives as ~4px
+and the window reads square.
+
+**The hairline belongs only to window edges**, never to a cut one — a hairline on a cut edge
+implies a border the screen doesn't have. A cut edge gets nothing: it simply runs to the frame,
+and the bleed does the rest. (A soft falloff on cut edges was tried and rejected — it reads as
+the screenshot dissolving rather than continuing.)
+
+**Round only the real corners.** A corner is rounded when both of its sides are the window's
+own edge; a side that cuts through content stays square and bleeds off the figure. That's what
+keeps an anchored crop reading as a crop rather than a floating card.
+
+**A zoom is anchored to the window, never floating in the middle of it.** Pick one of nine
+positions — top-left · top · top-right · left · center · right · bottom-left · bottom ·
+bottom-right — and crop from that anchor, so the figure keeps the window's own edges (and the
+page background and rounded corners along them) on the sides it touches. A crop taken from the
+middle of the screen, cut on all four sides, leaves the reader with no idea where they are; it
+also produces ugly slivers of grey where a panel's rounded corner is sliced. Choose the anchor
+that best shows *where the thing lives*: the category menu sits left, the Verification popover
+bottom-right, the export menu top-left.
+
+**Not every figure needs callouts.** If the screen explains itself — a group overview whose
+colours are the point, a menu whose items are readable — leave it clean and let the caption
+carry it. Callouts are for naming parts that aren't self-evident.
+
+**Size callout type against the RENDERED figure, not the raw pixels.** A figure ~2800px wide
+lands in a ~700px docs column, so anything drawn at "14px" arrives at about 5px and is
+unreadable. The compositor computes `k = figureWidth / 700` and expresses every callout
+dimension in the CSS pixels the reader will actually see (~12px body), multiplied by `k`. The
+annotation column's width is derived the same way, so it holds its apparent size on every
+figure.
+
+**Let the browser lay the cards out, then draw the leaders.** Estimating card heights is what
+makes them collide. A second pass measures each card, then:
+
+1. **Place each card on its own anchor** — centred on it, then swept down to clear overlaps and
+   back up if the stack overruns the bottom. Cards end up as close to their anchors as they can
+   get, so most leaders are a single straight line.
+2. **Assign rails right-to-left going down the list** — the topmost callout takes the rail
+   nearest the cards, the bottom one the rail nearest the window. That ordering is what makes
+   the routing planar: a lower leader can never reach far enough right to meet a higher one's
+   rail, and its run into the card passes below their verticals. Assigning rails the obvious way
+   (left-to-right) looks fine with two callouts and crosses with four.
+
+**Callout cards are Yarmill indigo with light text** (chip in a white tint, body at ~88%
+white), and they **sit off the app, in a transparent strip at the edge** of the figure — to the right
+of a tall screen, underneath a wide one. The strip has no background, so it merges into the
+docs frame instead of reading as a second panel, and the app itself stays unobscured. Anchor
+the dot just *outside* the element it names (past the end of a line of text, at the right edge
+of a table) and let the leader run out through empty space to the card; never put a dot on the
+icon or control being described.
+
+**Copy is sentence case** — "What the goal is", not "what the goal is" or "What The Goal Is".
+
+**Callout text is baked into the PNG, so a screen reader can't see it.** Whatever the callouts
+name, the figure's `alt` has to say too — otherwise the labelled parts exist only for sighted
+readers.
+
+**Callout cards** follow the Figma annotation pattern: a small **chip** carrying the name
+(brand tint, Inter 600) over a line of **body text** (Inter 450) that wraps inside a ~470px
+card, with roomy padding (20px) and a soft shadow. Airy beats dense. Never the browser's
+default bold (700) — Yarmill's type tops out at 590. Don't colour-code the cards themselves:
+on a screen that already uses colour to mean something (Verification's red/amber/green, the
+state pills) coloured callouts fight the UI. Leave those screens un-annotated instead.
+
+**Bleed the crop to the frame.** `<Frame bleed="…">` takes the edges where the screenshot is a
+crop and the real screen continues — `top`/`right`/`bottom`/`left`, or `all`. Those edges lose
+the frame's inset so the image runs to the edge. A partial screenshot inset on all four sides
+reads as a cut-out pasted on a card. Keep the inset only on edges that are the window's own.
+
+**Size for a retina column.** The docs column is ~700px, so a figure wants **at least ~1400px**
+of source width. A narrow crop (a single column, a small popover) gets widened with
+surrounding context rather than upscaled.
+
+Some figures need no callouts at all. If the screen already names the thing — season-bucket
+headers, a two-level menu — let the caption do the work.
