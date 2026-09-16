@@ -39,6 +39,8 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const targetTransform = useRef<string>('none');
   const handedOff = useRef(false);
+  const closing = useRef(false);
+  const originRect = useRef<DOMRect | null>(null);
   const [open, setOpen] = useState(false);
 
   const handleOpen = useCallback(() => setOpen(true), []);
@@ -84,6 +86,7 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     // to viewport centre. Form `translate() scale()` ⇒ translate is in real CSS
     // pixels (applied outside the scale), so no division by scale is needed.
     const r = img.getBoundingClientRect();
+    originRect.current = r; // where it sits in the flow — the closing target
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     // Never enlarge past the file's own resolution. The cap has to count DEVICE
@@ -169,6 +172,8 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       img.style.willChange = '';
       img.style.transform = '';
       handedOff.current = false;
+      closing.current = false;
+      originRect.current = null;
     };
   }, [open]);
 
@@ -176,6 +181,12 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
   // unmount (which runs the effect cleanup). Resting-end values are set inline
   // up front so the no-fill animations land on them — no end-of-close flash.
   const close = useCallback(() => {
+    // A scroll gesture fires a burst of wheel events, and every one of them used
+    // to run this whole function — stacking a new animation on each, which is
+    // what made closing-by-scroll stutter. One close per open.
+    if (closing.current) return;
+    closing.current = true;
+
     const img = imgRef.current;
     const overlay = overlayRef.current;
     if (!img || !overlay || prefersReduced() || document.hidden) {
@@ -183,39 +194,45 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
       return;
     }
 
-    const target = targetTransform.current;
-    // If it settled at full size, return it to the in-flow + transformed state
-    // first. The two are geometrically identical, so the swap is invisible and
-    // the closing animation has something to reverse.
-    if (handedOff.current) {
-      img.style.position = 'relative';
-      img.style.left = '';
-      img.style.top = '';
-      img.style.width = '';
-      img.style.height = '';
-      img.style.transform = target;
-      handedOff.current = false;
-      void img.offsetHeight; // flush, so the animation starts from this state
-    }
-    img.style.transform = 'none';
-    overlay.style.opacity = '0';
-
     let done = false;
     const finish = () => {
       if (done) return;
       done = true;
-      setOpen(false);
+      setOpen(false); // the effect cleanup resets every style
     };
 
-    img.style.willChange = 'transform';
-    const a = img.animate([{ transform: target }, { transform: 'none' }], {
-      duration: DUR,
-      easing: EASE,
-    });
-    overlay.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: DUR,
-      easing: EASE,
-    });
+    overlay.style.opacity = '0';
+    overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: DUR, easing: EASE });
+
+    let a: Animation;
+    if (handedOff.current && originRect.current) {
+      // It is laid out at full size, position: fixed. Animate it back with a
+      // transform alone — going back into the flow first would force a reflow
+      // on the same frame the animation starts, which is the other half of the
+      // stutter. Geometry at the end matches the in-flow box exactly, so the
+      // cleanup's style reset is invisible.
+      const now = img.getBoundingClientRect();
+      const o = originRect.current;
+      const scale = o.width / now.width;
+      const back = `translate(${o.left - now.left}px, ${o.top - now.top}px) scale(${scale})`;
+      img.style.transformOrigin = 'top left';
+      img.style.willChange = 'transform';
+      img.style.transform = back;
+      a = img.animate([{ transform: 'none' }, { transform: back }], {
+        duration: DUR,
+        easing: EASE,
+      });
+    } else {
+      // Closed mid-open, before the hand-off: just reverse the entrance.
+      const target = targetTransform.current;
+      img.style.transform = 'none';
+      img.style.willChange = 'transform';
+      a = img.animate([{ transform: target }, { transform: 'none' }], {
+        duration: DUR,
+        easing: EASE,
+      });
+    }
+
     a.onfinish = finish;
     a.oncancel = finish;
     window.setTimeout(finish, DUR + 80);
@@ -229,9 +246,9 @@ export function ZoomImage({ src, alt }: { src: string; alt: string }) {
     };
     const onIntent = () => close();
     window.addEventListener('keydown', onKey);
-    window.addEventListener('wheel', onIntent, { passive: true });
-    window.addEventListener('touchmove', onIntent, { passive: true });
-    window.addEventListener('resize', onIntent);
+    window.addEventListener('wheel', onIntent, { passive: true, once: true });
+    window.addEventListener('touchmove', onIntent, { passive: true, once: true });
+    window.addEventListener('resize', onIntent, { once: true });
     return () => {
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('wheel', onIntent);
