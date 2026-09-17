@@ -20,7 +20,7 @@ Guidance for Claude Code working in this repository.
   facts). See "Authoring docs" below.
 - **`internal/`** — NOT documentation: Nunjucks/Jinja templates for Yollanda (the AI), outside
   `site/`, never part of the docs build. **Never** edit, delete, or reformat `internal/`.
-- **`.claude/skills/`** — repo skills (`yarmill-docs`, `yarmill-changelog`).
+- **`.claude/skills/`** — repo skills (`yarmill-docs`, `yarmill-figures`, `yarmill-changelog`).
 
 ## Working in `site/` (the docs app)
 - **Everything runs from `site/`:**
@@ -60,14 +60,15 @@ this file alone:
 **Skills (use them):**
 - **`yarmill-docs`** — authoring a docs page / tutorial / use case (walks the guide above).
 - **`yarmill-changelog`** — drafting changelog posts from Linear.
+- **`yarmill-figures`** — the images for a docs page: shoot the **live app** on the
+  **AFC Richmond** demo group (Ted Lasso coach, Jamie Tartt athlete, …) and compose with
+  `docs-guide/visuals/tooling/` (anchored zooms, transparent window PNG, indigo off-app
+  callouts, `<Frame bleed variant>`). Conventions + **write scope** in
+  [`docs-guide/visuals/demo-cast.md`](docs-guide/visuals/demo-cast.md) — **never write data
+  outside that group**. Anything that isn't a real capture keeps `{/* NOTE(yarmill): …
+  mockup … */}`.
 - **`anthropic-skills:yarmill-design`** — brand tokens, GUI 2.0, assets (Yollanda accent
-  Blush `#FC7B9B`, never indigo). **`yarmill-screenshot`** — one docs-ready framed screen.
-  **`yarmill-visuals`** — annotated stills, step sequences, marketing/social, motion (the
-  skill for tutorial/use-case visuals). Mark non-production images with `{/* NOTE(yarmill):
-  … mockup … */}`. **Cast + write scope for every visual:
-  [`docs-guide/visuals/demo-cast.md`](docs-guide/visuals/demo-cast.md)** — shoot the real UI on
-  the **AFC Richmond** demo group (Ted Lasso, Jamie Tartt, …) and **never write data outside
-  that group**.
+  Blush `#FC7B9B`, never indigo).
 - **`anthropic-skills:yarmill-copy`** — marketing/brand copy (product docs are plainer).
 
 **Frontmatter minimum** (every page): `title` + `description`. Add `icon:` on module/landing

@@ -1,0 +1,12 @@
+node_modules
+package-lock.json
+
+# Logged-in sessions and the pasted cookies they are built from — never commit.
+session*.json
+paste*.json
+
+# Working files: raw captures, composed output, the compositor's HTML stages.
+raw/
+out/
+work/
+shots/

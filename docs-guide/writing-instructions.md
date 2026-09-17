@@ -1,4 +1,4 @@
-# Yarmill Docs — Writing Instructions (v0.11)
+# Yarmill Docs — Writing Instructions (v0.12)
 
 > **What this is.** The house guide for writing Yarmill's user docs — for any team member
 > or for Claude Code. It lives at `docs-guide/writing-instructions.md` in the docs repo and
@@ -17,10 +17,10 @@
 > info adds to or contradicts the reference, propose updates to it as a secondary
 > deliverable (§10) so it stays current.
 >
-> **Status.** v0.11 — de-Mintlified and reconciled to the React site: §7 rewritten to the
-> `site/` output format; the `For/Where` signpost is now the `<PageMeta>` component;
-> tutorials/use-cases content types folded into §5; visuals point to the yarmill-design /
-> -screenshot / -visuals skills. Voice modeled on Linear's docs; structure on Diátaxis.
+> **Status.** v0.12 — figures are real captures of the live app, produced with the
+> `yarmill-figures` skill + `docs-guide/visuals/tooling/` (§6); v0.11 de-Mintlified and
+> reconciled the guide to the React site (§7, `<PageMeta>`, tutorials/use cases in §5).
+> Voice modeled on Linear's docs; structure on Diátaxis.
 
 ---
 
@@ -428,33 +428,30 @@ v1; the grouped sidebar + landing `<CardGroup>` cover discovery until the catalo
 - **Links**: link first mention of another concept; descriptive text, never
   "click here."
 - **Images, lead with them.** Readers scan visuals first, so substantial pages
-  (especially module pages) should open with a figure and place more through the flow.
-  Two kinds:
-  - **Real product screenshots** for "what the screen looks like" — the Linear approach.
-    Prefer whole screens over cropped pixels so they age well.
-  - **Labeled schematic figures** (hand-authored SVG, in the style of the biathlon
-    shooting-syntax image) for "anatomy/structure" — the parts of a screen with their
-    labels. Prefer these for structure teaching because, unlike an annotated screenshot,
-    a schematic doesn't drift as the UI ships daily.
-  - **Always** include meaningful alt text (describe what's shown, not "screenshot") —
-    Yarmill invests in accessibility. Wrap every image in `<Frame>` (add a `caption`
-    where it helps). Store under `site/public/images/<module>/…`, reference as `/images/…`,
-    and mark any non-production image with a `{/* NOTE(yarmill): … mockup … */}` comment.
-    Placeholder-mark if unavailable (§10).
-  - **How figures are produced — defer to the skills.** Don't hand-author production
-    visuals here; the design system lives in the skills:
-    - **`anthropic-skills:yarmill-design`** — source of truth for brand tokens, the new UI
-      ("GUI 2.0"), and assets (Inter, icons, avatars). Yollanda accent is Blush `#FC7B9B`,
-      never indigo.
-    - **`yarmill-screenshot`** — a single docs-ready screen: render from design-system HTML,
-      frame in minimal Safari chrome with edge bleed/fade, optional callout labels.
-    - **`yarmill-visuals`** — annotated stills (callouts, arrows, step badges, spotlight),
-      doodles, step sequences, marketing/social compositions, and motion (GIF/MP4/reels).
-      This is the skill for tutorial/use-case visuals (hero, per-step stills, walkthroughs).
-    Visuals are rendered HTML → headless Chrome PNG. The queued shot list for the module
-    pages lives in `docs-guide/visuals/_VISUAL-TODOS.md`. If you can't produce an image, leave
-    a `<Frame>{/* TODO(yarmill): … */}</Frame>` placeholder plus an annotation spec (which
-    elements to label and the label text) rather than attempting it inline.
+  (especially module pages) open with a **hero** — the whole app window, in
+  `<Frame variant="marketing">` — and place one figure per region the text describes.
+  - **Every figure is a real capture of the live product**, shot on the **AFC Richmond**
+    demo group and composed with the repo's tooling — the **`yarmill-figures`** skill is the
+    procedure, `docs-guide/visuals/demo-cast.md` the conventions, and
+    `docs-guide/visuals/tooling/` the scripts. The Goals page (`/en/plan/goals`) is the
+    worked example. Don't rebuild a screen as HTML and present it as a screenshot; anything
+    that isn't a real capture keeps a `{/* NOTE(yarmill): … mockup … */}` comment.
+  - **A figure is the app**: the whole window, or a zoom **anchored** to one of nine positions
+    on it so the reader can see where they are. In the MDX, `<Frame bleed="…">` names the
+    cut sides so the crop runs to the frame edge; the PNG is transparent and the frame's CSS
+    supplies the backdrop in both themes. Callouts are indigo cards off the app, in sentence
+    case, and only where the screen doesn't explain itself.
+  - **Always** include meaningful alt text (describe what's shown, not "screenshot") — and
+    whatever the callouts name, the alt names too, since callout text is pixels. Wrap every
+    image in `<Frame>` (add a `caption` where it helps). Store under
+    `site/public/images/<module>/…`, reference as `/images/…`.
+  - **Brand tokens, type, icons and the GUI 2.0 kit** come from
+    **`anthropic-skills:yarmill-design`** (Yollanda accent is Blush `#FC7B9B`, never indigo).
+    Motion and marketing composites are not covered by the tooling yet — see
+    `docs-guide/visuals/yarmill-visuals-brief.md` and leave a
+    `<Frame>{/* TODO(yarmill): … */}</Frame>` placeholder with an annotation spec (which
+    elements to label and the label text). The shot queue lives in
+    `docs-guide/visuals/_VISUAL-TODOS.md`.
 
 ---
 
@@ -740,6 +737,13 @@ Next: [Build a season plan](/en/plan/season-plan) ·
 ---
 
 ### Changelog of this prompt
+- **v0.12** — **Figures are shot, not drawn.** §6 images bullet rewritten around the real
+  pipeline: every figure is a capture of the live product on the AFC Richmond demo group,
+  composed with `docs-guide/visuals/tooling/` (anchored zooms, transparent window PNG,
+  backdrop from the frame CSS, indigo off-app callouts) and placed with `<Frame bleed variant>`.
+  The `yarmill-figures` repo skill is the procedure; `demo-cast.md` holds the conventions.
+  The schematic-SVG option and the `yarmill-screenshot` / `yarmill-visuals` references are
+  gone (the latter's brief remains for motion/marketing work).
 - **v0.11** — **De-Mintlified and reconciled to the React site.** The docs are now the
   Next.js app under `site/`, not Mintlify. §7 rewritten end-to-end to the real output
   format (`site/content/docs/**.mdx`, the `site/components/mdx/` component set, nav driven

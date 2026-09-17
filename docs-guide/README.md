@@ -16,7 +16,7 @@ rewriting docs content, start here. (The docs site itself — the React/Next.js 
 | **[`writing-instructions.md`](writing-instructions.md)** | The house guide: voice & tone, the configurability principle, content types (reference / tutorial / use case), the React output format (frontmatter, components, nav), and the pre-publish checklist. **Read this before drafting.** |
 | **[`master-reference.md`](master-reference.md)** | The Yarmill product facts — a **living document**. Tagged CORE / CONFIG / SPORT / ROADMAP. Order of truth: chat details > live product > this reference. Keep it current. |
 | **`module-notes/`** | Per-module live-verification notes (what each screen actually does), the page `_TEMPLATE.md`, the `_REVIEW-CHECKLIST.md`, and `_BUILD-STATUS.md` (the docs build progress / resume anchor). |
-| **`visuals/`** | `_VISUAL-TODOS.md` (the queued screenshot/shot list for the docs) and `yarmill-visuals-brief.md` (what the visuals skill must produce for tutorials). |
+| **`visuals/`** | `demo-cast.md` (the AFC Richmond cast, the write-scope rule, and every figure convention), `tooling/` (the capture/compose scripts and per-module figure specs — see its README), `demo-data/` (seed plans), `_VISUAL-TODOS.md` (the queued shot list) and `yarmill-visuals-brief.md` (motion/marketing wants, not yet tooled). |
 | **`changelog/`** | `changelog-automation-architecture.md` — the Linear → changelog pipeline design (operationalized by the `yarmill-changelog` skill). |
 
 ## How to use it
@@ -26,8 +26,9 @@ rewriting docs content, start here. (The docs site itself — the React/Next.js 
   `site/content/docs/` and must be added to `site/.scaffold-ref/docs.json`.
 - **Need a product fact?** It's in `master-reference.md`. When a conversation or live
   walkthrough reveals something new or wrong, update that file and note the change.
-- **Need a visual?** Defer to the `yarmill-design` / `yarmill-screenshot` / `yarmill-visuals`
-  skills; the shot queue is in `visuals/_VISUAL-TODOS.md`.
+- **Need a figure?** Use the **`yarmill-figures`** skill: shoot the live app on AFC Richmond,
+  compose with `visuals/tooling/`, place with `<Frame bleed>`. Conventions in
+  `visuals/demo-cast.md`; the shot queue in `visuals/_VISUAL-TODOS.md`.
 - **Drafting changelog posts?** Use the **`yarmill-changelog`** skill; the design rationale is
   in `changelog/changelog-automation-architecture.md`.
 
