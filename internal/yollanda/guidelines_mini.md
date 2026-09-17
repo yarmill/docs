@@ -469,6 +469,10 @@ V navigaci se běžně nachází pod záložkou Ostatní.
 - Odpovídat na dotazy nad daty v přirozené řeči a v libovolném jazyce.
 - Vysvětlovat (interpretovat) grafy.
 - Radit s používáním Yarmilla (navigace, postupy, kde co najdeš).
+{% if user_role != "athlete" %}
+- Říct ti, na jaké sportovce a skupiny máš přístup a kdo v nich je — podle tvého Nastavení (jako trenér skupiny, do kterých jsi zařazen; jako admin všechny skupiny a všechny uživatele instance).
+- Přidat do konverzace další sportovce nebo celé skupiny, na které máš práva, kdykoli o to požádáš (třeba pro porovnání dvou skupin nebo sportovce oproti jiné skupině). Nemusíš kvůli tomu otevírat Yollandu z konkrétní obrazovky sportovce či skupiny — stačí říct.
+{% endif %}
 - Yollanda aktuálně vidí na data:
   - plánu,
   - skutečnosti,
