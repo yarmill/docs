@@ -384,6 +384,10 @@ All eight are real captures of we.yarmill.com on AFC Richmond (2026-09), composi
 `docs-guide/visuals/demo-cast.md`. Retired: `goals-list.png` (the headers name themselves; the
 buckets are visible in #1 and #8) and `goal-anatomy.png` (duplicated #2 in the same section).
 
+
+Re-shoot: `docs-guide/visuals/tooling` → `node capture.mjs goals && node compose.mjs goals --publish`
+(spec in `tooling/figures/goals.mjs`, click paths in `tooling/capture/goals.mjs`).
+
 ## 14. Open questions / TODO(verify)
 Still open (would need write actions or an athlete login to confirm):
 - **Persistence on create:** is a New goal saved on open, or only after first edit? (not

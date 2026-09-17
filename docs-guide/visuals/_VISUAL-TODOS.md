@@ -1,13 +1,15 @@
-# Visual TODO queue — for the polished `yarmill-screenshot` skill to execute later
+# Visual TODO queue — shot list for the `yarmill-figures` skill
 
-> Built during the live spec-verification pass. Each entry tells a future skill-run exactly
-> **where to go in live Yarmill**, **what state to set up**, **what to capture**, and **how to
-> post-process** (crop type + callouts). Render only when the screenshot skill has been polished.
+> Built during the live spec-verification pass. Each entry tells a shoot exactly **where to
+> go in live Yarmill**, **what state to set up**, **what to capture**, and **how to
+> post-process**. Execute with the **`yarmill-figures`** skill and `tooling/` (README there).
 >
-> Status legend: ☐ todo · ☑ done (image in `images/<module>/`).
-> Crop types: **full-window** (overviews/dashboards — all 4 edges, traffic lights, no fade) ·
-> **corner-zoom+callouts** (detail/"anatomy" — bleed left+bottom, fade, horizontal callout pills) ·
-> **modal/popover** (dark overlay, self-contained).
+> Status legend: ☐ todo · ☑ done (image in `site/public/images/<module>/`).
+> Crop types map onto the tooling's anchors: **full-window** → `align: 'center'`, whole
+> capture · **corner-zoom+callouts** → an edge/corner anchor with `callouts`, `<Frame bleed>`
+> on the cut sides · **modal/popover** → anchored where the popover opens, no callouts.
+> "Fade" and "callout pills" in older entries are superseded by `demo-cast.md` (no fade;
+> indigo cards off the app).
 >
 > Cast: **AFC Richmond** (Ted Lasso, Jamie Tartt, …) — see
 > [`demo-cast.md`](demo-cast.md); writes are allowed **only** in that group. Entries below

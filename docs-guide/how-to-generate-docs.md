@@ -21,7 +21,7 @@ to be explicit, type `/yarmill-docs`.)
 | **A tutorial** (a step-by-step job) | "Add a tutorial: connect a watch and read recovery" |
 | **A use case** (a role story) | "Draft a use case for a national-team coach" |
 | **A changelog post** | "Draft the changelog for what shipped since May" (uses the `yarmill-changelog` skill) |
-| **A visual** for a page | "Make the hero image for the Goals page" (uses the `yarmill-screenshot` / `yarmill-visuals` skills) |
+| **The images** for a page | "Make the figures for the Attendance page" (uses the `yarmill-figures` skill — you'll be asked for a logged-in session on the AFC Richmond demo group) |
 | **A fix / polish** | "Tighten the Plan page intro" · "Fix the broken link on the Reality page" |
 
 The more you give up front — the audience (coaches/athletes/admins), which module, anything

@@ -8,8 +8,8 @@ description: >-
   page", "update the docs for <feature>". Walks the house writing guide
   (docs-guide/writing-instructions.md) and the product facts (docs-guide/master-reference.md),
   enforces the configurability rules, and outputs valid MDX wired into the site nav. For
-  changelog posts use yarmill-changelog; for the visuals themselves use
-  yarmill-design / yarmill-screenshot / yarmill-visuals.
+  changelog posts use yarmill-changelog; for the figures themselves use yarmill-figures
+  (real captures of the live app) and yarmill-design for brand tokens.
 ---
 
 # Writing Yarmill docs
@@ -44,10 +44,14 @@ it before drafting anything non-trivial.
 5. **Wire it in:** save under `site/content/docs/<area>/<slug>.mdx`, then **add the page to
    `site/.scaffold-ref/docs.json`** (anchors → groups → pages) — without this it's
    unreachable. A new *space* also needs a `SECTION_DEFS` entry in `site/lib/nav.ts`.
-6. **Visuals:** don't hand-author them here. Leave `<Frame>{/* TODO(yarmill): … */}</Frame>`
-   placeholders + an annotation spec, and produce images later with **yarmill-design /
-   yarmill-screenshot / yarmill-visuals** (queue in `docs-guide/visuals/_VISUAL-TODOS.md`).
-   Mark non-production images with `{/* NOTE(yarmill): … mockup … */}`.
+6. **Figures:** produce them with the **`yarmill-figures`** skill — real captures of the live
+   app on the AFC Richmond demo group, composed with `docs-guide/visuals/tooling/` and placed
+   with `<Frame bleed="…">` (hero in `<Frame variant="marketing">`). A page's shot list comes
+   from its sections: a hero, then one anchored zoom per region the text describes, callouts
+   only where the screen doesn't explain itself. If the shoot can't happen in this session,
+   leave `<Frame>{/* TODO(yarmill): … */}</Frame>` placeholders with an annotation spec and
+   queue them in `docs-guide/visuals/_VISUAL-TODOS.md`. Mark anything that isn't a real
+   capture with `{/* NOTE(yarmill): … mockup … */}`.
 7. **Validate:** from `site/`, run `npm run build`, `npm run lint`, `npx tsc --noEmit` — all
    must pass (broken MDX/links fail the build).
 8. **Keep the reference current:** apply any new/changed product facts to

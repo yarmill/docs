@@ -1,0 +1,18 @@
+{
+  "name": "yarmill-docs-figures",
+  "private": true,
+  "type": "module",
+  "description": "Capture, compose and check the docs figures shot from the live Yarmill app.",
+  "scripts": {
+    "session": "python3 session.py",
+    "seed": "node seed.mjs",
+    "capture": "node capture.mjs",
+    "compose": "node compose.mjs",
+    "measure": "node measure.mjs",
+    "check:frames": "node check-frames.mjs",
+    "check:zoom": "node check-zoom.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.62.1"
+  }
+}

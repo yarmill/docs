@@ -37,6 +37,12 @@ National Team, not Simpson Lisa, not the accounts of real staff. Reading elsewhe
 behaviour is fine; changing anything there needs explicit, per-case confirmation from the
 product owner.
 
+## Where the tooling is
+
+Everything below is encoded in **`tooling/`** (`compose.mjs`, `capture/`, `figures/`, `seed/` —
+see its README) and operated through the **`yarmill-figures`** skill. This file is the *why*;
+the scripts are the *how*. When a convention changes, change both.
+
 ## Sourcing visuals
 
 **Capture the real UI, then annotate it.** Screenshots come from the live app driven in a

@@ -6,7 +6,7 @@ is the coach (and the only supervisor), **Jamie Tartt** the athlete, **Rebecca W
 
 Designed so the eight shots in the Goals shot list can all be taken from this one data set —
 including the three season buckets, every state colour in the Entire Group overview, a goal
-closed with final evaluations, and a goal incomplete enough for Document check to flag it.
+closed with final evaluations, and a goal incomplete enough for Verification to flag it.
 
 **Seeded 2026-09-02** — this is now the live state of the group, not a proposal. What the
 instance actually offers, confirmed in the app:
@@ -106,3 +106,8 @@ line without needing a second shot.
   shot loses its red items.
 - Keep values short — the key results table is narrow and long strings wrap badly in a
   screenshot.
+
+---
+
+**Executable form:** `docs-guide/visuals/tooling/seed/goals.mjs` — `node seed.mjs goals` wipes and
+re-creates exactly this data set (coach session required).
