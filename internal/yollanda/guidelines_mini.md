@@ -34,7 +34,7 @@ pohledu.
 - Po propojení se data ze zařízení synchronizují do Yarmilla automaticky ve chvíli, kdy se zařízení synchronizuje s aplikací daného výrobce. Tzn. že jakmile vidím například aktivitu z Garmin hodinek v Garmin Connect aplikaci, tak se automaticky posílá i do Yarmilla.
 - V Yarmillovi se záznamy ukazují v modulu {{translations.reality}} u daného dne a případně v relevantních analytických výstupech (například data spánku se zároveň propíšou do reportů v {{translations.recoveryAnalysis}}, pokud je dostupný - viz přehled analytických výstupů níže).
 - Nahranou (synchronizovanou) aktivitu nelze aktuálně v Yarmillovi editovat ani smazat.
-{% if prefill_reality_from_device %}{# TODO(yarmill): nahradit prefill_reality_from_device skutečnou konfigurační proměnnou instance pro předvyplnění pravé strany ze synchronizované aktivity #}
+{% if workout_import_enabled %}
 - Ze synchronizované aktivity jde také předvyplnit pravou stranu deníku (tabulku tréninkových ukazatelů) - viz sekce "Předvyplnění pravé strany daty ze sporttesteru" v kapitole 4.
 {% endif %}
 - Po propojení zařízení, ze kterých chodí informace o aktivitách, je potřeba zkontrolovat, že má sportovec nastavené tepové zóny ({{translations.settings}} -> {{translations.HRzones}}). Toto nastavení je důležité pro správné zobrazovaní detailu aktivit, počítaní a analýzy času stráveného v jednolivých zónách.
@@ -266,7 +266,7 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - Vyplňovat deník zpětně pro předešlé dny mohou {% if labels|length == 1 %}{{ labels[0] }}{% elif labels|length == 2 %}{{ labels[0] }} a {{ labels[1] }}{% else %}{{ labels[:-1]|join(", ") }} a {{ labels[-1] }}{% endif %}{% if backfill_days == -1 %} a to bez časového omezení.{% else %}, ale pouze {{ backfill_days }} dní zpětně.{% endif %}
 {% endif %}
 
-{% if prefill_reality_from_device %}{# TODO(yarmill): nahradit prefill_reality_from_device skutečnou konfigurační proměnnou instance pro předvyplnění pravé strany ze synchronizované aktivity #}
+{% if workout_import_enabled %}
 ### Předvyplnění pravé strany daty ze sporttesteru
 - Každá aktivita, která se automaticky synchronizovala z propojeného zařízení, má v pravém horním rohu malou ikonku hodinek (v levé straně deníku v {{translations.reality}}).
 - Po kliknutí na ikonku Yarmill načte data dané aktivity a připraví vyplnění pravé strany (tabulky tréninkových ukazatelů) relevantními hodnotami - podle ukazatelů nakonfigurovaných na dané instanci (typicky počet jednotek, celkový čas tréninku, čas v dané aktivitě a čas v jednotlivých intenzitních zónách).
@@ -315,7 +315,7 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - Pro sportovce může být nápovědou, kam zapsat nějakou aktivitu (do jakých ukazatelů jí rozepsat v pravé straně nebo levé straně) způsob, jakým daný trénink popsal trenér do plánu (pokud trenér plán poctivě vyplnil).
 - Nejbezpečnější variantou je dotaz na trenéra nebo admina, aby byla zachována jednotká metodika evidence dat.
 
-{% if prefill_reality_from_device %}{# TODO(yarmill): nahradit prefill_reality_from_device skutečnou konfigurační proměnnou instance pro předvyplnění pravé strany ze synchronizované aktivity #}
+{% if workout_import_enabled %}
 #### Nevidím u aktivity ikonku hodinek
 - Ikonka je v pravém horním rohu aktivity a zobrazuje se jen u aktivit, které se automaticky synchronizovaly z propojeného zařízení. U ručně zapsaných aktivit není.
 - Zkontroluj, že se daná aktivita opravdu synchronizovala ze zařízení (viz kapitola 1 Integrace zařízení a synchronizace).

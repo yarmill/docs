@@ -33,7 +33,7 @@
 - After connection, data from the device is synchronized to Yarmill automatically at the moment the device is synchronized with the manufacturer's application. This means that as soon as I can see, for example, an activity from Garmin watches in the Garmin Connect application, it is also automatically sent to Yarmill.
 - In Yarmill, records are shown in the {{translations.reality}} module on the given day and possibly in relevant analytical outputs (for example, sleep data is also reflected in reports in {{translations.recoveryAnalysis}}, if available - see the overview of analytical outputs below).
 - An uploaded (synchronized) activity currently cannot be edited or deleted in Yarmill.
-{% if prefill_reality_from_device %}{# TODO(yarmill): replace prefill_reality_from_device with the real instance config variable for pre-filling the right side from a synchronized activity #}
+{% if workout_import_enabled %}
 - A synchronized activity can also be used to pre-fill the right side of the diary (the table of training indicators) - see the "Pre-filling the right side with data from a sports watch" section in chapter 4.
 {% endif %}
 - After connecting devices that send activity information, it is necessary to check that the athlete has heart rate zones set ({{translations.settings}} -> {{translations.HRzones}}). This setting is important for the correct display of activity details and for calculating and analyzing time spent in individual zones.
@@ -265,7 +265,7 @@ From the moment of disconnection, new data will no longer be synchronized to Yar
 - The diary for previous days can be filled in retroactively by {% if labels|length == 1 %}{{ labels[0] }}{% elif labels|length == 2 %}{{ labels[0] }} and {{ labels[1] }}{% else %}{{ labels[:-1]|join(", ") }} and {{ labels[-1] }}{% endif %}{% if backfill_days == -1 %} with no time limit.{% else %}, but only {{ backfill_days }} days back.{% endif %}
 {% endif %}
 
-{% if prefill_reality_from_device %}{# TODO(yarmill): replace prefill_reality_from_device with the real instance config variable for pre-filling the right side from a synchronized activity #}
+{% if workout_import_enabled %}
 ### Pre-filling the right side with data from a sports watch
 - Every activity that was automatically synchronized from a connected device has a small watch icon in its top right corner (on the left side of the diary in {{translations.reality}}).
 - After clicking the icon, Yarmill reads the data of the given activity and prepares the filling of the right side (the table of training indicators) with the relevant values - according to the indicators configured on the given instance (typically the number of sessions, total training time, time in the given activity, and time in individual intensity zones).
@@ -314,7 +314,7 @@ From the moment of disconnection, new data will no longer be synchronized to Yar
 - For athletes, it may be helpful to look at how the coach described the given training in the plan (if the coach filled in the plan carefully) to determine where to record an activity (which indicators on the right side or left side to break it down into).
 - The safest option is to ask the coach or admin so that a consistent methodology of data recording is maintained.
 
-{% if prefill_reality_from_device %}{# TODO(yarmill): replace prefill_reality_from_device with the real instance config variable for pre-filling the right side from a synchronized activity #}
+{% if workout_import_enabled %}
 #### I don't see the watch icon for an activity
 - The icon is in the top right corner of the activity and is shown only for activities that were automatically synchronized from a connected device. It is not shown for activities written manually.
 - Check that the given activity really is synchronized from the device (see chapter 1 Device integration and synchronization).
