@@ -33,6 +33,9 @@
 - After connection, data from the device is synchronized to Yarmill automatically at the moment the device is synchronized with the manufacturer's application. This means that as soon as I can see, for example, an activity from Garmin watches in the Garmin Connect application, it is also automatically sent to Yarmill.
 - In Yarmill, records are shown in the {{translations.reality}} module on the given day and possibly in relevant analytical outputs (for example, sleep data is also reflected in reports in {{translations.recoveryAnalysis}}, if available - see the overview of analytical outputs below).
 - An uploaded (synchronized) activity currently cannot be edited or deleted in Yarmill.
+{% if prefill_reality_from_device %}{# TODO(yarmill): replace prefill_reality_from_device with the real instance config variable for pre-filling the right side from a synchronized activity #}
+- A synchronized activity can also be used to pre-fill the right side of the diary (the table of training indicators) - see the "Pre-filling the right side with data from a sports watch" section in chapter 4.
+{% endif %}
 - After connecting devices that send activity information, it is necessary to check that the athlete has heart rate zones set ({{translations.settings}} -> {{translations.HRzones}}). This setting is important for the correct display of activity details and for calculating and analyzing time spent in individual zones.
 
 ### Athlete
@@ -64,6 +67,10 @@ From the moment of disconnection, new data will no longer be synchronized to Yar
 
 {% if "polar" in external_services_codes %}
 #### Polar specifics
+- Yarmill retrieves both activities (training sessions) and health data from Polar.
+- Health data means information about sleep, resting heart rate, HRV, and Nightly Recharge (Polar's own overnight recovery score). It is synchronized from Polar devices that can measure it - that is, Polar watches with sleep measurement and the Polar Loop band.
+- Polar health data behaves the same as health data from other services (Garmin, WHOOP, Oura Ring): it is shown in {{translations.reality}} on the given day and is used in {{translations.recoveryAnalysis}} (if available on this instance - see the overview of analytical outputs below).
+- Health data is synchronized automatically as soon as the athlete has their Polar account connected. Athletes who already have Polar connected do not need to do anything or connect anything again.
 - Polar can also send information about configured heart rate zones for each activity.
 - Enabling/disabling the use of heart rate zones directly from Polar is shown in the web application under the {{translations.appsAndDevices}} section when Polar integration is connected.
 - When the switch is turned on, the heart rate zones that Polar sends for the given activity are used for each activity (that is, the zones the user has set in their watch or the Polar Flow application). Zones set directly in Yarmill are ignored in that case.
@@ -258,6 +265,17 @@ From the moment of disconnection, new data will no longer be synchronized to Yar
 - The diary for previous days can be filled in retroactively by {% if labels|length == 1 %}{{ labels[0] }}{% elif labels|length == 2 %}{{ labels[0] }} and {{ labels[1] }}{% else %}{{ labels[:-1]|join(", ") }} and {{ labels[-1] }}{% endif %}{% if backfill_days == -1 %} with no time limit.{% else %}, but only {{ backfill_days }} days back.{% endif %}
 {% endif %}
 
+{% if prefill_reality_from_device %}{# TODO(yarmill): replace prefill_reality_from_device with the real instance config variable for pre-filling the right side from a synchronized activity #}
+### Pre-filling the right side with data from a sports watch
+- Every activity that was automatically synchronized from a connected device has a small watch icon in its top right corner (on the left side of the diary in {{translations.reality}}).
+- After clicking the icon, Yarmill reads the data of the given activity and prepares the filling of the right side (the table of training indicators) with the relevant values - according to the indicators configured on the given instance (typically the number of sessions, total training time, time in the given activity, and time in individual intensity zones).
+- Before anything is written, Yarmill shows what will be filled in. If any of the target items already contain a value, it also shows these conflicts, so it is clear what would change.
+- The data is written into the right side only after the user confirms it. The pre-filled values can then be edited in the usual way.
+- Both athletes and coaches (admins) can use pre-filling, according to the write permissions they normally have for the diary.
+- It always works for one activity. It is not possible to pre-fill several activities (the whole day, the whole week) at once - the icon must be clicked separately for each activity.
+- Pre-filling is an aid, not a final entry. It is always appropriate to check the values and adjust what does not correspond to how the training actually took place and to the methodology of the team.
+{% endif %}
+
 ### Activity descriptions - where and how to enter activities and notes in Yarmill
 - Below are the available fields in Yarmill (left and right side). They are used for planning/recording individual training sessions, where to enter them, and how to divide them into the correct fields. Some fields are not user-editable and are calculated automatically.
 - The left side is intended primarily for text descriptions of activities, notes, subjective ratings; the right side is for numerical descriptions of activities - time, distance, repetitions, etc. However, some numerical fields may also appear on the left side. The decisive reference is the list below.
@@ -295,6 +313,15 @@ From the moment of disconnection, new data will no longer be synchronized to Yar
 - When deciding which fields to use for a given activity/training, it is a good idea to check the tooltips (help bubbles) for the individual items - they often list examples of activities that belong in the given item or provide further clarification.
 - For athletes, it may be helpful to look at how the coach described the given training in the plan (if the coach filled in the plan carefully) to determine where to record an activity (which indicators on the right side or left side to break it down into).
 - The safest option is to ask the coach or admin so that a consistent methodology of data recording is maintained.
+
+{% if prefill_reality_from_device %}{# TODO(yarmill): replace prefill_reality_from_device with the real instance config variable for pre-filling the right side from a synchronized activity #}
+#### I don't see the watch icon for an activity
+- The icon is in the top right corner of the activity and is shown only for activities that were automatically synchronized from a connected device. It is not shown for activities written manually.
+- Check that the given activity really is synchronized from the device (see chapter 1 Device integration and synchronization).
+
+#### Can I pre-fill the whole week at once?
+- No. Pre-filling always works for one activity, so the watch icon must be clicked separately for each activity.
+{% endif %}
 
 ## 5) Abbreviations, metrics, and meanings (HRV, RPE, TRIM, zones…)
 

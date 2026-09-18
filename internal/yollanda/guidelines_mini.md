@@ -34,6 +34,9 @@ pohledu.
 - Po propojení se data ze zařízení synchronizují do Yarmilla automaticky ve chvíli, kdy se zařízení synchronizuje s aplikací daného výrobce. Tzn. že jakmile vidím například aktivitu z Garmin hodinek v Garmin Connect aplikaci, tak se automaticky posílá i do Yarmilla.
 - V Yarmillovi se záznamy ukazují v modulu {{translations.reality}} u daného dne a případně v relevantních analytických výstupech (například data spánku se zároveň propíšou do reportů v {{translations.recoveryAnalysis}}, pokud je dostupný - viz přehled analytických výstupů níže).
 - Nahranou (synchronizovanou) aktivitu nelze aktuálně v Yarmillovi editovat ani smazat.
+{% if prefill_reality_from_device %}{# TODO(yarmill): nahradit prefill_reality_from_device skutečnou konfigurační proměnnou instance pro předvyplnění pravé strany ze synchronizované aktivity #}
+- Ze synchronizované aktivity jde také předvyplnit pravou stranu deníku (tabulku tréninkových ukazatelů) - viz sekce "Předvyplnění pravé strany daty ze sporttesteru" v kapitole 4.
+{% endif %}
 - Po propojení zařízení, ze kterých chodí informace o aktivitách, je potřeba zkontrolovat, že má sportovec nastavené tepové zóny ({{translations.settings}} -> {{translations.HRzones}}). Toto nastavení je důležité pro správné zobrazovaní detailu aktivit, počítaní a analýzy času stráveného v jednolivých zónách.
 
 ### Sportovec
@@ -65,6 +68,10 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 
 {% if "polar" in external_services_codes %}
 #### Polar specifika
+- Z Polaru Yarmill přebírá jak aktivity (tréninky), tak zdravotní data.
+- Zdravotními daty se myslí informace o spánku, klidové tepové frekvenci, HRV a Nightly Recharge (vlastní noční skóre regenerace od Polaru). Synchronizují se z Polar zařízení, která je umí měřit - tedy z Polar hodinek s měřením spánku a z náramku Polar Loop.
+- Zdravotní data z Polaru se chovají stejně jako zdravotní data z ostatních služeb (Garmin, WHOOP, Oura Ring): zobrazují se v {{translations.reality}} u daného dne a využívají se v {{translations.recoveryAnalysis}} (pokud je na této instanci k dispozici - viz přehled analytických výstupů níže).
+- Zdravotní data se synchronizují automaticky, jakmile má sportovec propojený svůj Polar účet. Sportovci, kteří už Polar propojený mají, nemusí dělat nic ani nic znovu propojovat.
 - Polar umí ke každé aktivitě posílat také informaci o nastavených tepových zónách.
 - Zapnutí/vypnutí přebírání tepových zón přímo z Polaru se zobrazí ve webové aplikaci pod sekcí {{translations.appsAndDevices}} při propojené integraci s Polarem.
 - Při zapnutém přepínači se pro každou aktivitu použijou tepové zóny, které k dané aktivitě pošle Polar (neboli ty, které má uživatel nastavené ve svých hodinkách nebo Polar Flow aplikaci). Zóny nastavené přímo v Yarmillovi se v takovém případě ignorují.
@@ -259,6 +266,17 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - Vyplňovat deník zpětně pro předešlé dny mohou {% if labels|length == 1 %}{{ labels[0] }}{% elif labels|length == 2 %}{{ labels[0] }} a {{ labels[1] }}{% else %}{{ labels[:-1]|join(", ") }} a {{ labels[-1] }}{% endif %}{% if backfill_days == -1 %} a to bez časového omezení.{% else %}, ale pouze {{ backfill_days }} dní zpětně.{% endif %}
 {% endif %}
 
+{% if prefill_reality_from_device %}{# TODO(yarmill): nahradit prefill_reality_from_device skutečnou konfigurační proměnnou instance pro předvyplnění pravé strany ze synchronizované aktivity #}
+### Předvyplnění pravé strany daty ze sporttesteru
+- Každá aktivita, která se automaticky synchronizovala z propojeného zařízení, má v pravém horním rohu malou ikonku hodinek (v levé straně deníku v {{translations.reality}}).
+- Po kliknutí na ikonku Yarmill načte data dané aktivity a připraví vyplnění pravé strany (tabulky tréninkových ukazatelů) relevantními hodnotami - podle ukazatelů nakonfigurovaných na dané instanci (typicky počet jednotek, celkový čas tréninku, čas v dané aktivitě a čas v jednotlivých intenzitních zónách).
+- Než se cokoliv zapíše, Yarmill ukáže, co se vyplní. Pokud už v cílových položkách nějaká hodnota je, zobrazí také tyto konflikty, aby bylo vidět, co by se změnilo.
+- Data se do pravé strany zapíšou až po potvrzení uživatelem. Předvyplněné hodnoty jde potom běžným způsobem upravit.
+- Předvyplnění mohou používat sportovci i trenéři (admini), podle práv na zápis, která do deníku běžně mají.
+- Funguje to vždy pro jednu aktivitu. Není možné předvyplnit více aktivit (celý den, celý týden) najednou - na ikonku je potřeba kliknout u každé aktivity zvlášť.
+- Předvyplnění je pomůcka, ne finální zápis. Vždy je na místě hodnoty zkontrolovat a upravit to, co neodpovídá skutečnému průběhu tréninku a metodice týmu.
+{% endif %}
+
 ### Popisy aktivit - kam a jak zapisovat aktivity a poznámky do Yarmilla
 - Níže jsou dostupná pole v Yarmillovi (levá i pravá strana). Slouží k plánování/evidenci jednotlivých tréninků, kam je zapisovat a jak je rozdělit do správných polí. Některá pole nejsou uživatelsky editovatelná, počítají se automaticky.
 - Levá strana je určena primárně pro textový popis aktivit, poznámky, pocitové hodnocení, pravá strana pro číselný popis aktivit - čas, vzdálenost, opakování apod. Některá číselná pole se ale mohou objevit i na levé straně. Rozhodující a určující je seznam níže.
@@ -296,6 +314,15 @@ Od momentu odpojení se nebudou nová data do Yarmilla synchronizovat.
 - Při rozhodování, do jakých polí zapsat danou aktivitu/trénink, je dobré zkontrolovat tooltipy (bubliny s nápovědou) k jednotlivým položkám - tam jsou často uvedeny příklady aktivit, které do dané položky patří, případně upřesňující vysvětlení.
 - Pro sportovce může být nápovědou, kam zapsat nějakou aktivitu (do jakých ukazatelů jí rozepsat v pravé straně nebo levé straně) způsob, jakým daný trénink popsal trenér do plánu (pokud trenér plán poctivě vyplnil).
 - Nejbezpečnější variantou je dotaz na trenéra nebo admina, aby byla zachována jednotká metodika evidence dat.
+
+{% if prefill_reality_from_device %}{# TODO(yarmill): nahradit prefill_reality_from_device skutečnou konfigurační proměnnou instance pro předvyplnění pravé strany ze synchronizované aktivity #}
+#### Nevidím u aktivity ikonku hodinek
+- Ikonka je v pravém horním rohu aktivity a zobrazuje se jen u aktivit, které se automaticky synchronizovaly z propojeného zařízení. U ručně zapsaných aktivit není.
+- Zkontroluj, že se daná aktivita opravdu synchronizovala ze zařízení (viz kapitola 1 Integrace zařízení a synchronizace).
+
+#### Jde předvyplnit celý týden najednou?
+- Ne. Předvyplnění funguje vždy pro jednu aktivitu, na ikonku hodinek je tedy potřeba kliknout u každé aktivity zvlášť.
+{% endif %}
 
 ## 5) Zkratky, metriky a významy (HRV, RPE, TRIM, zóny…)
 
