@@ -25,9 +25,15 @@
 //   Illness codes all begin with M; injury codes begin with the body region.
 // - `circumstances` are `[category, value]` pairs over the categories
 //   Activity · Injury mechanism · Location · Severity · Surface. These codelists
-//   are **configured per instance** — every value below is a GUESS until seen in
-//   the live picker. The driver must treat a missing category or value as
-//   skippable (log it and carry on), not as a failure.
+//   are **configured per instance**; the values below are the ones AFC Richmond
+//   actually offers, read out of the live picker on 2026-09-20:
+//     Activity           Warmup · Training · Gym · Competition · Not related to sport · Unknown · Other
+//     Injury mechanism   Contact · Non-contact · Indirect contact
+//     Location           Domestic training environment · Training camp · Competition · Unknown · Other
+//     Severity           Mild · Moderate · Severe
+//     Surface            Artificial turf · Grass · Gym · Indoor · Concrete · Terrain
+//   Another instance will have different ones, so the driver still treats a
+//   missing category or value as skippable (log it and carry on), not a failure.
 // - `closureDate` appears on closed records. It is an **extra key beyond the
 //   agreed shape**: the Closure date may be auto-set to the day the record is
 //   closed and may not be editable (TODO(verify) in the live app). If it is not
@@ -49,7 +55,7 @@ export const SEED = {
       startDate: '2026-09-06',
       expectedReturn: '2026-10-04',
       diagnosis: { query: 'ankle sprain', code: 'AL1', side: 'Right' }, // AL1 Sprain lateral collateral ligament ankle — the one confirmed code
-      circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Contact'], ['Location', 'Home'], ['Severity', 'Moderate'], ['Surface', 'Natural grass']],
+      circumstances: [['Activity', 'Competition'], ['Injury mechanism', 'Contact'], ['Location', 'Domestic training environment'], ['Severity', 'Moderate'], ['Surface', 'Grass']],
       staff: 'Club physiotherapist',
       note: 'Rolled the ankle landing after an aerial challenge in the second half; walked off unaided. Lateral ligament, no bony tenderness. Walking boot for the first week, then pool and bike. Return to running once he is pain-free on stairs.',
       comments: [
@@ -66,7 +72,7 @@ export const SEED = {
       startDate: '2026-09-14',
       expectedReturn: null, // leave empty — the overview needs one "–" in the expected-return column
       diagnosis: { query: 'Achilles tendinopathy', code: 'QTA', side: 'Left' }, // QTA Achilles tendinopathy
-      circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Overuse'], ['Severity', 'Mild']],
+      circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Non-contact'], ['Severity', 'Mild']],
       staff: 'Club physiotherapist',
       note: 'Same left Achilles as last November. Stiff for the first ten minutes of a session, then settles. Training in full, eccentric loading three times a week, monitored.',
       comments: [],
@@ -96,7 +102,7 @@ export const SEED = {
       expectedReturn: '2025-11-21',
       closureDate: '2025-11-24',
       diagnosis: { query: 'Achilles tendinopathy', code: null, side: 'Left' }, // TODO(verify): code from the live picker
-      circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Overuse']],
+      circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Non-contact']],
       staff: 'Club physiotherapist',
       note: 'Soreness after a block of three matches in eight days. Three weeks of modified running volume and calf loading.',
       comments: [],
@@ -111,7 +117,7 @@ export const SEED = {
       expectedReturn: '2025-03-15',
       closureDate: '2025-03-21',
       diagnosis: { query: 'hamstring', code: 'TM1', side: 'Left' }, // TM1 Hamstring strain/tear
-      circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Non-contact'], ['Severity', 'Severe']],
+      circumstances: [['Activity', 'Competition'], ['Injury mechanism', 'Non-contact'], ['Severity', 'Severe']],
       staff: 'Club physiotherapist',
       note: 'Felt it sprinting in the 70th minute. Grade 2 strain of the left biceps femoris. Six weeks from injury to full training, back through a graded running programme.',
       comments: ['Forty-one days out in the end. This is the one the availability goal is measured against.'],
@@ -146,7 +152,7 @@ export const SEED = {
       startDate: '2026-08-10',
       expectedReturn: '2026-08-30', // deliberately in the past → "21 days overdue" on 2026-09-20
       diagnosis: { query: 'patellofemoral', code: 'KCP', side: 'Right' }, // KCP Patellofemoral joint chondral pain
-      circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Overuse'], ['Severity', 'Mild']],
+      circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Non-contact'], ['Severity', 'Mild']],
       staff: 'Club doctor',
       note: 'Anterior knee pain that builds through the week and is worst the morning after a full session. No swelling, no mechanical symptoms. Managed with load control plus quad and glute strength work.',
       comments: ['Missed the return date — trained through a heavy week and the pain came back. Reassessed with the club doctor; new target to be set after the break.'],
@@ -161,7 +167,7 @@ export const SEED = {
       expectedReturn: '2025-04-14',
       closureDate: '2025-04-20',
       diagnosis: { query: 'knee cartilage', code: 'KC1', side: 'Right' }, // KC1 Knee articular cartilage damage — the earlier episode KCP recurs from
-      circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Contact']],
+      circumstances: [['Activity', 'Competition'], ['Injury mechanism', 'Contact']],
       staff: 'Consultant orthopaedic surgeon',
       note: 'Irritation on the medial femoral condyle after a heavy block. Six weeks of load management, no surgery.',
       comments: [],
@@ -197,7 +203,7 @@ export const SEED = {
       startDate: '2026-09-11',
       expectedReturn: '2026-09-28',
       diagnosis: { query: 'groin', code: 'GP1', side: 'Right' }, // GP1 Chronic non specific / functional groin pain
-      circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Overuse']],
+      circumstances: [['Activity', 'Competition'], ['Injury mechanism', 'Non-contact']],
       staff: 'Club physiotherapist',
       note: 'Tightness that returns in weeks with two matches. Training in full with a modified gym programme and daily adductor work.',
       comments: [],
@@ -217,7 +223,7 @@ export const SEED = {
       expectedReturn: '2026-03-28',
       closureDate: '2026-04-02',
       diagnosis: { query: 'metacarpal', code: 'PFE', side: 'Left' }, // PFE Fifth metacarpal fracture
-      circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Contact'], ['Surface', 'Natural grass']],
+      circumstances: [['Activity', 'Competition'], ['Injury mechanism', 'Contact'], ['Surface', 'Grass']],
       staff: 'Hand clinic — orthopaedics',
       note: 'Fracture of the fifth metacarpal blocking a shot. Managed conservatively, back in team training in a protective cast.',
       comments: [],

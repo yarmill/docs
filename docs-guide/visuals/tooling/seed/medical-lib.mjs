@@ -128,22 +128,48 @@ async function setDiagnosis(page, { query, code, side }) {
     await hit.click();
     await page.waitForTimeout(1200);
 
-    // Picking the side commits the diagnosis and closes the popover.
-    await pickOption(page, side, { pause: 1200 });
+    // Side is a second select on the same inline row, and it does NOT commit:
+    // the row carries Cancel / Add (Ctrl+Enter) and the diagnosis is only
+    // attached once Add is pressed. Don't go looking for a button called "Add"
+    // — the page has several (Add record, Add note, Add files, Add diagnosis)
+    // and the first one in the DOM is the wrong one. Use the shortcut the row
+    // advertises, and fall back to the button sitting next to its Cancel.
+    await pickOption(page, side, { pause: 900 });
+    const cancel = page.getByRole('button', { name: /^Cancel$/ }).first();
+    await page.keyboard.press('Control+Enter');
+    await page.waitForTimeout(1500);
+    if (await cancel.count().catch(() => 0)) {
+      await cancel.locator('xpath=..').getByRole('button').last().click();
+      await page.waitForTimeout(1500);
+    }
+    if (await cancel.count().catch(() => 0)) throw new Error('the diagnosis row would not commit');
     done = true;
   } finally {
-    // A search left open sits over everything set after it.
-    if (!done) { await page.keyboard.press('Escape').catch(() => {}); await page.waitForTimeout(400); }
+    // A half-filled diagnosis row left open sits over everything set after it.
+    if (!done) {
+      const cancel = page.getByRole('button', { name: /^Cancel$/ }).first();
+      if (await cancel.count().catch(() => 0)) await cancel.click().catch(() => {});
+      await page.keyboard.press('Escape').catch(() => {});
+      await page.waitForTimeout(400);
+    }
   }
 }
 
+// The circumstance categories are a hover submenu: hovering one opens its
+// values over the category list, so each pair is set from a freshly opened
+// menu. Whatever happens, close it — a menu left open swallows every click
+// that follows, which once cost a whole record's note, staff and comments.
 async function setCircumstance(page, category, value) {
-  await page.locator(cy(CY.circumstance)).first().click();
-  await page.waitForTimeout(900);
-  await pickOption(page, category, { pause: 900 });
-  await pickOption(page, value, { pause: 900 });
-  await page.keyboard.press('Escape');
-  await page.waitForTimeout(400);
+  try {
+    await page.locator(cy(CY.circumstance)).first().click();
+    await page.waitForTimeout(1000);
+    await page.locator('[role="option"], [role="menuitem"]')
+      .filter({ hasText: new RegExp(`^${category}$`) }).first().hover({ timeout: 8000 });
+    await page.waitForTimeout(1400);
+    await pickOption(page, value, { pause: 900 });
+  } finally {
+    for (let i = 0; i < 2; i++) { await page.keyboard.press('Escape').catch(() => {}); await page.waitForTimeout(400); }
+  }
 }
 
 /**

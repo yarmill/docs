@@ -71,14 +71,17 @@ export const FIGURES = {
     ],
   },
 
-  // Whole window: the quick-entry modal sits in the middle of the screen, so a
-  // centre crop would cut all four sides and lose the reader. Keep the window.
+  // Whole window: the quick-entry modal sits over the middle of the screen, so
+  // a centre crop would cut all four sides and lose the reader. Keep the window
+  // — but that makes k large (a full 3200px frame in a 700px column), and the
+  // callout cards are sized in rendered CSS px, so four of them do not fit the
+  // stage and the compositor clamps them into each other. Two fit. If all four
+  // turn out to be wanted, crop to the modal instead (all four sides then bleed)
+  // rather than stacking more cards on the full window.
   'quick-entry': {
     src: 'quick-entry.png', align: 'center', size: [3200, 2000],
     callouts: [
       { at: [2280, 640], label: 'Entry type', sub: 'Injury or illness' },                           // TODO(measure)
-      { at: [2280, 900], label: 'Training limitation', sub: 'Full, modified, or no training' },     // TODO(measure)
-      { at: [2280, 1360], label: 'Files', sub: 'Drag in a report or a scan' },                      // TODO(measure)
       { at: [2280, 1560], label: 'Save', sub: 'Nothing is created until you do' },                  // TODO(measure)
     ],
   },

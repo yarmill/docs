@@ -12,9 +12,30 @@
 - **Config-dependence:** **high** — visibility/edit rights are permission-controlled and depend on each instance setup: sometimes athletes can see *and* edit their own records, other times athletes **can't see the Medical module at all** (coaches/medical staff only). The **Circumstances codelists** are also configured per instance.
 - **Explored:** 2026-06-14 · group *National Team* · athlete *Simpson Lisa* · coach acct *Bart Simpson* + athlete acct *Lisa* · by main agent (live)
 - **Re-cast:** 2026-09-20 to **AFC Richmond** (Ted Lasso coach · Jamie Tartt athlete) for the
-  figure rebuild — see §13. The UI observations below are still from the 2026-06 live pass on
-  the biathlon instance and have **not** been re-verified on AFC Richmond; routes, `data-cy`
-  hooks and whether athletes see the module there are all open until the shoot runs.
+  figure rebuild — see §13.
+- **Re-verified live on AFC Richmond, 2026-09-20** (coach session, Ted Lasso), confirming or
+  correcting the 2026-06 biathlon pass:
+  - The module **is enabled** for AFC Richmond, and the group started with **no records at
+    all** (every athlete "No health problems").
+  - Routes: `/medical?group={id}` (overview) · `/medical?group={id}&athlete={id}` (that
+    athlete's Open/Closed lists) · `/medical/{uuid}?group=&athlete=` (a record). The query
+    parameters are honoured, so the scripts can deep-link.
+  - `data-cy` hooks (the full set is in `tooling/seed/medical-lib.mjs`): `add-health-issue`
+    with `add-health-issue-injury` / `-illness`, `health-issue-list-item`,
+    `health-issue-title`, `classification-button`, `treatment-status-button`,
+    `health-issue-status-button`, `responsible-staff-button`, `health-issue-date-button`,
+    `expected-return-date-button`, `add-circumstance-button`, `notes-editor`,
+    `add-diagnosis-button`, `add-files-button`, `comment-form`, `remove-health-issue`,
+    `medical-help-button`, and `datepicker-navigation` / `datepicker-day` /
+    `previous-month` / `next-month` in the calendar.
+  - **A new record's defaults:** Classification *New* · Treatment Status *Open* · Injury
+    Status **Modified training** · date of injury = today. (The 2026-06 note didn't record a
+    default limitation; there is one.)
+  - Dropdown labels confirmed verbatim: *New / Recurring*, *Open / Closed*, *Full training or
+    competition / Modified training or competition / No training or competition*. The
+    **Activity log shortens them** — it reads "changed injury status to No training".
+  - Delete confirm is **"Yes, delete"**; the floating tool bar is *+ New quick entry `N`* ·
+    *?* · bin ("Delete injury").
 - **Render images now?** YES (new GUI; overview is dark)
 
 ## 1. Purpose & why it exists
@@ -90,7 +111,15 @@ across their whole career, not scattered across clinics and spreadsheets.
     diagnosis label in Yarmill is Yarmill's own localisation against the English code.
   - OSIICS codes **what the diagnosis is**, not mechanism or severity — those stay in
     Circumstances and the key dates.
-- **Circumstances:** categorised attributes — **Activity · Injury mechanism · Location · Severity · Surface** (each a submenu of values). These are **Yarmill codelists configured per instance — not OSIICS** and unrelated to the diagnosis.
+- **Circumstances:** categorised attributes — **Activity · Injury mechanism · Location · Severity · Surface** (each a **hover** submenu of values). These are **Yarmill codelists configured per instance — not OSIICS** and unrelated to the diagnosis. What **AFC Richmond** offers (live, 2026-09-20 — another instance will differ):
+
+  | Category | Values |
+  |---|---|
+  | Activity | Warmup · Training · Gym · Competition · Not related to sport · Unknown · Other |
+  | Injury mechanism | Contact · Non-contact · Indirect contact |
+  | Location | Domestic training environment · Training camp · Competition · Unknown · Other |
+  | Severity | Mild · Moderate · Severe |
+  | Surface | Artificial turf · Grass · Gym · Indoor · Concrete · Terrain |
 - **Responsible Staff:** free-text staff member or institution.
 - **Note:** free text. **Files:** medical documents on the record — medical reports, X-ray and MRI images, physiotherapy plans, and similar. **Activity:** automatic change log + timestamped comments.
 
@@ -123,7 +152,7 @@ across their whole career, not scattered across clinics and spreadsheets.
 - **Key Dates:** **start date** (auto-set to today on create; editable via calendar) · **Expected Return** (calendar picker; clearable ×) · **Closure date** (appears once the record is set to Closed).
 - **Circumstances:** `+` opens a categorised picker (Activity · Injury mechanism · Location · Severity · Surface), each a submenu of per-instance configured values (**not OSIICS**).
 - **Note:** free-text box (auto-save).
-- **Diagnosis:** `+` → searchable **OSIICS** picker (results show code, e.g. `ALJ / AL1 / AL2 / ALM`) + **Side** select + **Add** (⌘↵). Added diagnosis shows code + label + auto-tags. **The codelist is filtered by record type** — injuries search injury codes, illnesses search illness codes.
+- **Diagnosis:** `+` → searchable **OSIICS** picker + **Side** select + **Add** (`Ctrl`/`⌘`+`↵`). Confirmed live 2026-09-20: searching "ankle sprain" returns *Ankle sprains ALJ · Sprain lateral collateral ligament ankle AL1 · Sprain medial collateral (deltoid) ligament ankle AL2 · Ankle multiple ligaments sprain ALM* — **label first, code last**. Picking a result and a Side does **not** commit; the inline row shows *Cancel* / *Add* and only Add attaches it. Added diagnosis shows code + label + auto-tags. **The codelist is filtered by record type** — injuries search injury codes, illnesses search illness codes. The section carries the line **"Diagnoses are defined using the OSIICS code list↗ to ensure consistent reporting"**, whose link opens the codelist — currently a **Google Sheets copy**, not johnorchard.com. `TODO(yarmill): worth asking whether that link should point at the source.`
 - **Files:** `+` attach medical documents — reports, X-ray/MRI images, physiotherapy plans, etc.
 - **Activity:** chronological log (created, status changes, renamed, dates added) + a **Leave comment** box.
 - **Floating toolbar (bottom):** **+ New quick entry** (`N`) · **? help** · **delete (bin)**.
@@ -234,11 +263,26 @@ a **dark** screen on the marketing backdrop's indigo. If it reads badly, move `h
 `record` and drop `variant="marketing"` from the MDX.
 
 ## 14. Open questions / TODO(verify)
-- Full **Circumstances** value lists — configured per instance, so they vary; capture a
-  representative set when documenting a specific instance.
+- **Which OSIICS version the picker ships.** Version 16 (1 Nov 2025) is the current release;
+  `AL1` and the ankle neighbours match it, but that proves nothing about the version. Ask.
+- **Whether the closure date can be edited** after the app stamps it on close. The seeder
+  tries and logs if it can't; the demo set's "closed months ago" dates depend on it.
+- **Whether "Open full detail" in quick entry creates the record**, or only opens it once
+  Saved. The page carries a TODO on this.
+- **Whether a closed record can be reopened.** The 2026 changelog *yollanda-starts-the
+  conversation* mentions "Reopening a health issue no longer locks you out of valid dates",
+  so the capability exists and is undocumented.
+- **Whether anything aggregates diagnosis codes** into counts or a report. The docs page
+  argues that coding makes records countable; nothing observed actually counts them.
 - **Files** upload: accepted file types / size limits.
+- **The in-app "OSIICS code list" link points at a Google Sheets copy**, not johnorchard.com.
+  Worth asking whether that is deliberate.
+- **Whether athletes see the module on AFC Richmond** — needs Jamie Tartt's session; the
+  page documents both ends of the permission model, so the figure is the open item, not
+  the prose.
 - *Resolved:* quick-entry fields → §6.4 · illness vs injury = diagnosis codelist filtered by
-  type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3.
+  type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3 ·
+  **Circumstances value lists → §4 (read live off AFC Richmond 2026-09-20)**.
 
 ## 15. Source log
 Observed **live** on 2026-06-14, National Team / Simpson Lisa, both coach (Bart Simpson)

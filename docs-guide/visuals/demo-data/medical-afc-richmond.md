@@ -140,6 +140,31 @@ record list as well as the empty overview row. Don't give him a record.
 No medical records. Coaches and admins don't appear in the Entire Group overview, and a
 medical record on the coach's account would only muddy the athlete-list shots.
 
+## Verified live, 2026-09-20 (coach session, Ted Lasso)
+
+Three things changed after the first contact with the real module:
+
+- **The group starts empty.** Every AFC Richmond athlete showed *No health problems*, so this
+  set is created from nothing — the seeder deletes no existing data.
+- **The Circumstances values below are now the instance's real ones**, read out of the live
+  picker rather than guessed. What AFC Richmond offers:
+
+  | Category | Values |
+  |---|---|
+  | Activity | Warmup · Training · Gym · Competition · Not related to sport · Unknown · Other |
+  | Injury mechanism | Contact · Non-contact · Indirect contact |
+  | Location | Domestic training environment · Training camp · Competition · Unknown · Other |
+  | Severity | Mild · Moderate · Severe |
+  | Surface | Artificial turf · Grass · Gym · Indoor · Concrete · Terrain |
+
+  The earlier guesses *Match*, *Overuse*, *Home* and *Natural grass* don't exist here and were
+  mapped to *Competition*, *Non-contact*, *Domestic training environment* and *Grass*.
+- **Closed records will read "Full training or competition" whatever this plan says.** Closing
+  a record sets its training limitation to Full training automatically (changelog 2025-10-13),
+  so the red and amber limitations listed for closed records below are what the record carried
+  *while it was open* — they survive in the Activity log, not on the closed record. Don't
+  "fix" a closed record that shows green.
+
 ## Two things to verify in the live app before seeding
 
 **1. OSIICS codes.** Only **`AL1` Sprain lateral collateral ligament ankle** is confirmed —
