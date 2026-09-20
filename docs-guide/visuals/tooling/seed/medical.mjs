@@ -14,12 +14,15 @@
 //   'Full training or competition' | 'Modified training or competition' |
 //   'No training or competition'.
 // - `diagnosis.query` is the string typed into the OSIICS search box;
-//   `diagnosis.code` is the code expected in the result list. **`code: null`
-//   means the code has NOT been verified** — only `AL1` is confirmed (it is the
-//   code cited in docs-guide/module-notes/medical-module.md). For a null code the
-//   driver should either stop for a human to pick from the live result list, or
-//   skip the diagnosis entirely. Never invent a code: a fake OSIICS code in a
-//   screenshot is worse than a record with no diagnosis.
+//   `diagnosis.code` is the code expected in the result list. Every code below
+//   was read out of the **OSIICS version 16 workbook** published on
+//   johnorchard.com (the current release, 1 Nov 2025) — none is invented. What
+//   is still unverified is which OSIICS version *Yarmill* ships: if the picker
+//   is on an earlier version a code may be absent or carry a different label,
+//   so the driver must treat a code it cannot find as skippable (log it, leave
+//   the record without a diagnosis) rather than picking the nearest hit. A
+//   wrong OSIICS code in a published screenshot is worse than no diagnosis.
+//   Illness codes all begin with M; injury codes begin with the body region.
 // - `circumstances` are `[category, value]` pairs over the categories
 //   Activity · Injury mechanism · Location · Severity · Surface. These codelists
 //   are **configured per instance** — every value below is a GUESS until seen in
@@ -62,7 +65,7 @@ export const SEED = {
       limitation: 'Full training or competition',
       startDate: '2026-09-14',
       expectedReturn: null, // leave empty — the overview needs one "–" in the expected-return column
-      diagnosis: { query: 'Achilles tendinopathy', code: null, side: 'Left' }, // TODO(verify): code from the live picker
+      diagnosis: { query: 'Achilles tendinopathy', code: 'QTA', side: 'Left' }, // QTA Achilles tendinopathy
       circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Overuse'], ['Severity', 'Mild']],
       staff: 'Club physiotherapist',
       note: 'Same left Achilles as last November. Stiff for the first ten minutes of a session, then settles. Training in full, eccentric loading three times a week, monitored.',
@@ -77,7 +80,7 @@ export const SEED = {
       startDate: '2026-01-12',
       expectedReturn: '2026-01-20',
       closureDate: '2026-01-21',
-      diagnosis: { query: 'influenza', code: null, side: 'Unknown' }, // TODO(verify): code from the live picker (illness codelist)
+      diagnosis: { query: 'influenza', code: 'MPII', side: 'Unknown' }, // MPII Influenza virus — an illness code (they all start M)
       circumstances: [], // illnesses: leave the circumstance picker empty
       staff: 'Club doctor',
       note: 'Fever and a productive cough. Isolated from the group, cleared by the club doctor before returning to running.',
@@ -107,7 +110,7 @@ export const SEED = {
       startDate: '2025-02-08',
       expectedReturn: '2025-03-15',
       closureDate: '2025-03-21',
-      diagnosis: { query: 'hamstring strain', code: null, side: 'Left' }, // TODO(verify): code from the live picker
+      diagnosis: { query: 'hamstring', code: 'TM1', side: 'Left' }, // TM1 Hamstring strain/tear
       circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Non-contact'], ['Severity', 'Severe']],
       staff: 'Club physiotherapist',
       note: 'Felt it sprinting in the 70th minute. Grade 2 strain of the left biceps femoris. Six weeks from injury to full training, back through a graded running programme.',
@@ -122,7 +125,7 @@ export const SEED = {
       startDate: '2024-09-18',
       expectedReturn: '2024-10-01',
       closureDate: '2024-10-02',
-      diagnosis: { query: 'lumbar', code: null, side: 'Unknown' }, // TODO(verify): code from the live picker
+      diagnosis: { query: 'lumbar', code: 'LMT', side: 'Unknown' }, // LMT Lumbar soreness or muscle spasm
       circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Non-contact']],
       staff: 'Club physiotherapist',
       note: 'Stiffness after a heavy landing in training. Two weeks of modified gym work and manual therapy, no neurological signs.',
@@ -142,7 +145,7 @@ export const SEED = {
       limitation: 'Modified training or competition',
       startDate: '2026-08-10',
       expectedReturn: '2026-08-30', // deliberately in the past → "21 days overdue" on 2026-09-20
-      diagnosis: { query: 'patellofemoral', code: null, side: 'Right' }, // TODO(verify): code from the live picker
+      diagnosis: { query: 'patellofemoral', code: 'KCP', side: 'Right' }, // KCP Patellofemoral joint chondral pain
       circumstances: [['Activity', 'Training'], ['Injury mechanism', 'Overuse'], ['Severity', 'Mild']],
       staff: 'Club doctor',
       note: 'Anterior knee pain that builds through the week and is worst the morning after a full session. No swelling, no mechanical symptoms. Managed with load control plus quad and glute strength work.',
@@ -157,7 +160,7 @@ export const SEED = {
       startDate: '2025-03-02',
       expectedReturn: '2025-04-14',
       closureDate: '2025-04-20',
-      diagnosis: { query: 'knee cartilage', code: null, side: 'Right' }, // TODO(verify): code from the live picker
+      diagnosis: { query: 'knee cartilage', code: 'KC1', side: 'Right' }, // KC1 Knee articular cartilage damage — the earlier episode KCP recurs from
       circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Contact']],
       staff: 'Consultant orthopaedic surgeon',
       note: 'Irritation on the medial femoral condyle after a heavy block. Six weeks of load management, no surgery.',
@@ -175,7 +178,7 @@ export const SEED = {
       limitation: 'No training or competition',
       startDate: '2026-09-18',
       expectedReturn: '2026-09-24',
-      diagnosis: { query: 'tonsillitis', code: null, side: 'Unknown' }, // TODO(verify): code from the live picker (illness codelist)
+      diagnosis: { query: 'tonsillitis', code: 'MPIT', side: 'Unknown' }, // MPIT Tonsillitis — an illness code
       circumstances: [],
       staff: 'Club doctor',
       note: 'Fever and a sore throat, seen by the club doctor and started on antibiotics. No training until 48 hours fever-free.',
@@ -193,7 +196,7 @@ export const SEED = {
       limitation: 'Full training or competition',
       startDate: '2026-09-11',
       expectedReturn: '2026-09-28',
-      diagnosis: { query: 'adductor', code: null, side: 'Right' }, // TODO(verify): code from the live picker
+      diagnosis: { query: 'groin', code: 'GP1', side: 'Right' }, // GP1 Chronic non specific / functional groin pain
       circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Overuse']],
       staff: 'Club physiotherapist',
       note: 'Tightness that returns in weeks with two matches. Training in full with a modified gym programme and daily adductor work.',
@@ -213,7 +216,7 @@ export const SEED = {
       startDate: '2026-02-14',
       expectedReturn: '2026-03-28',
       closureDate: '2026-04-02',
-      diagnosis: { query: 'metacarpal fracture', code: null, side: 'Left' }, // TODO(verify): code from the live picker
+      diagnosis: { query: 'metacarpal', code: 'PFE', side: 'Left' }, // PFE Fifth metacarpal fracture
       circumstances: [['Activity', 'Match'], ['Injury mechanism', 'Contact'], ['Surface', 'Natural grass']],
       staff: 'Hand clinic — orthopaedics',
       note: 'Fracture of the fifth metacarpal blocking a shot. Managed conservatively, back in team training in a protective cast.',

@@ -11,6 +11,10 @@
 - **Primary roles:** coach, medical/staff; athlete (own records)
 - **Config-dependence:** **high** — visibility/edit rights are permission-controlled and depend on each instance setup: sometimes athletes can see *and* edit their own records, other times athletes **can't see the Medical module at all** (coaches/medical staff only). The **Circumstances codelists** are also configured per instance.
 - **Explored:** 2026-06-14 · group *National Team* · athlete *Simpson Lisa* · coach acct *Bart Simpson* + athlete acct *Lisa* · by main agent (live)
+- **Re-cast:** 2026-09-20 to **AFC Richmond** (Ted Lasso coach · Jamie Tartt athlete) for the
+  figure rebuild — see §13. The UI observations below are still from the 2026-06 live pass on
+  the biathlon instance and have **not** been re-verified on AFC Richmond; routes, `data-cy`
+  hooks and whether athletes see the module there are all open until the shoot runs.
 - **Render images now?** YES (new GUI; overview is dark)
 
 ## 1. Purpose & why it exists
@@ -56,7 +60,36 @@ across their whole career, not scattered across clinics and spreadsheets.
 - **Treatment Status:** **Open | Closed**. (Closed records get a check and live under "Closed".)
 - **Injury Status = training limitation:** **Full training or competition** (green) · **Modified training or competition** (amber) · **No training or competition** (red). This colour is the **status pill** shown on the overview and list.
 - **Key Dates:** **start date**; **Expected return to full training** (shown on the overview; **overdue** dates render red as "X days overdue"); and a **Closure date** that appears once the problem is Closed.
-- **Diagnosis:** **OSIICS-coded** — a code + label (e.g. `AL1 Sprain lateral collateral ligament ankle`), a **Side** (Left / Right / Bilateral / Unknown), and auto-applied **tags** (body region / structure, e.g. *Right · Ankle · Ligament · Ligament/joint capsule*). The codelist is **filtered by record type** — injuries show OSIICS **injury** codes, illnesses show OSIICS **illness** codes.
+- **Diagnosis:** **OSIICS-coded** — a code + label (e.g. `AL1 Sprain lateral collateral ligament ankle`), a **Side** (Left / Right / Bilateral / Unknown), and auto-applied **tags** (body region / structure, e.g. *Right · Ankle · Ligament · Ligament/joint capsule*). The codelist is **filtered by record type** — injuries show OSIICS **injury** codes, illnesses show OSIICS **illness** codes. Diagnosis labels are available in **Czech alongside English** (changelog 2025-10-13); the code is the same either way. **TODO(verify): which OSIICS version the picker ships** — version 16 (1 Nov 2025) is the current release.
+
+  **What OSIICS is** (external standard, researched 2026-09-20 from johnorchard.com and the
+  v16 workbook — full brief in the docs session, canonical link
+  <https://www.johnorchard.com/osiics.html>):
+  - **Orchard Sports Injury and Illness Classification System**, maintained by John Orchard
+    and colleagues; previously OSICS (Orchard Sports Injury Classification System) — the
+    second "I" was added in 2020 on a recommendation of the 2019 IOC consensus meeting,
+    though illness codes themselves date from v10 (2007). First published 1993.
+  - **Current release: version 16, 1 November 2025.** Structural changes now go through the
+    IOC consensus panel.
+  - **One list, two grammars.** Injury codes: char 1 = body region (`A` ankle, `K` knee, …),
+    char 2 = tissue/pathology (`L` ligament sprain, `M` muscle, `F` fracture, …), chars 3–4 =
+    the specific diagnosis; mostly 3 characters. Illness codes: char 1 = `M`, char 2 = organ
+    system, char 3 = etiology, chars 4–5 = specific; 4–5 characters. Because the region is the
+    first character, detailed codes roll up to region-level rates without re-coding.
+    (Wikipedia is wrong here: etiology is the 3rd character of *illness* codes only.)
+  - Worked examples: `AL1` Sprain lateral collateral ligament ankle · `QTA` Achilles
+    tendinopathy · `TM1` Hamstring strain/tear · `PFE` Fifth metacarpal fracture ·
+    `MPII` Influenza virus · `MPIT` Tonsillitis.
+  - **Free to use with acknowledgement** — the site asks explicitly for an acknowledgement in
+    commercial projects and papers. No fee, no registration; the v16 paper and its code tables
+    are CC BY 4.0. **The docs page therefore carries the acknowledgement and the link.**
+  - One of the **two systems recognised by the IOC consensus statement** on recording injuries
+    and illnesses (the other is SMDCS); OSIICS 13 operationalised the 2020 statement jointly
+    with SMDCS so rates stay comparable between them.
+  - Translations shipped with v16: English, Italian, Spanish. **No Czech** — any Czech
+    diagnosis label in Yarmill is Yarmill's own localisation against the English code.
+  - OSIICS codes **what the diagnosis is**, not mechanism or severity — those stay in
+    Circumstances and the key dates.
 - **Circumstances:** categorised attributes — **Activity · Injury mechanism · Location · Severity · Surface** (each a submenu of values). These are **Yarmill codelists configured per instance — not OSIICS** and unrelated to the diagnosis.
 - **Responsible Staff:** free-text staff member or institution.
 - **Note:** free text. **Files:** medical documents on the record — medical reports, X-ray and MRI images, physiotherapy plans, and similar. **Activity:** automatic change log + timestamped comments.
@@ -108,7 +141,7 @@ across their whole career, not scattered across clinics and spreadsheets.
 - **Set dates:** start + expected return via calendar; expected return clearable.
 - **Add diagnosis:** OSIICS search → pick → set Side → Add; auto-tags region/structure.
 - **Add circumstances / note / files;** **comment** in Activity.
-- **Close:** Treatment Status → **Closed** (moves to Closed section, gets check).
+- **Close:** Treatment Status → **Closed** (moves to Closed section, gets check, picks up a closure date). **Closing also sets the training limitation to Full training automatically** (changelog 2025-10-13), so the athlete's availability updates without a second step.
 - **Rename:** click title, edit (logs "renamed the injury").
 - **Delete:** bin in floating toolbar.
 - All edits **auto-save**; every meaningful change is written to **Activity** with actor + date.
@@ -149,7 +182,8 @@ record (same detail layout, scoped to self; edit where permitted).
 - `[CONFIG]` **Circumstances codelists** — the values under Activity / Injury mechanism /
   Location / Severity / Surface are configured per instance (Yarmill codelists, not OSIICS).
 - Standardised, not configurable: the **OSIICS diagnosis** codelist and the
-  training-limitation statuses.
+  training-limitation statuses. `[CONFIG]`-adjacent only in language: diagnosis labels render
+  in **Czech as well as English**, the code itself is unchanged.
 
 ## 11. Edge cases, limits, gotchas
 - Overview status pill = the athlete's **worst current** training limitation across open problems.
@@ -167,12 +201,37 @@ record (same detail layout, scoped to self; edit where permitted).
 - Records accumulate → recurring-problem visibility (prevention, not just availability).
 
 ## 13. Shot list (images for the docs page)
-| # | Screen / state | Sample data | Caption (draft) | Callouts | Supports doc section | Role | Render now? |
-|---|----------------|-------------|-----------------|----------|----------------------|------|-------------|
-| 1 | Entire Group overview (DARK) | Lisa: ankle sprain (in 14 days) + COVID-19 overdue + lower-back stiffness; other athletes' rows | "Injuries & Illnesses opens on the group: each athlete's status, open problems, and expected return — overdue flagged." | Status pill · open problems · expected return / overdue | The team overview | coach | **new GUI — render now** ✅ done → `images/medical/overview.png` |
-| 2 | Record detail (light) | Right ankle sprain (lateral): properties, dates, note, OSIICS diagnosis | "A health record: type and properties, key dates, an OSIICS diagnosis, note, files, and the activity log." | Properties row · Key dates · Diagnosis (OSIICS) | A health record | coach | **new GUI — render now** ✅ done → `images/medical/record.png` |
-| 3 | Create picker | `+` → Injury / Illness | "Start a record by choosing Injury or Illness." | the two record types | Record a new problem | coach | new GUI — render later (small) |
-| 4 | Athlete record list | Lisa's own Open/Closed, no group switcher | "As an athlete you see only your own records." | "you see your own records" | What athletes see | athlete | shot-list (optional render) |
+
+**Re-cast 2026-09-20 to AFC Richmond** (Ted Lasso coach · Jamie Tartt athlete — see
+`docs-guide/visuals/demo-cast.md`). The two images currently on the page (`overview.png`,
+`record.png`) are **rendered mockups on the retired National Team / Simpson Lisa data**, and
+they are opaque RGB PNGs rather than the transparent-window exports the pipeline produces —
+both are replaced by real captures, not touched up.
+
+Everything below is specified in code and runnable the moment a session exists:
+`tooling/seed/medical.mjs` (data) + `seed/medical-lib.mjs` (driver) ·
+`tooling/capture/medical.mjs` (click paths, plus `RECON=1` to dump the real `data-cy` hooks) ·
+`tooling/figures/medical.mjs` (anchors, crops, callouts). The seed plan in prose is
+`docs-guide/visuals/demo-data/medical-afc-richmond.md`.
+
+| # | Figure key | Screen / state | Anchor · crop | Callouts | Placed in the page at | Role |
+|---|---|---|---|---|---|---|
+| 1 | `overview` | Entire Group overview (DARK) — Jamie red with two open problems, Roy amber and 21 days overdue, Sam's illness, Dani green, Isaac and Moe clear | `center` · whole window · **hero** | none — the pills already mean something | the lead figure, `<Frame variant="marketing">` | coach |
+| 2 | `record` | The rich open record: Jamie's right ankle sprain, all sections filled | `center` · whole window | none — the prose beside it names the parts | end of *What a record holds* | coach |
+| 3 | `new-record` | A record the moment it's created, still empty | `right` · 2100×2000 · `bleed="left"` | 5 — name, properties, key dates, diagnosis, tool bar | *Log an injury or illness* | coach |
+| 4 | `quick-entry` | The New quick entry modal | `center` · whole window | 4 — entry type, training limitation, files, Save | *Log an injury or illness* (with the `<Steps>`) | coach |
+| 5 | `diagnosis-picker` | The OSIICS picker mid-search ("ankle sprain" typed, results showing) | `right` · 2000×2000 · `bleed="left"` | 3 — search the codelist, OSIICS code, side | *Code the diagnosis* — the figure that carries the OSIICS point | coach |
+| 6 | `record-list` | Jamie's Open (2) / Closed (4) lists | `left` · 1900×2000 · `bleed="right"` | none | *Close a record, and the history it leaves* | coach |
+| 7 | `athlete-view` | Jamie's own session — his records, no group switcher | `left` · 1900×2000 · `bleed="right"` | none | *What athletes see* | athlete |
+
+**Captured but deliberately not published:** `create-picker` (a two-item menu the `<Steps>`
+already describe) and `circumstances-picker` (per-instance codelists — one team's values would
+read as the product's). Both raws are shot, so either can be added by putting its key back in
+`figures/medical.mjs`.
+
+**Open decision to make on the first real raw:** figure 1 is the only hero in the docs that is
+a **dark** screen on the marketing backdrop's indigo. If it reads badly, move `hero: true` to
+`record` and drop `variant="marketing"` from the MDX.
 
 ## 14. Open questions / TODO(verify)
 - Full **Circumstances** value lists — configured per instance, so they vary; capture a
@@ -199,21 +258,40 @@ both ends: athlete medical access can be **fully enabled** or **hidden entirely*
 nav is the full classic top-nav with **no group/athlete switcher**; athlete Settings = "Personal".
 
 ## 16. Docs page plan
-- **Audience line:** `**For:** coaches and medical staff; athletes where permitted · **Where:** Web app`
-- **Proposed page outline** (used for the published page):
+- **Audience line:** `<PageMeta audience="Coaches, medical staff & athletes" where="Web app" />`
+- **Page outline as shipped 2026-09-20** (rebuilt along the Goals page's shape — lifecycle
+  order, a hero, `<Steps>` for each procedure, `<ParamField>` for the fields, the
+  configurability caveats marked):
+
   | Page section (H2) | Fed by |
   |-------------------|--------|
-  | intro + audience line + `<Info>` permission note | §1, §0, §3, §10 |
-  | The team overview (+ overview image) | §6.1 |
-  | A health record — `<ParamField>` per field (+ record image) | §4, §6.3 |
-  | Record a new problem — `<Steps>` | §6.4, §7, §8 |
-  | Closing and history | §4 (Closure date), §7 |
+  | lede + `<PageMeta>` + hero figure + `<Tip>` (set the limitation the day it happens) | §1, §0, §12 |
+  | Where to find Injuries & Illnesses — `<Info>` permissions + module-availability line | §3, §10 |
+  | Who can train today — the group overview, worst-limitation pill, overdue flag, empty row | §6.1, §11 |
+  | Log an injury or illness — `<Steps>` (quick entry first), the create defaults, auto-save | §6.4, §7 |
+  | ### What a record holds — `<ParamField>` per field | §4, §6.3 |
+  | Code the diagnosis — the flow, then **what OSIICS is and why the code matters** + the acknowledgement `<Info>` | §4 (OSIICS block) |
+  | Track the return to training — No → Modified → Full, expected return, Activity | §4, §7 |
+  | Close a record, and the history it leaves — closure date, auto Full training, Recurring | §7, §9 |
+  | Delete a record — `<Warning>`-weight caveat: close, don't delete | §7 |
   | What athletes see | §3 |
-  | Why keep it here | §12 |
-- **Cross-links:** `/en/analytics/analytics` (Team daily readiness, recovery & training-load charts).
+  | How it connects | §12 |
+
+- **Departures from the Goals page's order, and why:** the group overview leads (it is this
+  module's landing screen and its daily job, where Goals leads with a single goal); the record
+  anatomy sits as an `###` under the create procedure rather than front-loading a ten-field
+  spec; the diagnosis takes the H2 slot key results hold in Goals, because it is the second
+  procedure *and* the one standardised codelist in a module that is otherwise
+  permission- and config-dependent; Circumstances deliberately gets no section of its own.
+- **Cross-links:** `/en/analytics/analytics` (Team daily readiness, recovery & training-load
+  charts) · `/en/tutorials/read-readiness` · `/en/platform/files`.
 - **UI label → doc term:**
   | UI label | Doc term |
   |----------|----------|
   | Injury Status | training limitation |
   | Treatment Status | treatment status (Open/Closed) |
   | Totem panel | (internal only — not surfaced in user docs) |
+- **TODO(verify) at shoot time:** whether the overview column still reads "Open health
+  problems" — the 2025-09-24 changelog says the product word was unified to **health issues**,
+  but the 2026-06 live pass recorded "health problems". The page currently says *health
+  problems*, matching the live pass.

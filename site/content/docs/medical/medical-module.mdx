@@ -4,77 +4,103 @@ description: "Injuries and illnesses in one place — status, expected return, d
 icon: "briefcase-medical"
 ---
 
-Keep every injury and illness in one place — status, expected return, diagnosis, and history.
+Every injury and illness an athlete has had, kept as one record each — and on the group screen, the answer to the question asked before every session: **who can train today?**
 
+<PageMeta audience="Coaches, medical staff & athletes" where="Web app" />
 
-<PageMeta audience="Coaches & medical staff" where="Web app" />
-
-<Frame caption="Injuries & Illnesses opens on the group: each athlete's status, open problems, and expected return — overdue returns flagged.">
-  <img src="/images/medical/overview.png" alt="The Medical module Entire Group overview — a dark table with one row per athlete showing a colored status pill, their open injuries and illnesses, and the expected return to full training, with an overdue return highlighted in red." />
+<Frame caption="Injuries & Illnesses opens on the group: each athlete's status, their open problems, and when they're expected back — overdue returns flagged.">
+  <img src="/images/medical/overview.png" alt="The Medical module's group overview — one row per athlete showing a colored status pill, their open injuries and illnesses, and the expected return to full training, with an overdue return highlighted in red." />
 </Frame>
-{/* NOTE(yarmill): rendered (yarmill-design pipeline) from the live Medical overview (GUI 2.0, dark overview screen), with real demo data for Simpson Lisa. */}
+{/* NOTE(yarmill): rendered mockup (old National Team / Simpson Lisa data) — to be replaced by a real AFC Richmond capture; intended treatment is the full window as <Frame variant="marketing">. */}
 
-<Info>Medical data is sensitive, so access is **permission-controlled and configured per
-team** — in some setups athletes manage their own records, in others the module is for
-coaches and medical staff only.</Info>
+<Tip>Set the **training limitation** the day a problem appears, even if nothing else is
+filled in yet. It's what colors the athlete on the group screen, and what
+[Team daily readiness](/en/analytics/analytics) reads the next morning.</Tip>
 
-## The team overview
+## Where to find Injuries & Illnesses
 
-**Injuries & Illnesses** opens with the whole group. Each athlete has a row showing their
-overall **status**, their **open health problems**, and the **expected return to full
-training** — with overdue returns flagged in red.
+**Open the Medical module from the main menu.** As a **coach or medical staff member**, pick a group and then an athlete to work with their records, or choose **Entire Group** to see the whole squad at once. As an **athlete**, you go straight to your own records, if your team gives you access to them.
 
-**It answers "who's available?"** before you plan a session. For an individual athlete it's
-the complete medical log — every injury, illness, diagnosis, and therapy note — kept together
-across a whole career. Pick an athlete from the side to open their records.
+<Info>Medical data is sensitive, so who can see and edit it is **permission-controlled and
+configured per team**. Some teams give athletes full access to their own records, others keep
+the module to coaches and medical staff. If you don't see this module, it may not be enabled
+for your team — ask your administrator.</Info>
 
-## A health record
+## Who can train today
 
-Records are split into **Open** and **Closed**. Each one is either an **injury** or an
-**illness**, and holds:
+**The group overview is one row per athlete**, and it's the screen the module is used from day to day. Each row carries:
+
+- a **status pill** — the athlete's **worst** current training limitation across everything they have open, so a green row means nothing is holding them back;
+- their **open health problems**, each with an icon marking it as an injury or an illness;
+- the **expected return to full training**, or a dash when no date has been set. A date that has passed turns red and counts the days it's overdue.
+
+An athlete with nothing open still gets a row, marked as having no health problems — an empty row is information too.
+
+## Log an injury or illness
+
+The fastest path is **New quick entry** — enough to make the group overview right today, with the clinical detail added later.
+
+<Steps>
+  <Step title="Open a new entry">
+    Select **New quick entry** in the tool bar — or just press **N**.
+  </Step>
+  <Step title="Capture the essentials">
+    Choose **Injury** or **Illness**, name it, set the **training limitation** and the
+    **date**, and attach any **files** you already have.
+  </Step>
+  <Step title="Save it, or go straight to the detail">
+    Quick entry is the one place in the module that waits for you: nothing exists until you
+    **Save**. Choose **Open full detail** instead to create the record and keep filling it in.
+  </Step>
+</Steps>
+
+A new record starts with its **start date set to today**, its treatment status **Open**, and its classification **New**. From there on **everything auto-saves** — there's no Save button on the record itself, and every change is written to **Activity**.
+
+### What a record holds
 
 <ParamField path="Title & type">
-  What it is, marked as an **injury** or an **illness** at creation.
+  What the problem is, marked as an **injury** or an **illness** when you create it. The type
+  also decides which half of the diagnosis codelist you search.
 </ParamField>
 
-<ParamField path="Classification">
-  **New** or **Recurring** — so repeat problems are visible as a pattern.
+<ParamField path="Classification" default="New">
+  **New** or **Recurring** — the flag that makes a repeat problem visible as a pattern rather
+  than as another isolated entry.
 </ParamField>
 
-<ParamField path="Treatment status">
+<ParamField path="Treatment status" default="Open">
   **Open** or **Closed**. Closing a record moves it to the Closed list.
 </ParamField>
 
 <ParamField path="Training limitation">
   How much the athlete can do right now: **Full training or competition** (green),
-  **Modified training or competition** (amber), or **No training or competition** (red).
-  This is the color you see on the overview.
+  **Modified training or competition** (amber), or **No training or competition** (red). This
+  is the color on the group overview, and the value other modules read.
 </ParamField>
 
 <ParamField path="Key dates">
-  The **start date**, the **expected return to full training** (this feeds the overview),
-  and — once the record is closed — a **closure date**.
+  The **start date**, the **expected return to full training** — the date the overview shows
+  and flags when it passes — and, once the record is closed, a **closure date**.
 </ParamField>
 
 <ParamField path="Diagnosis">
-  Coded against the **OSIICS** standard for consistent reporting — a code and label, a
-  **side** (left, right, bilateral, or unknown), and automatic tags for the body region and
-  structure. The list is filtered by type: injury records search injury codes, illness
-  records search illness codes.
+  The coded diagnosis, its **side**, and the body-region tags that follow from it. See
+  [Code the diagnosis](#code-the-diagnosis) below.
 </ParamField>
 
 <ParamField path="Circumstances">
-  Optional context — **activity, injury mechanism, location, severity, surface**. The
-  available values are configured for your team.
+  Optional context for how it happened — **activity, injury mechanism, location, severity,
+  surface**. The values in each list are **configured for your team**: a football club might
+  log mechanism, playing surface and severity from purpose-built lists, while another team has
+  a different set or none at all.
 </ParamField>
 
 <ParamField path="Note">
-  Free-text context — circumstances, treatment, anything worth remembering.
+  Free text — the mechanism, the treatment plan, what to watch for on the way back.
 </ParamField>
 
 <ParamField path="Files">
-  Documents attached to the record — medical reports, X-ray and MRI images, physiotherapy
-  plans, and the like.
+  Documents on the record: medical reports, X-ray and MRI images, physiotherapy plans.
 </ParamField>
 
 <ParamField path="Responsible staff">
@@ -82,59 +108,106 @@ Records are split into **Open** and **Closed**. Each one is either an **injury**
 </ParamField>
 
 <ParamField path="Activity">
-  The automatic log of every change — who, what, when — plus timestamped comments.
+  The automatic log of every change — who, what, when — with related edits grouped together,
+  plus timestamped comments.
 </ParamField>
 
 <Frame caption="A health record: type and properties, key dates, an OSIICS diagnosis, note, files, and the activity log.">
   <img src="/images/medical/record.png" alt="A Medical record for a right ankle sprain — properties for classification, treatment status, training limitation and responsible staff; start and expected-return dates; an OSIICS diagnosis with side and body-region tags; a clinical note; and files." />
 </Frame>
-{/* NOTE(yarmill): rendered (yarmill-design pipeline) from the live Medical record detail (GUI 2.0), with real demo data for Simpson Lisa. */}
+{/* NOTE(yarmill): rendered mockup (old National Team / Simpson Lisa data) — to be replaced by a real AFC Richmond capture. */}
 
-## Record a new problem
+## Code the diagnosis
 
-<Steps>
-  <Step title="Start a record">
-    Select **+** and choose **Injury** or **Illness** — or use **New quick entry** (shortcut
-    `N`).
-  </Step>
-  <Step title="Capture the essentials">
-    The quick entry asks only for the **type**, a **name**, the **training limitation**, a
-    **date**, and any **files** — enough to make the overview useful immediately. Choose
-    **Open full detail** to fill in the rest.
-  </Step>
-  <Step title="Add the detail as it comes">
-    Set the **expected return**, add the **OSIICS diagnosis** and **side**, record the
-    **circumstances**, write a **note**, and attach **files**. Everything auto-saves.
-  </Step>
-</Steps>
+**Add a diagnosis from the record's Diagnosis section.** Type what you're looking for in plain
+words — `ankle sprain`, `tonsillitis` — pick the matching entry from the list, set the **side**
+(left, right, bilateral, or unknown), and add it. Yarmill tags the record with the body region
+and structure that follow from the code, so `AL1 Sprain lateral collateral ligament ankle`
+carries *ankle* and *ligament* without anyone typing them.
 
-<Tip>Set the **training limitation** even on a quick entry — it's what colors the athlete on
-the team overview and what flows into the morning readiness check.</Tip>
+**The list you search is filtered by the record's type**: an injury record searches injury
+codes, an illness record searches illness codes.
 
-## Closing and history
+### What OSIICS is, and why the code matters
 
-**When a problem resolves,** set its **treatment status** to **Closed** — it picks up a
-closure date and moves to the **Closed** list, where it stays as history.
+The codelist is **OSIICS** — the **Orchard Sports Injury and Illness Classification System**,
+the coding standard used for injury and illness surveillance in sport, and one of the two
+systems named in the IOC's consensus statement on recording injuries and illnesses. Each entry
+is a short code and a plain-language diagnosis: the first character of an injury code is the
+body region (`A` ankle, `K` knee), the next says what tissue is involved, and illness codes all
+begin with `M`, then an organ system.
 
-Because records accumulate, recurring problems become visible over time — the basis for
-prevention, not just availability.
+**A coded diagnosis is countable; free text isn't.** Ten staff describing the same problem in
+their own words produce ten different strings, and the season's worth of records can't be
+added up. Coded, they can: how many hamstring injuries this season against last, whether one
+athlete's ankle keeps coming back, how your squad compares with published figures for the
+sport. Because the region is the first character, detailed codes roll up to region-level counts
+without anyone re-coding anything.
+
+**OSIICS codes what the problem is, not how it happened or how bad it was** — mechanism,
+severity, surface and activity are the record's **Circumstances**, and time lost is the key
+dates.
+
+<Info>OSIICS is maintained by John Orchard and colleagues and is free to use as long as it's
+acknowledged, which this page does gladly. The full codelist, its documentation and the papers
+behind it are at [johnorchard.com/osiics.html](https://www.johnorchard.com/osiics.html).
+Unlike the Circumstances lists, the diagnosis codelist is **the same on every Yarmill
+instance** — that's the point of a standard. Its labels are available in **Czech alongside
+English**; the code underneath is the same either way.</Info>
+
+{/* TODO(yarmill): verify which OSIICS version the picker ships — version 16 is the current release (1 Nov 2025). */}
+
+## Track the return to training
+
+**Keep the training limitation current** — it's the one field the rest of Yarmill reads. A
+typical recovery walks it back up: **No training or competition** while the athlete is out,
+**Modified training or competition** as they start doing some of the session, **Full training or
+competition** when they're available again. Move the **expected return** as the picture changes
+rather than leaving a date to go red.
+
+**Every change is logged automatically** under **Activity**, with who made it and when, and
+related edits are grouped so a run of changes to one record reads as a block instead of a wall
+of lines. Use the comment box to add what the log can't infer — how the session went, what the
+consultant said.
+
+## Close a record, and the history it leaves
+
+**When a problem resolves, set its treatment status to Closed.** The record picks up a
+**closure date**, moves to the **Closed** list, and the athlete's training limitation is set to
+**Full training** automatically, so their availability is right without a second step.
+
+Closed records are the reason the module is worth filling in properly. They stay on the
+athlete's card for as long as they're at the club, so the next flare-up of the same problem can
+be marked **Recurring** against something you can actually point at — the basis for preventing
+the next one rather than only managing this one.
+
+## Delete a record
+
+**Select the bin in the tool bar** and confirm. Deleting is permanent, and it takes the
+diagnosis, the notes, the files and the history with it. A problem that turned out to be
+nothing should be **closed**, not deleted — the record of what was suspected and ruled out is
+worth keeping.
 
 ## What athletes see
 
-**Where their team allows it,** athletes open the Medical module to see **only their own**
-records — no group, no other athletes.
+**Where their team allows it, athletes work with their own records** — their Open and Closed
+lists, the full detail of each one, and **New quick entry** to add a problem themselves after a
+doctor's visit, an X-ray, or an MRI. They see only their own; there's no group and no other
+athletes.
 
-Depending on the configured permissions, they can keep records up to date themselves — for
-example after a doctor's visit, an X-ray, or an MRI. On other instances the module isn't shown
-to athletes at all.
+**On other instances the module isn't shown to athletes at all.** Which of the two you get is a
+configured permission, so check your own setup before telling a squad to keep their records up
+to date.
 
 ## How it connects
 
-The medical picture feeds the rest of Yarmill:
-
-- The **training limitation** flows into [Team daily readiness](/en/analytics/analytics) so the
-  morning overview already knows who's out.
-- Illness and injury periods are shaded into the **background** of the
-  [recovery and training-load charts](/en/analytics/analytics), so load and recovery trends are
-  read in the context of when the athlete was hurt or ill.
-- **Expected-return dates** tell coaches what load an athlete can take as they come back.
+- The **training limitation** flows into [Team daily readiness](/en/analytics/analytics), so the
+  morning overview already knows who's out — see
+  [Read team readiness](/en/tutorials/read-readiness).
+- Illness and injury periods are shaded into the background of the
+  [recovery and training-load charts](/en/analytics/analytics), so a dip in load or recovery is
+  read against when the athlete was actually hurt.
+- **Expected-return dates** tell you what to plan for an athlete on the way back, and what not
+  to.
+- Documents added to a record are stored with it, alongside the athlete's other
+  [files](/en/platform/files).
