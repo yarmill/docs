@@ -134,7 +134,10 @@ async function setDiagnosis(page, { query, code, side }) {
     // — the page has several (Add record, Add note, Add files, Add diagnosis)
     // and the first one in the DOM is the wrong one. Use the shortcut the row
     // advertises, and fall back to the button sitting next to its Cancel.
-    await pickOption(page, side, { pause: 900 });
+    // Side is offered for injuries; an illness has no side, and the select
+    // simply isn't there. Not finding it is normal, not a failure.
+    try { await pickOption(page, side, { pause: 900 }); }
+    catch { console.log('      – no side on this record (illness), committing without one'); }
     const cancel = page.getByRole('button', { name: /^Cancel$/ }).first();
     await page.keyboard.press('Control+Enter');
     await page.waitForTimeout(1500);
