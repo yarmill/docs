@@ -16,6 +16,7 @@ tooling/
 ├── compose.mjs        node compose.mjs <module> [--publish]  → figures/<module>.mjs + raw → out/<module>/*.png
 ├── measure.mjs        node measure.mjs <module> <raw.png> y0 y1 x0 x1 → where content ends (for callout anchors)
 ├── seed.mjs           node seed.mjs <module> [member …] → wipes + re-creates the demo data (seed/<module>.mjs)
+├── check-session.mjs  node check-session.mjs session.json /medical → is the session still logged in
 ├── check-frames.mjs   node check-frames.mjs /en/plan/goals → every <Frame> on the page, light + dark, at 2×
 ├── check-zoom.mjs     node check-zoom.mjs   /en/plan/goals → is click-to-zoom crisp on Retina
 ├── figures/<module>.mjs   the figure spec: anchor, crop size, callouts
@@ -55,7 +56,12 @@ Tartt**; see [`../demo-cast.md`](../demo-cast.md)):
    `python3 session.py paste.json session.json` (or `session-jamie.json` for the athlete).
 
 Both files are `chmod 600`, gitignored, and deleted when the shoot is over. A session that has
-expired shows up as the login page in the first raw capture.
+expired shows up as the login page in the first raw capture, so check it before a shoot rather
+than after:
+
+```bash
+node check-session.mjs session.json /medical    # logged in? as whom? does the module render?
+```
 
 ## The loop for a page
 
