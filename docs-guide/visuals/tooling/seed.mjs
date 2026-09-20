@@ -6,7 +6,10 @@ import { open } from './yarmill.mjs';
 const [mod, ...only] = process.argv.slice(2);
 if (!mod) { console.error('usage: node seed.mjs <module> [member …]'); process.exit(1); }
 const { SEED } = await import(`./seed/${mod}.mjs`);
-const { wipeAthlete, seedGoal } = await import(`./seed/${mod}-lib.mjs`);
+const lib = await import(`./seed/${mod}-lib.mjs`);
+// Each module's lib names its driver after what it creates (seedGoal, seedRecord …).
+const { wipeAthlete } = lib;
+const seedOne = lib.seedRecord ?? lib.seedGoal;
 
 const names = only.length ? only : Object.keys(SEED);
 const { browser, page } = await open();
@@ -15,7 +18,7 @@ for (const name of names) {
   console.log(`\n== ${name} ==`);
   await wipeAthlete(page, name);
   for (const g of SEED[name]) {
-    try { await seedGoal(page, g); }
+    try { await seedOne(page, g); }
     catch (e) { console.log(`    !! ${g.title}: ${e.message.split('\n')[0].slice(0, 120)}`); }
   }
 }
