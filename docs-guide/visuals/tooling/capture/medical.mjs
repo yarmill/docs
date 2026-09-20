@@ -62,9 +62,18 @@ async function assertMedical(page) {
   await goTo(page, 'medical', { athlete: 'Tartt Jamie', wait: 7000 });
   await shot(page, 'record-list');
 
-  // the filled record
+  // the filled record. Open it and scroll its pane back to the top: clicking a
+  // card can leave the detail scrolled to the Activity log, and the figure is
+  // supposed to show the anatomy — title, properties, key dates, diagnosis.
   await step('record', async () => {
     await openRecord(page, HERO);
+    await page.evaluate(() => {
+      for (const el of document.querySelectorAll('*')) {
+        if (el.scrollHeight > el.clientHeight + 40 && el.clientHeight > 300) el.scrollTop = 0;
+      }
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(1200);
     await shot(page, 'record');
   });
 
