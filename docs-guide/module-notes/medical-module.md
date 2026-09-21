@@ -260,8 +260,6 @@ view is the whole window with a record open, because a left crop of "the sidebar
 got a group switcher" is a tall strip of nothing.
 
 ## 14. Open questions / TODO(verify)
-- **Whether "Open full detail" in quick entry creates the record**, or only opens it once
-  Saved. The page carries a TODO on this.
 - **Files** upload: accepted file types / size limits.
 - *Resolved:* quick-entry fields → §6.4 · illness vs injury = diagnosis codelist filtered by
   type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3 ·
@@ -278,6 +276,9 @@ got a group switcher" is a tall strip of nothing.
   - **Yarmill ships OSIICS version 16**, and **there are no reports built on diagnosis codes
     yet** (product owner, 2026-09-21). The docs page therefore argues consistency and
     portability, not in-product analysis — don't let that claim drift back.
+  - **"Open full detail" in quick entry creates the record** (product owner, 2026-09-21), so
+    both it and Save commit the entry — only closing the dialog outright discards it. §6.4's
+    "Nothing is created until Save" is therefore half the story.
   - **A closed record can be reopened** — its Treatment Status dropdown still offers *Open*
     alongside *Closed*. Verified read-only on a closed record (nothing changed).
   - **The in-app "OSIICS code list" link goes to a Google Sheets copy of the full codelist on

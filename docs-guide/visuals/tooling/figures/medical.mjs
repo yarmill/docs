@@ -38,7 +38,7 @@ export const FIGURES = {
     callouts: [
       { at: [2095, 1467], label: 'Entry type', sub: 'Injury or illness' },
       { at: [2230, 1629], label: 'Training limitation', sub: 'What colours the group screen' },
-      { at: [2675, 1885], label: 'Save', sub: 'Nothing is created until you do' },
+      { at: [2675, 1885], label: 'Save', sub: 'Or Open full detail — both create the record' },
     ],
   },
 
