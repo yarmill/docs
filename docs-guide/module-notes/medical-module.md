@@ -81,7 +81,7 @@ across their whole career, not scattered across clinics and spreadsheets.
 - **Treatment Status:** **Open | Closed**. (Closed records get a check and live under "Closed".)
 - **Injury Status = training limitation:** **Full training or competition** (green) · **Modified training or competition** (amber) · **No training or competition** (red). This colour is the **status pill** shown on the overview and list.
 - **Key Dates:** **start date**; **Expected return to full training** (shown on the overview; **overdue** dates render red as "X days overdue"); and a **Closure date** that appears once the problem is Closed.
-- **Diagnosis:** **OSIICS-coded** — a code + label (e.g. `AL1 Sprain lateral collateral ligament ankle`), a **Side** (Left / Right / Bilateral / Unknown), and auto-applied **tags** (body region / structure, e.g. *Right · Ankle · Ligament · Ligament/joint capsule*). The codelist is **filtered by record type** — injuries show OSIICS **injury** codes, illnesses show OSIICS **illness** codes. Diagnosis labels are available in **Czech alongside English** (changelog 2025-10-13); the code is the same either way. **TODO(verify): which OSIICS version the picker ships** — version 16 (1 Nov 2025) is the current release.
+- **Diagnosis:** **OSIICS-coded** — a code + label (e.g. `AL1 Sprain lateral collateral ligament ankle`), a **Side** (Left / Right / Bilateral / Unknown), and auto-applied **tags** (body region / structure, e.g. *Right · Ankle · Ligament · Ligament/joint capsule*). The codelist is **filtered by record type** — injuries show OSIICS **injury** codes, illnesses show OSIICS **illness** codes. Diagnosis labels are available in **Czech alongside English** (changelog 2025-10-13); the code is the same either way. **Yarmill ships OSIICS version 16** (product owner, 2026-09-21) — the current release, published 1 Nov 2025.
 
   **What OSIICS is** (external standard, researched 2026-09-20 from johnorchard.com and the
   v16 workbook — full brief in the docs session, canonical link
@@ -260,12 +260,8 @@ view is the whole window with a record open, because a left crop of "the sidebar
 got a group switcher" is a tall strip of nothing.
 
 ## 14. Open questions / TODO(verify)
-- **Which OSIICS version the picker ships.** Version 16 (1 Nov 2025) is the current release;
-  `AL1` and the ankle neighbours match it, but that proves nothing about the version. Ask.
 - **Whether "Open full detail" in quick entry creates the record**, or only opens it once
   Saved. The page carries a TODO on this.
-- **Whether anything aggregates diagnosis codes** into counts or a report. The docs page
-  argues that coding makes records countable; nothing observed actually counts them.
 - **Files** upload: accepted file types / size limits.
 - *Resolved:* quick-entry fields → §6.4 · illness vs injury = diagnosis codelist filtered by
   type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3 ·
@@ -279,6 +275,9 @@ got a group switcher" is a tall strip of nothing.
     Jamie Tartt's own session shows his six records and nothing else, a sidebar that stops at
     "Injuries & Illnesses" with no Group section, and **both create affordances** (Add record
     and New quick entry). So this instance is the "athlete can see and edit their own" case.
+  - **Yarmill ships OSIICS version 16**, and **there are no reports built on diagnosis codes
+    yet** (product owner, 2026-09-21). The docs page therefore argues consistency and
+    portability, not in-product analysis — don't let that claim drift back.
   - **A closed record can be reopened** — its Treatment Status dropdown still offers *Open*
     alongside *Closed*. Verified read-only on a closed record (nothing changed).
   - **The in-app "OSIICS code list" link goes to a Google Sheets copy of the full codelist on

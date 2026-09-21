@@ -153,13 +153,16 @@ plain-language diagnosis: `AL1` is a lateral ankle-ligament sprain, `MPIT` is to
 first character of an injury code is the body region (`A` ankle, `K` knee) and the next says
 what tissue is involved; illness codes all begin with `M`, then an organ system.
 
-**A coded diagnosis is countable; free text isn't.** Ten staff describing the same problem in
-their own words produce ten different strings, and the season's worth of records can't be
-added up. Coded, they can be counted — hamstring injuries this season against last, or whether
-one athlete's ankle keeps coming back. Because the region is the first character, detailed
-codes roll up to region-level counts without anyone re-coding anything.
+**A coded diagnosis stays comparable; free text doesn't.** Ten staff describing the same
+problem in their own words produce ten different strings, and a season of records can't be
+added up. Coded, the same problem carries the same code every time — so a history still reads
+clearly years and staff changes later, one athlete's recurring ankle is recognisable as the
+same ankle, and what you hand to a federation or a study means the same thing as everyone
+else's. Because the region is the first character, detailed codes group by body region without
+anyone re-coding anything.
 
-{/* TODO(yarmill): does anything in Yarmill aggregate diagnosis codes into counts or a report today? Open in module-notes §14. */}
+Yarmill doesn't report on the codes yet — today they make the record consistent and portable,
+and the counting happens wherever your medical staff already do it.
 
 **OSIICS codes what the problem is, not how it happened or how bad it was** — mechanism,
 severity, surface and activity are the record's **Circumstances**, and time lost is the key
@@ -173,12 +176,11 @@ same either way.
 <Info>The other system is the Sports Medicine Diagnostic Coding System, SMDCS; the two share
 their body-region and injury-type categories, so figures coded in either stay comparable.
 OSIICS is maintained by John Orchard and colleagues and is free to use with acknowledgement,
-which Yarmill makes here. The codelist and its documentation are at
+which Yarmill makes here. Yarmill's codelist is **OSIICS version 16**. The codelist and its
+documentation are at
 [johnorchard.com/osiics.html](https://www.johnorchard.com/osiics.html), and the current version
 is published open access in JSAMS Plus
 ([doi:10.1016/j.jsampl.2025.100119](https://doi.org/10.1016/j.jsampl.2025.100119)).</Info>
-
-{/* TODO(yarmill): verify which OSIICS version the picker ships — version 16 is the current release (1 Nov 2025). */}
 
 ## Track the return to training
 
