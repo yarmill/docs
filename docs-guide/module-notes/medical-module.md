@@ -104,6 +104,9 @@ across their whole career, not scattered across clinics and spreadsheets.
   - **Free to use with acknowledgement** — the site asks explicitly for an acknowledgement in
     commercial projects and papers. No fee, no registration; the v16 paper and its code tables
     are CC BY 4.0. **The docs page therefore carries the acknowledgement and the link.**
+    The version-16 paper, which the page cites: Orchard et al., *JSAMS Plus* 2025;6:100119,
+    doi:10.1016/j.jsampl.2025.100119 (open access). The earlier BJSM paper is Orchard et al.,
+    *Br J Sports Med* 2020;54(7):397–401, doi:10.1136/bjsports-2019-101921.
   - One of the **two systems recognised by the IOC consensus statement** on recording injuries
     and illnesses (the other is SMDCS); OSIICS 13 operationalised the 2020 statement jointly
     with SMDCS so rates stay comparable between them.
@@ -334,7 +337,7 @@ nav is the full classic top-nav with **no group/athlete switcher**; athlete Sett
   | Injury Status | training limitation |
   | Treatment Status | treatment status (Open/Closed) |
   | Totem panel | (internal only — not surfaced in user docs) |
-- **TODO(verify) at shoot time:** whether the overview column still reads "Open health
-  problems" — the 2025-09-24 changelog says the product word was unified to **health issues**,
-  but the 2026-06 live pass recorded "health problems". The page currently says *health
-  problems*, matching the live pass.
+- *Resolved at the 2026-09-21 shoot:* the overview column reads **"Open health problems"**
+  and the empty state **"No health problems"** — visible in `images/medical/overview.png`. The
+  2025-09-24 changelog's "health issues" is the internal/API word (`data-cy=add-health-issue`),
+  not the column label. The page says *health problems*; leave it.

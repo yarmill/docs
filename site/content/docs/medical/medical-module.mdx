@@ -6,14 +6,14 @@ icon: "briefcase-medical"
 
 Every injury and illness an athlete has had, kept as one record each — and on the group screen, the answer to the question asked before every session: **who can train today?**
 
-<PageMeta audience="Coaches, medical staff & athletes" where="Web app, PWA" />
+<PageMeta audience="Coaches, medical staff & athletes" where="Web app" />
 
-<Frame variant="marketing" caption="One health record: what it is and how limiting, when it started and when they're due back, how it happened, the note, and the coded diagnosis.">
+<Frame variant="marketing" caption="One health record: what it is and how much it limits training, when it started and when they're due back, how it happened, the note, and the coded diagnosis.">
   <img src="/images/medical/record.png" alt="An open Medical record for a right ankle sprain: the properties row reading New, Open, No training and Club physiotherapist; the start and expected-return dates; circumstances for competition, contact, domestic training environment, moderate and grass; a clinical note; the OSIICS diagnosis AL1 Sprain lateral collateral ligament ankle tagged right, ankle, ligament; and the athlete's other records listed beside it as two open and four closed." />
 </Frame>
 
 <Tip>Set the **training limitation** the day a problem appears, even if nothing else is
-filled in yet. It's what colors the athlete on the group screen, and what
+filled in yet. It's what colours the athlete on the group screen, and what
 [Team daily readiness](/en/analytics/analytics) reads the next morning.</Tip>
 
 ## Where to find Injuries & Illnesses
@@ -21,22 +21,21 @@ filled in yet. It's what colors the athlete on the group screen, and what
 **Open the Medical module from the main menu.** As a **coach or medical staff member**, pick one of your groups and then an athlete, or choose **Entire Group** to see that squad at once. As an **athlete**, you go straight to your own records, if your team gives you access to them.
 
 <Info>Medical data is sensitive, so who can see and edit it is **permission-controlled and
-configured per team**. Some teams give athletes full access to their own records, others keep
-the module to coaches and medical staff. Access is also set per group, so a coach can have
-full access to one squad and read-only access to another. If you don't see this module, it may
-not be enabled for your team — ask your administrator.</Info>
+configured per team**, and also per group — a coach can have full access to one squad and
+read-only access to another. If you don't see this module, it may not be enabled for your
+team — ask your administrator.</Info>
 
 ## Who can train today
 
 **The group overview is one row per athlete**, and it's the screen you'll use day to day. Each row carries:
 
-- a **status pill** — the athlete's **worst** current training limitation across everything they have open, so a green row means nothing is holding them back;
+- a **status pill** — the athlete's **worst** current **training limitation**, the field that says how much they can do right now, across everything they have open. Green means full training, which is not the same as an empty record: an athlete can be back in the session with an injury still open;
 - their **open health problems**, each with an icon marking it as an injury or an illness;
 - the **expected return to full training**, or a dash when no date has been set. A date that has passed turns red and says how many days overdue it is.
 
 An athlete with nothing open still gets a row, marked **No health problems**.
 
-<Frame bleed="bottom" caption="The whole squad in one table: status, what's open, and when each one is due back.">
+<Frame bleed="bottom" caption="A green pill means full training, not an empty record — one of these athletes is back in training with an injury still open.">
   <img src="/images/medical/overview.png" alt="The Medical module's group overview, a dark table with one row per athlete: two athletes green with no health problems, one amber whose expected return of 30/08/2026 is flagged 22 days overdue, one red with an illness due back in three days, one green with an open injury due back in seven, and one red with two open injuries — one with no return date at all." />
 </Frame>
 
@@ -53,16 +52,17 @@ The fastest path is **New quick entry** — enough to make the group overview ri
     **date**, and attach any **files** you already have.
   </Step>
   <Step title="Save it, or go straight to the detail">
-    Quick entry is the one place in the module that waits for you: nothing exists until you
-    **Save**. **Open full detail** takes you to the full record to keep filling it in.
+    **Save** it, or take **Open full detail** into the record to keep filling it in.
   </Step>
 </Steps>
 
 {/* TODO(yarmill): confirm whether Open full detail creates the record there and then, or only after Save. */}
 
-A new record starts with its **start date set to today**, its treatment status **Open**, its classification **New**, and a training limitation of **Modified training** for you to correct. From there on **everything auto-saves** — there's no Save button on the record itself, and every change is written to **Activity**.
+A new record starts with its **start date set to today**, its treatment status **Open**, its classification **New**, and a training limitation of **Modified training** for you to correct.
 
-<Frame bleed="left top" caption="Quick entry asks for the five things that make the group screen right today.">
+Quick entry is the one place in the module that waits for a Save. From there on **everything auto-saves** — there's no Save button on the record itself, and every change is written to **Activity**.
+
+<Frame bleed="left top" caption="The New entry dialog opens over whatever you were looking at.">
   <img src="/images/medical/quick-entry.png" alt="The New entry dialog over a record, with fields for entry type, name of injury, status, date of injury and files, and buttons for Open full detail and Save. Three parts are labelled: entry type, injury or illness; training limitation, what colours the group screen; and Save, nothing is created until you do." />
 </Frame>
 
@@ -84,7 +84,7 @@ A new record starts with its **start date set to today**, its treatment status *
 <ParamField path="Training limitation">
   Labelled **Injury Status** on the record. How much the athlete can do right now: **Full training or competition** (green),
   **Modified training or competition** (amber), or **No training or competition** (red). This
-  is the color on the group overview, and the value other modules read.
+  is the colour on the group overview.
 </ParamField>
 
 <ParamField path="Key dates">
@@ -93,8 +93,8 @@ A new record starts with its **start date set to today**, its treatment status *
 </ParamField>
 
 <ParamField path="Diagnosis">
-  The coded diagnosis, its **side**, and the body-region and structure tags that follow from
-  it. See
+  The coded diagnosis, its **side** (injuries only), and the body-region and structure tags
+  that follow from it. See
   [Code the diagnosis](#code-the-diagnosis) below.
 </ParamField>
 
@@ -126,7 +126,8 @@ A new record starts with its **start date set to today**, its treatment status *
 
 **Add a diagnosis from the record's Diagnosis section.** Type what you're looking for in plain
 words — `ankle sprain`, `tonsillitis` — pick the matching entry from the list, set the **side**
-(left, right, bilateral, or unknown), then select **Add** (or press **Ctrl ↵**) to attach it.
+if it's an injury (left, right, bilateral, or unknown), then select **Add** (or press
+**Ctrl ↵**) to attach it. An illness has no side, so the select isn't there.
 Yarmill tags the record with the body region
 and structure that follow from the code, so `AL1 Sprain lateral collateral ligament ankle`
 carries *ankle* and *ligament* without anyone typing them.
@@ -135,8 +136,8 @@ carries *ankle* and *ligament* without anyone typing them.
 codes, an illness record searches illness codes. The record also links straight out to the
 **OSIICS code list**, for when you want to read around a code rather than search for one.
 
-<Frame bleed="left" caption="Searching the codelist: type the problem in plain words, and every result carries its OSIICS code.">
-  <img src="/images/medical/diagnosis-picker.png" alt="The diagnosis picker open on a record, the search box holding the words ankle sprain and the results listing Ankle sprains ALJ, Sprain lateral collateral ligament ankle AL1, Sprain medial collateral deltoid ligament ankle AL2 and Ankle multiple ligaments sprain ALM, above a row with a Diagnosis select, a Side select, Cancel and Add. Three parts are labelled: the OSIICS code beside every diagnosis in the list; search in plain words, type the problem not the code; and side, left, right, bilateral or unknown." />
+<Frame bleed="left" caption="Four results for 'ankle sprain' — the general `ALJ`, and three more specific codes.">
+  <img src="/images/medical/diagnosis-picker.png" alt="The diagnosis picker open on a record, the search box holding the words ankle sprain and the results listing Ankle sprains ALJ, Sprain lateral collateral ligament ankle AL1, Sprain medial collateral deltoid ligament ankle AL2 and Ankle multiple ligaments sprain ALM, above a row with a Diagnosis select, a Side select, Cancel and Add. Three parts are labelled: the OSIICS code beside every diagnosis in the list; search in plain words, type the problem, not the code; and side, left, right, bilateral, or unknown." />
 </Frame>
 
 <Info>Most teams record the same handful of conditions over and over, so the diagnoses your
@@ -146,19 +147,19 @@ team uses most sit at the top of the list, ahead of the full codelist. Which one
 ### What OSIICS is, and why the code matters
 
 The codelist is **OSIICS** — the **Orchard Sports Injury and Illness Classification System**,
-one of the two coding systems recognised by the International Olympic Committee for recording
-injuries and illnesses in sport (the other is the Sports Medicine Diagnostic Coding System),
-and one of the most widely used in injury surveillance. Each entry is a short code and a
-plain-language diagnosis: the first character of an injury code is the body region (`A` ankle,
-`K` knee), the next says what tissue is involved, and illness codes all begin with `M`, then an
-organ system.
+one of the two coding systems aligned with the International Olympic Committee's consensus
+statement on recording injuries and illnesses in sport. Each entry is a short code and a
+plain-language diagnosis: `AL1` is a lateral ankle-ligament sprain, `MPIT` is tonsillitis. The
+first character of an injury code is the body region (`A` ankle, `K` knee) and the next says
+what tissue is involved; illness codes all begin with `M`, then an organ system.
 
 **A coded diagnosis is countable; free text isn't.** Ten staff describing the same problem in
 their own words produce ten different strings, and the season's worth of records can't be
-added up. Coded, they can be counted — hamstring injuries this season against last, whether
-one athlete's ankle keeps coming back, how your squad compares with published figures for the
-sport. Because the region is the first character, detailed codes roll up to region-level counts
-without anyone re-coding anything.
+added up. Coded, they can be counted — hamstring injuries this season against last, or whether
+one athlete's ankle keeps coming back. Because the region is the first character, detailed
+codes roll up to region-level counts without anyone re-coding anything.
+
+{/* TODO(yarmill): does anything in Yarmill aggregate diagnosis codes into counts or a report today? Open in module-notes §14. */}
 
 **OSIICS codes what the problem is, not how it happened or how bad it was** — mechanism,
 severity, surface and activity are the record's **Circumstances**, and time lost is the key
@@ -169,8 +170,10 @@ diagnosis codelist is **the same on every Yarmill instance**. That's the point o
 Yarmill shows its labels in **Czech as well as English**; the OSIICS code underneath is the
 same either way.
 
-<Info>OSIICS is maintained by John Orchard and colleagues and is free to use with
-acknowledgement, which Yarmill makes here. The codelist and its documentation are at
+<Info>The other system is the Sports Medicine Diagnostic Coding System, SMDCS; the two share
+their body-region and injury-type categories, so figures coded in either stay comparable.
+OSIICS is maintained by John Orchard and colleagues and is free to use with acknowledgement,
+which Yarmill makes here. The codelist and its documentation are at
 [johnorchard.com/osiics.html](https://www.johnorchard.com/osiics.html), and the current version
 is published open access in JSAMS Plus
 ([doi:10.1016/j.jsampl.2025.100119](https://doi.org/10.1016/j.jsampl.2025.100119)).</Info>
@@ -196,7 +199,7 @@ consultant said.
 date**, moves the record to the **Closed** list, and sets its training limitation to **Full
 training or competition** — so the athlete's availability updates without a second step.
 
-A record that turns out not to be over can be **reopened** — set its treatment status back to
+A record that turns out not to be over can be **reopened**: set its treatment status back to
 **Open** and it returns to the open list.
 
 Closed records stay in the athlete's **Closed** list, so the next flare-up of the same problem
@@ -209,7 +212,7 @@ next one rather than only managing this one.
 
 ## Delete a record
 
-**Select the bin in the tool bar** and confirm.
+**Select the trash icon in the tool bar** and confirm.
 
 <Warning>Deleting is permanent, and it takes the diagnosis, the notes, the files and the
 history with it.</Warning>
@@ -221,12 +224,11 @@ was suspected and ruled out is worth keeping.
 
 **Where their team allows it, athletes work with their own records** — their Open and Closed
 lists, the full detail of each one, and **New quick entry** to add a problem themselves after a
-doctor's visit, an X-ray, or an MRI. They see only their own; there's no group and no other
-athletes.
+doctor's visit, an X-ray, or an MRI.
 
-**On other instances the module isn't shown to athletes at all**, and some setups sit between
-the two — visible, but read-only. Which one you have is a configured permission, so check your
-own setup before telling a squad to keep their records up to date.
+**On other instances the module isn't shown to athletes at all.** Which one you have is a
+configured permission, so check your own setup before telling a squad to keep their records up
+to date.
 
 <Frame caption="The same module from an athlete's own account — their records, and no group to switch to.">
   <img src="/images/medical/athlete-view.png" alt="The Medical module in an athlete's own session: the sidebar lists Injuries & Illnesses and stops there, with no group dropdown, no athlete list and no Entire Group entry, and the record list shows only that athlete's own open and closed records, with one of them open beside it." />
@@ -234,9 +236,10 @@ own setup before telling a squad to keep their records up to date.
 
 ## How it connects
 
-- The **training limitation** flows into [Team daily readiness](/en/analytics/analytics), so the
-  morning overview already knows who's out — see
-  [Read team readiness](/en/tutorials/read-readiness).
+- The **training limitation** flows into [Team daily readiness](/en/analytics/analytics), where
+  it sits alongside the day's [wellness questionnaire](/en/reality/wellness-questionnaire) and
+  device recovery from [integrations](/en/platform/integrations), so the morning overview
+  already knows who's out — see [Read team readiness](/en/tutorials/read-readiness).
 - Illness and injury periods are shaded into the background of the
   [recovery and training-load charts](/en/analytics/analytics), so a dip in load or recovery is
   read against when the athlete was actually hurt.
@@ -247,6 +250,3 @@ own setup before telling a squad to keep their records up to date.
 - [Yollanda](/en/platform/yollanda) reads the module, so a question about an athlete's injury
   history or current availability is answered from the records rather than from training data
   alone.
-- The training limitation sits alongside the other readiness inputs — the day's
-  [wellness questionnaire](/en/reality/wellness-questionnaire) and device recovery from
-  [integrations](/en/platform/integrations).
