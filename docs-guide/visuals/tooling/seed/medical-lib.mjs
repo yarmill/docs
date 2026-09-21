@@ -109,7 +109,7 @@ async function pickDate(page, hook, iso) {
   await page.waitForTimeout(300);
 }
 
-async function setDiagnosis(page, { query, code, side }) {
+export async function setDiagnosis(page, { query, code, side }) {
   let done = false;
   try {
     await page.locator(cy(CY.diagnosis)).first().click();

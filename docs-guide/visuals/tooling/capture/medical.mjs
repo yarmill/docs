@@ -135,8 +135,16 @@ async function assertMedical(page) {
     try {
       await shot(page, 'new-record');
     } finally {
-      const title = await page.locator(cy('health-issue-title')).first().inputValue().catch(() => '');
-      if (/^New (Injury|Illness)$/i.test(title.trim())) {
+      // The placeholder title lives in the input's PLACEHOLDER, not its value —
+      // a brand-new record has value "". Treat either as the scratch record,
+      // and anything else as a real one that must not be deleted.
+      const field = page.locator(cy('health-issue-title')).first();
+      const value = (await field.inputValue().catch(() => '')).trim();
+      const placeholder = (await field.getAttribute('placeholder').catch(() => '') || '').trim();
+      const scratch = (value === '' && /^New (Injury|Illness)$/i.test(placeholder))
+        || /^New (Injury|Illness)$/i.test(value);
+      const title = value || `(empty, placeholder "${placeholder}")`;
+      if (scratch) {
         await page.locator(cy('remove-health-issue')).first().click();
         await page.waitForTimeout(1000);
         await page.getByRole('button', { name: 'Yes, delete' }).click();
@@ -160,7 +168,15 @@ if (fs.existsSync(path.join(HERE, 'session-jamie.json'))) {
     await page.goto('https://we.yarmill.com/medical', { waitUntil: 'domcontentloaded', timeout: 60000 });
     await page.waitForTimeout(7000);
     await dismissAnnouncements(page);
-    await openRecord(page, HERO).catch(() => {});
+    // Open a record: the athlete's point is the sidebar that ISN'T there, but a
+    // figure of an empty detail pane is half a screenshot of nothing.
+    await openRecord(page, HERO);
+    await page.evaluate(() => {
+      for (const el of document.querySelectorAll('*')) {
+        if (el.scrollHeight > el.clientHeight + 40 && el.clientHeight > 300) el.scrollTop = 0;
+      }
+    });
+    await page.waitForTimeout(1200);
     await shot(page, 'athlete-view');
   });
   await browser.close();

@@ -229,44 +229,36 @@ record (same detail layout, scoped to self; edit where permitted).
 - **→ Planning:** expected-return dates inform what load an athlete can take.
 - Records accumulate → recurring-problem visibility (prevention, not just availability).
 
-## 13. Shot list (images for the docs page)
+## 13. Shot list (images for the docs page) — SHOT 2026-09-21
 
-**Re-cast 2026-09-20 to AFC Richmond** (Ted Lasso coach · Jamie Tartt athlete — see
-`docs-guide/visuals/demo-cast.md`). The two images currently on the page (`overview.png`,
-`record.png`) are **rendered mockups on the retired National Team / Simpson Lisa data**, and
-they are opaque RGB PNGs rather than the transparent-window exports the pipeline produces —
-both are replaced by real captures, not touched up.
+Six figures, all real captures of the live app on the seeded **AFC Richmond** data (coach
+*Ted Lasso*, athlete *Jamie Tartt*). The two rendered mockups that were on the page (old
+National Team / Simpson Lisa, opaque RGB rather than the pipeline's transparent-window
+exports) are replaced, not retouched.
 
-Everything below is specified in code and runnable the moment a session exists:
-`tooling/seed/medical.mjs` (data) + `seed/medical-lib.mjs` (driver) ·
-`tooling/capture/medical.mjs` (click paths, plus `RECON=1` to dump the real `data-cy` hooks) ·
-`tooling/figures/medical.mjs` (anchors, crops, callouts). The seed plan in prose is
-`docs-guide/visuals/demo-data/medical-afc-richmond.md`.
-
-| # | Figure key | Screen / state | Anchor · crop | Callouts | Placed in the page at | Role |
+| # | Figure key | What it shows | Anchor · crop | Callouts | Placed at | Role |
 |---|---|---|---|---|---|---|
-| 1 | `overview` | Entire Group overview (DARK) — Jamie red with two open problems, Roy amber and 21 days overdue, Sam's illness, Dani green, Isaac and Moe clear | `center` · whole window · **hero** | none — the pills already mean something | the lead figure, `<Frame variant="marketing">` | coach |
-| 2 | `record` | The rich open record: Jamie's right ankle sprain, all sections filled | `center` · whole window | none — the prose beside it names the parts | end of *What a record holds* | coach |
-| 3 | `new-record` | A record the moment it's created, still empty | `right` · 2100×2000 · `bleed="left"` | 5 — name, properties, key dates, diagnosis, tool bar | *Log an injury or illness* | coach |
-| 4 | `quick-entry` | The New quick entry modal | `center` · whole window | 4 — entry type, training limitation, files, Save | *Log an injury or illness* (with the `<Steps>`) | coach |
-| 5 | `diagnosis-picker` | The OSIICS picker mid-search ("ankle sprain" typed, results showing) | `right` · 2000×2000 · `bleed="left"` | 3 — search the codelist, OSIICS code, side | *Code the diagnosis* — the figure that carries the OSIICS point | coach |
-| 6 | `record-list` | Jamie's Open (2) / Closed (4) lists | `left` · 1900×2000 · `bleed="right"` | none | *Close a record, and the history it leaves* | coach |
-| 7 | `athlete-view` | Jamie's own session — his records, no group switcher | `left` · 1900×2000 · `bleed="right"` | none | *What athletes see* | athlete |
+| 1 | `record` | Jamie's open ankle sprain: properties, key dates, all five circumstances, note, OSIICS `AL1` with its auto-tags, and the Open/Closed list beside it | `center` · whole window · **hero**, `variant="marketing"` | none — the prose names every part | the lead figure | coach |
+| 2 | `overview` | Entire Group (DARK): green/amber/red spread, Roy 22 days overdue, Jamie's two problems, two clear rows | `top` · 3200×1150 · `bleed="bottom"` | none — the pills already mean something | *Who can train today* | coach |
+| 3 | `quick-entry` | The New entry modal | `bottom-right` · 2100×1300 · `bleed="left top"` | 3 — entry type, training limitation, Save | *Log an injury or illness* | coach |
+| 4 | `diagnosis-picker` | The OSIICS search on "ankle sprain", results showing ALJ / AL1 / AL2 / ALM | `right` · 2000×2000 · `bleed="left"` | 3 — OSIICS code, search in plain words, side | *Code the diagnosis* | coach |
+| 5 | `record-list` | Jamie's Open (2) / Closed (4) with closure dates and checks | `left` · 1400×2000 · `bleed="right"` | none | *Close a record, and the history it leaves* | coach |
+| 6 | `athlete-view` | Jamie's own session — no group dropdown, no athlete list, no Entire Group | `center` · whole window | none | *What athletes see* | athlete |
 
-**Captured but deliberately not published:** `create-picker` (a two-item menu the `<Steps>`
-already describe) and `circumstances-picker` (per-instance codelists — one team's values would
-read as the product's). Both raws are shot, so either can be added by putting its key back in
-`figures/medical.mjs`.
+**Captured but deliberately not published** (reasons in the footer of `figures/medical.mjs`):
+`new-record` (an empty record — the way in here is quick entry, and the hero already shows a
+filled one), `create-picker` (a two-item menu the Steps describe), `circumstances-picker`
+(per-instance codelists; one team's values would read as the product's).
 
-**Open decision to make on the first real raw:** figure 1 is the only hero in the docs that is
-a **dark** screen on the marketing backdrop's indigo. If it reads badly, move `hero: true` to
-`record` and drop `variant="marketing"` from the MDX.
+**Decisions worth keeping:** the hero is the *record*, not the group overview — the overview
+is a six-row table in a 1600×1000 window, so a full-window hero would be two thirds empty
+dark space, and it works far better as a top-cropped banner in its own section. The athlete
+view is the whole window with a record open, because a left crop of "the sidebar that hasn't
+got a group switcher" is a tall strip of nothing.
 
 ## 14. Open questions / TODO(verify)
 - **Which OSIICS version the picker ships.** Version 16 (1 Nov 2025) is the current release;
   `AL1` and the ankle neighbours match it, but that proves nothing about the version. Ask.
-- **Whether the closure date can be edited** after the app stamps it on close. The seeder
-  tries and logs if it can't; the demo set's "closed months ago" dates depend on it.
 - **Whether "Open full detail" in quick entry creates the record**, or only opens it once
   Saved. The page carries a TODO on this.
 - **Whether a closed record can be reopened.** The 2026 changelog *yollanda-starts-the
@@ -275,14 +267,22 @@ a **dark** screen on the marketing backdrop's indigo. If it reads badly, move `h
 - **Whether anything aggregates diagnosis codes** into counts or a report. The docs page
   argues that coding makes records countable; nothing observed actually counts them.
 - **Files** upload: accepted file types / size limits.
-- **The in-app "OSIICS code list" link points at a Google Sheets copy**, not johnorchard.com.
-  Worth asking whether that is deliberate.
-- **Whether athletes see the module on AFC Richmond** — needs Jamie Tartt's session; the
-  page documents both ends of the permission model, so the figure is the open item, not
-  the prose.
 - *Resolved:* quick-entry fields → §6.4 · illness vs injury = diagnosis codelist filtered by
   type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3 ·
   **Circumstances value lists → §4 (read live off AFC Richmond 2026-09-20)**.
+- *Resolved 2026-09-21, live:*
+  - **The closure date is editable** — the seeder set real historical closure dates on four
+    closed records and they held; the record list shows them on the closed cards.
+  - **An illness record has no Side** on its diagnosis. The select simply isn't rendered, so
+    a side is an injury-only concept. (Cost two diagnoses on the first seeding pass.)
+  - **Athletes on AFC Richmond have the fully-enabled end of the permission model** —
+    Jamie Tartt's own session shows his six records and nothing else, a sidebar that stops at
+    "Injuries & Illnesses" with no Group section, and **both create affordances** (Add record
+    and New quick entry). So this instance is the "athlete can see and edit their own" case.
+  - **The in-app "OSIICS code list" link goes to a Google Sheets copy of the full codelist on
+    purpose** (product owner, 2026-09-21). The *docs* acknowledge OSIICS and link
+    johnorchard.com as the source of the standard; the app's link is the working codelist.
+    Not a bug — don't "fix" it.
 
 ## 15. Source log
 Observed **live** on 2026-06-14, National Team / Simpson Lisa, both coach (Bart Simpson)

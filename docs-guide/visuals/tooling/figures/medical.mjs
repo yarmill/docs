@@ -7,93 +7,67 @@
 // the app they are. `size` is the crop in raw pixels (captures are 3200×2000);
 // the crop origin follows from the anchor.
 //
-// ─────────────────────────────────────────────────────────────────────────────
-// EVERY `callouts[].at` BELOW IS A PLACEHOLDER.
-// The raw captures don't exist yet (no session, and the Medical module's
-// layout is unverified — see the header of capture/medical.mjs), so the
-// coordinates are informed guesses at where each control sits in a 3200×2000
-// window. Before publishing, re-measure each one against the real raw with
-//
-//     node measure.mjs medical <raw>.png <yFrom> <yTo> <xFrom> <xTo>
-//
-// and drop the `// TODO(measure)` marker once the anchor is real. Crop `size`
-// values want the same sanity check: compose first, look, then adjust.
-// A dot sits just OUTSIDE the element it names (past the end of a line, at the
-// right edge of a panel) and must fall INSIDE the crop, or it is clipped.
-// Copy is sentence case, and whatever a callout says the MDX `alt` must say too.
-// ─────────────────────────────────────────────────────────────────────────────
+// Crops and callout anchors here were set against the real raws (shot
+// 2026-09-21 on the seeded AFC Richmond data), not estimated. Re-measure with
+// measure.mjs if the UI moves. Copy is sentence case, and whatever a callout
+// says the MDX `alt` must say too — callout text is pixels to a screen reader.
 export const module = 'medical';
 
 export const FIGURES = {
-  // The hero: the team on one dark screen. The group overview is the module's
-  // landing screen and the job it does every day ("who can train today?"), so
-  // it leads the page — not the record detail, the way Goals leads with a goal.
-  // NO CALLOUTS: the red/amber/green status pills and the red "X days overdue"
-  // already carry the meaning, and annotating over them would fight the UI
-  // (demo-cast.md). Whole window, so its <Frame> needs no bleed.
-  // Worth a second look once the raw exists: this is the one hero in the docs
-  // that is a DARK screen on the marketing backdrop's indigo. If it reads badly,
-  // move `hero: true` to 'record' and drop the marketing variant in the MDX.
-  'overview': { src: 'overview.png', align: 'center', size: [3200, 2000], hero: true },
+  // The hero: Jamie Tartt's open ankle sprain with everything on it —
+  // properties, key dates, all five circumstances, the note, the OSIICS
+  // diagnosis with its auto-tags, and the Open/Closed list beside it. Whole
+  // window, no callouts: the page names every part in prose right next to it.
+  'record': { src: 'record.png', align: 'center', size: [3200, 2000], hero: true },
 
-  // A health record with everything on it — properties, key dates,
-  // circumstances, note, OSIICS diagnosis, files, activity. Whole window, no
-  // callouts (the page names the parts in prose right beside it).
-  // Key kept as `record` so it replaces the existing /images/medical/record.png.
-  'record': { src: 'record.png', align: 'center', size: [3200, 2000] },
+  // The squad on one dark screen. Cropped to the top: the table is six rows
+  // and the rest of the window is empty dark space, which a full-window figure
+  // would spend two thirds of itself on. NO CALLOUTS — the red/amber/green
+  // pills and the red "22 days overdue" already carry the meaning, and
+  // annotating over them would fight the UI (demo-cast.md).
+  'overview': { src: 'overview.png', align: 'top', size: [3200, 1150] },
 
-  // Left of the window: the sidebar and the athlete's Open (n) / Closed (n)
-  // lists. Clean — the section headers say what they are, and the cards carry
-  // status pills whose colour is the point.
-  'record-list': { src: 'record-list.png', align: 'left', size: [1900, 2000] },
+  // Left of the window: the sidebar and Jamie's Open (2) / Closed (4) lists,
+  // the closed cards carrying their closure dates and checks. Clean — the
+  // section headers say what they are.
+  'record-list': { src: 'record-list.png', align: 'left', size: [1400, 2000] },
 
-  // Right of the window: a record the moment it is created, still empty —
-  // this is where the parts of a record get named.
-  'new-record': {
-    src: 'new-record.png', align: 'right', size: [2100, 2000],
+  // Bottom-right: the New entry modal where it actually opens.
+  'quick-entry': {
+    src: 'quick-entry.png', align: 'bottom-right', size: [2100, 1300],
     callouts: [
-      { at: [1460, 215], label: 'Name the problem', sub: 'Type over "New injury"' },               // TODO(measure)
-      { at: [2980, 430], label: 'Properties', sub: 'Classification, treatment, training limitation, staff' }, // TODO(measure)
-      { at: [2980, 700], label: 'Key dates', sub: 'Start date, and the expected return' },          // TODO(measure)
-      { at: [2980, 1180], label: 'Diagnosis', sub: 'An OSIICS code and the side' },                 // TODO(measure)
-      { at: [2420, 1900], label: 'Tool bar', sub: 'New quick entry · help · delete' },              // TODO(measure)
+      { at: [2095, 1467], label: 'Entry type', sub: 'Injury or illness' },
+      { at: [2230, 1629], label: 'Training limitation', sub: 'What colours the group screen' },
+      { at: [2675, 1885], label: 'Save', sub: 'Nothing is created until you do' },
     ],
   },
 
   // Right of the window: the OSIICS picker mid-search. This is the figure that
-  // makes the OSIICS point, so it is the one that gets annotated hardest.
+  // carries the diagnosis section, so it is the one that gets annotated.
   'diagnosis-picker': {
     src: 'diagnosis-picker.png', align: 'right', size: [2000, 2000],
     callouts: [
-      { at: [2520, 620], label: 'Search the codelist', sub: 'Type the problem, not the code' },     // TODO(measure)
-      { at: [2520, 840], label: 'OSIICS code', sub: 'Filtered by record type — injury or illness' },// TODO(measure)
-      { at: [2520, 1420], label: 'Side', sub: 'Left, right, bilateral, or unknown' },               // TODO(measure)
+      { at: [2100, 986], label: 'OSIICS code', sub: 'Beside every diagnosis in the list' },
+      { at: [2100, 1267], label: 'Search in plain words', sub: 'Type the problem, not the code' },
+      { at: [2340, 1357], label: 'Side', sub: 'Left, right, bilateral, or unknown' },
     ],
   },
 
-  // Whole window: the quick-entry modal sits over the middle of the screen, so
-  // a centre crop would cut all four sides and lose the reader. Keep the window
-  // — but that makes k large (a full 3200px frame in a 700px column), and the
-  // callout cards are sized in rendered CSS px, so four of them do not fit the
-  // stage and the compositor clamps them into each other. Two fit. If all four
-  // turn out to be wanted, crop to the modal instead (all four sides then bleed)
-  // rather than stacking more cards on the full window.
-  'quick-entry': {
-    src: 'quick-entry.png', align: 'center', size: [3200, 2000],
-    callouts: [
-      { at: [2280, 640], label: 'Entry type', sub: 'Injury or illness' },                           // TODO(measure)
-      { at: [2280, 1560], label: 'Save', sub: 'Nothing is created until you do' },                  // TODO(measure)
-    ],
-  },
-
-  // Left of the window, from the athlete's own session: the point is what
-  // ISN'T in the sidebar — no group dropdown, no athlete list, no Entire Group.
-  'athlete-view': { src: 'athlete-view.png', align: 'left', size: [1900, 2000] },
+  // The whole window, from Jamie's own session: the point is what ISN'T in the
+  // sidebar — no group dropdown, no athlete list, no Entire Group — but a left
+  // crop of that is a tall strip of empty sidebar, so keep the window and let
+  // his own record fill the rest of it.
+  'athlete-view': { src: 'athlete-view.png', align: 'center', size: [3200, 2000] },
 };
 
-// Shot but deliberately NOT published: `create-picker.png` (the + → Injury /
-// Illness menu — two readable items that the Steps already say) and
-// `circumstances-picker.png` (a menu whose values are per-instance codelists,
-// so a figure of one team's list would read as the product's). The raws are
-// still captured, so either can be added later by putting it back in FIGURES.
-// Seven figures for this page, against eight for Goals.
+// Shot but deliberately NOT published:
+// - `new-record.png` — an empty record. Goals needs its equivalent because a
+//   goal starts blank; here the way in is quick entry, and the hero already
+//   shows a filled record, so an empty one adds a figure without adding a fact.
+// - `create-picker.png` — the + → Injury / Illness menu, two readable items
+//   the Steps already describe.
+// - `circumstances-picker.png` — a menu whose values are per-instance
+//   codelists, so a figure of one team's list would read as the product's.
+//   (Its capture is also flaky: the submenu opens on hover.)
+// The raws are captured, so any of them can be added by putting a key back.
+// Six figures for this page, against eight for Goals.

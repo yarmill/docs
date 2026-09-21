@@ -32,28 +32,22 @@
 ---
 <!-- entries appended per module during live verification -->
 
-## medical — REDO, queued 2026-09-20
-> The two images on the page are **rendered mockups on the retired National Team / Simpson
-> Lisa cast** (opaque RGB, not the pipeline's transparent-window exports), so they are
-> replaced rather than kept. Everything is specified in code and runs as soon as a session
-> exists: `tooling/seed/medical.mjs` + `seed/medical-lib.mjs` (data) · `capture/medical.mjs`
-> (click paths; `RECON=1 node capture.mjs medical` first, to dump the real `data-cy` hooks) ·
-> `figures/medical.mjs` (anchors, crops, callouts — **every callout `at` is a placeholder
-> until re-measured with `measure.mjs`**). Seed plan in prose:
-> [`demo-data/medical-afc-richmond.md`](demo-data/medical-afc-richmond.md); the full shot list
-> with page placement is §13 of `module-notes/medical-module.md`.
->
-> **Blocked on:** a logged-in session for Ted Lasso (coach) and Jamie Tartt (athlete), and the
-> go-ahead to write the seed data into AFC Richmond.
+## medical — DONE (2026-09-21)
+> Shot on the live app from the seeded AFC Richmond data, coach **Ted Lasso** and athlete
+> **Jamie Tartt**. The old rendered mockups on the retired National Team / Simpson Lisa cast
+> are gone. Re-shootable end to end: `tooling/seed/medical.mjs` + `seed/medical-lib.mjs`
+> (data) · `capture/medical.mjs` (click paths; `RECON=1` dumps the hooks) ·
+> `figures/medical.mjs` (anchors, crops, callouts — all measured against the real raws).
+> Seed plan: [`demo-data/medical-afc-richmond.md`](demo-data/medical-afc-richmond.md).
 
-- ☐ `overview` — Entire Group overview (DARK), whole window, **hero** → images/medical/overview.png
-- ☐ `record` — the rich open record (Jamie's ankle sprain), whole window → images/medical/record.png
-- ☐ `new-record` — an empty new record, `right` + 5 callouts → images/medical/new-record.png
-- ☐ `quick-entry` — the New quick entry modal, whole window + 4 callouts → images/medical/quick-entry.png
-- ☐ `diagnosis-picker` — the OSIICS picker mid-search, `right` + 3 callouts → images/medical/diagnosis-picker.png
-- ☐ `record-list` — Jamie's Open/Closed lists, `left` → images/medical/record-list.png
-- ☐ `athlete-view` — Jamie's own session, `left` → images/medical/athlete-view.png
-- (captured but not published: `create-picker`, `circumstances-picker`)
+- ☑ `record` — the filled ankle-sprain record, whole window, **hero** (`variant="marketing"`)
+- ☑ `overview` — Entire Group (DARK), `top` crop, `bleed="bottom"`
+- ☑ `quick-entry` — the New entry modal, `bottom-right`, 3 callouts, `bleed="left top"`
+- ☑ `diagnosis-picker` — the OSIICS search mid-query, `right`, 3 callouts, `bleed="left"`
+- ☑ `record-list` — Jamie's Open (2) / Closed (4), `left`, `bleed="right"`
+- ☑ `athlete-view` — Jamie's own session, whole window
+- Captured but not published: `new-record`, `create-picker`, `circumstances-picker` (reasons
+  in the footer of `figures/medical.mjs`).
 
 ## attendance
 > Classic light top-nav UI — **render later**, all shots ☐. Live-verified 2026-06-15 on the

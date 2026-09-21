@@ -8,10 +8,9 @@ Every injury and illness an athlete has had, kept as one record each — and on 
 
 <PageMeta audience="Coaches, medical staff & athletes" where="Web app, PWA" />
 
-<Frame caption="Injuries & Illnesses opens on the group: each athlete's status, their open problems, and when they're expected back — overdue returns flagged.">
-  <img src="/images/medical/overview.png" alt="The Medical module's group overview — one row per athlete showing a colored status pill, their open injuries and illnesses, and the expected return to full training, with an overdue return highlighted in red." />
+<Frame variant="marketing" caption="One health record: what it is and how limiting, when it started and when they're due back, how it happened, the note, and the coded diagnosis.">
+  <img src="/images/medical/record.png" alt="An open Medical record for a right ankle sprain: the properties row reading New, Open, No training and Club physiotherapist; the start and expected-return dates; circumstances for competition, contact, domestic training environment, moderate and grass; a clinical note; the OSIICS diagnosis AL1 Sprain lateral collateral ligament ankle tagged right, ankle, ligament; and the athlete's other records listed beside it as two open and four closed." />
 </Frame>
-{/* NOTE(yarmill): rendered mockup (old National Team / Simpson Lisa data) — to be replaced by a real AFC Richmond capture; intended treatment is the full window as <Frame variant="marketing">. */}
 
 <Tip>Set the **training limitation** the day a problem appears, even if nothing else is
 filled in yet. It's what colors the athlete on the group screen, and what
@@ -37,6 +36,10 @@ not be enabled for your team — ask your administrator.</Info>
 
 An athlete with nothing open still gets a row, marked **No health problems**.
 
+<Frame bleed="bottom" caption="The whole squad in one table: status, what's open, and when each one is due back.">
+  <img src="/images/medical/overview.png" alt="The Medical module's group overview, a dark table with one row per athlete: two athletes green with no health problems, one amber whose expected return of 30/08/2026 is flagged 22 days overdue, one red with an illness due back in three days, one green with an open injury due back in seven, and one red with two open injuries — one with no return date at all." />
+</Frame>
+
 ## Log an injury or illness
 
 The fastest path is **New quick entry** — enough to make the group overview right today, with the clinical detail added later.
@@ -58,6 +61,10 @@ The fastest path is **New quick entry** — enough to make the group overview ri
 {/* TODO(yarmill): confirm whether Open full detail creates the record there and then, or only after Save. */}
 
 A new record starts with its **start date set to today**, its treatment status **Open**, its classification **New**, and a training limitation of **Modified training** for you to correct. From there on **everything auto-saves** — there's no Save button on the record itself, and every change is written to **Activity**.
+
+<Frame bleed="left top" caption="Quick entry asks for the five things that make the group screen right today.">
+  <img src="/images/medical/quick-entry.png" alt="The New entry dialog over a record, with fields for entry type, name of injury, status, date of injury and files, and buttons for Open full detail and Save. Three parts are labelled: entry type, injury or illness; training limitation, what colours the group screen; and Save, nothing is created until you do." />
+</Frame>
 
 ### What a record holds
 
@@ -115,11 +122,6 @@ A new record starts with its **start date set to today**, its treatment status *
   [Track the return to training](#track-the-return-to-training).
 </ParamField>
 
-<Frame caption="A health record: type and properties, key dates, a note, an OSIICS diagnosis, and the activity log.">
-  <img src="/images/medical/record.png" alt="A Medical record for a right ankle sprain, with each part labelled: the title and type; the properties row carrying classification, treatment status, training limitation and responsible staff; the key dates; the free-text note; the OSIICS diagnosis with its side and body-region tags; and the activity log of every change." />
-</Frame>
-{/* NOTE(yarmill): rendered mockup (old National Team / Simpson Lisa data) — to be replaced by a real AFC Richmond capture. */}
-
 ## Code the diagnosis
 
 **Add a diagnosis from the record's Diagnosis section.** Type what you're looking for in plain
@@ -132,6 +134,10 @@ carries *ankle* and *ligament* without anyone typing them.
 **The list you search is filtered by the record's type**: an injury record searches injury
 codes, an illness record searches illness codes. The record also links straight out to the
 **OSIICS code list**, for when you want to read around a code rather than search for one.
+
+<Frame bleed="left" caption="Searching the codelist: type the problem in plain words, and every result carries its OSIICS code.">
+  <img src="/images/medical/diagnosis-picker.png" alt="The diagnosis picker open on a record, the search box holding the words ankle sprain and the results listing Ankle sprains ALJ, Sprain lateral collateral ligament ankle AL1, Sprain medial collateral deltoid ligament ankle AL2 and Ankle multiple ligaments sprain ALM, above a row with a Diagnosis select, a Side select, Cancel and Add. Three parts are labelled: the OSIICS code beside every diagnosis in the list; search in plain words, type the problem not the code; and side, left, right, bilateral or unknown." />
+</Frame>
 
 <Info>Most teams record the same handful of conditions over and over, so the diagnoses your
 team uses most sit at the top of the list, ahead of the full codelist. Which ones those are is
@@ -194,6 +200,10 @@ Closed records stay in the athlete's **Closed** list, so the next flare-up of th
 can be marked **Recurring** against something you can point at — the basis for preventing the
 next one rather than only managing this one.
 
+<Frame bleed="right" caption="One athlete's record list: what's open now, and everything that's been closed, with its closure date.">
+  <img src="/images/medical/record-list.png" alt="An athlete's health records in the Medical module, split into Open with two entries and Closed with four, each card carrying an injury or illness icon, a coloured status pill, a classification glyph, and — on the closed ones — a check and the date it was closed, going back to 2024." />
+</Frame>
+
 ## Delete a record
 
 **Select the bin in the tool bar** and confirm.
@@ -214,6 +224,10 @@ athletes.
 **On other instances the module isn't shown to athletes at all**, and some setups sit between
 the two — visible, but read-only. Which one you have is a configured permission, so check your
 own setup before telling a squad to keep their records up to date.
+
+<Frame caption="The same module from an athlete's own account — their records, and no group to switch to.">
+  <img src="/images/medical/athlete-view.png" alt="The Medical module in an athlete's own session: the sidebar lists Injuries & Illnesses and stops there, with no group dropdown, no athlete list and no Entire Group entry, and the record list shows only that athlete's own open and closed records, with one of them open beside it." />
+</Frame>
 
 ## How it connects
 
