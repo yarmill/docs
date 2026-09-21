@@ -261,9 +261,6 @@ got a group switcher" is a tall strip of nothing.
   `AL1` and the ankle neighbours match it, but that proves nothing about the version. Ask.
 - **Whether "Open full detail" in quick entry creates the record**, or only opens it once
   Saved. The page carries a TODO on this.
-- **Whether a closed record can be reopened.** The 2026 changelog *yollanda-starts-the
-  conversation* mentions "Reopening a health issue no longer locks you out of valid dates",
-  so the capability exists and is undocumented.
 - **Whether anything aggregates diagnosis codes** into counts or a report. The docs page
   argues that coding makes records countable; nothing observed actually counts them.
 - **Files** upload: accepted file types / size limits.
@@ -279,6 +276,8 @@ got a group switcher" is a tall strip of nothing.
     Jamie Tartt's own session shows his six records and nothing else, a sidebar that stops at
     "Injuries & Illnesses" with no Group section, and **both create affordances** (Add record
     and New quick entry). So this instance is the "athlete can see and edit their own" case.
+  - **A closed record can be reopened** — its Treatment Status dropdown still offers *Open*
+    alongside *Closed*. Verified read-only on a closed record (nothing changed).
   - **The in-app "OSIICS code list" link goes to a Google Sheets copy of the full codelist on
     purpose** (product owner, 2026-09-21). The *docs* acknowledge OSIICS and link
     johnorchard.com as the source of the standard; the app's link is the working codelist.
