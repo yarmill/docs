@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className={`${inter.className} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen">
         {/* First focusable element: jumps keyboard users past the chrome to the
-            article. Visually hidden until focused (styled in chrome.css). */}
+            article. Visually hidden until focused (styled in global.css). */}
         <a href="#ym-page" className="ym-skip-link">
           Skip to content
         </a>

@@ -14,3 +14,64 @@
   background: var(--ym-accent-subtle);
   color: var(--ym-ink);
 }
+
+/* ---------- Skip to content (a11y) -------------------------
+   Rendered by the ROOT layout as the first focusable element on every route,
+   so its styles live here (root scope) rather than in chrome.css, which only
+   the `[lang]` routes load — otherwise the root redirect page, Next's default
+   404 and any future top-level page would show it as a plain visible link.
+   Off-screen until keyboard focus, then slides into the top-left over the
+   chrome and links to the article (#ym-page). */
+.ym-skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: var(--ym-radius);
+  background: var(--ym-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 510;
+  text-decoration: none;
+  box-shadow: var(--ym-shadow-popover);
+  /* Hidden off-screen until focused (kept focusable, unlike display:none). */
+  transform: translateY(-150%);
+  opacity: 0;
+  transition: transform var(--ym-dur) var(--ym-ease-out), opacity var(--ym-dur) var(--ym-ease-out);
+}
+.ym-skip-link:focus-visible {
+  transform: translateY(0);
+  opacity: 1;
+  outline: 2px solid var(--ym-accent-ring);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ym-skip-link { transition: none; }
+}
+
+/* ---------- Root redirect fallback (app/page.tsx) ----------
+   The `/` page redirects before it paints (see app/page.tsx). Its fallback
+   link stays invisible for the first second so it never flashes on a normal
+   load, then fades in only if the redirect did not happen. */
+.ym-root-redirect {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--ym-muted);
+  font-size: var(--ym-body-size);
+  line-height: var(--ym-body-lh);
+  opacity: 0;
+  animation: ym-root-fallback-in var(--ym-dur) var(--ym-ease-out) 1s forwards;
+}
+.ym-root-redirect a {
+  color: var(--ym-accent);
+  text-decoration: none;
+}
+.ym-root-redirect a:hover { text-decoration: underline; }
+@keyframes ym-root-fallback-in {
+  to { opacity: 1; }
+}

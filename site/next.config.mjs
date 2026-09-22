@@ -2,8 +2,9 @@
 const config = {
   // Fully static export (`next build` → ./out): the whole site is prerendered
   // HTML + assets, deployable to any static host (Netlify, S3, etc.). No server
-  // runtime, so there is no Middleware — the `/` → `/en` redirect is handled by
-  // a static root page (app/page.tsx) instead of proxy.ts.
+  // runtime, so there is no Middleware — the `/` → `/en` redirect is a Netlify
+  // edge rule (public/_redirects), with app/page.tsx as the client-side fallback
+  // for `next dev` and other hosts.
   output: 'export',
   // Static export can't run next/image's optimizer at request time.
   images: { unoptimized: true },

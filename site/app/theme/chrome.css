@@ -13,39 +13,6 @@
    Next's scroll-to-top on every route change (landing low, then gliding up).
    Headings carry scroll-margin-top: 88px so they clear the sticky top bar. */
 
-/* ---------- Skip to content (a11y) -------------------------
-   First focusable element on the page: off-screen until keyboard focus, then
-   slides into the top-left over the chrome and links to the article (#ym-page). */
-.ym-skip-link {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 100;
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 14px;
-  border-radius: var(--ym-radius);
-  background: var(--ym-accent);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 510;
-  text-decoration: none;
-  box-shadow: var(--ym-shadow-popover);
-  /* Hidden off-screen until focused (kept focusable, unlike display:none). */
-  transform: translateY(-150%);
-  opacity: 0;
-  transition: transform var(--ym-dur) var(--ym-ease-out), opacity var(--ym-dur) var(--ym-ease-out);
-}
-.ym-skip-link:focus-visible {
-  transform: translateY(0);
-  opacity: 1;
-  outline: 2px solid var(--ym-accent-ring);
-  outline-offset: 2px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .ym-skip-link { transition: none; }
-}
-
 /* ---------- 404 / empty state ------------------------------
    Rendered inside the shell (TopBar in header, this centred block in main).
    On-brand, calm: oversized muted "404", short message, primary search button +
