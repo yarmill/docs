@@ -1,0 +1,7 @@
+# Netlify response headers — copied verbatim into out/ by the static export so
+# they apply to every deploy. (The GitHub Action uploads out/ alone and never
+# reads netlify.toml, so headers declared there are silently ignored.)
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
