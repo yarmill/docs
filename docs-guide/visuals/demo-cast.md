@@ -129,6 +129,16 @@ makes them collide. A second pass measures each card, then:
    the routing planar: a lower leader can never reach far enough right to meet a higher one's
    rail, and its run into the card passes below their verticals. Assigning rails the obvious way
    (left-to-right) looks fine with two callouts and crosses with four.
+3. **Give the horizontal runs lanes too.** Two anchors close together otherwise send two
+   dashed lines across the gap a few pixels apart, which reads as one smudged line rather than
+   two leaders. The run steps to its own lane just after the dot, so the dot stays exactly on
+   the element it names.
+
+**Every distance in the compositor is in the CSS pixels the reader will see, times `k`** — the
+card gaps, the edge inset, the leader stroke and its dashes, not just the type. Passing the
+layout pass a scale of 1 instead of `k` is silent: the figure still renders, the cards just
+end up a few rendered pixels apart with hairline leaders between them, which is what "too
+close to each other" looks like.
 
 **Callout cards are Yarmill indigo with light text** (chip in a white tint, body at ~88%
 white), and they **sit off the app, in a transparent strip at the edge** of the figure — to the right

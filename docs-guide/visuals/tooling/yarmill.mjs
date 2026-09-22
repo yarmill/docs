@@ -29,8 +29,10 @@ const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
 export const LAUNCH = {
   executablePath: chromiumPath(),
   // The proxy port rotates when the session's egress proxy restarts — always
-  // read it from the environment rather than pinning a port.
-  ...(proxy ? { proxy: { server: proxy } } : {}),
+  // read it from the environment rather than pinning a port. localhost has to
+  // bypass it, or the local docs site answers 405 from the proxy instead of
+  // 200 from Next (which is what check-frames/check-zoom talk to).
+  ...(proxy ? { proxy: { server: proxy, bypass: 'localhost,127.0.0.1,::1' } } : {}),
   // The egress proxy can't complete a TLS 1.3 handshake from Chromium (the
   // tunnel resets mid-ClientHello). Capping at 1.2 fixes it; verification
   // stays on. Harmless without a proxy.

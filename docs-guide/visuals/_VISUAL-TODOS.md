@@ -32,9 +32,22 @@
 ---
 <!-- entries appended per module during live verification -->
 
-## medical — DONE (pilot)
-- ☑ Entire Group overview (full-window) → images/medical/overview.png
-- ☑ Record anatomy (corner-zoom + callouts) → images/medical/record.png
+## medical — DONE (2026-09-21)
+> Shot on the live app from the seeded AFC Richmond data, coach **Ted Lasso** and athlete
+> **Jamie Tartt**. The old rendered mockups on the retired National Team / Simpson Lisa cast
+> are gone. Re-shootable end to end: `tooling/seed/medical.mjs` + `seed/medical-lib.mjs`
+> (data) · `capture/medical.mjs` (click paths; `RECON=1` dumps the hooks) ·
+> `figures/medical.mjs` (anchors, crops, callouts — all measured against the real raws).
+> Seed plan: [`demo-data/medical-afc-richmond.md`](demo-data/medical-afc-richmond.md).
+
+- ☑ `record` — the filled ankle-sprain record, whole window, **hero** (`variant="marketing"`)
+- ☑ `overview` — Entire Group (DARK), `top` crop, `bleed="bottom"`
+- ☑ `quick-entry` — the New entry modal, `bottom-right`, 3 callouts, `bleed="left top"`
+- ☑ `diagnosis-picker` — the OSIICS search mid-query, `right`, 3 callouts, `bleed="left"`
+- ☑ `record-list` — Jamie's Open (2) / Closed (4), `left`, `bleed="right"`
+- ☑ `athlete-view` — Jamie's own session, whole window
+- Captured but not published: `new-record`, `create-picker`, `circumstances-picker` (reasons
+  in the footer of `figures/medical.mjs`).
 
 ## attendance
 > Classic light top-nav UI — **render later**, all shots ☐. Live-verified 2026-06-15 on the

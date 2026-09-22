@@ -104,17 +104,24 @@ const css = (k) => `
   svg { position: absolute; inset: 0; overflow: visible; }
 `;
 
+// A figure of total width W is displayed at COL css px, so everything drawn at
+// scale k = W / COL renders at its intended css size. The strip depends on k and
+// k depends on the strip, so solve once: W = matteW + (CARD+RAIL+EDGE)*k.
+// routeLeaders needs the same k as the CSS — every distance in this file is in
+// the CSS pixels the reader will actually see, multiplied by k.
+function kOf(f) {
+  const matteW = f.pad.left + f.crop[2] + f.pad.right;
+  return f.callouts?.length
+    ? matteW / (COL - CARD_CSS - RAIL_CSS - EDGE_CSS)
+    : matteW / COL;
+}
+
 function build(f) {
   const [cx, cy, cw, ch] = f.crop;
   const pad = f.pad;
   const matteW = pad.left + cw + pad.right;
   const matteH = pad.top + ch + pad.bottom;
-  // A figure of total width W is displayed at COL css px, so everything drawn
-  // at scale k = W / COL renders at its intended css size. The strip depends on
-  // k and k depends on the strip, so solve once: W = matteW + (CARD+RAIL+EDGE)*k.
-  const k = f.callouts?.length
-    ? matteW / (COL - CARD_CSS - RAIL_CSS - EDGE_CSS)
-    : matteW / COL;
+  const k = kOf(f);
   const strip = f.callouts?.length ? Math.round((CARD_CSS + RAIL_CSS + EDGE_CSS) * k) : 0;
   // The corner has to be sized against the RENDERED figure for the same reason
   // the type does: a 20px corner in a 3200px-wide image displayed in a 700px
@@ -194,18 +201,74 @@ function routeLeaders(scale) {
   }
   cards.forEach((c, i) => { c.style.top = `${tops[i]}px`; });
 
-  // 2. Rails run right-to-left as you go DOWN the list: the topmost callout
-  //    takes the rail nearest the cards. With both anchors and cards in the
-  //    same order, that ordering is what makes the routing planar — a lower
-  //    leader can never reach far enough right to meet a higher one's rail.
+  // 2. Every leader gets a vertical rail of its own in the gap between the shot
+  //    and the cards. Which rail matters: a fixed right-to-left order is planar
+  //    only while every card sits BELOW its own anchor. Push the stack up — as
+  //    a tall card near the bottom of a short figure does — and a lower
+  //    leader's run into its card crosses a higher leader's vertical. There are
+  //    never more than a handful of callouts, so rather than reason about which
+  //    order is safe, try every assignment and take one that doesn't cross.
+  // 3. Horizontal runs get lanes of their own as well. Two anchors close
+  //    together otherwise send two dashed lines across the gap a few pixels
+  //    apart, which reads as one smudged line rather than two leaders. The dot
+  //    stays exactly where it is — the run steps to its lane just after it.
+  const LANE = 16 * scale;
+  const lanes = anchors.slice();
+  for (let i = 1; i < lanes.length; i++) {
+    if (lanes[i] - lanes[i - 1] < LANE) lanes[i] = lanes[i - 1] + LANE;
+  }
+
+  const n = dots.length;
   const gapW = cardLeft - shotRight;
+  const jog = 8 * scale;
+  const slots = Array.from({ length: n }, (_, s) => shotRight + (gapW * (s + 1)) / (n + 1));
+  const axs = dots.map((d) => +d.dataset.ax);
+  const mids = tops.map((t, i) => t + hs[i] / 2);
+
+  // The three segments a leader is made of, given the rail it was assigned.
+  const segs = (i, railX) => {
+    const out = [];
+    if (Math.abs(lanes[i] - anchors[i]) >= 1) out.push({ v: true, x: axs[i] + jog, a: anchors[i], b: lanes[i] });
+    if (Math.abs(mids[i] - lanes[i]) < 1) { out.push({ v: false, y: lanes[i], a: axs[i], b: cardLeft }); return out; }
+    out.push({ v: false, y: lanes[i], a: axs[i] + jog, b: railX });
+    out.push({ v: true, x: railX, a: lanes[i], b: mids[i] });
+    out.push({ v: false, y: mids[i], a: railX, b: cardLeft });
+    return out;
+  };
+  const between = (v, p, q) => v > Math.min(p, q) && v < Math.max(p, q);
+  const hits = (s, t) => (s.v === t.v ? false
+    : s.v ? between(t.y, s.a, s.b) && between(s.x, t.a, t.b)
+          : between(s.y, t.a, t.b) && between(t.x, s.a, s.b));
+  const crossings = (order) => {
+    const all = order.map((slot, i) => segs(i, slots[slot]));
+    let c = 0;
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++)
+      for (const s of all[i]) for (const t of all[j]) if (hits(s, t)) c++;
+    return c;
+  };
+
+  // Topmost callout nearest the cards is the order that usually works; keep it
+  // when it is clean, and only search when it isn't.
+  let best = Array.from({ length: n }, (_, i) => n - 1 - i);
+  let bestC = crossings(best);
+  if (bestC > 0) {
+    const perm = (rest, acc) => {
+      if (bestC === 0) return;
+      if (!rest.length) { const c = crossings(acc); if (c < bestC) { bestC = c; best = acc.slice(); } return; }
+      for (let i = 0; i < rest.length; i++) perm(rest.filter((_, j) => j !== i), [...acc, rest[i]]);
+    };
+    perm(Array.from({ length: n }, (_, i) => i), []);
+  }
+
   svg.innerHTML = dots.map((d, i) => {
-    const ax = +d.dataset.ax, ay = anchors[i];
-    const mid = tops[i] + hs[i] / 2;
-    const railX = shotRight + (gapW * (dots.length - i)) / (dots.length + 1);
-    const p = Math.abs(mid - ay) < 1
-      ? `M ${ax} ${ay} H ${cardLeft}`
-      : `M ${ax} ${ay} H ${railX} V ${mid} H ${cardLeft}`;
+    const ax = axs[i], ay = anchors[i], lane = lanes[i], mid = mids[i];
+    const railX = slots[best[i]];
+    const start = Math.abs(lane - ay) < 1
+      ? `M ${ax} ${ay}`
+      : `M ${ax} ${ay} H ${ax + jog} V ${lane}`;
+    const p = Math.abs(mid - lane) < 1
+      ? `${start} H ${cardLeft}`
+      : `${start} H ${railX} V ${mid} H ${cardLeft}`;
     return `<path d="${p}" stroke="#513ff8" stroke-width="${1.4 * scale}" fill="none"
              stroke-dasharray="${3.5 * scale} ${3.5 * scale}" opacity=".5"
              stroke-linejoin="round" stroke-linecap="round"/>`;
@@ -224,7 +287,7 @@ for (const name of names) {
   await page.goto(fileUrl(stage));
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(900);
-  await page.evaluate(routeLeaders, 1);
+  await page.evaluate(routeLeaders, kOf(f));
   await page.waitForTimeout(150);
   const el = await page.$('.stage');
   const out = path.join(OUT, `${name}.png`);

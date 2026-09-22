@@ -577,6 +577,29 @@ content lives under `site/content/docs/` and URLs are `/en/…`. Target language
 - **RPE / sRPE** (Borg CR10, 0–10) · **TRIMP** · **ACWR** (acute:chronic workload
   ratio; <0.8 / 0.8–1.3 / >1.3 zones) — expand each abbreviation on first use per page.
 
+**Field names are the app's field names.** When you document a field, a control or a section,
+use the label the product puts on it, spelled and capitalised as the UI spells it — even when
+you can think of a clearer word. A reader has the screen open; a name they can't find on it
+costs them more than an imprecise one. Three rules follow from that, and all three were learnt
+the hard way on the Medical module:
+
+- **Never invent a friendlier synonym.** "Training limitation" for a field the app calls
+  **Injury status** reads better and helps nobody. If the app's label genuinely needs
+  explaining, explain it in the body — don't rename it.
+- **One field, one entry.** Don't merge two fields into a single `<ParamField>` because they
+  sit near each other ("Title & type" for what are really **Name** and **Type**). Two fields
+  the reader sets separately are two entries. The exception is a *named group* the UI itself
+  shows — **Key Dates**, **Properties** — which you may name as a group, but still list its
+  fields separately underneath.
+- **Order the list the way the screen orders it.** A reader works down the form; a docs list
+  in a different order makes them hunt. If **Responsible staff** is the fourth control in the
+  Properties row, it is the fourth entry — not the last one because it felt minor.
+
+Where a label is genuinely confusing, say what it means *next to it*: "**Injury status** — how
+much the athlete can do right now". That keeps the page searchable and still teaches the
+reader something. Verify the labels against the live app or a capture, not against older
+module notes, which may predate a rename.
+
 **Sports terminology — use the English term, not a literal translation of the Czech UI.**
 Yarmill is Czech-built, so several labels get mistranslated; titles and prose must use the
 established English sports-science wording:
@@ -604,7 +627,13 @@ established English sports-science wording:
 ## 10. Knowledge sources, uncertainty & keeping the reference current
 
 Order of truth: **(1) details provided in the current conversation → (2) the live
-product → (3) the Master Reference → (4) nothing else.** The human typically supplies
+product → (3) the Master Reference → (4) nothing else.**
+
+**The changelog posts in this repo are not a source.** `site/content/docs/changelog/` is
+generated, work in progress, and has not been checked against the product — a claim that
+rests only on a changelog post is an unverified claim, however confidently it is written.
+Use the posts to find out what *might* have shipped and then verify it in the live app or
+with the human; never cite one as the reason a page says something. The human typically supplies
 fresher, more specific information about the module/feature at hand — that wins. The
 Master Reference fills in everything not covered in chat. General training-methodology
 knowledge may inform tone and examples, but no product claim may rest on it.
@@ -675,6 +704,9 @@ instead of inferring — and **ask for it before drafting** (§0). The loop:
 - [ ] UI referenced by action + destination, not screen position.
 - [ ] Voice: second person, present, active, opinionated where Yarmill is, no hype.
 - [ ] Terminology matches §9 (Copy plan, Import plan, left/right side, Yollanda…).
+- [ ] **Every field is named as the app names it**, no two fields merged into one entry, and
+      the list runs in the order the screen runs in (§9). Checked against the live app or a
+      capture, not against older notes.
 - [ ] Sensitive-data topics phrased as permission-controlled, tone respectful.
 - [ ] File under `site/content/docs/…`; added to `site/.scaffold-ref/docs.json`;
       `npm run build` + `npm run lint` + `npx tsc --noEmit` pass; English, translation-ready.
