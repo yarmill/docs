@@ -41,6 +41,10 @@ it before drafting anything non-trivial.
    (or `<TutorialMeta>` / `<UseCaseMeta>`) → hero figure → scannable sections. Use the global
    MDX components in `site/components/mdx/`; reference UI by action + destination, never
    screen position; bold exact in-product labels.
+   **Field lists are the app's field list**: the label the UI uses (never a friendlier
+   synonym), one entry per field (never two merged), in the order the screen shows them —
+   §9 has the rule and what it cost to learn it. Read the labels off the live app or a
+   capture; module notes can predate a rename.
 5. **Wire it in:** save under `site/content/docs/<area>/<slug>.mdx`, then **add the page to
    `site/.scaffold-ref/docs.json`** (anchors → groups → pages) — without this it's
    unreachable. A new *space* also needs a `SECTION_DEFS` entry in `site/lib/nav.ts`.

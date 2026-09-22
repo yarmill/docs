@@ -12,8 +12,8 @@ Every injury and illness an athlete has had, kept as one record each — and on 
   <img src="/images/medical/record.png" alt="An open Medical record for a right ankle sprain: the properties row reading New, Open, No training and Club physiotherapist; the start and expected-return dates; circumstances for competition, contact, domestic training environment, moderate and grass; a clinical note; the OSIICS diagnosis AL1 Sprain lateral collateral ligament ankle tagged right, ankle, ligament; and the athlete's other records listed beside it as two open and four closed." />
 </Frame>
 
-<Tip>Set the **training limitation** the day a problem appears, even if nothing else is
-filled in yet. It's what colours the athlete on the group screen, and what
+<Tip>Set the **Injury status** the day a problem appears, even if nothing else is filled in
+yet. It's what colours the athlete on the group screen, and what
 [Team daily readiness](/en/analytics/analytics) reads the next morning.</Tip>
 
 ## Where to find Injuries & Illnesses
@@ -29,7 +29,7 @@ team — ask your administrator.</Info>
 
 **The group overview is one row per athlete**, and it's the screen you'll use day to day. Each row carries:
 
-- a **status pill** — the athlete's **worst** current **training limitation**, the field that says how much they can do right now, across everything they have open. Green means full training, which is not the same as an empty record: an athlete can be back in the session with an injury still open;
+- a **status pill** — the athlete's **worst** current **Injury status**, the field that says how much they can do right now, across everything they have open. Green means full training, which is not the same as an empty record: an athlete can be back in the session with an injury still open;
 - their **open health problems**, each with an icon marking it as an injury or an illness;
 - the **expected return to full training**, or a dash when no date has been set. A date that has passed turns red and says how many days overdue it is.
 
@@ -41,34 +41,54 @@ An athlete with nothing open still gets a row, marked **No health problems**.
 
 ## Log an injury or illness
 
-The fastest path is **New quick entry** — enough to make the group overview right today, with the clinical detail added later.
-
 <Steps>
-  <Step title="Open a new entry">
-    Select **New quick entry** in the tool bar — or just press **N**.
+  <Step title="Add the record">
+    Select **+** above the athlete's record list, and choose **Injury** or **Illness**.
   </Step>
-  <Step title="Capture the essentials">
-    Choose **Injury** or **Illness**, name it, set the **training limitation** and the
-    **date**, and attach any **files** you already have.
+  <Step title="Name it">
+    The record opens straight away, ready to edit. Type over the placeholder title.
   </Step>
-  <Step title="Save it, or go straight to the detail">
-    **Save** it, or take **Open full detail** into the record to keep filling it in. Either
-    one creates it.
+  <Step title="Fill in what you know">
+    Set the **Injury status** first — it's the field the rest of Yarmill reads — then the
+    dates, the diagnosis, the circumstances, a note, and whoever is looking after it. There's
+    no Save: **everything auto-saves**, and every change is written to **Activity**.
   </Step>
 </Steps>
 
-A new record starts with its **start date set to today**, its treatment status **Open**, its classification **New**, and a training limitation of **Modified training** for you to correct.
+A new record starts with its **Date of injury** set to today, its **Treatment status** at **Open**, its **Classification** at **New**, and its **Injury status** at **Modified training** for you to correct.
 
-Quick entry is the one place in the module that waits: close it without doing either and nothing has been created. From there on **everything auto-saves** — there's no Save button on the record itself, and every change is written to **Activity**.
+<Frame bleed="right bottom" caption="The + above the record list is the way in: pick injury or illness, and the record opens.">
+  <img src="/images/medical/create-picker.png" alt="The Medical module with the plus button above an athlete's record list selected, opening a two-item menu offering Injury or Illness." />
+</Frame>
 
-<Frame bleed="left top" caption="The New entry dialog opens over whatever you were looking at.">
-  <img src="/images/medical/quick-entry.png" alt="The New entry dialog over a record, with fields for entry type, name of injury, status, date of injury and files, and buttons for Open full detail and Save. Three parts are labelled: entry type, injury or illness; training limitation, what colours the group screen; and Save, or Open full detail — both create the record." />
+### Or log it in seconds with quick entry
+
+**New quick entry** in the tool bar — or the **N** shortcut — takes only the essentials: the
+**Entry type**, a name, the **Status**, the **Date of injury**, and any **files** you already
+have. It's the one to reach for pitch-side, when the point is to get the group screen right
+today and fill in the clinical detail later.
+
+It's also the one place in the module that waits for you: **Save** commits it, **Open full
+detail** commits it and takes you into the record, and closing the dialog without either
+discards it.
+
+<Frame bleed="left top" caption="Quick entry asks only for what makes the group screen right today.">
+  <img src="/images/medical/quick-entry.png" alt="The New entry dialog over a record, with fields for entry type, name of injury, status, date of injury and files, and buttons for Open full detail and Save. Three parts are labelled: entry type, injury or illness; status, how much they can train — it colours the group screen; and Save, or Open full detail — both create the record." />
 </Frame>
 
 ### What a record holds
 
-<ParamField path="Title & type">
-  What the problem is, marked as an **injury** or an **illness** when you create it.
+The fields below are in the order the record shows them. The first four sit together in the
+**Properties** row, the three dates under **Key Dates**.
+
+<ParamField path="Name">
+  What the problem is, in the athlete's record and in every list — for example, "Right ankle
+  sprain (lateral)". Click the title to rename it.
+</ParamField>
+
+<ParamField path="Type">
+  **Injury** or **Illness**, chosen when you create the record. It sets the icon on the card,
+  and it decides which half of the diagnosis codelist you search.
 </ParamField>
 
 <ParamField path="Classification" default="New">
@@ -80,26 +100,32 @@ Quick entry is the one place in the module that waits: close it without doing ei
   **Open** or **Closed**. Closing a record moves it to the Closed list.
 </ParamField>
 
-<ParamField path="Training limitation">
-  Labelled **Injury Status** on the record. How much the athlete can do right now: **Full training or competition** (green),
-  **Modified training or competition** (amber), or **No training or competition** (red). This
-  is the colour on the group overview.
+<ParamField path="Injury status" default="Modified training">
+  How much the athlete can do right now: **Full training or competition** (green), **Modified
+  training or competition** (amber), or **No training or competition** (red). This is the
+  colour on the group overview.
 </ParamField>
 
-<ParamField path="Key dates">
-  The **start date**, the **expected return to full training** — the date the overview shows
-  and flags when it passes — and, once the record is closed, a **closure date**.
+<ParamField path="Responsible staff">
+  The staff member or institution looking after the problem. Free text.
 </ParamField>
 
-<ParamField path="Diagnosis">
-  The coded diagnosis, its **side** (injuries only), and the body-region and structure tags
-  that follow from it. See
-  [Code the diagnosis](#code-the-diagnosis) below.
+<ParamField path="Date of injury" default="Today">
+  When the problem started.
+</ParamField>
+
+<ParamField path="Expected return to full training">
+  When you expect the athlete back. This is the date the group overview shows, and the one it
+  turns red once it has passed. Clear it with the **×** if it stops being meaningful.
+</ParamField>
+
+<ParamField path="Closure date">
+  Stamped when you close the record, and editable afterwards.
 </ParamField>
 
 <ParamField path="Circumstances">
-  Optional context for how it happened — **activity, injury mechanism, location, severity,
-  surface**. The values in each list are **configured for your team**: a football club might
+  Optional context for how it happened — **Activity, Injury mechanism, Location, Severity,
+  Surface**. The values in each list are **configured for your team**: a football club might
   log mechanism, playing surface and severity from purpose-built lists, while another team has
   a different set or none at all.
 </ParamField>
@@ -108,12 +134,13 @@ Quick entry is the one place in the module that waits: close it without doing ei
   Free text — the mechanism, the treatment plan, what to watch for on the way back.
 </ParamField>
 
-<ParamField path="Files">
-  Documents on the record: medical reports, X-ray and MRI images, physiotherapy plans.
+<ParamField path="Diagnosis">
+  The coded diagnosis, its **Side** (injuries only), and the body-region and structure tags
+  that follow from it. See [Code the diagnosis](#code-the-diagnosis) below.
 </ParamField>
 
-<ParamField path="Responsible staff">
-  The staff member or institution looking after the problem.
+<ParamField path="Files">
+  Documents on the record: medical reports, X-ray and MRI images, physiotherapy plans.
 </ParamField>
 
 <ParamField path="Activity">
@@ -126,7 +153,7 @@ Quick entry is the one place in the module that waits: close it without doing ei
 **Add a diagnosis from the record's Diagnosis section.** Type what you're looking for in plain
 words — `ankle sprain`, `tonsillitis` — pick the matching entry from the list, set the **side**
 if it's an injury (left, right, bilateral, or unknown), then select **Add** (or press
-**Ctrl ↵**) to attach it. An illness has no side, so the select isn't there.
+**Ctrl ↵**, **⌘ ↵** on a Mac) to attach it. An illness has no side, so the select isn't there.
 Yarmill tags the record with the body region
 and structure that follow from the code, so `AL1 Sprain lateral collateral ligament ankle`
 carries *ankle* and *ligament* without anyone typing them.
@@ -160,21 +187,16 @@ same ankle, and what you hand to a federation or a study means the same thing as
 else's. Because the region is the first character, detailed codes group by body region without
 anyone re-coding anything.
 
-Yarmill doesn't report on the codes yet — today they make the record consistent and portable,
-and the counting happens wherever your medical staff already do it.
-
 **OSIICS codes what the problem is, not how it happened or how bad it was** — mechanism,
 severity, surface and activity are the record's **Circumstances**, and time lost is the key
 dates.
 
 Unlike the Circumstances lists — which are Yarmill's own, and configured per team — the
 diagnosis codelist is **the same on every Yarmill instance**. That's the point of a standard.
-Yarmill shows its labels in **Czech as well as English**; the OSIICS code underneath is the
+Yarmill shows its labels in **English as well as Czech**; the OSIICS code underneath is the
 same either way.
 
-<Info>The other system is the Sports Medicine Diagnostic Coding System, SMDCS; the two share
-their body-region and injury-type categories, so figures coded in either stay comparable.
-OSIICS is maintained by John Orchard and colleagues and is free to use with acknowledgement,
+<Info>OSIICS is maintained by John Orchard and colleagues and is free to use with acknowledgement,
 which Yarmill makes here. Yarmill's codelist is **OSIICS version 16**. The codelist and its
 documentation are at
 [johnorchard.com/osiics.html](https://www.johnorchard.com/osiics.html), and the current version
@@ -183,11 +205,11 @@ is published open access in JSAMS Plus
 
 ## Track the return to training
 
-**Keep the training limitation current** — it's the field the rest of Yarmill reads for availability. A
+**Keep the Injury status current** — it's the field the rest of Yarmill reads for availability. A
 typical recovery walks it back up: **No training or competition** while the athlete is out,
 **Modified training or competition** as they start doing some of the session, **Full training or
-competition** when they're available again. Move the **expected return** as the picture changes
-rather than leaving a date to go red.
+competition** when they're available again. Move the **Expected return to full training** as the picture changes rather than leaving a
+date to go red.
 
 **Every change is logged automatically** under **Activity**, with who made it and when, and
 related edits are grouped so a run of changes to one record reads as a block instead of a wall
@@ -197,7 +219,7 @@ consultant said.
 ## Close a record, and the history it leaves
 
 **When a problem resolves, set its treatment status to Closed.** Yarmill stamps the **closure
-date**, moves the record to the **Closed** list, and sets its training limitation to **Full
+date**, moves the record to the **Closed** list, and sets its **Injury status** to **Full
 training or competition** — so the athlete's availability updates without a second step.
 
 A record that turns out not to be over can be **reopened**: set its treatment status back to
@@ -237,17 +259,14 @@ to date.
 
 ## How it connects
 
-- The **training limitation** flows into [Team daily readiness](/en/analytics/analytics), where
+- The **Injury status** flows into [Team daily readiness](/en/analytics/analytics), where
   it sits alongside the day's [wellness questionnaire](/en/reality/wellness-questionnaire) and
   device recovery from [integrations](/en/platform/integrations), so the morning overview
   already knows who's out — see [Read team readiness](/en/tutorials/read-readiness).
 - Illness and injury periods are shaded into the background of the
   [recovery and training-load charts](/en/analytics/analytics), so a dip in load or recovery is
   read against when the athlete was actually hurt.
-- An **expected-return date** is a planning input, not a clearance: it tells you when to start
-  rebuilding load, not that the athlete is available.
+- The **Expected return to full training** is a planning input, not a clearance: it tells you
+  when to start rebuilding load, not that the athlete is available.
 - Documents added to a record are stored with it, alongside the athlete's other
   [files](/en/platform/files).
-- [Yollanda](/en/platform/yollanda) reads the module, so a question about an athlete's injury
-  history or current availability is answered from the records rather than from training data
-  alone.

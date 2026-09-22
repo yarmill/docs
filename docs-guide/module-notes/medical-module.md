@@ -331,12 +331,24 @@ nav is the full classic top-nav with **no group/athlete switcher**; athlete Sett
   permission- and config-dependent; Circumstances deliberately gets no section of its own.
 - **Cross-links:** `/en/analytics/analytics` (Team daily readiness, recovery & training-load
   charts) · `/en/tutorials/read-readiness` · `/en/platform/files`.
-- **UI label → doc term:**
-  | UI label | Doc term |
-  |----------|----------|
-  | Injury Status | training limitation |
-  | Treatment Status | treatment status (Open/Closed) |
+- **UI labels — use them verbatim, do not translate them into nicer words.** An earlier
+  version of this table mapped "Injury Status → training limitation", the page followed it,
+  and the product owner rejected it: there is no such thing as a training limitation in the
+  UI, so a reader cannot find it. The rule is now in `writing-instructions.md` §9.
+  | UI label | Use in the docs |
+  |----------|-----------------|
+  | Injury Status | **Injury status** (explain it as "how much the athlete can do right now") |
+  | Treatment Status | **Treatment status** (Open / Closed) |
+  | Date of injury · Expected return to full training · Closure date | each by its own name; **Key Dates** only as the group heading |
+  | Name · Type | two separate fields, never merged into one entry |
   | Totem panel | (internal only — not surfaced in user docs) |
+- **Field order on the record**, which the docs list must follow: Name · Type ·
+  *Properties* (Classification · Treatment status · Injury status · Responsible staff) ·
+  *Key Dates* (Date of injury · Expected return to full training · Closure date) ·
+  Circumstances · Note · Diagnosis · Files · Activity.
+- **Creating a record:** the **+** above the record list is the primary path — it opens the
+  full record straight away. **New quick entry** is the shortcut, not the main route; the page
+  documents it that way.
 - *Resolved at the 2026-09-21 shoot:* the overview column reads **"Open health problems"**
   and the empty state **"No health problems"** — visible in `images/medical/overview.png`. The
   2025-09-24 changelog's "health issues" is the internal/API word (`data-cy=add-health-issue`),

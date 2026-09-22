@@ -104,17 +104,24 @@ const css = (k) => `
   svg { position: absolute; inset: 0; overflow: visible; }
 `;
 
+// A figure of total width W is displayed at COL css px, so everything drawn at
+// scale k = W / COL renders at its intended css size. The strip depends on k and
+// k depends on the strip, so solve once: W = matteW + (CARD+RAIL+EDGE)*k.
+// routeLeaders needs the same k as the CSS — every distance in this file is in
+// the CSS pixels the reader will actually see, multiplied by k.
+function kOf(f) {
+  const matteW = f.pad.left + f.crop[2] + f.pad.right;
+  return f.callouts?.length
+    ? matteW / (COL - CARD_CSS - RAIL_CSS - EDGE_CSS)
+    : matteW / COL;
+}
+
 function build(f) {
   const [cx, cy, cw, ch] = f.crop;
   const pad = f.pad;
   const matteW = pad.left + cw + pad.right;
   const matteH = pad.top + ch + pad.bottom;
-  // A figure of total width W is displayed at COL css px, so everything drawn
-  // at scale k = W / COL renders at its intended css size. The strip depends on
-  // k and k depends on the strip, so solve once: W = matteW + (CARD+RAIL+EDGE)*k.
-  const k = f.callouts?.length
-    ? matteW / (COL - CARD_CSS - RAIL_CSS - EDGE_CSS)
-    : matteW / COL;
+  const k = kOf(f);
   const strip = f.callouts?.length ? Math.round((CARD_CSS + RAIL_CSS + EDGE_CSS) * k) : 0;
   // The corner has to be sized against the RENDERED figure for the same reason
   // the type does: a 20px corner in a 3200px-wide image displayed in a 700px
@@ -198,14 +205,28 @@ function routeLeaders(scale) {
   //    takes the rail nearest the cards. With both anchors and cards in the
   //    same order, that ordering is what makes the routing planar — a lower
   //    leader can never reach far enough right to meet a higher one's rail.
+  // 3. Horizontal runs get lanes of their own as well. Two anchors close
+  //    together otherwise send two dashed lines across the gap a few pixels
+  //    apart, which reads as one smudged line rather than two leaders. The dot
+  //    stays exactly where it is — the run steps to its lane just after it.
+  const LANE = 16 * scale;
+  const lanes = anchors.slice();
+  for (let i = 1; i < lanes.length; i++) {
+    if (lanes[i] - lanes[i - 1] < LANE) lanes[i] = lanes[i - 1] + LANE;
+  }
+
   const gapW = cardLeft - shotRight;
   svg.innerHTML = dots.map((d, i) => {
     const ax = +d.dataset.ax, ay = anchors[i];
+    const lane = lanes[i];
     const mid = tops[i] + hs[i] / 2;
     const railX = shotRight + (gapW * (dots.length - i)) / (dots.length + 1);
-    const p = Math.abs(mid - ay) < 1
-      ? `M ${ax} ${ay} H ${cardLeft}`
-      : `M ${ax} ${ay} H ${railX} V ${mid} H ${cardLeft}`;
+    const start = Math.abs(lane - ay) < 1
+      ? `M ${ax} ${ay}`
+      : `M ${ax} ${ay} H ${ax + 8 * scale} V ${lane}`;
+    const p = Math.abs(mid - lane) < 1
+      ? `${start} H ${cardLeft}`
+      : `${start} H ${railX} V ${mid} H ${cardLeft}`;
     return `<path d="${p}" stroke="#513ff8" stroke-width="${1.4 * scale}" fill="none"
              stroke-dasharray="${3.5 * scale} ${3.5 * scale}" opacity=".5"
              stroke-linejoin="round" stroke-linecap="round"/>`;
@@ -224,7 +245,7 @@ for (const name of names) {
   await page.goto(fileUrl(stage));
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(900);
-  await page.evaluate(routeLeaders, 1);
+  await page.evaluate(routeLeaders, kOf(f));
   await page.waitForTimeout(150);
   const el = await page.$('.stage');
   const out = path.join(OUT, `${name}.png`);

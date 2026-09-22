@@ -27,17 +27,25 @@ export const FIGURES = {
   // annotating over them would fight the UI (demo-cast.md).
   'overview': { src: 'overview.png', align: 'top', size: [3200, 1150] },
 
+  // Top-left: the + at the top of the record list, with its Injury / Illness
+  // menu open. This is the primary way a record is created, so it gets a
+  // figure; two readable items need no callouts.
+  'create-picker': { src: 'create-picker.png', align: 'top-left', size: [1800, 900] },
+
   // Left of the window: the sidebar and Jamie's Open (2) / Closed (4) lists,
   // the closed cards carrying their closure dates and checks. Clean — the
   // section headers say what they are.
   'record-list': { src: 'record-list.png', align: 'left', size: [1400, 2000] },
 
-  // Bottom-right: the New entry modal where it actually opens.
+  // Bottom-right: the New entry modal where it actually opens. The crop is
+  // taller than the modal needs because the three callout cards have to fit
+  // down the side of it — cards are sized in rendered CSS px, so a short figure
+  // cannot hold them and the compositor ends up clamping them into each other.
   'quick-entry': {
-    src: 'quick-entry.png', align: 'bottom-right', size: [2100, 1300],
+    src: 'quick-entry.png', align: 'bottom-right', size: [2000, 1800],
     callouts: [
       { at: [2095, 1467], label: 'Entry type', sub: 'Injury or illness' },
-      { at: [2230, 1629], label: 'Training limitation', sub: 'What colours the group screen' },
+      { at: [2230, 1629], label: 'Status', sub: 'How much they can train — colours the group screen' },
       { at: [2675, 1885], label: 'Save', sub: 'Or Open full detail — both create the record' },
     ],
   },
@@ -64,10 +72,8 @@ export const FIGURES = {
 // - `new-record.png` — an empty record. Goals needs its equivalent because a
 //   goal starts blank; here the way in is quick entry, and the hero already
 //   shows a filled record, so an empty one adds a figure without adding a fact.
-// - `create-picker.png` — the + → Injury / Illness menu, two readable items
-//   the Steps already describe.
 // - `circumstances-picker.png` — a menu whose values are per-instance
 //   codelists, so a figure of one team's list would read as the product's.
 //   (Its capture is also flaky: the submenu opens on hover.)
 // The raws are captured, so any of them can be added by putting a key back.
-// Six figures for this page, against eight for Goals.
+// Seven figures for this page, against eight for Goals.
