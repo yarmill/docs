@@ -269,10 +269,13 @@ got a group switcher" is a tall strip of nothing.
   progress and unchecked (product owner, 2026-09-22). Two claims that rested only on a post
   were removed from the page: the diagnosis shortlist (2026-01-20) and **grouped edits in the
   Activity log** (2025-09-24), which the captures contradict — Activity renders one line per
-  change. The first turned out to be real and is back, but not as the changelog describes it:
-  it is a **configured list of pinned diagnoses** the team chooses, not a usage-ranked list
-  (§4). Which is the point — the post was close enough to sound right and wrong about the
-  mechanism. The grouped Activity log is still unverified.
+  change. Both were then put to the product owner, and they landed differently:
+  - The shortlist is **real**, but not as the post describes it: a **configured list of
+    pinned diagnoses** the team chooses, not a usage-ranked one (§4). The post was close
+    enough to sound right and wrong about the mechanism — which is exactly why it can't be
+    quoted.
+  - **Grouping in the Activity log has not shipped** (product owner, 2026-09-22). The
+    captures were right and the post is wrong. Don't put it back.
 - **Files** upload: accepted file types / size limits.
 - *Resolved:* quick-entry fields → §6.4 · illness vs injury = diagnosis codelist filtered by
   type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3 ·
