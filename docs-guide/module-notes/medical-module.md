@@ -114,6 +114,11 @@ across their whole career, not scattered across clinics and spreadsheets.
     diagnosis label in Yarmill is Yarmill's own localisation against the English code.
   - OSIICS codes **what the diagnosis is**, not mechanism or severity — those stay in
     Circumstances and the key dates.
+- **Pinned diagnoses `[CONFIG]`:** an instance can be configured with a list of **pinned
+  diagnoses**, chosen by the team, which sit at the top of the picker ahead of the full
+  codelist (product owner, 2026-09-22). Note the mechanism: it is a configured pin list, **not
+  a usage-ranked "most used" list** — the 2026-01-20 changelog describes it as the latter and
+  is wrong. Not visible in the 2026-09-21 captures, so AFC Richmond presumably has none.
 - **Circumstances:** categorised attributes — **Activity · Injury mechanism · Location · Severity · Surface** (each a **hover** submenu of values). These are **Yarmill codelists configured per instance — not OSIICS** and unrelated to the diagnosis. What **AFC Richmond** offers (live, 2026-09-20 — another instance will differ):
 
   | Category | Values |
@@ -262,10 +267,12 @@ got a group switcher" is a tall strip of nothing.
 ## 14. Open questions / TODO(verify)
 - **The changelog posts are not evidence.** `site/content/docs/changelog/` is work in
   progress and unchecked (product owner, 2026-09-22). Two claims that rested only on a post
-  were removed from the page: the **shortlist of most-used diagnoses** at the top of the
-  picker (2026-01-20) — nothing in the captures shows one — and **grouped edits in the
-  Activity log** (2025-09-24), which the captures actually contradict: Activity renders one
-  line per change. Both may well be real; verify them live before they go back.
+  were removed from the page: the diagnosis shortlist (2026-01-20) and **grouped edits in the
+  Activity log** (2025-09-24), which the captures contradict — Activity renders one line per
+  change. The first turned out to be real and is back, but not as the changelog describes it:
+  it is a **configured list of pinned diagnoses** the team chooses, not a usage-ranked list
+  (§4). Which is the point — the post was close enough to sound right and wrong about the
+  mechanism. The grouped Activity log is still unverified.
 - **Files** upload: accepted file types / size limits.
 - *Resolved:* quick-entry fields → §6.4 · illness vs injury = diagnosis codelist filtered by
   type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3 ·
