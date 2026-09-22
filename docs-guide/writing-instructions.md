@@ -627,7 +627,13 @@ established English sports-science wording:
 ## 10. Knowledge sources, uncertainty & keeping the reference current
 
 Order of truth: **(1) details provided in the current conversation → (2) the live
-product → (3) the Master Reference → (4) nothing else.** The human typically supplies
+product → (3) the Master Reference → (4) nothing else.**
+
+**The changelog posts in this repo are not a source.** `site/content/docs/changelog/` is
+generated, work in progress, and has not been checked against the product — a claim that
+rests only on a changelog post is an unverified claim, however confidently it is written.
+Use the posts to find out what *might* have shipped and then verify it in the live app or
+with the human; never cite one as the reason a page says something. The human typically supplies
 fresher, more specific information about the module/feature at hand — that wins. The
 Master Reference fills in everything not covered in chat. General training-methodology
 knowledge may inform tone and examples, but no product claim may rest on it.

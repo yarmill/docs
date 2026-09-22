@@ -81,7 +81,7 @@ across their whole career, not scattered across clinics and spreadsheets.
 - **Treatment Status:** **Open | Closed**. (Closed records get a check and live under "Closed".)
 - **Injury Status = training limitation:** **Full training or competition** (green) · **Modified training or competition** (amber) · **No training or competition** (red). This colour is the **status pill** shown on the overview and list.
 - **Key Dates:** **start date**; **Expected return to full training** (shown on the overview; **overdue** dates render red as "X days overdue"); and a **Closure date** that appears once the problem is Closed.
-- **Diagnosis:** **OSIICS-coded** — a code + label (e.g. `AL1 Sprain lateral collateral ligament ankle`), a **Side** (Left / Right / Bilateral / Unknown), and auto-applied **tags** (body region / structure, e.g. *Right · Ankle · Ligament · Ligament/joint capsule*). The codelist is **filtered by record type** — injuries show OSIICS **injury** codes, illnesses show OSIICS **illness** codes. Diagnosis labels are available in **Czech alongside English** (changelog 2025-10-13); the code is the same either way. **Yarmill ships OSIICS version 16** (product owner, 2026-09-21) — the current release, published 1 Nov 2025.
+- **Diagnosis:** **OSIICS-coded** — a code + label (e.g. `AL1 Sprain lateral collateral ligament ankle`), a **Side** (Left / Right / Bilateral / Unknown), and auto-applied **tags** (body region / structure, e.g. *Right · Ankle · Ligament · Ligament/joint capsule*). The codelist is **filtered by record type** — injuries show OSIICS **injury** codes, illnesses show OSIICS **illness** codes. Diagnosis labels are available in **English as well as Czech** (product owner, 2026-09-22); the code is the same either way. **Yarmill ships OSIICS version 16** (product owner, 2026-09-21) — the current release, published 1 Nov 2025.
 
   **What OSIICS is** (external standard, researched 2026-09-20 from johnorchard.com and the
   v16 workbook — full brief in the docs session, canonical link
@@ -173,7 +173,7 @@ across their whole career, not scattered across clinics and spreadsheets.
 - **Set dates:** start + expected return via calendar; expected return clearable.
 - **Add diagnosis:** OSIICS search → pick → set Side → Add; auto-tags region/structure.
 - **Add circumstances / note / files;** **comment** in Activity.
-- **Close:** Treatment Status → **Closed** (moves to Closed section, gets check, picks up a closure date). **Closing also sets the training limitation to Full training automatically** (changelog 2025-10-13), so the athlete's availability updates without a second step.
+- **Close:** Treatment Status → **Closed** (moves to Closed section, gets check, picks up a closure date). **Closing also sets the Injury status to Full training automatically** — verified in the 2026-09-21 capture, not from the changelog: all four of Jamie's closed records show a green pill although the seed set two of them red and two amber. The athlete's availability updates without a second step.
 - **Rename:** click title, edit (logs "renamed the injury").
 - **Delete:** bin in floating toolbar.
 - All edits **auto-save**; every meaningful change is written to **Activity** with actor + date.
@@ -260,6 +260,12 @@ view is the whole window with a record open, because a left crop of "the sidebar
 got a group switcher" is a tall strip of nothing.
 
 ## 14. Open questions / TODO(verify)
+- **The changelog posts are not evidence.** `site/content/docs/changelog/` is work in
+  progress and unchecked (product owner, 2026-09-22). Two claims that rested only on a post
+  were removed from the page: the **shortlist of most-used diagnoses** at the top of the
+  picker (2026-01-20) — nothing in the captures shows one — and **grouped edits in the
+  Activity log** (2025-09-24), which the captures actually contradict: Activity renders one
+  line per change. Both may well be real; verify them live before they go back.
 - **Files** upload: accepted file types / size limits.
 - *Resolved:* quick-entry fields → §6.4 · illness vs injury = diagnosis codelist filtered by
   type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3 ·
