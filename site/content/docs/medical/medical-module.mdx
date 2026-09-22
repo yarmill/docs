@@ -76,10 +76,10 @@ discards it.
   <img src="/images/medical/quick-entry.png" alt="The New entry dialog over a record, with fields for entry type, name of injury, status, date of injury and files, and buttons for Open full detail and Save. Three parts are labelled: entry type, injury or illness; status, how much they can train — it colours the group screen; and Save, or Open full detail — both create the record." />
 </Frame>
 
-### What a record holds
+## What a record holds
 
-The fields below are in the order the record shows them. The first four sit together in the
-**Properties** row, the three dates under **Key Dates**.
+Every field on a record, in the order the record shows them. The first four sit together in
+the **Properties** row, the three dates under **Key Dates**.
 
 <ParamField path="Name">
   What the problem is, in the athlete's record and in every list — for example, "Right ankle
@@ -151,16 +151,14 @@ The fields below are in the order the record shows them. The first four sit toge
 ## Code the diagnosis
 
 **Add a diagnosis from the record's Diagnosis section.** Type what you're looking for in plain
-words — `ankle sprain`, `tonsillitis` — pick the matching entry from the list, set the **side**
-if it's an injury (left, right, bilateral, or unknown), then select **Add** (or press
-**Ctrl ↵**, **⌘ ↵** on a Mac) to attach it. An illness has no side, so the select isn't there.
-Yarmill tags the record with the body region
-and structure that follow from the code, so `AL1 Sprain lateral collateral ligament ankle`
-carries *ankle* and *ligament* without anyone typing them.
+words — `ankle sprain`, `tonsillitis` — pick the entry from the list, set the **Side** if it's
+an injury (an illness hasn't got one), and select **Add**, or press **Ctrl ↵** (**⌘ ↵** on a
+Mac). Yarmill tags the record with the body region and structure that follow from the code, so
+`AL1 Sprain lateral collateral ligament ankle` carries *ankle* and *ligament* without anyone
+typing them.
 
-**The list you search is filtered by the record's type**: an injury record searches injury
-codes, an illness record searches illness codes. The record also links straight out to the
-**OSIICS code list**, for when you want to read around a code rather than search for one.
+The list is filtered by the record's type — injury codes for an injury, illness codes for an
+illness — and the record links straight out to the full **OSIICS code list**.
 
 <Info>A team can **pin the diagnoses it uses most** to the top of the list, so the everyday
 cases are there before you type anything. Which ones are pinned is chosen by the team and
@@ -172,35 +170,27 @@ cases are there before you type anything. Which ones are pinned is chosen by the
 
 ### What OSIICS is, and why the code matters
 
-The codelist is **OSIICS** — the **Orchard Sports Injury and Illness Classification System**,
-one of the two coding systems aligned with the International Olympic Committee's consensus
-statement on recording injuries and illnesses in sport. Each entry is a short code and a
-plain-language diagnosis: `AL1` is a lateral ankle-ligament sprain, `MPIT` is tonsillitis. The
-first character of an injury code is the body region (`A` ankle, `K` knee) and the next says
-what tissue is involved; illness codes all begin with `M`, then an organ system.
+**OSIICS** — the **Orchard Sports Injury and Illness Classification System** — is one of the
+two coding systems aligned with the International Olympic Committee's consensus statement on
+recording injuries and illnesses in sport. Each entry is a short code and a plain-language
+diagnosis, built so the code carries the anatomy: an injury code starts with the body region
+(`AL1` is an ankle ligament), and illness codes all start with `M` (`MPIT` is tonsillitis).
 
-**A coded diagnosis stays comparable; free text doesn't.** Ten staff describing the same
-problem in their own words produce ten different strings, and a season of records can't be
-added up. Coded, the same problem carries the same code every time — so a history still reads
-clearly years and staff changes later, one athlete's recurring ankle is recognisable as the
-same ankle, and what you hand to a federation or a study means the same thing as everyone
-else's. Because the region is the first character, detailed codes group by body region without
-anyone re-coding anything.
+**A coded diagnosis stays comparable; free text doesn't.** Ten people describing the same
+problem produce ten different strings, and a season of them can't be added up. Coded, the same
+problem reads the same years and staff changes later, a recurring ankle is recognisably the
+same ankle, and what you hand to a federation means what they mean by it.
 
-**OSIICS codes what the problem is, not how it happened or how bad it was** — mechanism,
-severity, surface and activity are the record's **Circumstances**, and time lost is the key
-dates.
+It codes **what the problem is**, not how it happened or how bad it was — that's
+**Circumstances** and the key dates. And unlike the Circumstances lists, which are Yarmill's
+own and configured per team, the codelist is the same on every instance. That's the point of a
+standard. Its labels show in **English as well as Czech**; the code underneath doesn't change.
 
-Unlike the Circumstances lists — which are Yarmill's own, and configured per team — the
-diagnosis codelist is **the same on every Yarmill instance**. That's the point of a standard.
-Yarmill shows its labels in **English as well as Czech**; the OSIICS code underneath is the
-same either way.
-
-<Info>OSIICS is maintained by John Orchard and colleagues and is free to use with acknowledgement,
-which Yarmill makes here. Yarmill's codelist is **OSIICS version 16**. The codelist and its
-documentation are at
-[johnorchard.com/osiics.html](https://www.johnorchard.com/osiics.html), and the current version
-is published open access in JSAMS Plus
+<Info>OSIICS is maintained by John Orchard and colleagues and is free to use with
+acknowledgement, which Yarmill makes here. Yarmill's codelist is **OSIICS version 16**; the
+codelist and its documentation are at
+[johnorchard.com/osiics.html](https://www.johnorchard.com/osiics.html), and the current
+version is published open access in JSAMS Plus
 ([doi:10.1016/j.jsampl.2025.100119](https://doi.org/10.1016/j.jsampl.2025.100119)).</Info>
 
 ## Track the return to training
