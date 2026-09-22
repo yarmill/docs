@@ -9,12 +9,17 @@ import '@/app/theme/chrome.css';
 /**
  * Branded 404, rendered INSIDE the docs shell so the sidebar/spaces are present.
  *
- * Next renders a dynamic-segment `not-found.tsx` against the ROOT layout, not
- * the `[lang]` layout (the segment's params aren't available to the not-found
- * boundary), so we can't rely on `app/[lang]/layout.tsx` to supply <DocsShell>.
- * We therefore mount the shell here ourselves and fill the same grid areas a
- * real page does — a <TopBar> in `header` and a centred empty state in `main`
- * (no TOC). Reached whenever `page.tsx` calls notFound() for an unresolved slug.
+ * This lives at the app ROOT on purpose: the static export builds `out/404.html`
+ * from the root `/_not-found` route, and that file is what Netlify serves for
+ * every unknown URL. A `not-found.tsx` nested under `[lang]` never reaches the
+ * export — Next would emit its default 404 instead. As a root boundary it also
+ * catches `notFound()` from `app/[lang]/[[...slug]]/page.tsx` in `next dev`.
+ *
+ * Not-found boundaries render against the root layout only, so `[lang]/layout`
+ * does not supply <DocsShell> here. We mount the shell ourselves and fill the
+ * same grid areas a real page does — a <TopBar> in `header` and a centred empty
+ * state in `main` (no TOC). chrome.css is imported here because the root layout
+ * does not load it.
  */
 
 // Preferred "Popular" destinations, resolved against the live nav so we never

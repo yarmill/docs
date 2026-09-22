@@ -1,0 +1,10 @@
+# Netlify redirects — copied verbatim into out/ by the static export, so they
+# apply to every deploy (the GitHub Action uploads out/ alone and never reads
+# netlify.toml). Netlify does NOT redirect a path that resolves to a file unless
+# the rule is forced (`!`), and out/index.html exists, so `/` needs the force.
+#
+# The bare root lives at /en. Answering at the edge means the browser never
+# downloads the root page at all — no HTML, no CSS, no JS, no flash.
+# 302 (not 301) on purpose: browsers cache a 301 indefinitely, which would pin
+# every visitor to /en if the root ever gains locale detection.
+/  /en  302!

@@ -5,14 +5,10 @@
 # (the @netlify/plugin-nextjs adapter is intentionally NOT used).
 #
 # The export emits real .html files, so Netlify serves clean URLs (/en → en.html)
-# and uses out/404.html automatically — no redirects needed.
+# and uses out/404.html automatically. Redirects and response headers live in
+# site/public/_redirects and site/public/_headers so they ship inside out/ — the
+# GitHub Action uploads the publish dir only and does not read this file, so
+# `[[redirects]]` / `[[headers]]` declared here would never take effect.
 [build]
   command = "npm run build"
   publish = "out"
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
