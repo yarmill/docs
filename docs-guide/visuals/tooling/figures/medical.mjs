@@ -20,10 +20,12 @@ export const FIGURES = {
   // window, no callouts: the page names every part in prose right next to it.
   'record': { src: 'record.png', align: 'center', size: [3200, 2000], hero: true },
 
-  // The squad on one dark screen. Cropped to the top: the table is six rows
+  // The squad on one dark screen. The day counts ("25 days overdue", "in 4
+  // days") move every time this is re-shot, so the MDX alt describes states,
+  // never counts. Cropped to the top: the table is six rows
   // and the rest of the window is empty dark space, which a full-window figure
   // would spend two thirds of itself on. NO CALLOUTS — the red/amber/green
-  // pills and the red "22 days overdue" already carry the meaning, and
+  // pills and the red "N days overdue" already carry the meaning, and
   // annotating over them would fight the UI (demo-cast.md).
   'overview': { src: 'overview.png', align: 'top', size: [3200, 1150] },
 
