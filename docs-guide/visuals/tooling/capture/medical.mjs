@@ -35,7 +35,12 @@ async function assertMedical(page) {
 }
 
 // ---------- coach session ----------
-{
+// The two sessions arrive one after the other — logging in as the athlete
+// logs the coach out in the owner's browser — so each block runs on its own
+// and skips itself when its session file isn't there.
+if (!fs.existsSync(path.join(HERE, 'session.json'))) {
+  console.log('  (no session.json — coach shots skipped)');
+} else {
   const { browser, page } = await open();
 
   if (process.env.RECON) {
