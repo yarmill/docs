@@ -44,7 +44,7 @@ export const FIGURES = {
   'quick-entry': {
     src: 'quick-entry.png', align: 'bottom-right', size: [2000, 1800],
     callouts: [
-      { at: [2095, 1467], label: 'Entry type', sub: 'Injury or illness' },
+      { at: [2095, 1467], label: 'Record type', sub: 'Injury or illness' },
       { at: [2230, 1629], label: 'Status', sub: 'How much they can train — colours the group screen' },
       { at: [2675, 1885], label: 'Save', sub: 'Or Open full detail — both create the record' },
     ],
