@@ -115,7 +115,7 @@ Verified live as athlete Lisa (clean session). Key athlete-side facts:
   → RESOLVES the athlete device-connection (Integrations) UI.
 - **Athlete profile:** own card only; edits First/Last/DOB/Gender + Notes in-place; Email + Status read-only.
 - **Goals:** own goals only, no Entire Group/group switcher; can edit own incl. coach-created.
-- **Medical:** FULL own-record access in this instance (Open/Closed lists, full detail, New quick entry) —
+- **Medical:** FULL own-record access in this instance (Open/Closed lists, full detail, New record) —
   confirms the permission-dependent model (can be fully enabled OR hidden).
 - Spec updates dispatched (background): integrations+athlete-profile; goals+medical+wellness.
 

@@ -34,7 +34,7 @@
   - Dropdown labels confirmed verbatim: *New / Recurring*, *Open / Closed*, *Full training or
     competition / Modified training or competition / No training or competition*. The
     **Activity log shortens them** — it reads "changed injury status to No training".
-  - Delete confirm is **"Yes, delete"**; the floating tool bar is *+ New quick entry `N`* ·
+  - Delete confirm is **"Yes, delete"**; the floating tool bar is *+ New record `N`* ·
     *?* · bin ("Delete injury").
 - **Render images now?** YES (new GUI; overview is dark)
 
@@ -69,7 +69,7 @@ across their whole career, not scattered across clinics and spreadsheets.
   - **Fully enabled** (this instance — confirmed athlete session 2026-06-15, *Simpson Lisa*):
     the athlete has **full access to their OWN records** — the Injuries & Illnesses lists
     (Open/Closed), the full record detail (Properties, Key Dates, Circumstances, Note, OSIICS
-    Diagnosis, Files, Activity), **and the New quick entry affordance** (she can create entries).
+    Diagnosis, Files, Activity), **and the New record affordance** (she can create entries).
     She sees **only her own** records (no Group section / athlete switcher, no group in the
     breadcrumb).
   - **Hidden entirely:** in other setups athletes **cannot see the Medical module at all** —
@@ -163,12 +163,12 @@ across their whole career, not scattered across clinics and spreadsheets.
 - **Diagnosis:** `+` → searchable **OSIICS** picker + **Side** select + **Add** (`Ctrl`/`⌘`+`↵`). Confirmed live 2026-09-20: searching "ankle sprain" returns *Ankle sprains ALJ · Sprain lateral collateral ligament ankle AL1 · Sprain medial collateral (deltoid) ligament ankle AL2 · Ankle multiple ligaments sprain ALM* — **label first, code last**. Picking a result and a Side does **not** commit; the inline row shows *Cancel* / *Add* and only Add attaches it. Added diagnosis shows code + label + auto-tags. **The codelist is filtered by record type** — injuries search injury codes, illnesses search illness codes. The section carries the line **"Diagnoses are defined using the OSIICS code list↗ to ensure consistent reporting"**, whose link opens the codelist — currently a **Google Sheets copy**, not johnorchard.com. `TODO(yarmill): worth asking whether that link should point at the source.`
 - **Files:** `+` attach medical documents — reports, X-ray/MRI images, physiotherapy plans, etc.
 - **Activity:** chronological log (created, status changes, renamed, dates added) + a **Leave comment** box.
-- **Floating toolbar (bottom):** **+ New quick entry** (`N`) · **? help** · **delete (bin)**.
+- **Floating toolbar (bottom):** **+ New record** (`N`) · **? help** · **delete (bin)**.
 - States: empty (new record placeholder title "New Injury/Illness") · filled · overdue.
 
-### 6.4 New quick entry
-- Triggered by **+ New quick entry** (floating toolbar) or the **`N`** shortcut → opens a
-  **New entry** modal: **Entry type** (Injury / Illness) · **Name of injury/illness** ·
+### 6.4 New record (the short dialog; was "New record" until 09/2026)
+- Triggered by **+ New record** (floating toolbar, `data-cy=add-health-issue-belt`) or the **`N`** shortcut → opens a
+  **New record** dialog: **Record type** (Injury / Illness) · **Name of injury/illness** ·
   **Status** (training limitation) · **Date** · **Files** (Add files / drag & drop) — with
   **Open full detail** (jump to the full record) and **Save**. Nothing is created until Save.
 
@@ -280,6 +280,13 @@ got a group switcher" is a tall strip of nothing.
 - *Resolved:* quick-entry fields → §6.4 · illness vs injury = diagnosis codelist filtered by
   type → §4 · athlete permissions = genuinely instance-dependent → §3 · Closure date → §6.3 ·
   **Circumstances value lists → §4 (read live off AFC Richmond 2026-09-20)**.
+- *UI copy change, 2026-09-24 (verified live, coach session):* everything that said **Entry**
+  now says **Record**. The tool-bar button **New quick entry** is now **New record**
+  (`data-cy=add-health-issue-belt`, still on `N`); the dialog it opens is titled **New record**
+  and its first field is **Record type**. The **+** above the record list is still **Add
+  record** — so the module now has *Add record* (opens the full record) beside *New record*
+  (opens the short dialog). The docs name both explicitly to keep them apart. The record's
+  section label is now **Key dates**, lowercase *d*.
 - *Resolved 2026-09-21, live:*
   - **The closure date is editable** — the seeder set real historical closure dates on four
     closed records and they held; the record list shows them on the closed cards.
@@ -288,7 +295,7 @@ got a group switcher" is a tall strip of nothing.
   - **Athletes on AFC Richmond have the fully-enabled end of the permission model** —
     Jamie Tartt's own session shows his six records and nothing else, a sidebar that stops at
     "Injuries & Illnesses" with no Group section, and **both create affordances** (Add record
-    and New quick entry). So this instance is the "athlete can see and edit their own" case.
+    and New record). So this instance is the "athlete can see and edit their own" case.
   - **Yarmill ships OSIICS version 16**, and **there are no reports built on diagnosis codes
     yet** (product owner, 2026-09-21). The docs page therefore argues consistency and
     portability, not in-product analysis — don't let that claim drift back.
@@ -314,7 +321,7 @@ genuinely instance-specific, not low-confidence.
 **Athlete-session re-confirmation (2026-06-15):** a clean athlete session (role "Athlete",
 *Simpson Lisa* logged in, one login per browser) confirmed the **fully-enabled** end of the
 permission model in this instance — Lisa has full access to her OWN Medical records (Open/Closed
-lists, full record detail, and the **New quick entry** affordance to create entries), seeing only
+lists, full record detail, and the **New record** affordance to create entries), seeing only
 her own records (no group/athlete switcher). This confirms the permission-dependent model from
 both ends: athlete medical access can be **fully enabled** or **hidden entirely** (§3). Her top
 nav is the full classic top-nav with **no group/athlete switcher**; athlete Settings = "Personal".
@@ -363,7 +370,7 @@ nav is the full classic top-nav with **no group/athlete switcher**; athlete Sett
   *Key Dates* (Date of injury · Expected return to full training · Closure date) ·
   Circumstances · Note · Diagnosis · Files · Activity.
 - **Creating a record:** the **+** above the record list is the primary path — it opens the
-  full record straight away. **New quick entry** is the shortcut, not the main route; the page
+  full record straight away. **New record** is the shortcut, not the main route; the page
   documents it that way.
 - *Resolved at the 2026-09-21 shoot:* the overview column reads **"Open health problems"**
   and the empty state **"No health problems"** — visible in `images/medical/overview.png`. The

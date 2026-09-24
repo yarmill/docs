@@ -63,6 +63,11 @@ than after:
 node check-session.mjs session.json /medical    # logged in? as whom? does the module render?
 ```
 
+The owner can't hand over both sessions at once — logging in as the athlete logs the coach
+out — so they arrive one after the other. A capture script's coach and athlete blocks each
+skip themselves when their session file is missing: run it once with `session.json`, delete
+that, then run it again with `session-jamie.json`.
+
 ## The loop for a page
 
 ```bash

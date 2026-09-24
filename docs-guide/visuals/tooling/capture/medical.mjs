@@ -35,7 +35,12 @@ async function assertMedical(page) {
 }
 
 // ---------- coach session ----------
-{
+// The two sessions arrive one after the other — logging in as the athlete
+// logs the coach out in the owner's browser — so each block runs on its own
+// and skips itself when its session file isn't there.
+if (!fs.existsSync(path.join(HERE, 'session.json'))) {
+  console.log('  (no session.json — coach shots skipped)');
+} else {
   const { browser, page } = await open();
 
   if (process.env.RECON) {
@@ -112,11 +117,13 @@ async function assertMedical(page) {
     await page.waitForTimeout(800);
   });
 
-  // quick entry: the button offers Injury / Illness, then the entry form opens
+  // the tool bar's New record button (it was "New quick entry" until 09/2026):
+  // it offers Injury / Illness, then the New record dialog opens. Found by its
+  // hook rather than its label — the label has already been renamed once.
   await step('quick-entry', async () => {
-    await page.getByRole('button', { name: /New quick entry/ }).first().click();
+    await page.locator(cy('add-health-issue-belt')).first().click();
     await page.waitForTimeout(1200);
-    await page.locator(cy('add-health-issue-injury')).first().click();
+    await page.locator(cy('add-health-issue-injury') + ':visible').first().click();
     await page.waitForTimeout(2500);
     await shot(page, 'quick-entry');
     await page.keyboard.press('Escape');
