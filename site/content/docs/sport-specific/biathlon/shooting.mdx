@@ -26,9 +26,9 @@ Yarmill parses each entry into structured data for analysis, so follow the forma
   Always comes first in the entry and applies to all following lines until a new intensity is defined.
 
   Accepted values:
-  - `i0` or `z0` for static shooting
-  - intensity name (usually `i1-i5`)
-  - `competition` or `race` for race shooting
+  - `i0`, `z0`, or `static` for static shooting
+  - intensity name (usually `i1-i5`; some teams log levels `L0-L5` instead — see [When `L` is a level](#when-l-is-a-level))
+  - `competition`, `race`, or `závod` for race shooting
 </ParamField>
 
 <ParamField path="Position" required>
@@ -36,13 +36,14 @@ Yarmill parses each entry into structured data for analysis, so follow the forma
   Must follow the intensity and applies to all following entries until a new position is specified.
   
   Accepted values:
-  - `P` or `L` for prone — the two letters are interchangeable (`L` as in *ležka* or *liegend*)
+  - `P` or `L` for prone (`L` as in *ležka* or *liegend*) — if your team also logs intensity as levels, see [When `L` is a level](#when-l-is-a-level)
   - `S` for standing
 </ParamField>
 
 <ParamField path="Missed shots" required>
   Represents the number of missed shots in a stage.
   You can enter multiple numbers in sequence (e.g. `0321`) to log several stages at once using batch entry.
+  The space after the position is optional: `P 0320` and `P0320` are the same.
   
   Accepted values:
   - integer `0-5`
@@ -80,6 +81,16 @@ Yarmill parses each entry into structured data for analysis, so follow the forma
   - `4x5xx` – miss at 4, hit, miss at 5, hit, hit (first and third shot missed)
 </ParamField>
 
+### When `L` is a level
+
+Some teams log intensity as levels (`L1`, `L2` …), and some write prone as `L`. A line like `L2` can then mean either an intensity level or a prone stage with 2 misses. Yarmill decides from the whole entry, in this order:
+
+1. **The entry writes prone as `P` anywhere** → `L` followed by a digit is an intensity level.
+2. **The entry sets intensity with an `i` level or as a race** (`competition`, `race`, `závod`) → `L` is prone.
+3. **Otherwise the layout decides:** stages written without spaces (`L2`, `S1`) → `L` is prone; stages written with spaces (`S 2 12/28`) → a line with only `L` and a digit is an intensity level.
+
+<Tip>Keep one meaning per team: if you log intensity as levels, write prone as `P`; if you write prone as `L`, set intensity with `i` levels.</Tip>
+
 
 ## Examples
 
@@ -92,6 +103,20 @@ S 0210   // 4 static standing stages – 0, 2, 1, 0 misses
 ```json title="Batch entry (no details) – v2"
 i1 P 0320   // prone shooting in i1 – 0, 3, 2, 0 misses
 i2 S 0210   // standing shooting in i2 – 0, 2, 1, 0 misses
+```
+
+```json title="Prone written as L"
+i3   // shooting in i3 intensity
+L2   // prone, 2 misses
+L1   // prone, 1 miss
+S1   // standing, 1 miss
+S3   // standing, 3 misses
+```
+
+```json title="Intensity as levels"
+L2       // intensity level 2
+P 0320   // 4 prone stages – 0, 3, 2, 0 misses
+S 1102   // 4 standing stages – 1, 1, 0, 2 misses
 ```
 
 ```json title="Detailed entry with miss positions"

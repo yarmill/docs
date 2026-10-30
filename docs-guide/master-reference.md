@@ -270,13 +270,14 @@ Onboarding centers on a shared **Google Sheet template**. Key sheets:
 
 ### A.1 Training-shooting log notation [SPORT]
 
-Biathlon shooting is logged as **free-text "grammar"** in a dedicated left-side field, then **parsed by the LLM into structured data** for analysis. Athletes should verify the parse in the table at the bottom of the Shooting analysis (it shows what was written → how it was understood). The notation is flexible — log as much or as little as known.
+Biathlon shooting is logged as **free-text "grammar"** in a dedicated left-side field, then **parsed into structured data by a rule-based parser** in the analytics database (`[biathlon].[p_Parse_Training_Shooting]`, not an LLM — corrected 2026-10-30) for analysis. Athletes should verify the parse in the table at the bottom of the Shooting analysis (it shows what was written → how it was understood). The notation is flexible — log as much or as little as known.
 
 **Per-line grammar (order):** intensity → position (P/S) → misses → first-shot time / total time → miss positions (clock) → optional shot-order mask. Everything after misses is optional; intensity and position carry down to following lines until changed.
 
-- **Intensity** (required; applies to all following lines until a new intensity): `i0` or `z0` = static shooting; intensity name, usually `i1`–`i5`; `competition` or `race` = race shooting. Put it on its own line to set context, or inline at the start of a line (e.g. `i1 P 0320`).
-- **Position** (required; applies until changed): `P` **or** `L` = prone (interchangeable — `L` as in *ležka*/*liegend*; confirmed in chat 2026-07-15), `S` = standing.
-- **Misses** (required): integer `0`–`5` per stage. **Batch entry** logs several stages at once as a digit string — `P 0320` = four prone stages with 0, 3, 2, 0 misses. **Relay**: `X+Y`, where X = missed shots and Y = spare rounds used (e.g. `0+2`).
+- **Intensity** (required; applies to all following lines until a new intensity): `i0`, `z0` or `static` = static shooting; intensity name, usually `i1`–`i5`, or levels `L0`–`L5` on some teams (bbu, FISI); `competition`, `race` or `závod` = race shooting. Put it on its own line to set context, or inline at the start of a line (e.g. `i1 P 0320`).
+- **Position** (required; applies until changed): `P` **or** `L` = prone (`L` as in *ležka*/*liegend*; confirmed in chat 2026-07-15), `S` = standing. Prone is stored as one code whichever letter was written.
+- **`L` + digit — level or prone** (YWE-7857, chat 2026-10-30): decided per entry, in this order: (1) the entry writes prone as `P` anywhere → `L<digit>` is a level; (2) the entry has an `i` level or a race line → `L` is prone; (3) otherwise compact stages (`L2`, `S1`) → prone, spaced stages (`S 2 12/28`) → a lone `L<digit>` is a level. Recommended: teams using levels write prone as `P`.
+- **Misses** (required): integer `0`–`5` per stage. **Batch entry** logs several stages at once as a digit string — `P 0320` = four prone stages with 0, 3, 2, 0 misses. The space after the position is optional (`P0320`, `L2`, `S1`). **Relay**: `X+Y`, where X = missed shots and Y = spare rounds used (e.g. `0+2`).
 - **First-shot / total time** (optional): seconds separated by `/` — `14/29` = first shot 14 s, stage 29 s. Use `-` for an unknown value (`-/25`, `13/-`).
 - **Miss positions / shot-order mask** (optional): clock numbers `1`–`12` for where misses went, separated by `'`, `` ` ``, or `,` (e.g. `3' 11' 12'`). To record the full sequence, log all five shots with `x` = hit and a clock number = miss at that position (e.g. `x9xxx` = 2nd shot missed at 9 o'clock; `4x5xx` = 1st missed at 4, 3rd missed at 5).
 
