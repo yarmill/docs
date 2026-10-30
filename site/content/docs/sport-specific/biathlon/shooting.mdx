@@ -43,7 +43,7 @@ Yarmill parses each entry into structured data for analysis, so follow the forma
 <ParamField path="Missed shots" required>
   Represents the number of missed shots in a stage.
   You can enter multiple numbers in sequence (e.g. `0321`) to log several stages at once using batch entry.
-  The space after the position is optional: `P 0320` and `P0320` are the same.
+  The space after the position is usually optional: `P 0320` and `P0320` are the same. If your team logs intensity as levels, keep the space — see [When `L` is a level](#when-l-is-a-level).
   
   Accepted values:
   - integer `0-5`
@@ -89,7 +89,19 @@ Some teams log intensity as levels (`L1`, `L2` …), and some write prone as `L`
 2. **The entry sets intensity with an `i` level or as a race** (`competition`, `race`, `závod`) → `L` is prone.
 3. **Otherwise the layout decides:** stages written without spaces (`L2`, `S1`) → `L` is prone; stages written with spaces (`S 2 12/28`) → a line with only `L` and a digit is an intensity level.
 
-<Tip>Keep one meaning per team: if you log intensity as levels, write prone as `P`; if you write prone as `L`, set intensity with `i` levels.</Tip>
+So the same letters can be read two ways, depending on the space:
+
+```json title="L2 / S2 – read as prone"
+L2   // prone, 2 misses
+S2   // standing, 2 misses
+```
+
+```json title="L2 / S 2 – read as a level"
+L2    // intensity level 2
+S 2   // standing, 2 misses
+```
+
+<Tip>Keep one meaning per team: if you log intensity as levels, write prone as `P` and keep a space after the position (`S 2`); if you write prone as `L`, set intensity with `i` levels.</Tip>
 
 
 ## Examples
